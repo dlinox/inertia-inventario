@@ -30,7 +30,6 @@ class CreateBienkTable extends Migration
             $table->foreign('id_persona')->references('id')->on('persona');
             $table->foreign('id_area')->references('id')->on('area');
             $table->foreign('id_estado')->references('id')->on('estado');
-
         });
     }
 
