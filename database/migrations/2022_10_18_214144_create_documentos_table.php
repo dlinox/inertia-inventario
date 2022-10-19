@@ -19,7 +19,7 @@ class CreateDocumentosTable extends Migration
             $table->string('url');
             $table->integer('tipo');
             $table->unsignedBigInteger('id_area_persona')->nullable();
-            $table->string('dni',8)->nullable();
+            $table->string('dni_responsable',8)->nullable();
             $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_usuario')->nullable();
             $table->string('Observacion',190)->nullable();

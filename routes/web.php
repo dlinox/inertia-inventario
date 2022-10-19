@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AreasController;
+use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OficinaController;
@@ -70,8 +71,12 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/explorador','explorador')->name('explorador');
     });
 
-    Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
+    Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {
+        Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
+        Route::delete('/eliminar/{id}', 'destroy')->name('eliminarDocumento');
+    });
 
+    Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
     Route::get('/pdfBienes/{id}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
 });
 
