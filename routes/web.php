@@ -3,11 +3,11 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,6 +56,12 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {
         Route::get('/', 'index')->name('index');
     });
+
+    Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
+
+    Route::get('/pdfBienes/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
+
+
 });
 
 Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario')->group(function () {
