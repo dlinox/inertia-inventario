@@ -2,16 +2,16 @@
     <v-app>
         <v-main class="main-login">
             <div class="container-logo">
-                <img class="mx-auto " src="/images/logomin.png" alt="">
+                <img width="200" class="mx-auto " src="/images/logomin.png" alt="">
             </div>
             <v-card class="mx-auto elevation-10" max-width="400">
                 <v-img
                     gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,6)"
                     class="white--text align-end"
                     height="150px"
-                    src="/images/UGEL-AZANGARO.jpg"
+                    src="/images/unap.jpg"
                 >
-                    <v-card-title>Regristro de asistencia</v-card-title>
+                    <v-card-title>Sistema de inventario</v-card-title>
                     <v-card-subtitle class="">
                         <strong> INGRESAR AL SISTEMA</strong>
                     </v-card-subtitle>

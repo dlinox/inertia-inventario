@@ -40,7 +40,9 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::controller(UsuarioController::class)->name('usuarios.')->prefix('usuarios')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/get-usuarios', 'getUsuarios')->name('get-usuarios');
     });
+
 
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -63,7 +65,7 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/search-personas/{term}', [InventarioController::class, 'searchPersonas'])
         ->name('search-personas');
-        
+
     Route::get('/search-personas-by-id/{id}', [InventarioController::class, 'searchPersonasById'])
         ->name('search-personas-by-id');
 
@@ -85,6 +87,4 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/guardar-inventario', [InventarioController::class, 'saveInventario'])
         ->name('guardar-inventario');
-
-
 });
