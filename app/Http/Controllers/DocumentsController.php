@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\File;
 class DocumentsController extends Controller {
 
     public function getDocuments(){
-        $res = Documento::select()->get();
+        $res = Documento::select()->orderBy('id', 'DESC')->get();
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

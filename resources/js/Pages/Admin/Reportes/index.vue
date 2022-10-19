@@ -268,6 +268,7 @@ export default {
             this.perE = null;
             this.personaElegida = null;
             this.areaElegida = null;
+            this.getDocuments();
         },
 
 
