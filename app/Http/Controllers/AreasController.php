@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 
-class AreasController extends Controller{
+class AreasController extends Controller
+{
 
     public function index()
     {
@@ -21,7 +22,8 @@ class AreasController extends Controller{
     }
 
 
-    public function getAreas() {
+    public function getAreas()
+    {
         $res = Area::select()->get();
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
@@ -29,15 +31,17 @@ class AreasController extends Controller{
         return response()->json($this->response, 200);
     }
 
-    public function getAreasByPersona($id){
-        $res = DB::select('SELECT * FROM AREA WHERE ID IN (SELECT area_persona.id_area FROM `area_persona` WHERE id_persona = '.$id.')');
+    public function getAreasByPersona($id)
+    {
+        $res = DB::select('SELECT * FROM AREA WHERE ID IN (SELECT area_persona.id_area FROM `area_persona` WHERE id_persona = ' . $id . ')');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 
-    public function asignarPersona(Request $request, $id) {
+    public function asignarPersona(Request $request, $id)
+    {
         $res = Area::find($id);
         $res->id_persona = $request->id;
         $res->save();
@@ -48,7 +52,8 @@ class AreasController extends Controller{
         return response()->json($this->response, 200);
     }
 
-    public function cambiarEstado(Request $request, $nro) {
+    public function cambiarEstado(Request $request, $nro)
+    {
         $res = Area::find($request->id);
         $res->stado = $nro;
         $res->save();
@@ -59,6 +64,15 @@ class AreasController extends Controller{
         return response()->json($this->response, 200);
     }
 
+    public function getAreasByOficina($oficina)
+    {
+        $res = Area::where('id_oficina', $oficina)
+            ->get();
+        //text
 
-
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        $this->response['mensaje'] =   $oficina;
+        return response()->json($this->response, 200);
+    }
 }

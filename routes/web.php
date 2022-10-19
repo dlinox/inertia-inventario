@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AreasController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OficinaController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\ReportesController;
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(UsuarioController::class)->name('usuarios.')->prefix('usuarios')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/get-usuarios', 'getUsuarios')->name('get-usuarios');
+        Route::post('/asignar-area', 'asignarArea')->name('asignar-area');
     });
 
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
@@ -102,4 +104,18 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/guardar-inventario', [InventarioController::class, 'saveInventario'])
         ->name('guardar-inventario');
+});
+
+
+
+Route::middleware('auth')->name('get-data.')->prefix('get-data')->group(function () {
+
+    Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
+        Route::get('/{term}', 'getOficinas')->name('term');
+    });
+
+    
+    Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
+        Route::get('/by-oficina/{oficina}', 'getAreasByOficina')->name('by-oficina');
+    });
 });
