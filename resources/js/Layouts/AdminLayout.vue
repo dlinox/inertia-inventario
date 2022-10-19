@@ -1,14 +1,9 @@
 <template>
     <v-app>
         <v-navigation-drawer app v-model="drawer" color="#01305A" dark>
-            <v-sheet
-                color="rgba(0,0,0,.3)"
-                elevation="1"
-                class="py-4"
-                width="100%"
-            >
-                <img width="80%" src="/images/logomin.png" alt=""
-            /></v-sheet>
+            <div class="wrap-imagen py-4">
+                <img width="80%" src="/images/logomin.png" alt="" />
+            </div>
 
             <v-card flat rounded="0" color="transparent">
                 <v-list two-line class="py-0">
@@ -159,5 +154,12 @@ export default {
 .component-fade-enter, .component-fade-leave-to
 /* .component-fade-leave-active below version 2.1.8 */ {
     opacity: 0;
+}
+.wrap-imagen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: rgba(255,255,255,.3);
 }
 </style>

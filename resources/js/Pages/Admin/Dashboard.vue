@@ -17,7 +17,5 @@ export default {
     data: () => ({
         mensaje_hijo: 0,
     }),
-   
-    
 };
 </script>
