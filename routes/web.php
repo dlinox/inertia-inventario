@@ -60,11 +60,9 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
 
     Route::get('/pdfBienes/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
-
-
 });
 
-Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario')->group(function () {
+Route::middleware(['auth', 'onlyAdmin'])->name('inventario.')->prefix('inventario')->group(function () {
 
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
