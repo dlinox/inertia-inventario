@@ -11,5 +11,12 @@ class ReportesController extends Controller
     {
         return Inertia::render('Admin/Reportes/');
     }
-    
+    public function generador()
+    {
+        return Inertia::render('Admin/Reportes/');
+    }
+    public function explorador(){
+        return Inertia::render('Admin/Explorador/');
+    }
+
 }

@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <v-list dense>
             <v-list-item-group
                 v-model="active_menu"
@@ -85,10 +86,38 @@ export default {
 
             {
                 title: "Reportes",
-                icon: "mdi-chart-bar ",
-                ruta: "/admin/reportes",
+                icon: "mdi-chart-bar",
+                ruta: null,
+                sub_menu: [
+                    {
+                        title: "Generador",
+                        icon: "mdi-chart-bar",
+                        ruta: "/admin/reportes/"
+                    },
+                    {
+                        title: "Explorador",
+                        icon: "mdi-chart-bar",
+                        ruta: "/admin/reportes/explorador"
+                    },
+                ]
             },
-
+            {
+                title: "Areas",
+                icon: "mdi-chart-bar",
+                ruta: null,
+                sub_menu: [
+                    {
+                        title: "Asignar Persona",
+                        icon: "mdi-users",
+                        ruta: "/admin/areas/"
+                    },
+                    {
+                        title: "Bloquear Area",
+                        icon: "mdi-lock",
+                            ruta: "/admin/areas/bloquear"
+                    },
+                ]
+            },
             {
                 title: "Administrador",
                 icon: "mdi-cog",

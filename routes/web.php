@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AreasController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PDFController;
@@ -43,18 +44,27 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::post('/get-usuarios', 'getUsuarios')->name('get-usuarios');
     });
 
-
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
         Route::get('/', 'index')->name('index');
     });
 
-
     Route::controller(PersonasController::class)->name('personas.')->prefix('personas')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/getPersonas', 'getPersonas')->name('getpersonas');
+    });
+    Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/bloquear', 'bloquear')->name('bloquear');
+        Route::get('/getAreas', 'getAreas')->name('getareas');
+        Route::put('/asignarPersona/{id}', 'asignarPersona')->name('asignarPersona');
+        Route::put('/cambiarEstado/{nro}', 'cambiarEstado')->name('cambiarEstado');
+
     });
 
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/generador','generador')->name('generador');
+        Route::get('/explorador','explorador')->name('explorador');
     });
 
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');

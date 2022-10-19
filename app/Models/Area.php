@@ -12,5 +12,7 @@ class Area extends Model
     protected $fillable = [
         'nombre',
         'id_oficina',
+        'id_persona',
+        'stado',
     ];
 }
