@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 
@@ -22,6 +23,14 @@ class AreasController extends Controller{
 
     public function getAreas() {
         $res = Area::select()->get();
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function getAreasByPersona($id){
+        $res = DB::select('SELECT * FROM AREA WHERE ID IN (SELECT area_persona.id_area FROM `area_persona` WHERE id_persona = '.$id.')');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

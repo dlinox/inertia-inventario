@@ -18,12 +18,14 @@ class CreateDocumentosTable extends Migration
             $table->string('codigo');
             $table->string('url');
             $table->integer('tipo');
+            $table->unsignedBigInteger('id_area_persona')->nullable();
             $table->string('dni',8)->nullable();
             $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_usuario')->nullable();
-            $table->string('Observacion',190);
+            $table->string('Observacion',190)->nullable();
             $table->timestamps();
-            $table->foreign('id_usuario')->references('id')->on('usuario');
+            $table->foreign('id_area_persona')->references('id')->on('area_persona');
+            $table->foreign('id_usuario')->references('id')->on('users');
             $table->foreign('id_area')->references('id')->on('area');
         });
     }

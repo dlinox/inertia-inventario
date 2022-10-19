@@ -53,7 +53,6 @@ class PDFController extends Controller
         $doc['id_usuario'] = Auth::id();
         Documento::create($doc);
 
-        //return public_path();
         return $pdf->stream();
     }
 

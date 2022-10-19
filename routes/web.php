@@ -51,6 +51,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(PersonasController::class)->name('personas.')->prefix('personas')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/getPersonas', 'getPersonas')->name('getpersonas');
+        Route::get('/getPersonasByArea/{id}','getPersonasByArea')->name('getPersonasByArea');
     });
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -58,7 +59,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getAreas', 'getAreas')->name('getareas');
         Route::put('/asignarPersona/{id}', 'asignarPersona')->name('asignarPersona');
         Route::put('/cambiarEstado/{nro}', 'cambiarEstado')->name('cambiarEstado');
-
+        Route::get('/getAreasByPersona/{id}', 'getAreasByPersona')->name('getAreasByPersona');
     });
 
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {
@@ -69,7 +70,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
 
-    Route::get('/pdfBienes/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
+    Route::get('/pdfBienes/{id}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
 });
 
 Route::middleware(['auth', 'onlyAdmin'])->name('inventario.')->prefix('inventario')->group(function () {
