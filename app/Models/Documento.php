@@ -15,7 +15,7 @@ class Documento extends Model
  *
  * @var string
  */
-protected $table = 'documents' ;
+protected $table = 'documentos' ;
 
     use HasFactory;
     protected $fillable = [
@@ -24,7 +24,6 @@ protected $table = 'documents' ;
         'tipo',
         'dni_responsable',
         'id_area',
-        'id_oficina',
         'id_usuario'
     ];
 
