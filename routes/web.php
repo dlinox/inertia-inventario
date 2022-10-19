@@ -78,7 +78,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::get('/pdfBienes/{id}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
 });
 
-Route::middleware(['auth', 'onlyAdmin'])->name('inventario.')->prefix('inventario')->group(function () {
+Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario')->group(function () {
 
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
