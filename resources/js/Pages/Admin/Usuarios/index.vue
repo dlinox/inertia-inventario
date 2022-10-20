@@ -32,7 +32,11 @@
                 color="grey lighten-5"
             >
                 <v-container>
-                    <v-btn block color="primary">
+                    <v-btn
+                        block
+                        color="primary"
+                        @click="getFormularioUsuario()"
+                    >
                         <v-icon left>mdi-plus</v-icon>
                         Nuevo
                     </v-btn>
@@ -120,15 +124,12 @@
                                         </td>
 
                                         <td>
-                                            <v-badge
-                                                :content="item.areas.length"
-                                                :value="item.areas.length"
-                                                color="green"
-                                                overlap
-                                            >
-                                                Areas
-                                            </v-badge>
-                                           
+                                            {{
+                                                item.areas.length > 0
+                                                    ? item.areas.length +
+                                                      " Areas"
+                                                    : "Sin areas asignadas"
+                                            }}
                                         </td>
 
                                         <td>
@@ -259,6 +260,7 @@
 import Layout from "@/Layouts/AdminLayout";
 import SelectOficina from "@/components/autocomplete/SelectOficina.vue";
 import axios from "axios";
+import { Inertia } from "@inertiajs/inertia";
 
 export default {
     metaInfo: { title: "Usuarios" },
@@ -315,7 +317,6 @@ export default {
             area = "",
             page = 1
         ) {
-
             this.loading_table = true;
             let res = await axios.post(
                 "/admin/usuarios/get-usuarios?page=" + page,
@@ -356,19 +357,30 @@ export default {
         SelectMenu(op, user) {
             if (op == "Asignar Area") {
                 this.asignarArea(user);
+            } else if ("Editar") {
+                this.getFormularioUsuario(user.id);
             }
         },
+
+        async getFormularioUsuario(id = "") {
+            Inertia.get("/admin/usuarios/formulario/");
+            //let res = await axios.get("/admin/usuarios/get-formulario/" + id);
+
+            //console.log(res.data);
+        },
+
         async asignarArea(user) {
             console.log(user);
             this.user_asignar = user;
             this.dialog_asignar = true;
         },
+
         async guardarAsingar() {
             let res = await axios.post("/admin/usuarios/asignar-area", {
                 areas: this.area_asig,
                 usuario: this.user_asignar.id,
             });
-            
+
             this.list_usuarios = await this.getUsuarios();
             this.user_asignar = {};
             this.dialog_asignar = false;
@@ -383,7 +395,7 @@ export default {
     watch: {
         async usuario_search(val) {
             if (!val) return;
-   
+
             let res = await this.getUsuarios(
                 val,
                 this.rol,

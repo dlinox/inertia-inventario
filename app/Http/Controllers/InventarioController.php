@@ -21,7 +21,7 @@ class InventarioController extends Controller
 
         return Inertia::render('Admin/Inventarios/');
     }
-    
+
     public function viewRegistroInventario()
     {
 
@@ -146,7 +146,7 @@ class InventarioController extends Controller
                     ->orWhere('bienk.codigo_anterior', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('bienk.nombre', 'LIKE', '%' . $request->term . '%');
             })->paginate(2);
- 
+
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         $this->response['mensaje'] =   $request->area;
@@ -156,24 +156,43 @@ class InventarioController extends Controller
     public function saveInventario(Request $request)
     {
 
-        $res = Inventario::create([
-            'codigo' => $request->codigo,
-            'codigo_anterior' => $request->codigo_anterior,
-            'nombre' => $request->nombre,
-            'modelo' => $request->modelo,
-            'numero' => $request->numero,
-            'serie' => $request->serie,
-            'idbienk' => $request->id,
-            'id_persona' => $request->id_persona,
-            'idpersona_otro' => $request->idpersona_otro,
-            'id_area' => $request->id_area,
-            'id_usuario' => Auth::user()->id,
-            'id_estado' => $request->id_estado,
-            'observaciones' => $request->observaciones,
-        ]);
+        if($request->id_inventario){
+
+            $res = Inventario::find($request->id_inventario);
+            $res->id_persona = $request->id_persona;
+            $res->idpersona_otro = $request->idpersona_otro;
+            $res->id_area = $request->id_area;
+            $res->id_estado = $request->id_estado;
+            $res->observaciones = $request->observaciones;
+            $res->save();
+            $this->response['mensaje'] = 'Exito, Inventario actualizado';
+
+        }
+        else{
+
+            $res = Inventario::create([
+                'codigo' => $request->codigo,
+                'codigo_anterior' => $request->codigo_anterior,
+                'nombre' => $request->nombre,
+                'modelo' => $request->modelo,
+                'numero' => $request->numero,
+                'serie' => $request->serie,
+                'idbienk' => $request->id,
+
+                'id_persona' => $request->id_persona,
+                'idpersona_otro' => $request->idpersona_otro,
+                'id_area' => $request->id_area,
+                'id_usuario' => Auth::user()->id,
+                'id_estado' => $request->id_estado,
+                'observaciones' => $request->observaciones,
+            ]);
+
+            $this->response['mensaje'] = 'Exito, Inventario registrado';            
+        }
+
 
         if ($res) {
-            $this->response['mensaje'] = 'Exito, Inventario registrado';
+            
             $this->response['estado'] = true;
             $this->response['codigo'] =  $request->id_area;
             $this->response['datos'] = $res;
@@ -184,6 +203,18 @@ class InventarioController extends Controller
         $this->response['mensaje'] = 'Error';
         $this->response['estado'] = true;
         $this->response['codigo'] =  $request->id_area;
+        return response()->json($this->response, 200);
+    }
+
+    public function getInventario($id)
+    {
+        $res = Inventario::select('inventario.*', 'area.id_oficina')
+            ->join('area', 'area.id', '=', 'inventario.id_area')
+            ->where('inventario.id', $id)
+            ->first();
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 }

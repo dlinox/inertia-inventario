@@ -43,6 +43,10 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::controller(UsuarioController::class)->name('usuarios.')->prefix('usuarios')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/formulario/{id?}', 'getFormulario')->name('formulario');
+
+        Route::post('/guardar', 'saveUsuario')->name('guardar');
+
         Route::post('/get-usuarios', 'getUsuarios')->name('get-usuarios');
         Route::post('/asignar-area', 'asignarArea')->name('asignar-area');
     });
@@ -54,7 +58,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(PersonasController::class)->name('personas.')->prefix('personas')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/getPersonas', 'getPersonas')->name('getpersonas');
-        Route::get('/getPersonasByArea/{id}','getPersonasByArea')->name('getPersonasByArea');
+        Route::get('/getPersonasByArea/{id}', 'getPersonasByArea')->name('getPersonasByArea');
     });
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -67,8 +71,8 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/generador','generador')->name('generador');
-        Route::get('/explorador','explorador')->name('explorador');
+        Route::get('/generador', 'generador')->name('generador');
+        Route::get('/explorador', 'explorador')->name('explorador');
     });
 
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {
@@ -84,6 +88,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
+
+    Route::get('/get-inventario/{id}', [InventarioController::class, 'getInventario'])
+        ->name('get-inventario');
 
     Route::get('/search-personas/{term}', [InventarioController::class, 'searchPersonas'])
         ->name('search-personas');
@@ -119,8 +126,9 @@ Route::middleware('auth')->name('get-data.')->prefix('get-data')->group(function
         Route::get('/{term}', 'getOficinas')->name('term');
     });
 
-    
+
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
-        Route::get('/by-oficina/{oficina}', 'getAreasByOficina')->name('by-oficina');
+        Route::get('/by-oficina/{oficina}/{usuario?}', 'getAreasByOficina')->name('by-oficina');
+        Route::get('/all-info/{oficina}/{usuario?}', 'getAllInfoArea')->name('all-info');
     });
 });
