@@ -1,5 +1,25 @@
 <template>
     <v-container>
+  <div class="text-center">
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+    >
+      {{ text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+
 
     <v-row class="pl-3 pr-3">
         <div class=" pt-0 flex">
@@ -165,6 +185,9 @@ export default {
         searchpersonas: null,
         documentos:[],
         searchdocuments:null,
+        snackbar: false,
+        text: 'My timeout is set to 2000.',
+        timeout: 2000,
       }
     },
     created() {
@@ -243,7 +266,6 @@ export default {
         },
         cerrarDialogPersona(){
             this.dialogPersona = "d-none";
-
         },
         async asignar(item){
 
@@ -289,6 +311,8 @@ export default {
              .then(response => {
                  console.log(response);
              });
+             this.text = "Documento eliminado"
+             this.snackbar = true
              this.getDocuments()
         },
 
@@ -297,6 +321,8 @@ export default {
             console.log("centrate: ", resp.data[0])
             let res = await axios.put("/admin/bloquear/"+resp.data[0].id, resp[0]);
             this.getDocuments()
+            this.text = "Nuevo Documento de cargo creado"
+             this.snackbar = true
             return res.data.datos;
         },
 
@@ -309,23 +335,20 @@ export default {
             this.personaElegida = null;
             this.areaElegida = null;
             this.getDocuments()
+            this.text = "Bienes Desbloquedos"
+            this.snackbar = true
             return res.data.datos;
+
         },
 
         async desbloqueardeLista(item){
             console.log(item)
             let res = await axios.put("/admin/desbloquear/"+item.id_area_persona, item);
+            this.text = "bienes Desbloquedos"
+             this.snackbar = true
             this.getDocuments()
             return res.data.datos;
         },
-
-
-
-
-
-
-
-
     },
   }
 </script>
