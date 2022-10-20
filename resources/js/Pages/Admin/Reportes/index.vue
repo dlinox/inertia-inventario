@@ -24,18 +24,21 @@
     <v-row class="pl-3 pr-3">
         <div class=" pt-0 flex">
             <v-card class="mt-4 p-0"        >
-                <div class="pl-3 pt-2 text-sm bold">Escoge una Persona: </div>
+                <div class="pl-3 pt-2 text-sm bold">Escoge un Area: </div>
                     <v-card-title>
                         <v-text-field
-                            :v-model="search"
                             style="margin-top:-30px;"
-                            append-icon="mdi-magnify"
-                            single-line
-                            :label="areaElegida"
-                            @focus="abrirDialogArea"
                             hide-details
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            :label="areaElegida"
+                            single-line
+                            @focus="abrirDialogArea"
                         ></v-text-field>
-
+                        <v-btn v-if="areaElegida !== null" class="ml-1" @click="limpiar" style="width: 30px; height:30px; margin-top: -20px;" icon color="primary"  >
+                            <v-icon size="1.5rem">mdi-close</v-icon>
+                        </v-btn>
+                        <!-- :label="areaElegida" -->
                     </v-card-title>
 
                     <div
@@ -49,10 +52,9 @@
                         >
                             <template v-slot:item.accion ="{ item }">
                                 <div>
-                                    <v-btn color="success" dark text @click="elegirArea(item)"> Elegir</v-btn>
+                                    <v-btn color="indigo" outlined dark @click="elegirArea(item)"> Elegir</v-btn>
                                 </div>
                             </template>
-
                         </v-data-table>
                     </div>
             </v-card>
@@ -60,7 +62,7 @@
             <div class="pl-3 pt-2 text-sm bold">Escoge una Persona: </div>
                 <v-card-title>
                     <v-text-field
-                        :v-model="searchpersonas"
+                        v-model="searchpersonas"
                         style="margin-top:-30px;"
                         append-icon="mdi-magnify"
                         single-line
@@ -69,6 +71,9 @@
                         hide-details
                         >
                     </v-text-field>
+                    <v-btn v-if="areaElegida !== null" class="ml-1" @click="limpiar2" style="width: 30px; height:30px; margin-top: -20px;" icon color="primary"  >
+                            <v-icon size="1.5rem">mdi-close</v-icon>
+                    </v-btn>
                 </v-card-title>
             <div
                 :class="dialogPersona"
@@ -81,7 +86,7 @@
                     >
                     <template v-slot:item.acciones ="{ item }">
                         <div>
-                            <v-btn color="success" dark text @click="elegirPersona(item)"> Elegir</v-btn>
+                            <v-btn outlined color="indigo" dark @click="elegirPersona(item)"> Elegir</v-btn>
                         </div>
                     </template>
                 </v-data-table>
@@ -90,10 +95,10 @@
         </div>
         <div class="col-xs-12 p-3 pl-3 pt-0 botones" >
             <div class="mt-4">
-                <v-btn height="75" class="btn" @click="generarPDF">Generar PDF</v-btn>
+                <v-btn height="78" class="btn" dark color="primary" @click="generarPDF">Generar PDF</v-btn>
             </div>
             <div class="mt-4">
-                <v-btn  height="75" @click="desbloquear" class="btn"> Desloquear </v-btn>
+                <v-btn  height="78" @click="desbloquear" class="btn"> Desloquear </v-btn>
             </div>
         </div>
     </v-row>
@@ -102,7 +107,7 @@
         <div class="pl-3 pt-2 text-sm bold">Documentos Creados: </div>
             <v-card-title>
                 <v-text-field
-                    :v-model="searchdocuments"
+                    v-model="searchdocuments"
                     style="margin-top:-30px;"
                     append-icon="mdi-magnify"
                     single-line
@@ -144,7 +149,6 @@
 </template>
 <script>
 import Layout from "@/Layouts/AdminLayout";
-import { assertBinary, throwStatement } from "@babel/types";
 import axios from 'axios';
 export default {
     metaInfo: { title: "Personas" },
@@ -184,6 +188,7 @@ export default {
         documentoElegido: null,
         searchpersonas: null,
         documentos:[],
+        areas2:[],
         searchdocuments:null,
         snackbar: false,
         text: 'My timeout is set to 2000.',
@@ -206,11 +211,13 @@ export default {
     },
 
     methods: {
+
         async getAreas() {
             console.log("VER::: ", this.perE)
             if (this.personaElegida === null ){
                 let res = await axios.get("/admin/areas/getAreas");
                 this.areas = res.data.datos;
+                this.areas2 = res.data.datos;
                 return res.data.datos.data;
             } else {
                 let res = await axios.get("/admin/areas/getAreasByPersona/"+this.perE);
@@ -284,9 +291,9 @@ export default {
             }
         },
         buscaAreabyID(id){
-            for(let i in this.areas){
-                if (this.areas[i].id === id ){
-                    return this.areas[i].nombre
+            for(let i in this.areas2){
+                if (this.areas2[i].id === id ){
+                    return this.areas2[i].nombre
                 }
 
             }
@@ -349,6 +356,14 @@ export default {
             this.getDocuments()
             return res.data.datos;
         },
+        limpiar() {
+            this.areaElegida = null;
+            this.areE = null;
+        },
+        limpiar2() {
+            this.perE = null;
+            this.searchpersonas = null;
+        }
     },
   }
 </script>
