@@ -24,7 +24,8 @@ protected $table = 'documentos' ;
         'tipo',
         'dni_responsable',
         'id_area',
-        'id_usuario'
+        'id_usuario',
+        'id_area_persona'
     ];
 
 }

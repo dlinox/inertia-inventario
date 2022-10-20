@@ -1,97 +1,103 @@
 <template>
     <v-container>
-        <v-row class="pl-3 pr-3 pt-0">
-            <v-card class="mt-4 p-0 flex"        >
+
+    <v-row class="pl-3 pr-3">
+        <div class=" pt-0 flex">
+            <v-card class="mt-4 p-0"        >
+                <div class="pl-3 pt-2 text-sm bold">Escoge una Persona: </div>
+                    <v-card-title>
+                        <v-text-field
+                            :v-model="search"
+                            style="margin-top:-30px;"
+                            append-icon="mdi-magnify"
+                            single-line
+                            :label="areaElegida"
+                            @focus="abrirDialogArea"
+                            hide-details
+                        ></v-text-field>
+
+                    </v-card-title>
+
+                    <div
+                        :class="dialogArea"
+                        max-width="900"
+                        >
+                        <v-data-table
+                        :headers="headersAreas"
+                        :items="areas"
+                        :search="search"
+                        >
+                            <template v-slot:item.accion ="{ item }">
+                                <div>
+                                    <v-btn color="success" dark text @click="elegirArea(item)"> Elegir</v-btn>
+                                </div>
+                            </template>
+
+                        </v-data-table>
+                    </div>
+            </v-card>
+            <v-card class="mt-4 p-0">
             <div class="pl-3 pt-2 text-sm bold">Escoge una Persona: </div>
-            <v-card-title>
-                <v-text-field
-                :v-model="search"
-                style="margin-top:-30px;"
-                append-icon="mdi-magnify"
-                single-line
-                :label="areaElegida"
-                @focus="abrirDialogArea"
-                hide-details
-            ></v-text-field>
-
-            </v-card-title>
+                <v-card-title>
+                    <v-text-field
+                        :v-model="searchpersonas"
+                        style="margin-top:-30px;"
+                        append-icon="mdi-magnify"
+                        single-line
+                        :label="personaElegida"
+                        @focus="abrirDialogPersona"
+                        hide-details
+                        >
+                    </v-text-field>
+                </v-card-title>
             <div
-            :class="dialogArea"
-            max-width="900"
-            >
-            <v-data-table
-            :headers="headersAreas"
-            :items="areas"
-            :search="search"
-            >
-            <template v-slot:item.accion ="{ item }">
-                 <div>
-                    <v-btn color="success" dark text @click="elegirArea(item)"> Elegir</v-btn>
-                </div>
-            </template>
-
-            </v-data-table>
+                :class="dialogPersona"
+                max-width="900"
+                >
+                <v-data-table
+                    :headers="headersPersonas"
+                    :items="personas"
+                    :search="searchpersonas"
+                    >
+                    <template v-slot:item.acciones ="{ item }">
+                        <div>
+                            <v-btn color="success" dark text @click="elegirPersona(item)"> Elegir</v-btn>
+                        </div>
+                    </template>
+                </v-data-table>
             </div>
-       </v-card>
-        <div class="mt-4">
-            <v-btn height="75" class="ml-3" @click="generarPDF">Generar PDF</v-btn>
+           </v-card>
         </div>
-            </v-row>
-        <div>
-        <v-card class="mt-4 p-0" >
-            <div class="pl-3 pt-2 text-sm bold">Escoge una Persona: </div>
-            <v-card-title>
-                <v-text-field
-                :v-model="searchpersonas"
-                style="margin-top:-30px;"
-                append-icon="mdi-magnify"
-                single-line
-                :label="personaElegida"
-                @focus="abrirDialogPersona"
-                hide-details
-            ></v-text-field>
-
-            </v-card-title>
-            <div
-            :class="dialogPersona"
-            max-width="900"
-            >
-            <v-data-table
-            :headers="headersPersonas"
-            :items="personas"
-            :search="searchpersonas"
-            >
-            <template v-slot:item.acciones ="{ item }">
-                 <div>
-                    <v-btn color="success" dark text @click="elegirPersona(item)"> Elegir</v-btn>
-                </div>
-            </template>
-
-            </v-data-table>
+        <div class="col-xs-12 p-3 pl-3 pt-0 botones" >
+            <div class="mt-4">
+                <v-btn height="75" class="btn" @click="generarPDF">Generar PDF</v-btn>
             </div>
-       </v-card>
+            <div class="mt-4">
+                <v-btn  height="75" @click="desbloquear" class="btn"> Desloquear </v-btn>
+            </div>
         </div>
+    </v-row>
 
-        <v-card class="mt-4 p-0" >
-            <div class="pl-3 pt-2 text-sm bold">Documentos Creados: </div>
+    <v-card class="mt-4 p-0" >
+        <div class="pl-3 pt-2 text-sm bold">Documentos Creados: </div>
             <v-card-title>
                 <v-text-field
-                :v-model="searchdocuments"
-                style="margin-top:-30px;"
-                append-icon="mdi-magnify"
-                single-line
-                hide-details
-            ></v-text-field>
-
+                    :v-model="searchdocuments"
+                    style="margin-top:-30px;"
+                    append-icon="mdi-magnify"
+                    single-line
+                    hide-details
+                    >
+                </v-text-field>
             </v-card-title>
             <div
-            max-width="900"
-            >
+               max-width="900"
+                >
             <v-data-table
-            :headers="headersdocuments"
-            :items="documentos"
-            :search="searchdocuments"
-            >
+                :headers="headersdocuments"
+                :items="documentos"
+                :search="searchdocuments"
+                >
             <template v-slot:item.id_area="{ item }">
                  <div class="flex">
                     {{ buscaAreabyID(item.id_area) }}
@@ -99,11 +105,14 @@
             </template>
             <template v-slot:item.acciones="{ item }">
                  <div class="flex">
-                    <v-btn class="ml-4" icon color="primary" @click="verDocumento(item)" >
-                        <v-icon>mdi-eye</v-icon>
+                    <v-btn class="ml-0 p-0" style="width: 25px; height:25px;;" icon color="warning" @click="desbloqueardeLista(item)" >
+                        <v-icon size="1.1rem">mdi-lock</v-icon>
                     </v-btn>
-                    <v-btn icon color="pink" @click="eliminarDocumento(item)" >
-                        <v-icon>mdi-delete</v-icon>
+                    <v-btn class="ml-0" style="width: 25px; height:25px;;" icon color="primary" @click="verDocumento(item)" >
+                        <v-icon size="1.1rem">mdi-eye</v-icon>
+                    </v-btn>
+                    <v-btn style="width: 25px; height:25px;;" icon color="pink" @click="eliminarDocumento(item)" >
+                        <v-icon size="1.1rem">mdi-delete</v-icon>
                     </v-btn>
                 </div>
             </template>
@@ -116,6 +125,7 @@
 <script>
 import Layout from "@/Layouts/AdminLayout";
 import { assertBinary, throwStatement } from "@babel/types";
+import axios from 'axios';
 export default {
     metaInfo: { title: "Personas" },
     layout: Layout,
@@ -161,9 +171,6 @@ export default {
         this.getAreas()
         this.getPersonas()
         this.getDocuments()
-    },
-    onMounted() {
-        this.getAreas()
     },
 
     watch:{
@@ -263,14 +270,15 @@ export default {
             }
         },
         generarPDF(){
-            let res = axios.get("/admin/pdfBienes/"+this.areE);
+            let res = axios.get("/admin/pdfBienes/"+this.perE+"/"+this.areE);
+            this.actualizar()
             this.areE = null;
             this.perE = null;
             this.personaElegida = null;
             this.areaElegida = null;
+
             this.getDocuments();
         },
-
 
         verDocumento(item){
             window.open(item.url, '_blank');
@@ -281,7 +289,39 @@ export default {
              .then(response => {
                  console.log(response);
              });
-        }
+             this.getDocuments()
+        },
+
+        async actualizar(){
+            const resp = await axios.get("/admin/getAreaPersonSelected/"+this.perE+"/"+this.areE+";");
+            console.log("centrate: ", resp.data[0])
+            let res = await axios.put("/admin/bloquear/"+resp.data[0].id, resp[0]);
+            this.getDocuments()
+            return res.data.datos;
+        },
+
+        async desbloquear(){
+            const resp = await axios.get("/admin/getAreaPersonSelected/"+this.perE+"/"+this.areE+";");
+            console.log("centrate: ", resp.data[0])
+            let res = await axios.put("/admin/desbloquear/"+resp.data[0].id, resp[0]);
+            this.areE = null;
+            this.perE = null;
+            this.personaElegida = null;
+            this.areaElegida = null;
+            this.getDocuments()
+            return res.data.datos;
+        },
+
+        async desbloqueardeLista(item){
+            console.log(item)
+            let res = await axios.put("/admin/desbloquear/"+item.id_area_persona, item);
+            this.getDocuments()
+            return res.data.datos;
+        },
+
+
+
+
 
 
 
@@ -289,3 +329,17 @@ export default {
     },
   }
 </script>
+<style scoped>
+@media (max-width: 600px) {
+  .botones {
+    width: 100%;
+    justify-content: space-between;
+    margin-left: -5px;
+    margin-right: -10px;
+    margin-bottom: 5px;
+  }
+  .btn{
+    width: 100%;
+  }
+}
+</style>

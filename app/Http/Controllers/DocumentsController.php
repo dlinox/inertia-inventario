@@ -4,8 +4,9 @@
 
 namespace App\Http\Controllers;
 
-//Auth::routes();
+use App\Models\AreaPersona;
 
+//Auth::routes();
 use App\Models\Documento;
 //use App\Models\Document;
 use Illuminate\Http\Request;
