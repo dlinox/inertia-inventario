@@ -148,25 +148,24 @@
                                     disabled
                                 >
                                     <td>
-                                        <v-chip
-                                            small
-                                            :color="
-                                                item.id_inventario
-                                                    ? 'green '
-                                                    : 'orange'
-                                            "
-                                            outlined
-                                            class="ma-2"
-                                        >
-                                            <small>
-                                                {{
-                                                    item.id_inventario
-                                                        ? "REGISTRADO " +
-                                                          item.id_inventario
-                                                        : "NO REGISTRADO"
-                                                }}
-                                            </small>
-                                        </v-chip>
+                                        <template v-if="item.id_inventario">
+                                         
+                                           <v-btn
+                                           color="secondary"
+                                                small
+                                                
+                                                outlined
+                                                @click="
+                                                    Editar(item.id_inventario)
+                                                "
+                                            >
+                                                Editar
+                                            </v-btn>
+                                        </template>
+
+                                        <template v-else>
+                                           <h5 class="orange--text"> No registrado</h5>
+                                        </template>
                                     </td>
                                     <td>{{ item.nombre }}</td>
                                     <td>{{ item.codigo }}</td>
@@ -201,6 +200,8 @@
     </v-dialog>
 </template>
 <script>
+import axios from 'axios';
+
 export default {
     data: () => ({
         loading_table: false,
@@ -231,6 +232,13 @@ export default {
     }),
 
     methods: {
+
+        async Editar(id){
+            let res = await axios.get('/inventario/get-inventario/'+id);
+
+            console.log(res.data);
+        },
+
         onSelectColum(item, index) {
             this.tr_index = index;
             this.tr_item = item;

@@ -91,6 +91,6 @@ export default {
 
 <style>
 .v-autocomplete {
-    font-size: 13px;
+    font-size: 15px;
 }
 </style>

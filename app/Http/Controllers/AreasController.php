@@ -64,11 +64,40 @@ class AreasController extends Controller
         return response()->json($this->response, 200);
     }
 
-    public function getAreasByOficina($oficina)
+    public function getAreasByOficina($oficina, $usuario = "")
     {
-        $res = Area::where('id_oficina', $oficina)
+
+        //$query_select = ['area.*'];
+        // if ($usuario != "") array_push($query_select, DB::raw("IF( users.id = $usuario ,  TRUE , FALSE) AS usuario"));
+
+        $res = Area::select('area.*')
+            ->join('grupo', 'grupo.id_area', '=', 'area.id')
+            ->where('area.id_oficina', $oficina)
+            ->where('grupo.id_usuario', '!=', $usuario)
             ->get();
         //text
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        $this->response['mensaje'] =   $oficina;
+        return response()->json($this->response, 200);
+    }
+
+    public function getAllInfoArea($oficina, $usuario = "")
+    {
+        $res = Area::select(
+            DB::raw('(SELECT COUNT(bienk.id) FROM bienk WHERE bienk.id_area = area.id) AS bienesk'),
+            DB::raw('(SELECT COUNT(inventario.id) FROM inventario WHERE inventario.id_area = area.id) AS inventarios'),
+            DB::raw('GROUP_CONCAT(persona.nombres SEPARATOR ",") as responsables'),
+            'area.*'
+        )
+            ->join('grupo', 'grupo.id_area', '=', 'area.id')
+            ->leftjoin('area_persona', 'area_persona.id_area', '=', 'area.id')
+            ->leftjoin('persona', 'area_persona.id_persona', '=', 'persona.id')
+            ->where('area.id_oficina', $oficina)
+            ->where('grupo.id_usuario', $usuario)
+            ->groupBy('area.id')
+            ->get();
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

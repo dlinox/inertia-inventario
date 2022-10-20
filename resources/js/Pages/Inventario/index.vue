@@ -110,6 +110,29 @@
 
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-row class="px-4 pb-4" align="center">
+                    <v-col
+                        v-if="data.id_inventario && !is_edit"
+                        cols="12"
+                        class="pb-4 pt-0"
+                    >
+                        <v-banner single-line>
+                            <v-icon slot="icon" color="warning" size="36">
+                                mdi-wifi-strength-alert-outline
+                            </v-icon>
+                            El elemento ya esta registrado
+
+                            <template v-slot:actions>
+                                <v-btn
+                                    @click="getInventario(data.id_inventario)"
+                                    color="primary"
+                                    text
+                                >
+                                    Editar
+                                </v-btn>
+                            </template>
+                        </v-banner>
+                    </v-col>
+
                     <v-col cols="12" sm="4" md="4" class="pb-1 pt-0">
                         <v-text-field
                             class="mt-0 pt-0"
@@ -141,9 +164,7 @@
                             label="Marca"
                             outlined
                             v-model="data.marca"
-                            :rules="nameRules"
                             :disabled="!is_nuevo"
-                            required
                         ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
@@ -433,6 +454,8 @@ export default {
     layout: Layout,
     data: () => ({
         is_nuevo: false,
+        is_edit: false,
+
         loadin_form: false,
         valid: true,
         loading_search_persona: false,
@@ -470,9 +493,19 @@ export default {
                     this.data
                 );
                 console.log(res.data);
+
+                this.$refs.form.reset();
             }
         },
 
+        async getInventario(id) {
+            let res = await axios.get("/inventario/get-inventario/" + id);
+
+            //this.data.id_inventario = id;
+            await this.LLenarDatos(res.data.datos);
+            this.data.id_inventario = id;
+            this.is_edit = true;
+        },
         async BuscarPersonas(term) {
             let res = await axios.get("/inventario/search-personas/" + term);
             return res.data.datos;
@@ -500,7 +533,6 @@ export default {
 
             this.oficinas_res.push(oficna.data.datos);
 
-            console.log(item);
             this.data = item;
         },
 
@@ -580,10 +612,10 @@ export default {
             this.areas_by_oficna = res.data.datos;
         },
 
-        is_nuevo(){
-            this.codigo_search = '';
-            this.$refs.form.reset()
-        }
+        is_nuevo() {
+            this.codigo_search = "";
+            this.$refs.form.reset();
+        },
     },
 };
 </script>
