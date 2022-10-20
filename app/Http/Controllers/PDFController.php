@@ -62,8 +62,8 @@ class PDFController extends Controller
 //      $inventarista = DB::select('SELECT * FROM users WHERE users.id in (SELECT grupo.id_usuario FROM grupo WHERE id_area ='.$idArea.');');
 //        $bienes = DB::select('SELECT * from inventario WHERE id_area = '.$idArea.' and id_usuario='.$inventarista[0]->id.';');
         $bienes = DB::select('SELECT * from inventario WHERE id_area = '.$idArea.' and id_persona = '.$idP.';');
-        $ldate = date('d-m-Y');
-        $lhour = date('H:i:s',strtotime('-5 hours'));
+        $ldate = date('Y-m-d');
+        $lhour = date('H:i:s');
         $pdf = PDF::loadView('Bienes', compact('bienes','oficina','area','responsable','ldate','lhour'));
 //        $pdf->output(['/public','F']);
         $pdf->setPaper('a4','landscape');

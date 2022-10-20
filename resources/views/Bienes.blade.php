@@ -33,12 +33,12 @@
                 <td valgin="top">
                     <div style="width:270px; text-align:left; font-family: 'Ubuntu', sans-serif;">
                         <span style="font-size:13pt; stroke:#000000; ">Universidad Nacional de Altiplano</span>
-                        <span style="font-size:10pt;">Comisión de Inventario Activos Fijos 2019</span>
+                        <span style="font-size:10pt;">Comisión de Inventario Activos Fijos 2022</span>
                     </div>
                 </td>
                 <td align="center">
                     <div style=" width:540px; margin-top:50px;">
-                        <div><span style="font-size:14pt;"> INVETARIO PATRIMONIAL 2019 </span></div>
+                        <div><span style="font-size:14pt;"> INVETARIO PATRIMONIAL 2022 </span></div>
                         <span style="text-align:center; font-size:11pt;">FORMATO DE TOMA DE INVENTARIO DE BIENES MUEBLES Y EQUIPOS</span>
                     </div>
                 </td>
@@ -224,7 +224,7 @@
 
         <tr>
             <td colspan="11">
-                <span>Fecha y Hora: 2019-12-13 15:46:46</span>
+                <span>Fecha y Hora:</span><span> {{ $ldate }} {{$lhour}} </span>
             </td>
         </tr>
     </table>
