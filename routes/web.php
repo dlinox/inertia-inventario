@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AreaPersonaController;
 use App\Http\Controllers\AreasController;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\InventarioController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuarioController;
+use App\Models\AreaPersona;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -81,7 +83,14 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     });
 
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
-    Route::get('/pdfBienes/{id}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
+    Route::get('/pdfBienes/{idP}/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
+    Route::put('/bloquear/{id}', [PDFController::class, 'bloquear'])->name('bloquear')->middleware('auth');
+    Route::put('/desbloquear/{id}', [PDFController::class, 'desbloquear'])->name('desbloquear')->middleware('auth');
+
+    Route::put('/documentos/actualizar/{idP}', [AreaPersonaController::class, 'actualizar'])->name('actualizar');
+    Route::get('/getAreaPersonSelected/{idP}/{idArea}', [AreaPersonaController::class, 'getAreaPersonSelected'])->name('getAreaPersonSelected');
+
+
 });
 
 Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario')->group(function () {

@@ -4,8 +4,9 @@
 
 namespace App\Http\Controllers;
 
-//Auth::routes();
+use App\Models\AreaPersona;
 
+//Auth::routes();
 use App\Models\Documento;
 //use App\Models\Document;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\File;
 class DocumentsController extends Controller {
 
     public function getDocuments(){
-        $res = Documento::select()->get();
+        $res = Documento::select()->orderBy('id', 'DESC')->get();
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
