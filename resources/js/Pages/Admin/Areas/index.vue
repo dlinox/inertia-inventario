@@ -2,11 +2,12 @@
     <v-container>
         <v-card>
             <v-card-title>
+
             <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
                 label="Search"
-                single-line
+                outline
                 hide-details
             ></v-text-field>
             </v-card-title>
@@ -68,8 +69,11 @@
 </template>
 <script>
 import Layout from "@/Layouts/AdminLayout";
-import { assertBinary, throwStatement } from "@babel/types";
+//import { assertBinary, throwStatement } from "@babel/types";
+import OficinaSelect from '../../../components/autocomplete/SelectOficina.vue'
+
 export default {
+    components:{ OficinaSelect },
     metaInfo: { title: "Personas" },
     layout: Layout,
     data () {

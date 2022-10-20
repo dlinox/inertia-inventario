@@ -38,7 +38,7 @@
                 </td>
                 <td align="center">
                     <div style=" width:540px; margin-top:50px;">
-                        <div><span style="font-size:14pt;"> INVETARIO PATRIMONIAL 2022 </span></div>
+                        <div><span style="font-size:14pt;"> INVENTARIO PATRIMONIAL 2022 </span></div>
                         <span style="text-align:center; font-size:11pt;">FORMATO DE TOMA DE INVENTARIO DE BIENES MUEBLES Y EQUIPOS</span>
                     </div>
                 </td>

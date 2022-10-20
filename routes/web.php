@@ -61,6 +61,8 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/', 'index')->name('index');
         Route::get('/getPersonas', 'getPersonas')->name('getpersonas');
         Route::get('/getPersonasByArea/{id}', 'getPersonasByArea')->name('getPersonasByArea');
+        Route::get('/getPersonasInv', 'getPersonasInv')->name('getPersonasInv');
+        Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
     });
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -69,6 +71,14 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::put('/asignarPersona/{id}', 'asignarPersona')->name('asignarPersona');
         Route::put('/cambiarEstado/{nro}', 'cambiarEstado')->name('cambiarEstado');
         Route::get('/getAreasByPersona/{id}', 'getAreasByPersona')->name('getAreasByPersona');
+        Route::get('/getAreasByOficinaInv/{id}', 'getAreasByOficinaInv')->name('getAreasByOficinaInv');
+        Route::get('/getAreasByPersonaInv/{id}', 'getAreasByPersonaInv')->name('getAreasByPersonaInv');
+        Route::get('/getAreasAllInv', 'getAreasAllInv')->name('getAreasAllInv');
+    });
+
+    Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
+        Route::get('/getallOficinas', 'getallOficinas')->name('getallOficinas');
+        Route::get('/getOficinasByAreas/{id}', 'getOficinasByAreas')->name('getOficinasByAreas');
     });
 
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {

@@ -24,6 +24,24 @@ class PersonasController extends Controller
         return response()->json($this->response, 200);
     }
 
+    public function getPersonasInv()
+    {
+        $res = DB::select('SELECT * from persona WHERE id IN (SELECT id_persona FROM inventario);');
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function getPersonasByAreaInv($id)
+    {
+        $res = DB::select('SELECT * from persona WHERE id IN (SELECT id_persona FROM inventario where id_area = '.$id.');');
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
     public function getPersonasByArea($id){
 
         $res = DB::select('SELECT * FROM PERSONA WHERE ID IN (SELECT area_persona.id_persona FROM `area_persona` WHERE id_area = '.$id.')');
