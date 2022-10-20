@@ -111,7 +111,7 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-row class="px-4 pb-4" align="center">
                     <v-col
-                        v-if="data.id_inventario && !is_edit"
+                        v-if="data.id_inventario"
                         cols="12"
                         class="pb-4 pt-0"
                     >

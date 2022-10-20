@@ -30,6 +30,7 @@ class CreateInventarioTable extends Migration
             $table->unsignedBigInteger('id_estado');
             $table->unsignedBigInteger('id_area_persona')->nullable();
             $table->string('observaciones',150);
+            $table->boolean('estado')->default(1);
             $table->timestamps();
             $table->foreign('id_persona')->references('id')->on('persona');
             $table->foreign('id_area')->references('id')->on('area');
