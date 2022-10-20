@@ -9,7 +9,6 @@
         html {
             overflow-y: auto !important;
             background: #EFEFEF;
-
         }
 
         html::-webkit-scrollbar {
