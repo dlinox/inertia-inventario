@@ -66,7 +66,12 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
         Route::get('/getPersonas', 'getPersonas')->name('getpersonas');
         Route::get('/getPersonasByArea/{id}', 'getPersonasByArea')->name('getPersonasByArea');
+<<<<<<< HEAD
 
+=======
+        Route::get('/getPersonasInv', 'getPersonasInv')->name('getPersonasInv');
+        Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
+>>>>>>> 01eedfb21e161fb1d5074ce13143b26eeb377ce5
     });
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -75,6 +80,14 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::put('/asignarPersona/{id}', 'asignarPersona')->name('asignarPersona');
         Route::put('/cambiarEstado/{nro}', 'cambiarEstado')->name('cambiarEstado');
         Route::get('/getAreasByPersona/{id}', 'getAreasByPersona')->name('getAreasByPersona');
+        Route::get('/getAreasByOficinaInv/{id}', 'getAreasByOficinaInv')->name('getAreasByOficinaInv');
+        Route::get('/getAreasByPersonaInv/{id}', 'getAreasByPersonaInv')->name('getAreasByPersonaInv');
+        Route::get('/getAreasAllInv', 'getAreasAllInv')->name('getAreasAllInv');
+    });
+
+    Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
+        Route::get('/getallOficinas', 'getallOficinas')->name('getallOficinas');
+        Route::get('/getOficinasByAreas/{id}', 'getOficinasByAreas')->name('getOficinasByAreas');
     });
 
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {
@@ -86,6 +99,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {
         Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
         Route::delete('/eliminar/{id}', 'destroy')->name('eliminarDocumento');
+        Route::post('/guardar', 'saveDocument')->name('guardar');
     });
 
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');

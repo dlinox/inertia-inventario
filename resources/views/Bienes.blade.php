@@ -38,7 +38,7 @@
                 </td>
                 <td align="center">
                     <div style=" width:540px; margin-top:50px;">
-                        <div><span style="font-size:14pt;"> INVETARIO PATRIMONIAL 2022 </span></div>
+                        <div><span style="font-size:14pt;"> INVENTARIO PATRIMONIAL 2022 </span></div>
                         <span style="text-align:center; font-size:11pt;">FORMATO DE TOMA DE INVENTARIO DE BIENES MUEBLES Y EQUIPOS</span>
                     </div>
                 </td>
@@ -157,7 +157,6 @@
     <div style="margin-left: -10px; margin-right:-10px;  font-size:10pt; ">
     <table style="width: 100%; border-collapse: collapse; ">
         <thead >
-
         <tr align="center">
             <th>Nro</th>
             <th>Código</th>
@@ -174,31 +173,61 @@
         </thead>
         <tbody>
         @foreach ($bienes as $key=>$bien)
-        <tr>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{$key+1}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{$bien->codigo}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->nombre}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->modelo }}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">LENOVO</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">SPF0XBLXJ</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">NEGRO</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">
-                @if ($bien->id_estado === 1)
-                Nuevo
-                @elseif ($bien->id_estado === 2)
-                Bueno
-                @elseif ($bien->id_estado === 3)
-                R
-                @elseif ($bien->id_estado === 4)
-                M
-                @else ($bien->id_estado === 5)
+            @if ($bien->tipo === 3)
+                <tr>
+                    <td style="border: solid 1px black;"><span style="font-size: 9pt;  font-weight: bold; ">{{$key+1}}</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{$bien->codigo}}</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->nombre}}</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->modelo }}</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->marca }}</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->serie }}</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;"></span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">NEGRO</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">
+                        @if ($bien->id_estado === 1)
+                        N
+                        @elseif ($bien->id_estado === 2)
+                        R
+                        @elseif ($bien->id_estado === 3)
+                        M
+                        @elseif ($bien->id_estado === 4)
+                        Y
+                        @else
+                        Y
+                        @endif
+                    </span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">1379</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;"></span></td>
+                </tr>
+            @else
+            <tr>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{$key+1}}</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{$bien->codigo}}</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->nombre}}</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->modelo }}</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">LENOVO</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">SPF0XBLXJ</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">NEGRO</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">
+                    @if ($bien->id_estado === 1)
+                    N
+                    @elseif ($bien->id_estado === 2)
+                    R
+                    @elseif ($bien->id_estado === 3)
+                    M
+                    @elseif ($bien->id_estado === 4)
                     Y
-                @endif
-            </span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">1379</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
-        </tr>
+                    @else
+                    Y
+                    @endif
+                </span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">1379</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
+            </tr>
+
+        @endif
+
         @endforeach
         </tbody>
 

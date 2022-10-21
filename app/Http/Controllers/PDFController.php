@@ -32,9 +32,7 @@ class PDFController extends Controller
 
         $res = AreaPersona::find($id);
         $res->estado = 0;
-
         $res->save();
-
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
 
@@ -51,8 +49,6 @@ class PDFController extends Controller
 
     }
 
-
-
     public function PDFBienes($idP,$idArea){
 
         $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = '.$idArea.';');
@@ -60,7 +56,7 @@ class PDFController extends Controller
         $area = DB::select('SELECT * from  area WHERE area.id ='.$idArea.';');
         $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id ='.$idP);
 //      $inventarista = DB::select('SELECT * FROM users WHERE users.id in (SELECT grupo.id_usuario FROM grupo WHERE id_area ='.$idArea.');');
-//        $bienes = DB::select('SELECT * from inventario WHERE id_area = '.$idArea.' and id_usuario='.$inventarista[0]->id.';');
+//      $bienes = DB::select('SELECT * from inventario WHERE id_area = '.$idArea.' and id_usuario='.$inventarista[0]->id.';');
         $bienes = DB::select('SELECT * from inventario WHERE id_area = '.$idArea.' and id_persona = '.$idP.';');
         $ldate = date('Y-m-d');
         $lhour = date('H:i:s');
@@ -73,8 +69,8 @@ class PDFController extends Controller
         }else{
             $codigo = 'CBI-'.date('d').date('m').date('Y').'-00000'.$nro;
         }
-        $output = $pdf->output();
 
+        $output = $pdf->output();
         file_put_contents(public_path().'/documents/cargos/'.$codigo.'.pdf', $output);
 
         $doc['codigo'] = $codigo;
@@ -83,11 +79,13 @@ class PDFController extends Controller
         $doc['dni_responsable'] = $responsable[0]->dni;
         $doc['id_area'] = $idArea;
         $doc['id_oficina'] = $oficina[0]->id;
-        $doc['id_area_persona'] = $res[0]->id;
         $doc['id_usuario'] = Auth::id();
         Documento::create($doc);
 
-        return $pdf->stream();
+        $this->response['mensaje'] = 'PDF';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $doc;
+        return response()->json($this->response, 200);
     }
 
 

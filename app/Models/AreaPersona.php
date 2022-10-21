@@ -10,9 +10,12 @@ class AreaPersona extends Model
     use HasFactory;
     protected $table = 'area_persona' ;
     protected $fillable = [
+        'codigo',
         'id_area',
         'id_persona',
+        'url',
         'estado',
         'fecha',
+
     ];
 }
