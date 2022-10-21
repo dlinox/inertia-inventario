@@ -66,13 +66,8 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
         Route::get('/getPersonas', 'getPersonas')->name('getpersonas');
         Route::get('/getPersonasByArea/{id}', 'getPersonasByArea')->name('getPersonasByArea');
-<<<<<<< HEAD
-
-=======
-        Route::get('/getPersonasInv', 'getPersonasInv')->name('getPersonasInv');
-        Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
->>>>>>> 01eedfb21e161fb1d5074ce13143b26eeb377ce5
     });
+
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/bloquear', 'bloquear')->name('bloquear');
