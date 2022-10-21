@@ -191,11 +191,11 @@
         <iframe :src="PDF.url" style="width:100%; height:500px;" frameborder="0" ></iframe>
     </v-row>
 
-        <div class="col-xs-12 p-3  pt-0 botones" >
+        <div class="col-xs-12 p-3  pt-0 botones" style=" width:100%; display: flex; justify-content: flex-end; align-items: center;" >
             <div class="mt-4">
                 <v-btn height="38" class="btn" dark color="primary" @click="generarPDF">Previsualizar</v-btn>
             </div>
-            <div class="mt-4">
+            <div class="mt-4 ml-2">
                 <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
             </div>
         </div>

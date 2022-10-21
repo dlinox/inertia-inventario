@@ -26,10 +26,7 @@ class PersonasController extends Controller
         return response()->json($this->response, 200);
     }
 
-<<<<<<< HEAD
-    public function getPersonasByArea($id)
-    {
-=======
+
     public function getPersonasInv()
     {
         $res = DB::select('SELECT * from persona WHERE id IN (SELECT id_persona FROM inventario);');
@@ -49,7 +46,6 @@ class PersonasController extends Controller
     }
 
     public function getPersonasByArea($id){
->>>>>>> 01eedfb21e161fb1d5074ce13143b26eeb377ce5
 
         $res = DB::select('SELECT * FROM PERSONA WHERE ID IN (SELECT area_persona.id_persona FROM `area_persona` WHERE id_area = ' . $id . ')');
         $this->response['mensaje'] = 'Exito';
