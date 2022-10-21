@@ -90,6 +90,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {
         Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
         Route::delete('/eliminar/{id}', 'destroy')->name('eliminarDocumento');
+        Route::post('/guardar', 'saveDocument')->name('guardar');
     });
 
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');

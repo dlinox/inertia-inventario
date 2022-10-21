@@ -71,7 +71,7 @@
             </div>
         </v-col>
 
-        <v-col sx="12" sm="12" md="4" lg="4" style="background:orange; margin:0px; padding: 0;" class="p-0 col-xs-12 col-sm-12  col-md-4  col-lg-4 col-xl-4">
+        <v-col sx="12" sm="12" md="4" lg="4" style="margin:0px; padding: 0;" class="p-0 col-xs-12 col-sm-12  col-md-4  col-lg-4 col-xl-4">
             <div class=" p-0" style="background:white;">
                     <v-card-title>
                         <v-text-field
@@ -191,12 +191,15 @@
         <iframe :src="PDF.url" style="width:100%; height:500px;" frameborder="0" ></iframe>
     </v-row>
 
-        <div class="col-xs-12 p-3 pl-3 pt-0 botones" >
+        <div class="col-xs-12 p-3  pt-0 botones" >
             <div class="mt-4">
-                <v-btn height="78" class="btn" dark color="primary" @click="generarPDF">Generar PDF</v-btn>
+                <v-btn height="38" class="btn" dark color="primary" @click="generarPDF">Previsualizar</v-btn>
+            </div>
+            <div class="mt-4">
+                <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
             </div>
         </div>
-    </v-row>
+
 
     <!-- <v-card class="mt-4 p-0" >
         <div class="pl-3 pt-2 text-sm bold">Documentos Creados: </div>
@@ -473,26 +476,17 @@ export default {
         generarPDF(){
             let res = axios.get("/admin/pdfBienes/"+this.perE+"/"+this.areE)
             .then(response => {
-                console.log("****aqui****");
                  console.log(response);
                  this.PDF=response.data.datos;
-                 console.log("********");
              });
-             console.log("********");
-            console.log("aqui->", res.data )
-            console.log("********");
-            this.actualizar()
-            this.areE = null;
-            this.perE = null;
-            this.personaElegida = null;
-            this.areaElegida = null;
-
-
-
-
-//            this.getDocuments();
-
+            // this.actualizar()
+            // this.areE = null;
+            // this.perE = null;
+            // this.personaElegida = null;
+            // this.areaElegida = null;
+            // this.getDocuments();
         },
+
 
         verDocumento(item){
             window.open(item.url, '_blank');
@@ -548,7 +542,21 @@ export default {
         limpiar2() {
             this.perE = null;
             this.personaElegida = null;
-        }
+        },
+        async Guardar() {
+            this.PDF['id_persona'] = this.perE;
+            let res = await axios.post(
+                "/admin/documentos/guardar",
+                this.PDF
+            );
+            console.log(res.data);
+            if (this.is_nuevo) {
+                this.$refs.form_user.reset();
+            }
+
+        },
+
+
     },
   }
 </script>

@@ -8,6 +8,7 @@ use App\Models\AreaPersona;
 
 //Auth::routes();
 use App\Models\Documento;
+use App\Models\Inventario;
 //use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,6 +36,49 @@ class DocumentsController extends Controller {
     //     return Inertia::render('Admin/Cierre/',[ ]);
 
     // }
+    public function saveDocument(Request $request)
+    {
+        $ldate = date('Y-m-d');
+
+            $document = AreaPersona::create([
+                'codigo' => $request->codigo,
+                'id_area' => $request->id_area,
+                'id_persona' => $request->id_persona,
+                'url' => $request->url,
+                'tipo'=> 1,
+                'estado' => 0,
+                'fecha' => $ldate,
+            ]);
+            $this->response['mensaje'] = 'Documento creado con exito';
+            $this->bloquearBienes( $request->id_area, $request->id_persona);
+            $this->response['estado'] = true;
+            $this->response['datos'] = $document;
+
+        return response()->json($this->response, 200);
+    }
+
+    public function bloquearBienes( $id_a, $id_p ){
+        $bienes = DB::select('SELECT * from inventario WHERE id_area =  '.$id_a.' AND id_persona = '.$id_p.';');
+
+        foreach ($bienes as $p) {
+            $this->bloquear($p);
+        }
+    }
+
+
+    public function bloquear($bienes ){
+        $res = Inventario::find($bienes->id);
+        $res->estado = 0;
+        $res->save();
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+
+    }
+
+
+
+
+
 
     public function create()
     {

@@ -192,9 +192,9 @@ class UsuarioController extends Controller
 
 
 /**
- * 
- * 
- * 
+ *
+ *
+ *
  private function getUsuario($id)
     {
         $res = [];

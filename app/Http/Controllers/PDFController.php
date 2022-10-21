@@ -32,9 +32,7 @@ class PDFController extends Controller
 
         $res = AreaPersona::find($id);
         $res->estado = 0;
-
         $res->save();
-
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
 
@@ -81,7 +79,6 @@ class PDFController extends Controller
         $doc['dni_responsable'] = $responsable[0]->dni;
         $doc['id_area'] = $idArea;
         $doc['id_oficina'] = $oficina[0]->id;
-        $doc['id_area_persona'] = $res[0]->id;
         $doc['id_usuario'] = Auth::id();
         Documento::create($doc);
 

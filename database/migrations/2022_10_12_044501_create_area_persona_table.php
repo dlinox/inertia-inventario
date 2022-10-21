@@ -15,8 +15,10 @@ class CreateAreaPersonaTable extends Migration
     {
         Schema::create('area_persona', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('codigo',40);
             $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_persona');
+            $table->string('url',150);
             $table->boolean('estado')->default(1);
             $table->date('fecha');
             $table->foreign('id_persona')->references('id')->on('persona');
