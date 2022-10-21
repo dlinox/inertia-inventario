@@ -20,7 +20,7 @@ class CreateInventarioTable extends Migration
             $table->string('nombre', 130);
             $table->string('modelo',60);
             $table->string('numero',60);
-            $table->string('marca',60)->nullable();
+            $table->string('marca',60)->default('Generico');
             $table->string('serie',60);
             $table->string('idbienk',60);
             $table->unsignedBigInteger('id_persona');
@@ -29,8 +29,8 @@ class CreateInventarioTable extends Migration
             $table->unsignedBigInteger('id_usuario');
             $table->unsignedBigInteger('id_estado');
             $table->unsignedBigInteger('id_area_persona')->nullable();
-            $table->string('observaciones',150);
             $table->boolean('estado')->default(1);
+            $table->string('observaciones',150);
             $table->timestamps();
             $table->foreign('id_persona')->references('id')->on('persona');
             $table->foreign('id_area')->references('id')->on('area');

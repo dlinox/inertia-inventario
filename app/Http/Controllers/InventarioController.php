@@ -21,6 +21,38 @@ class InventarioController extends Controller
 
         return Inertia::render('Admin/Inventarios/');
     }
+    public function getInventarioByCode(Request $request)
+    {
+        $res = BienK::select('bienk.*', 'area.id_oficina')
+            ->join('area', 'area.id', '=', 'id_area')
+            //->join('oficina', 'oficina.id', '=', 'area.id_oficina')
+            ->where('codigo', $request->codigo)
+            ->first();
+
+        if (!$res) {
+            $this->response['mensaje'] = 'Error, codigo no encontrado';
+            $this->response['estado'] = false;
+            $this->response['codigo'] = $request->codigo;
+
+            return response()->json($this->response, 200);
+        }
+
+
+        $existe = Inventario::select('codigo')
+            ->where('codigo', $res->codigo)
+            ->first();
+
+        if ($existe) {
+            $this->response['error'] = true;
+            $this->response['error_mensaje'] = 'El elemento ya esta registrado';
+        }
+
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['codigo'] = $request->codigo;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
 
     public function viewRegistroInventario()
     {
@@ -120,7 +152,7 @@ class InventarioController extends Controller
 
     public function getBienes(Request $request)
     {
-        $res = BienK::select('bienk.*', 'area.id_oficina', 'inventario.id as id_inventario')
+        $res = BienK::select('bienk.*', 'area.id_oficina', 'inventario.id as id_inventario', 'inventario.estado')
             ->join('area', 'area.id', '=', 'bienk.id_area')
             ->leftjoin('inventario', 'inventario.idbienk', '=', 'bienk.id')
             ->where(function ($query) use ($request) {
@@ -156,7 +188,7 @@ class InventarioController extends Controller
     public function saveInventario(Request $request)
     {
 
-        if($request->id_inventario){
+        if ($request->id_inventario) {
 
             $res = Inventario::find($request->id_inventario);
             $res->id_persona = $request->id_persona;
@@ -166,9 +198,7 @@ class InventarioController extends Controller
             $res->observaciones = $request->observaciones;
             $res->save();
             $this->response['mensaje'] = 'Exito, Inventario actualizado';
-
-        }
-        else{
+        } else {
 
             $res = Inventario::create([
                 'codigo' => $request->codigo,
@@ -187,12 +217,12 @@ class InventarioController extends Controller
                 'observaciones' => $request->observaciones,
             ]);
 
-            $this->response['mensaje'] = 'Exito, Inventario registrado';            
+            $this->response['mensaje'] = 'Exito, Inventario registrado';
         }
 
 
         if ($res) {
-            
+
             $this->response['estado'] = true;
             $this->response['codigo'] =  $request->id_area;
             $this->response['datos'] = $res;

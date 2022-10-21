@@ -136,6 +136,7 @@
                                     <th class="text-left">Cod. Ant.</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 <tr
                                     v-for="(item, index) in bienes_result"
@@ -149,22 +150,39 @@
                                 >
                                     <td>
                                         <template v-if="item.id_inventario">
-                                         
-                                           <v-btn
-                                           color="secondary"
+                                            <v-chip
                                                 small
-                                                
+                                                color="green"
                                                 outlined
-                                                @click="
-                                                    Editar(item.id_inventario)
-                                                "
+                                                class="ma-2"
                                             >
-                                                Editar
-                                            </v-btn>
+                                                <small>REGISTRADO</small>
+                                            </v-chip>
                                         </template>
-
+                                        <template
+                                            v-else-if="
+                                                (item.id_inventario &&
+                                                item.bloqueado)
+                                            "
+                                        >
+                                            <v-chip
+                                                small
+                                                color="grey"
+                                                outlined
+                                                class="ma-2"
+                                            >
+                                                <small>NO REGISTRADO</small>
+                                            </v-chip>
+                                        </template>
                                         <template v-else>
-                                           <h5 class="orange--text"> No registrado</h5>
+                                            <v-chip
+                                                small
+                                                color="orange"
+                                                outlined
+                                                class="ma-2"
+                                            >
+                                                <small>NO REGISTRADO</small>
+                                            </v-chip>
                                         </template>
                                     </td>
                                     <td>{{ item.nombre }}</td>
@@ -200,7 +218,7 @@
     </v-dialog>
 </template>
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
     data: () => ({
@@ -232,9 +250,8 @@ export default {
     }),
 
     methods: {
-
-        async Editar(id){
-            let res = await axios.get('/inventario/get-inventario/'+id);
+        async Editar(id) {
+            let res = await axios.get("/inventario/get-inventario/" + id);
 
             console.log(res.data);
         },

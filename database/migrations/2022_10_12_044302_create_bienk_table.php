@@ -18,6 +18,7 @@ class CreateBienkTable extends Migration
             $table->string('codigo',50);
             $table->string('codigo_anterior',50);
             $table->string('nombre', 130);
+            $table->string('marca',60)->default('Generico');
             $table->string('modelo',60)->nullable();
             $table->string('numero',60)->nullable();
             $table->string('serie',60)->nullable();

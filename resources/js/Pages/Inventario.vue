@@ -270,12 +270,8 @@ export default {
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+<style scoped>
 
-* {
-    font-family: "Montserrat", sans-serif;
-}
 .main-wrapper {
     background-color: #eaeaea;
 }
@@ -307,9 +303,7 @@ export default {
     margin-bottom: 0px;
 }
 
-.v-text-field--outlined fieldset {
-    border: 1px solid #d4d4d8;
-}
+
 
 .v-text-field .v-input__control,
 .v-text-field .v-input__slot,

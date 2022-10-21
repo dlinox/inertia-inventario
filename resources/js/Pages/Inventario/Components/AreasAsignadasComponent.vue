@@ -85,25 +85,41 @@
                                     disabled
                                 >
                                     <td>
-                                        <v-chip
-                                            small
-                                            :color="
-                                                item.id_inventario
-                                                    ? 'green '
-                                                    : 'orange'
-                                            "
-                                            outlined
-                                            class="ma-2"
+                                 
+                                        <template
+                                            v-if="item.estado == 0"
                                         >
-                                            <small>
-                                                {{
-                                                    item.id_inventario
-                                                        ? "REGISTRADO " +
-                                                          item.id_inventario
-                                                        : "NO REGISTRADO"
-                                                }}
-                                            </small>
-                                        </v-chip>
+                                            <v-chip
+                                                small
+                                                color="grey"
+                                                outlined
+                                                class="ma-2"
+                                            >
+                                                <small>BLOQUEDAO</small>
+                                            </v-chip>
+                                        </template>
+
+                                        <template v-else-if="item.id_inventario">
+                                            <v-chip
+                                                small
+                                                color="green"
+                                                outlined
+                                                class="ma-2"
+                                            >
+                                                <small>REGISTRADO {{item.estado}} </small>
+                                            </v-chip>
+                                        </template>
+
+                                        <template v-else>
+                                            <v-chip
+                                                small
+                                                color="orange"
+                                                outlined
+                                                class="ma-2"
+                                            >
+                                                <small>NO REGISTRADO</small>
+                                            </v-chip>
+                                        </template>
                                     </td>
                                     <td>{{ item.nombre }}</td>
                                     <td>{{ item.codigo }}</td>
@@ -164,10 +180,6 @@ export default {
         page: 1,
         total_result: 0,
         pages: 1,
-
-
-
-
     }),
     methods: {
         onSelectColum(item, index) {
@@ -193,11 +205,10 @@ export default {
             return res.data.datos.data;
         },
 
-        SeleccionarBien(){
-
+        SeleccionarBien() {
             this.$emit("setData", this.tr_item);
             this.dialog = false;
-        }
+        },
     },
 
     watch: {

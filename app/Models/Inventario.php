@@ -23,6 +23,7 @@ class Inventario extends Model
         'id_area',
         'id_usuario',
         'id_estado',
+        'estado',
         'observaciones',
     ];
 }

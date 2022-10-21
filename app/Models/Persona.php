@@ -17,6 +17,7 @@ class Persona extends Model
         'paterno',
         'materno',
         'nombres',
+        'id_tipo_persona',
   
     ];
 }
