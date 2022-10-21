@@ -61,24 +61,27 @@ class DocumentsController extends Controller {
         $bienes = DB::select('SELECT * from inventario WHERE id_area =  '.$id_a.' AND id_persona = '.$id_p.';');
 
         foreach ($bienes as $p) {
-            $this->bloquear($p);
+            $this->cambiar($p, 0);
         }
     }
 
+    public function desbloquearBienes($id){
+        $res = AreaPersona::find($id);
+        $res->estado = 1;
+        $res->save();
+        $bienes = DB::select('SELECT * from inventario WHERE id_area =  '.$res->id_area.' AND id_persona = '.$res->id_persona.';');
+        foreach ($bienes as $p) {
+            $this->cambiar($p, 1);
+        }
+    }
 
-    public function bloquear($bienes ){
+    public function cambiar($bienes, $estado){
         $res = Inventario::find($bienes->id);
-        $res->estado = 0;
+        $res->estado = $estado;
         $res->save();
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
-
     }
-
-
-
-
-
 
     public function create()
     {
@@ -99,11 +102,9 @@ class DocumentsController extends Controller {
     }
 
     public function destroy($id){
-        $document = Documento::find($id);
+        $document = AreaPersona::find($id);
         File::delete(public_path("$document->url"));
-
         $document->delete();
-
         return "Documento Eliminado";
     }
 
