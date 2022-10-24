@@ -246,11 +246,6 @@
             </td>
         </tr>
 
-
-
-
-
-
         <tr>
             <td colspan="11">
                 <span>Fecha y Hora:</span><span> {{ $ldate }} {{$lhour}} </span>
@@ -259,10 +254,7 @@
     </table>
     </div>
 
-
-
-
-        <div style="">
+    <div style="">
 
 
 	<script type="text/php">

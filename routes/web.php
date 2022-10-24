@@ -66,6 +66,10 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
         Route::get('/getPersonas', 'getPersonas')->name('getpersonas');
         Route::get('/getPersonasByArea/{id}', 'getPersonasByArea')->name('getPersonasByArea');
+
+        Route::get('/getPersonasInv', 'getPersonasInv')->name('getPersonasInv');
+        Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
+
     });
 
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
@@ -78,6 +82,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getAreasByOficinaInv/{id}', 'getAreasByOficinaInv')->name('getAreasByOficinaInv');
         Route::get('/getAreasByPersonaInv/{id}', 'getAreasByPersonaInv')->name('getAreasByPersonaInv');
         Route::get('/getAreasAllInv', 'getAreasAllInv')->name('getAreasAllInv');
+        Route::get('/getAreasP/{term}', 'getAreasP')->name('areasP');
     });
 
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
@@ -89,12 +94,14 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/', 'index')->name('index');
         Route::get('/generador', 'generador')->name('generador');
         Route::get('/explorador', 'explorador')->name('explorador');
+        Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
     });
 
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {
         Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
         Route::delete('/eliminar/{id}', 'destroy')->name('eliminarDocumento');
         Route::post('/guardar', 'saveDocument')->name('guardar');
+        Route::get('/desbloquearBienes/{id}', 'desbloquearBienes')->name('desbloquearBienes');
     });
 
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
@@ -135,7 +142,6 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/search-codigos/{codigo}', [InventarioController::class, 'searchCodigos'])
         ->name('search-codigos');
 
-
     Route::post('/get-bienes', [InventarioController::class, 'getBienes'])
         ->name('get-bienes');
 
@@ -150,7 +156,6 @@ Route::middleware('auth')->name('get-data.')->prefix('get-data')->group(function
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
         Route::get('/{term}', 'getOficinas')->name('term');
     });
-
 
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
         Route::get('/by-oficina/{oficina}/{usuario?}', 'getAreasByOficina')->name('by-oficina');
