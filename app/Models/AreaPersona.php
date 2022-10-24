@@ -16,6 +16,7 @@ class AreaPersona extends Model
         'url',
         'estado',
         'fecha',
+        'id_usuario',
 
     ];
 }

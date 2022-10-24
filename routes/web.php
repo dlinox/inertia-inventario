@@ -116,6 +116,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/generador', 'generador')->name('generador');
         Route::get('/explorador', 'explorador')->name('explorador');
         Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
+        Route::get('/preview/{idArea}/{idP}', 'preview')->name('preview');
     });
 
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {
@@ -124,7 +125,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::post('/guardar', 'saveDocument')->name('guardar');
         Route::get('/desbloquearBienes/{id}', 'desbloquearBienes')->name('desbloquearBienes');
     });
-
+    Route::get('/base', [PDFController::class, 'getPath'])->name('base')->middleware('auth');
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
     Route::get('/pdfBienes/{idP}/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
     Route::put('/bloquear/{id}', [PDFController::class, 'bloquear'])->name('bloquear')->middleware('auth');

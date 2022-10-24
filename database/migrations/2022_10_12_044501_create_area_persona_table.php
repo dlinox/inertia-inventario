@@ -21,8 +21,10 @@ class CreateAreaPersonaTable extends Migration
             $table->string('url',150);
             $table->boolean('estado')->default(1);
             $table->date('fecha');
+            $table->unsignedBigInteger('id_usuario');
             $table->foreign('id_persona')->references('id')->on('persona');
             $table->foreign('id_area')->references('id')->on('area');
+            $table->foreign('id_usuario')->references('id')->on('users');
             $table->timestamps();
         });
     }

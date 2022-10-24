@@ -1,6 +1,6 @@
 <template>
 <v-container style="background:white">
-  <div class="" style="background:white">
+  <div class="" style="background:white;">
     <div class="text-center">
       <v-snackbar
         v-model="snackbar"
@@ -154,24 +154,55 @@
             </v-autocomplete>
 
         </v-col>
-        <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
-                <div class="ml-2">
-                    <v-btn height="38" small class="btn" dark color="primary" @click="generarPDF">Previsualizar</v-btn>
-                </div>
-                <div class=" ml-2" small>
-                    <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
-                </div>
-        </v-col>
-
     </v-row>
-    <div class="mt-2" style="background:white; height: 700px;">
-
-            <div v-if="PDF !== null">
-                <iframe :src="url"  style="width:100%;" :height="500" frameBorder="0" ></iframe>
-            </div>
+    <div style="overflow-x:scroll; overflow-y:hidden; width:100%; margin-top:30px; height:460px;">
+        <div  v-if="areE !== null && perE !== null"  class="by-preview" style="transform:scale(1);">
+            <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;"> </iframe>
+        </div>
     </div>
+    <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
+        <div class="ml-2">
+            <v-btn height="38" small class="btn" dark color="primary" @click="dialog = true">Guardar PDF</v-btn>
+        </div>
+        <!-- <div class=" ml-2" small>
+            <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
+        </div> -->
+    </v-col>
 
-    </div>
+    <v-row justify="center">
+        <v-dialog
+        v-model="dialog"
+        persistent
+        max-width="290"
+            >
+            <v-card>
+            <v-card-title class="text-h5">
+            Precaución..!!
+            </v-card-title>
+            <v-card-text>Se bloquearan todos los bienes de este documento</v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="green darken-1"
+                text
+                @click="dialog = false"
+            >
+                Cancelar
+            </v-btn>
+            <v-btn
+                color="green darken-1"
+                text
+                @click="generarPDF"
+            >
+                Continuar
+            </v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
+    </v-row>
+</div>
+
+
   </v-container>
 </template>
 <script>
@@ -182,15 +213,9 @@ export default {
     layout: Layout,
     data () {
       return {
-        dialog: false,
-        headersdocuments: [
-          { text: '-', align: 'center', value:'acciones' },
-          { text: 'Codigo', align: 'center', filterable: true, value: 'codigo', },
-          { text: 'Estado', align:'center', value:'estado'},
-          { text: 'Responsable', align: 'start', filterable: true, value: 'dni_responsable', },
-          { text: 'Area', align: 'start', filterable: true, value: 'id_area', },
-        ],
         url:'',
+        dialog: false,
+        preview:'',
         searchdocuments:"",
         areas: [],
         oficinas: [],
@@ -200,8 +225,6 @@ export default {
         areE:null,
         perE:null,
         ofiE:null,
-        documentoElegido: null,
-        areas2:[],
         snackbar: false,
         text: '',
         PDF:null,
@@ -215,7 +238,6 @@ export default {
     created() {
         this.getAreas()
         this.getPersonas()
-        this.getDocuments()
         this.getOficinas()
     },
 
@@ -223,9 +245,11 @@ export default {
         areE: function(){
             this.getPersonas();
             this.buscabyOficinaID(this.areEO)
+            this.preview =  '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
         },
         perE: function(){
             this.getAreas();
+            this.preview =  '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
         },
         ofiE: function(){
             this.getAreas();
@@ -304,12 +328,6 @@ export default {
                 return res.data.datos.data;
             }
         },
-
-        async getDocuments() {
-            let res = await axios.get("/admin/reportes/getDocuments");
-            this.documentos = res.data.datos;
-            return res.data.datos.data;
-        },
         buscabyID(id){
             for(let i in this.personas){
                 if (this.personas[i].id === id ){
@@ -336,6 +354,7 @@ export default {
             }
         },
         generarPDF(){
+            this.dialog = false;
             let res = axios.get("/admin/pdfBienes/"+this.perE+"/"+this.areE)
             .then(response => {
                  console.log(response);
@@ -343,29 +362,9 @@ export default {
 //                 this.url = this.PDF.url+"#toolbar=0";
                  this.url = this.PDF.url;
              });
-        },
 
-
-        verDocumento(item){
-            window.open(item.url, '_blank');
-        },
-
-        async eliminarDocumento(item){
-            await axios.delete(`/admin/documentos/eliminar/${item.id}`)
-             .then(response => {
-                 console.log(response);
-             });
-             this.text = "Documento eliminado"
-             this.snackbar = true
-             this.getDocuments()
-        },
-
-        async desbloquear( item ){
-            await axios.get(`/admin/documentos/desbloquearBienes/${item.id}`);
-            this.getDocuments()
-            this.text = "Bienes Desbloquedos"
+            this.text = "Documento Guardado"
             this.snackbar = true
-            return res.data.datos;
         },
 
         async Guardar() {
@@ -385,8 +384,23 @@ export default {
   }
 </script>
 <style scoped>
+.by-preview{
+    width:100%;
+    height:100%;
+    min-width:1070px;
+}
 iframe{
 border:none;
+width: 100% !important;
+  height: 100% !important;
+  scale:(0.7);
+}
+.padre{
+   overflow-x: visible;
+   white-space: nowrap;
+  }
+.hijo{
+    transform: scale(0.6)
 }
 @media (max-width: 600px) {
   .botones {
