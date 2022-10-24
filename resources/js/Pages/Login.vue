@@ -2,7 +2,12 @@
     <v-app>
         <v-main class="main-login">
             <div class="container-logo">
-                <img width="200" class="mx-auto " src="/images/logomin.png" alt="">
+                <img
+                    width="200"
+                    class="mx-auto"
+                    src="/images/logomin.png"
+                    alt=""
+                />
             </div>
             <v-card class="mx-auto elevation-10" max-width="400">
                 <v-img
@@ -51,7 +56,6 @@
                         :type="show_password ? 'text' : 'password'"
                         name="input-10-1"
                         label="Contraseña"
-                        hint="At least 8 characters"
                         counter
                         @click:append="show_password = !show_password"
                     ></v-text-field>
@@ -64,8 +68,14 @@
                         :loading="loading_btn"
                         @click="IngresarSistema"
                     >
-                        INGRESAR
+                        INGRESARss
                     </v-btn>
+
+                    <div class="d-flex text-center mt-2">
+                        <Link href="/reset-password">
+                            <small>Olvidaste tu contraseña?</small>
+                        </Link>
+                    </div>
                 </v-form>
             </v-card>
         </v-main>
@@ -73,7 +83,11 @@
 </template>
 
 <script>
+import { Link } from "@inertiajs/inertia-vue";
 export default {
+    components: {
+        Link,
+    },
     metaInfo: { title: "Login" },
     data: () => ({
         loading_btn: false,
@@ -87,7 +101,7 @@ export default {
         mensaje: "",
         rules: {
             required: (value) => !!value || "Requerido.",
-            min: (v) => v.length >= 4 || "Min 6 caracteres",
+            min: (v) => v.length >= 4 || "Min 4 caracteres",
             email: (v) => /.+@.+\..+/.test(v) || "Formato incorrecto",
         },
     }),
@@ -127,7 +141,7 @@ export default {
     background-color: whitesmoke;
     align-items: center;
 }
-.container-logo{
+.container-logo {
     display: flex;
     width: 100%;
     justify-content: center;

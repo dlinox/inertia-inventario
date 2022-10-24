@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AreaPersonaController;
 use App\Http\Controllers\AreasController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LoginController;
@@ -11,7 +12,9 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuarioController;
+use App\Mail\PruebaMail;
 use App\Models\AreaPersona;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +27,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/offline', function () {    
+
+
+Route::get('/offline', function () {
     return view('vendor/laravelpwa/offline');
 });
 
@@ -33,7 +38,19 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+Route::post('/sent-email', [AuthController::class, 'sentEmailResetPassword'])
+->name('sent-email');
 
+
+Route::get('/change-password/', [AuthController::class, 'viewChangePassword'])
+->name('change-password');
+
+Route::post('/update-password/', [AuthController::class, 'saveNewPassword'])
+->name('update-password');
+
+
+Route::get('/reset-password', [AuthController::class, 'viewResetPasword'])
+->name('reset-password');
 
 Route::get('/login', [LoginController::class, 'index'])
     ->name('index');
@@ -74,7 +91,6 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
         Route::get('/getPersonasInv', 'getPersonasInv')->name('getPersonasInv');
         Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
-
     });
 
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
