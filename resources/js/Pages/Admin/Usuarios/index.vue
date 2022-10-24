@@ -357,13 +357,14 @@ export default {
         SelectMenu(op, user) {
             if (op == "Asignar Area") {
                 this.asignarArea(user);
-            } else if ("Editar") {
+            } else if (op == "Editar") {
+                console.log();
                 this.getFormularioUsuario(user.id);
             }
         },
 
         async getFormularioUsuario(id = "") {
-            Inertia.get("/admin/usuarios/formulario/");
+            Inertia.get("/admin/usuarios/formulario/"+ id );
             //let res = await axios.get("/admin/usuarios/get-formulario/" + id);
 
             //console.log(res.data);

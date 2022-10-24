@@ -39,7 +39,7 @@
         }
     </style>
     <script src="{{ mix('/js/app.js') }}" defer></script>
-
+    @laravelPWA
 </head>
 
 <body>
