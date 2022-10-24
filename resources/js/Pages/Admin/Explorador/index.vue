@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <div class="mt-0 pl-4 p-4"  style="margin: 0px; background-color: white; " >
+        <div class="mt-0 pl-4 p-4"  style="margin: 0px; min-height: 530px; background-color: white; " >
             <v-card-title>
                 <div style="width:100%;">
                     <h5>
@@ -19,11 +19,11 @@
                            >
                         </v-text-field>
                     </div>
-
                 </div>
             </v-card-title>
             <div
                max-width="900"
+
             >
             <v-data-table
                 :headers="headersdocuments"
@@ -32,24 +32,14 @@
                 hide-default-footer
                 dense
                 >
-            <template v-slot:item.dni_persona="{ item }">
-                <div class="flex">
-                    {{ buscabyID(item.id_persona) }}
-                </div>
-            </template>
-            <template v-slot:item.id_area="{ item }">
-                 <div class="flex">
-                    {{ buscaAreabyID(item.id_area) }}
-                </div>
-            </template>
             <template v-slot:item.acciones="{ item }" >
                 <div style="width: 90px;">
                  <div class="flex" style="width:85px;">
                     <v-btn  class="ml-0 p-0" style="width: 25px; height:25px;;" icon dark color="indigo" @click="desbloquear(item)" >
                         <v-icon color="primary" v-if="item.estado === 0" size="1.1rem">mdi-lock</v-icon>
-                        <v-icon v-else color="secondary" size="1.1rem">mdi-lock-open</v-icon>
+                        <v-icon v-else color="grey" size="1.1rem">mdi-lock-open</v-icon>
                     </v-btn>
-                    <v-btn class="ml-0" style="width: 25px; height:25px;;" icon dark color="indigo" @click="verDocumento(item)" >
+                    <v-btn class="ml-0" style="width: 25px; height:25px;;" icon dark color="primary" @click="verDocumento(item)" >
                         <v-icon size="1.1rem">mdi-eye</v-icon>
                     </v-btn>
                     <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="eliminarDocumento(item)">
@@ -81,56 +71,19 @@ export default {
         headersdocuments: [
           { text: ' ', align: 'right', value:'acciones', maxWidth:'50px'  },
           { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', },
-          { text: 'Responsable', align: 'start', filterable: true, value: 'dni_persona', },
-          { text: 'Area', align: 'start', filterable: true, value: 'id_area', },
+          { text: 'Responsable', align: 'start', filterable: true, value: 'dni', },
+          { text: 'Area', align: 'start', filterable: true, value: 'nombre', },
         ],
       }
     },
     created() {
-        this.getPersonas()
         this.getDocuments()
-        this.getAreas()
     },
     methods: {
-        async getPersonas() {
-            let res = await axios.get("/admin/personas/getPersonasInv");
-            console.log(res.data);
-            this.personas = res.data.datos;
-            return res.data.datos.data;
-        },
-
-        async getAreas(){
-            let res = await axios.get("/admin/areas/getAreas");
-            this.areas = res.data.datos;
-            return res.data.datos.data;
-        },
-
         async getDocuments() {
             let res = await axios.get("/admin/reportes/getDocuments");
             this.documentos = res.data.datos;
             return res.data.datos.data;
-        },
-        buscabyID(id){
-            for(let i in this.personas){
-                if (this.personas[i].id === id ){
-                    return this.personas[i].dni
-                }
-            }
-        },
-        buscabyID(id){
-            for(let i in this.personas){
-                if (this.personas[i].id === id ){
-                    return this.personas[i].dni
-                }
-
-            }
-        },
-        buscaAreabyID(id){
-            for(let i in this.areas){
-                if (this.areas[i].id === id ){
-                    return this.areas[i].nombre
-                }
-            }
         },
         verDocumento(item){
             window.open(item.url, '_blank');

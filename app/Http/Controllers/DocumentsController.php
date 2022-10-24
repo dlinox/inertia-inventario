@@ -40,19 +40,19 @@ class DocumentsController extends Controller {
     {
         $ldate = date('Y-m-d');
 
-            $document = AreaPersona::create([
-                'codigo' => $request->codigo,
-                'id_area' => $request->id_area,
-                'id_persona' => $request->id_persona,
-                'url' => $request->url,
-                'tipo'=> 1,
-                'estado' => 0,
-                'fecha' => $ldate,
-            ]);
-            $this->response['mensaje'] = 'Documento creado con exito';
-            $this->bloquearBienes( $request->id_area, $request->id_persona);
-            $this->response['estado'] = true;
-            $this->response['datos'] = $document;
+        $document = AreaPersona::create([
+            'codigo' => $request->codigo,
+            'id_area' => $request->id_area,
+            'id_persona' => $request->id_persona,
+            'url' => $request->url,
+            'tipo'=> 1,
+            'estado' => 0,
+            'fecha' => $ldate,
+        ]);
+        $this->response['mensaje'] = 'Documento creado con exito';
+        $this->bloquearBienes( $request->id_area, $request->id_persona);
+        $this->response['estado'] = true;
+        $this->response['datos'] = $document;
 
         return response()->json($this->response, 200);
     }

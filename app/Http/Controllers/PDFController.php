@@ -37,10 +37,6 @@ class PDFController extends Controller
         return response()->json($this->response, 200);
     }
 
-    public function getPath(){
-        return base_path().'/';
-    }
-
     public function desbloquear(Request $request,  $id) {
         $res = AreaPersona::find($id);
         $res->estado = 1;
@@ -63,29 +59,48 @@ class PDFController extends Controller
         $pdf = PDF::loadView('Bienes', compact('bienes','oficina','area','responsable','ldate','lhour'));
 //        $pdf->output(['/public','F']);
         $pdf->setPaper('a4','landscape');
-        $nro = Documento::max('id')+1;
+        if (AreaPersona::max('id') > 0 ){
+            $nro = AreaPersona::max('id')+1;
+        }else {
+            $nro = 1;
+        }
+
         if ($nro < 10) {
             $codigo = 'CBI-'.date('d').date('m').date('Y').'-000000'.$nro;
-        }else{
+        }
+        if ($nro > 9 && $nro < 100) {
             $codigo = 'CBI-'.date('d').date('m').date('Y').'-00000'.$nro;
         }
+        if ($nro > 99 && $nro < 1000) {
+            $codigo = 'CBI-'.date('d').date('m').date('Y').'-0000'.$nro;
+        }
+        if ($nro > 999 && $nro < 10000) {
+            $codigo = 'CBI-'.date('d').date('m').date('Y').'-000'.$nro;
+        }
+        if ($nro > 9999 && $nro < 100000) {
+            $codigo = 'CBI-'.date('d').date('m').date('Y').'-00'.$nro;
+        }
+        if ($nro > 99999 && $nro < 1000000) {
+            $codigo = 'CBI-'.date('d').date('m').date('Y').'-0'.$nro;
+        }
+
         $output = $pdf->output();
         file_put_contents(public_path().'/documents/cargos/'.$codigo.'.pdf', $output);
 
         $doc['codigo'] = $codigo;
+        $doc['id_area'] = $idArea;
+        $doc['id_persona'] = $idP;
         $doc['url'] = '/documents/cargos/'.$codigo.'.pdf';
         $doc['tipo'] = 1;
-        $doc['dni_responsable'] = $responsable[0]->dni;
-        $doc['id_area'] = $idArea;
-        $doc['id_oficina'] = $oficina[0]->id;
+        $doc['estado'] = 0;
+        $doc['fecha'] = $ldate;
         $doc['id_usuario'] = Auth::id();
-        Documento::create($doc);
+        AreaPersona::create($doc);
 
         $this->response['mensaje'] = 'PDF';
         $this->response['estado'] = true;
         $this->response['datos'] = $doc;
         return response()->json($this->response, 200);
     }
-
 
 }

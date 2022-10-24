@@ -1,6 +1,6 @@
 <template>
 <v-container style="background:white">
-  <div class="" style="background:white">
+  <div class="" style="background:white;">
     <div class="text-center">
       <v-snackbar
         v-model="snackbar"
@@ -154,22 +154,55 @@
             </v-autocomplete>
 
         </v-col>
-        <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
-                <div class="ml-2">
-                    <v-btn height="38" small class="btn" dark color="primary" @click="generarPDF">Previsualizar</v-btn>
-                </div>
-                <div class=" ml-2" small>
-                    <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
-                </div>
-        </v-col>
-
     </v-row>
-    <div v-if="areE !== null && perE !== null"  style="overflow-x:scroll; overflow-y:hidden; width:100%; height:460px;">
-        <div class="by-preview" style="transform:scale(1); ">
-            <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;"  frameBorder="0"> </iframe>
+    <div style="overflow-x:scroll; overflow-y:hidden; width:100%; margin-top:30px; height:460px;">
+        <div  v-if="areE !== null && perE !== null"  class="by-preview" style="transform:scale(1);">
+            <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;"> </iframe>
         </div>
     </div>
-    </div>
+    <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
+        <div class="ml-2">
+            <v-btn height="38" small class="btn" dark color="primary" @click="dialog = true">Guardar PDF</v-btn>
+        </div>
+        <!-- <div class=" ml-2" small>
+            <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
+        </div> -->
+    </v-col>
+
+    <v-row justify="center">
+        <v-dialog
+        v-model="dialog"
+        persistent
+        max-width="290"
+            >
+            <v-card>
+            <v-card-title class="text-h5">
+            Precaución..!!
+            </v-card-title>
+            <v-card-text>Se bloquearan todos los bienes de este documento</v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="green darken-1"
+                text
+                @click="dialog = false"
+            >
+                Cancelar
+            </v-btn>
+            <v-btn
+                color="green darken-1"
+                text
+                @click="generarPDF"
+            >
+                Continuar
+            </v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
+    </v-row>
+</div>
+
+
   </v-container>
 </template>
 <script>
@@ -181,6 +214,7 @@ export default {
     data () {
       return {
         url:'',
+        dialog: false,
         preview:'',
         searchdocuments:"",
         areas: [],
@@ -320,6 +354,7 @@ export default {
             }
         },
         generarPDF(){
+            this.dialog = false;
             let res = axios.get("/admin/pdfBienes/"+this.perE+"/"+this.areE)
             .then(response => {
                  console.log(response);
@@ -327,6 +362,9 @@ export default {
 //                 this.url = this.PDF.url+"#toolbar=0";
                  this.url = this.PDF.url;
              });
+
+            this.text = "Documento Guardado"
+            this.snackbar = true
         },
 
         async Guardar() {

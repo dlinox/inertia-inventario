@@ -1,5 +1,5 @@
 <template>
-<div style="padding: 0px 30px; margin-left:-60px; transform:scale(0.9); position:relative; width:1188px; height: 842px;   font-family: 'Ubuntu', sans-serif;" >
+<div style="padding: 0px 30px; margin-left:-60px; transform:scale(0.9); position:relative; width:1188px;  font-family: 'Ubuntu', sans-serif;" >
     <!-- <pre>{{ datos }}</pre> -->
     <div style="position: relative;
         top: 0;
@@ -93,7 +93,7 @@
             <th>Observaciones</th>
         </tr>
         </thead>
-        <tbody>  
+        <tbody>
         <tr v-for="(bien,index) in datos.bienes" :key="bien.id">
             <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{index+1}}</span></td>
             <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.codigo}}</span></td>
