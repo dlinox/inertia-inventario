@@ -35,18 +35,18 @@ class PDFController extends Controller
         $res->save();
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
+    }
 
+    public function getPath(){
+        return base_path().'/';
     }
 
     public function desbloquear(Request $request,  $id) {
-
         $res = AreaPersona::find($id);
         $res->estado = 1;
         $res->save();
-
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
-
     }
 
     public function PDFBienes($idP,$idArea){
@@ -69,7 +69,6 @@ class PDFController extends Controller
         }else{
             $codigo = 'CBI-'.date('d').date('m').date('Y').'-00000'.$nro;
         }
-
         $output = $pdf->output();
         file_put_contents(public_path().'/documents/cargos/'.$codigo.'.pdf', $output);
 

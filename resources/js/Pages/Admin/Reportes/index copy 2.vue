@@ -189,11 +189,10 @@
 
     <v-row  class="pl-4 pr-4 " style="background:whitex; height:460px; display: none;"  >
         <div v-if="PDF !== null">
-            <iframe :src="PDF.url" style="width:100%; height:460px;" frameborder="0" ></iframe>
+            <!-- <pdf :src="PDF.url" style="width:100%; height:460px;" frameborder="0" ></pdf> -->
+            <vue-pdf-app :pdf="PDF.ur"></vue-pdf-app>
         </div>
     </v-row>
-
-
 
     <v-dialog
       v-model="dialog"
@@ -268,7 +267,12 @@
 <script>
 import Layout from "@/Layouts/AdminLayout";
 import axios from 'axios';
+import pdf from 'vue-pdf'
+import VuePdfApp from "vue-pdf-app";
+import "vue-pdf-app/dist/icons/main.css";
+
 export default {
+    components: { pdf },
     metaInfo: { title: "Personas" },
     layout: Layout,
     data () {

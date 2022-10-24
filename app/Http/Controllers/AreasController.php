@@ -14,21 +14,6 @@ class AreasController extends Controller
     public function getAreasP($term){
 
         $res = DB::select("SELECT * FROM AREA WHERE id IN (SELECT id_area FROM inventario)  ");
-//        AND nombre LIKE '%".$term."%' OR codigo LIKE '%".$term."%'");
-
-        // $res = Area::where('nombre', 'LIKE', '%' . $term . '%')
-        //     ->orWhere('codigo', 'LIKE', '%' . $term . '%')
-        //     ->get();
-        //     $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM inventario);');
-
-        // $res = Area::where('nombre', 'LIKE', '%' . $term . '%')
-        //      ->orWhere('codigo', 'LIKE', '%' . $term . '%')
-        //      ->Where('id', Inventario::select('id_area')->get())
-        //      ->get();
-
-
-//        $res = DB::select("SELECT * FROM AREA WHERE id IN (SELECT id_area FROM inventario) AND nombre LIKE '%".$term."%' OR codigo LIKE '%".$term."%'");
-
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         $this->response['mensaje'] = $term;

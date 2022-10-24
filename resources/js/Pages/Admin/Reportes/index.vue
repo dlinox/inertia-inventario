@@ -164,13 +164,11 @@
         </v-col>
 
     </v-row>
-    <div class="mt-2" style="background:white; height: 700px;">
-
-            <div v-if="PDF !== null">
-                <iframe :src="url"  style="width:100%;" :height="500" frameBorder="0" ></iframe>
-            </div>
+    <div v-if="areE !== null && perE !== null"  style="overflow-x:scroll; overflow-y:hidden; width:100%; height:460px;">
+        <div class="by-preview" style="transform:scale(1); ">
+            <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;"  frameBorder="0"> </iframe>
+        </div>
     </div>
-
     </div>
   </v-container>
 </template>
@@ -182,15 +180,8 @@ export default {
     layout: Layout,
     data () {
       return {
-        dialog: false,
-        headersdocuments: [
-          { text: '-', align: 'center', value:'acciones' },
-          { text: 'Codigo', align: 'center', filterable: true, value: 'codigo', },
-          { text: 'Estado', align:'center', value:'estado'},
-          { text: 'Responsable', align: 'start', filterable: true, value: 'dni_responsable', },
-          { text: 'Area', align: 'start', filterable: true, value: 'id_area', },
-        ],
         url:'',
+        preview:'',
         searchdocuments:"",
         areas: [],
         oficinas: [],
@@ -200,8 +191,6 @@ export default {
         areE:null,
         perE:null,
         ofiE:null,
-        documentoElegido: null,
-        areas2:[],
         snackbar: false,
         text: '',
         PDF:null,
@@ -215,7 +204,6 @@ export default {
     created() {
         this.getAreas()
         this.getPersonas()
-        this.getDocuments()
         this.getOficinas()
     },
 
@@ -223,9 +211,11 @@ export default {
         areE: function(){
             this.getPersonas();
             this.buscabyOficinaID(this.areEO)
+            this.preview =  '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
         },
         perE: function(){
             this.getAreas();
+            this.preview =  '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
         },
         ofiE: function(){
             this.getAreas();
@@ -304,12 +294,6 @@ export default {
                 return res.data.datos.data;
             }
         },
-
-        async getDocuments() {
-            let res = await axios.get("/admin/reportes/getDocuments");
-            this.documentos = res.data.datos;
-            return res.data.datos.data;
-        },
         buscabyID(id){
             for(let i in this.personas){
                 if (this.personas[i].id === id ){
@@ -345,29 +329,6 @@ export default {
              });
         },
 
-
-        verDocumento(item){
-            window.open(item.url, '_blank');
-        },
-
-        async eliminarDocumento(item){
-            await axios.delete(`/admin/documentos/eliminar/${item.id}`)
-             .then(response => {
-                 console.log(response);
-             });
-             this.text = "Documento eliminado"
-             this.snackbar = true
-             this.getDocuments()
-        },
-
-        async desbloquear( item ){
-            await axios.get(`/admin/documentos/desbloquearBienes/${item.id}`);
-            this.getDocuments()
-            this.text = "Bienes Desbloquedos"
-            this.snackbar = true
-            return res.data.datos;
-        },
-
         async Guardar() {
             this.PDF['id_persona'] = this.perE;
             let res = await axios.post(
@@ -385,8 +346,23 @@ export default {
   }
 </script>
 <style scoped>
+.by-preview{
+    width:100%;
+    height:100%;
+    min-width:1070px;
+}
 iframe{
 border:none;
+width: 100% !important;
+  height: 100% !important;
+  scale:(0.7);
+}
+.padre{
+   overflow-x: visible;
+   white-space: nowrap;
+  }
+.hijo{
+    transform: scale(0.6)
 }
 @media (max-width: 600px) {
   .botones {
