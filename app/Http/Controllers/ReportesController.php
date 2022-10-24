@@ -11,7 +11,8 @@ class ReportesController extends Controller
 {
     public function getDocuments(){
         //$res = AreaPersona::select()->orderBy('id', 'DESC')->get();
-        $res = DB::select('SELECT area_persona.*, area_persona.fecha, area.nombre, persona.dni FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id);');
+        $res = DB::select('SELECT area_persona.*, area_persona.fecha, area.nombre, persona.dni FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id) ORDER BY area_persona.id desc;
+        ');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
