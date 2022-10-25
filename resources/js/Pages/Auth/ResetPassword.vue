@@ -2,29 +2,16 @@
     <v-app>
         <v-main class="main-login">
             <div class="container-logo">
-                <img
-                    width="200"
-                    class="mx-auto"
-                    src="/images/logomin.png"
-                    alt=""
-                />
+                <img width="200" class="mx-auto " src="/images/logomin.png" alt="">
             </div>
             <v-card class="mx-auto elevation-10" max-width="400">
-                <v-img
-                    gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,6)"
-                    class="white--text align-end"
-                    height="150px"
-                    src="/images/unap.jpg"
-                >
-                    <v-card-title>Sistema de inventario</v-card-title>
-                    <v-card-subtitle class="">
-                        <strong> INGRESAR AL SISTEMA</strong>
-                    </v-card-subtitle>
-                </v-img>
+            
 
-                <v-card-subtitle class="pb-0">
-                    Ingrese sus datos de acceso
+                <v-card-subtitle class="pb-2">
+                    Restablecer la contraseña
                 </v-card-subtitle>
+
+                <v-divider></v-divider>
 
                 <v-alert
                     v-if="show_mensaje"
@@ -37,7 +24,7 @@
                 </v-alert>
 
                 <v-form
-                    class="px-5 pb-5"
+                    class="px-5 py-4"
                     ref="form"
                     v-model="valid"
                     lazy-validation
@@ -47,35 +34,21 @@
                         :rules="[rules.required, rules.email]"
                         label="Correo Electronico"
                         required
+                        dense
+                        outlined
                     ></v-text-field>
 
-                    <v-text-field
-                        v-model="password"
-                        :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
-                        :rules="[rules.required, rules.min]"
-                        :type="show_password ? 'text' : 'password'"
-                        name="input-10-1"
-                        label="Contraseña"
-                        counter
-                        @click:append="show_password = !show_password"
-                    ></v-text-field>
-
+        
                     <v-btn
                         :disabled="!valid"
                         color="primary"
-                        class="mt-4"
+                        class="mt-1"
                         block
                         :loading="loading_btn"
                         @click="IngresarSistema"
                     >
-                        INGRESARss
+                        Enviar Correo
                     </v-btn>
-
-                    <div class="d-flex text-center mt-2">
-                        <Link href="/reset-password">
-                            <small>Olvidaste tu contraseña?</small>
-                        </Link>
-                    </div>
                 </v-form>
             </v-card>
         </v-main>
@@ -83,17 +56,12 @@
 </template>
 
 <script>
-import { Link } from "@inertiajs/inertia-vue";
 export default {
-    components: {
-        Link,
-    },
     metaInfo: { title: "Login" },
     data: () => ({
         loading_btn: false,
         show_password: false,
-        email: "dpumaticona@gmail.com",
-        password: "demo",
+        email: "",
         valid: true,
 
         show_mensaje: false,
@@ -101,7 +69,7 @@ export default {
         mensaje: "",
         rules: {
             required: (value) => !!value || "Requerido.",
-            min: (v) => v.length >= 4 || "Min 4 caracteres",
+            min: (v) => v.length >= 4 || "Min 6 caracteres",
             email: (v) => /.+@.+\..+/.test(v) || "Formato incorrecto",
         },
     }),
@@ -114,7 +82,7 @@ export default {
             if (this.validate()) {
                 try {
                     this.loading_btn = true;
-                    let res = await axios.post("/login", {
+                    let res = await axios.post("/sent-email", {
                         email: this.email,
                         password: this.password,
                     });
@@ -122,8 +90,7 @@ export default {
                     this.mensaje = res.data.mensaje;
                     this.loading_btn = false;
 
-                    console.log(res);
-                    this.$inertia.get("/");
+
                 } catch (error) {
                     this.type_mensaje = "error";
                     this.mensaje = error.response.data.error;
@@ -141,7 +108,7 @@ export default {
     background-color: whitesmoke;
     align-items: center;
 }
-.container-logo {
+.container-logo{
     display: flex;
     width: 100%;
     justify-content: center;

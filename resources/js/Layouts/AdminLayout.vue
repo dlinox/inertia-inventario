@@ -132,6 +132,11 @@ export default {
         },
     },
     methods: {
+        SelectMenu(op){
+            if(op == 'Salir'){
+                this.salir();
+            }
+        },
         salir() {
             this.$inertia.post("/logout");
         },
