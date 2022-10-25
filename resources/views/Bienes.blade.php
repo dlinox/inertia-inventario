@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CARGO</title>
+    <title>CARGO </title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
         *{
@@ -59,8 +59,8 @@
                         Dependencia
                     </div>
                 </td>
-                <td style=" width: 650px;" >
-                    <div style="text-align: left"> <span>: @foreach ($area as $a)<span>{{ $a->nombre }} </span> @endforeach </span> </div>
+                <td width="650px" style=" white-space: nowrap; text-overflow: ellipsis; max-width: 650px;">
+                    <div style="text-align: left; overflow:hidden;">: @foreach ($area as $a){{ $a->nombre }} -  @endforeach  @foreach ($oficina as $o){{ $o->nombre }}  @endforeach  </div>
                 </td>
                 <td align="right">
                     <div style=" width:188px; margin-right:.5cm; ">
@@ -75,7 +75,7 @@
                 </td>
                 <td style=" width: 100%">
                     <div style="text-align: left">
-                            @foreach ($responsable as $re)<span>[{{ $re->dni }}] {{ $re->paterno }} {{ $re->materno }} {{$re->nombres}} </span> @endforeach
+                            @foreach ($responsable as $re)<span>: [{{ $re->dni }}] {{ $re->paterno }} {{ $re->materno }} {{$re->nombres}} </span> @endforeach
                     </div>
                 </td>
                 <td>
@@ -238,9 +238,7 @@
                     <span style="font-size: 9pt;"">Inventariador(es):</span>
                 </div>
                 <div>
-                    <div style="font-size: 9pt;"> - BERTA MAKSELY ILLACUTIPA CALCINA   </div>
-                    <div style="font-size: 9pt;"> - KATIA LUZ PANCA MAMANI</div>
-                    <div style="font-size: 9pt;"> - TANIA MISYUMI LIMA LIMA </div>
+                    @foreach ($inventaristas as $a)<div style="font-size: 9pt;">{{ $a->nombres }} {{ $a->apellidos }} </div> @endforeach
                 </div>
             </div>
             </td>

@@ -1,5 +1,5 @@
 <template>
-<div style="padding: 0px 30px; margin-left:-60px; transform:scale(0.9); position:relative; width:1188px;  font-family: 'Ubuntu', sans-serif;" >
+<div style=" padding: 0px 30px; margin-left:-60px; transform:scale(0.9); position:relative; width:1188px;  font-family: 'Ubuntu', sans-serif;" >
     <!-- <pre>{{ datos }}</pre> -->
     <div style="position: relative;
         top: 0;
@@ -39,7 +39,7 @@
          <div>
          <table style="width:100%;">
             <tr>
-                <td align="right">
+                <td align="left">
                     <div style="width:188px;">
                         Dependencia
                     </div>
@@ -54,12 +54,12 @@
                 </td>
             </tr>
             <tr>
-                <td>
+                <td align="left">
                     <span>[DNI]Apellidos y Nombres</span>
                 </td>
                 <td style=" width: 100%">
                     <div style="text-align: left">
-                            <span>[{{ datos.responsable.dni }}] {{ datos.responsable.paterno }} {{ datos.responsable.materno }} {{ datos.responsable.nombres }} </span>
+                            <span>: [ {{ datos.responsable.dni }} ] {{ datos.responsable.paterno }} {{ datos.responsable.materno }} {{ datos.responsable.nombres }} </span>
                     </div>
                 </td>
                 <td>
@@ -95,23 +95,40 @@
         </thead>
         <tbody>
         <tr v-for="(bien,index) in datos.bienes" :key="bien.id">
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{index+1}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.codigo}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.nombre}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.modelo}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.marca}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.serie}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">NEGRO</span></td>
-            <td style="border: solid 1px black;">
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{index+1}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{index+1}}</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.codigo}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.codigo}}</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.nombre}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt; ">{{bien.nombre}}</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.modelo}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.modelo}}</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.marca}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;  ">{{bien.marca}}</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.serie}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.serie}}</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;"></span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">NEGRO</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">NEGRO</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;">
+                <span v-if="bien.id_estado == 5" style="font-size: 8pt; font-weight: bold; ">N</span>
+                <span v-if="bien.id_estado == 4" style="font-size: 8pt; font-weight: bold;">B</span>
+                <span v-if="bien.id_estado == 3" style="font-size: 8pt; font-weight: bold;" >R</span>
+                <span v-if="bien.id_estado == 2" style="font-size: 8pt; font-weight: bold;">M</span>
+                <span v-if="bien.id_estado == 1" style="font-size: 8pt; font-weight: bold;">Y</span>
+            </td>
+            <td v-else style="border: solid 1px black;">
                 <span v-if="bien.id_estado == 5" style="font-size: 8pt;">N</span>
                 <span v-if="bien.id_estado == 4" style="font-size: 8pt;">B</span>
-                <span v-if="bien.id_estado == 3" style="font-size: 8pt;">R</span>
+                <span v-if="bien.id_estado == 3" style="font-size: 8pt;" >R</span>
                 <span v-if="bien.id_estado == 2" style="font-size: 8pt;">M</span>
                 <span v-if="bien.id_estado == 1" style="font-size: 8pt;">Y</span>
             </td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.numero}}</span></td>
-            <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ bien.observaciones }}</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;">{{bien.numero}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.numero}}</span></td>
+            <td v-if="bien.tipo === 3" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;">{{ bien.observaciones }}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{ bien.observaciones }}</span></td>
         </tr>
 
         </tbody>
