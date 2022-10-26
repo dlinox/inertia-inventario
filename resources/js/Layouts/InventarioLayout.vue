@@ -1,6 +1,6 @@
 <template>
     <v-app class="app-wrapper">
-        <v-app-bar color="white">
+        <v-app-bar  color="white">
            
             <v-spacer />
 
@@ -73,7 +73,7 @@ export default {
     methods: {
         SelectMenu(menu) {
             if (menu == "Perfil") {
-
+                this.$inertia.get("/inventario/perfil");
             } else if (menu == "Configuracion") {
 
             } else if (menu == "Salir") {
