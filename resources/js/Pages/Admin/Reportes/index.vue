@@ -1,5 +1,5 @@
 <template>
-<v-container style="background:white">
+<v-container  style="background:white;">
   <div class="" style="background:white;">
     <div class="text-center">
       <v-snackbar
@@ -21,7 +21,7 @@
       </v-snackbar>
     </div>
 
-    <v-row class="inputs" style="background: white" >
+    <v-row class="inputs" style="background: white">
         <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class=" " >
             <v-autocomplete
                 v-model="ofiE"
@@ -155,6 +155,7 @@
 
         </v-col>
     </v-row>
+    {{ registrado }}
     <div style="overflow-x:scroll; overflow-y:hidden; width:100%; margin-top:30px; height:460px;">
         <div  v-if="areE !== null && perE !== null"  class="by-preview" style="transform:scale(1);">
             <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;"> </iframe>
@@ -162,7 +163,11 @@
     </div>
     <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
         <div class="ml-2">
-            <v-btn height="38" small class="btn" dark color="primary" @click="dialog = true">Guardar PDF</v-btn>
+            <v-btn height="38" small class="btn" dark color="primary" @click="dialogGuardar">Guardar PDF</v-btn>
+        </div>
+
+        <div class="ml-2">
+            <v-btn height="38" small class="btn" dark color="primary" @click="PrintPdf">Print PDF</v-btn>
         </div>
         <!-- <div class=" ml-2" small>
             <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
@@ -179,7 +184,7 @@
             <v-card-title class="text-h5">
             Precaución..!!
             </v-card-title>
-            <v-card-text>Se bloquearan todos los bienes de este documento</v-card-text>
+            <v-card-text>{{ mensaje }}</v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -233,23 +238,28 @@ export default {
         areas_search: "",
         personas_search: "",
         data: [],
+        mensaje:'',
+        registrado:0,
       }
     },
     created() {
         this.getAreas()
         this.getPersonas()
         this.getOficinas()
+        this.getDocumentos()
     },
 
     watch:{
         areE: function(){
             this.getPersonas();
             this.buscabyOficinaID(this.areEO)
+            this.Registrado(this.areE, this.perE)
             this.preview =  '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
         },
         perE: function(){
             this.getAreas();
             this.preview =  '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
+            this.Registrado(this.areE, this.perE)
         },
         ofiE: function(){
             this.getAreas();
@@ -314,6 +324,11 @@ export default {
             }
 
         },
+        async getDocumentos() {
+            let res = await axios.get("/admin/reportes/getDocuments");
+            this.documentos = res.data.datos;
+            return res.data.datos.data;
+        },
         async getPersonas() {
             if (this.areE === null ){
                 let res = await axios.get("/admin/personas/getPersonasInv");
@@ -328,14 +343,7 @@ export default {
                 return res.data.datos.data;
             }
         },
-        buscabyID(id){
-            for(let i in this.personas){
-                if (this.personas[i].id === id ){
-                    return this.personas[i].dni
-                }
 
-            }
-        },
         buscabyOficinaID(id){
             console.log(id)
             for(let i in this.oficinas){
@@ -350,8 +358,23 @@ export default {
                 if (this.areas2[i].id === id ){
                     return this.areas2[i].nombre
                 }
-
             }
+        },
+        Registrado(idA, idP){
+            this.registrado = 0;
+            for(let i in this.documentos){
+                if (this.documentos[i].id_area === idA && this.documentos[i].id_persona === idP ){
+                    this.registrado = 1;
+                }
+            }
+        },
+        dialogGuardar(){
+            this.mensaje = "Se bloquearan todos los bienes de este documento";
+            this.dialog = true;
+        },
+        dialogImprimir(){
+            this.mensaje = "Se bloquearan todos los bienes de este documento";
+            this.dialog = true;
         },
         generarPDF(){
             this.dialog = false;
@@ -373,12 +396,18 @@ export default {
                 "/admin/documentos/guardar",
                 this.PDF
             );
-            console.log(res.data);
-            if (this.is_nuevo) {
-                this.$refs.form_user.reset();
-            }
+
 
         },
+
+        PrintPdf () {
+            var iframe = document.createElement('iframe');
+            iframe.style.display = "none";
+            iframe.src = "http://localhost:8000/documents/cargos/CBI-24102022-0000032.pdf";
+            document.body.appendChild(iframe);
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+        }
 
     },
   }
