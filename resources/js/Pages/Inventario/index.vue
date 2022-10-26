@@ -514,7 +514,6 @@ import AreasAsignadasComponent from "@/Pages/Inventario/Components/AreasAsignada
 import BusquedaAvanzadaComponent from "@/Pages/Inventario/Components/BusquedaAvanzadaComponent.vue";
 import Layout from "@/Layouts/InventarioLayout";
 import axios from "axios";
-import { data } from "browserslist";
 
 export default {
     components: {

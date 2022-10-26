@@ -39,18 +39,18 @@ Route::get('/', function () {
 });
 
 Route::post('/sent-email', [AuthController::class, 'sentEmailResetPassword'])
-->name('sent-email');
+    ->name('sent-email');
 
 
 Route::get('/change-password/', [AuthController::class, 'viewChangePassword'])
-->name('change-password');
+    ->name('change-password');
 
 Route::post('/update-password/', [AuthController::class, 'saveNewPassword'])
-->name('update-password');
+    ->name('update-password');
 
 
 Route::get('/reset-password', [AuthController::class, 'viewResetPasword'])
-->name('reset-password');
+    ->name('reset-password');
 
 Route::get('/login', [LoginController::class, 'index'])
     ->name('index');
@@ -139,6 +139,13 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
+
+    Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
+        ->name('perfil');
+
+    Route::post('/update-password', [InventarioController::class, 'updatePassword'])
+        ->name('update-password');
+
 
     Route::get('/get-inventario/{id}', [InventarioController::class, 'getInventario'])
         ->name('get-inventario');

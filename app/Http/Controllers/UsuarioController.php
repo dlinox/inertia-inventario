@@ -152,8 +152,8 @@ class UsuarioController extends Controller
     {
         $res = User::select(
             'users.*',
-            DB::raw('GROUP_CONCAT(oficina.nombre SEPARATOR ",") as oficinas'),
-            DB::raw('GROUP_CONCAT(oficina.id SEPARATOR ",") as oficinas_ids')
+            DB::raw('GROUP_CONCAT(oficina.nombre SEPARATOR "|#|") as oficinas'),
+            DB::raw('GROUP_CONCAT(oficina.id SEPARATOR "|#|") as oficinas_ids')
         )
             ->leftjoin('grupo', 'grupo.id_usuario', '=', 'users.id')
             ->leftjoin('area', 'area.id', '=', 'grupo.id_area')
@@ -167,8 +167,8 @@ class UsuarioController extends Controller
         }
 
         $oficinas = [];
-        $_oficinas_nombres =   $res->oficinas != "" ?  array_unique(explode(",", $res->oficinas)) : [];
-        $_oficinas_ids =   $res->oficinas_ids != "" ?  array_unique(explode(",", $res->oficinas_ids)) : [];
+        $_oficinas_nombres =   $res->oficinas != "" ?  array_unique(explode("|#|", $res->oficinas)) : [];
+        $_oficinas_ids =   $res->oficinas_ids != "" ?  array_unique(explode("|#|", $res->oficinas_ids)) : [];
 
         foreach ($_oficinas_nombres as $i => $oficina) {
             $aux = [

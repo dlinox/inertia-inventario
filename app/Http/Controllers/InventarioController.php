@@ -8,8 +8,11 @@ use App\Models\Estado;
 use App\Models\Inventario;
 use App\Models\Oficina;
 use App\Models\Persona;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class InventarioController extends Controller
@@ -21,6 +24,55 @@ class InventarioController extends Controller
 
         return Inertia::render('Admin/Inventarios/');
     }
+
+    public function viewPerfilInventario(Request $request)
+    {
+        $current_user = Auth::user();
+
+
+        $res = User::select(
+            'users.*',
+            DB::raw('GROUP_CONCAT(oficina.nombre SEPARATOR "|#|") as oficinas'),
+            DB::raw('GROUP_CONCAT(oficina.id SEPARATOR "|#|") as oficinas_ids')
+        )
+            ->leftjoin('grupo', 'grupo.id_usuario', '=', 'users.id')
+            ->leftjoin('area', 'area.id', '=', 'grupo.id_area')
+            ->leftjoin('oficina', 'area.id_oficina', '=', 'oficina.id')
+            ->where('users.id', $current_user->id)
+            ->groupBy('users.id')
+            ->first();
+
+        if (!$res) {
+            return false;
+        }
+
+        $oficinas = [];
+        $_oficinas_nombres =   $res->oficinas != "" ?  array_unique(explode("|#|", $res->oficinas)) : [];
+        $_oficinas_ids =   $res->oficinas_ids != "" ?  array_unique(explode("|#|", $res->oficinas_ids)) : [];
+
+        foreach ($_oficinas_nombres as $i => $oficina) {
+            $aux = [
+                'id'  => $_oficinas_ids[$i],
+                'nombre' => $oficina
+            ];
+            array_push($oficinas, $aux);
+        }
+
+        $datos =
+            [
+                'id' => $res->id,
+                'nombres' => $res->nombres,
+                'apellidos' => $res->apellidos,
+                'email' => $res->email,
+                'rol' => $res->rol,
+                'rol_name' => $res->getRoleNames()[0],
+                'oficinas' =>  $oficinas
+            ];
+
+
+        return Inertia::render('Inventario/Perfil', ['datos' => $datos]);
+    }
+
     public function getInventarioByCode(Request $request)
     {
         $res = BienK::select('bienk.*', 'area.id_oficina')
@@ -246,5 +298,31 @@ class InventarioController extends Controller
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
+    }
+
+    public function updatePassword(Request $request)
+    {
+
+
+        $validate = $request->validate([
+            'password' => ['required'],
+        ]);
+
+        $current_user = Auth::user();
+
+        if ($validate) {
+
+            $current_user->password = Hash::make($request->password);
+            $current_user->save();
+
+
+            $this->response['mensaje'] = 'Correo Enviado. Revise su bandeja de entrada.';
+            $this->response['estado'] = true;
+            return response()->json($this->response, 200);
+        }
+
+        $this->response['error'] = 'El email no existe.';
+        $this->response['estado'] = false;
+        return response()->json($this->response, 400);
     }
 }
