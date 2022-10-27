@@ -20,7 +20,14 @@
         </template>
       </v-snackbar>
     </div>
-
+    <v-row style="background: white">
+        <v-col md="9" lg="9">
+            <h3>Cargo de bienes </h3>
+        </v-col>
+        <v-col md="3" lg="3" class="right" style="text-align: right;">
+            <div><span>Todos</span> | <span>No registrados</span></div>
+        </v-col>
+    </v-row>
     <v-row class="inputs" style="background: white">
         <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class=" " >
             <v-autocomplete
@@ -40,14 +47,13 @@
                     <v-list-item>
                         <v-list-item-title>
                             <template v-if="oficinas_search?.length > 0">
-                                Datos no encontrados para
+                                <!-- Datos no encontrados para -->
                                 <!-- <strong>
                                     {{ oficinas_search }}
                                 </strong> -->
                             </template>
                             <template v-else>
-                                Digite más de
-                                <strong> 2</strong> caracteres.
+                                No hay registros en el inventario
                             </template>
                         </v-list-item-title>
                     </v-list-item>
@@ -90,8 +96,7 @@
                                 </strong>
                             </template>
                             <template v-else>
-                                Digite más de
-                                <strong> 2</strong> caracteres.
+                                No hay registros
                             </template>
                         </v-list-item-title>
                     </v-list-item>
@@ -107,7 +112,6 @@
                     </v-list-item-content>
                 </template>
             </v-autocomplete>
-
         </v-col>
 
         <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class="p-0" >
@@ -135,8 +139,7 @@
                                 </strong>
                             </template>
                             <template v-else>
-                                Digite más de
-                                <strong> 2</strong> caracteres.
+                                No hay registros en el inventario
                             </template>
                         </v-list-item-title>
                     </v-list-item>
@@ -152,7 +155,6 @@
                     </v-list-item-content>
                 </template>
             </v-autocomplete>
-
         </v-col>
     </v-row>
     {{ registrado }}
@@ -176,27 +178,32 @@
 
     <v-row justify="center">
         <v-dialog
-        v-model="dialog"
-        persistent
-        max-width="290"
+            v-model="dialog"
+            persistent
+            max-width="290"
             >
             <v-card>
-            <v-card-title class="text-h5">
-            Precaución..!!
+            <v-card-title class="text-h6 white--text primary lighten-1">
+                    Precausión!
             </v-card-title>
-            <v-card-text>{{ mensaje }}</v-card-text>
+            <v-card-text>
+                <h4 class="mt-4 m-2" style="text-align:center;" >
+                    {{ mensaje }} <span v-if="docSeleccionado !== null"> <span color="black"> {{docSeleccionado.dni}} </span> de {{ docSeleccionado.nombre }} </span>
+                </h4>
+            </v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-                color="green darken-1"
+                color="danger darken-1"
+                outlined
                 text
                 @click="dialog = false"
             >
                 Cancelar
             </v-btn>
             <v-btn
-                color="green darken-1"
-                text
+                color="primary lighten-1"
+
                 @click="generarPDF"
             >
                 Continuar
@@ -226,6 +233,7 @@ export default {
         oficinas: [],
         personas:[],
         documentos:[],
+        docSeleccionado: null,
         areEO:null,
         areE:null,
         perE:null,
@@ -365,11 +373,12 @@ export default {
             for(let i in this.documentos){
                 if (this.documentos[i].id_area === idA && this.documentos[i].id_persona === idP ){
                     this.registrado = 1;
+                    this.docSeleccionado = this.documentos[i];
                 }
             }
         },
         dialogGuardar(){
-            this.mensaje = "Se bloquearan todos los bienes de este documento";
+            this.mensaje = "Se bloquearan todos los bienes de este documento y los inventariadores no podrán registrar más bienes para";
             this.dialog = true;
         },
         dialogImprimir(){
