@@ -25,7 +25,7 @@
             <h3>Cargo de bienes </h3>
         </v-col>
         <v-col md="3" lg="3" class="right" style="text-align: right;">
-            <div><span>Todos</span> | <span>No registrados</span></div>
+            <div><span @click="opcionTodos" :class="{ selec: opcion === 0 }" style="cursor:pointer" >Todos</span> | <span @click="opcionNoR" :class="{ selec: opcion===1 }" style="cursor:pointer">No registrados</span></div>
         </v-col>
     </v-row>
     <v-row class="inputs" style="background: white">
@@ -125,7 +125,7 @@
                 :items="personas"
                 :filter="customFilterPersona"
                 item-value="id"
-                item-text="nombres"
+                item-text="nombre"
                 :search-input.sync="personas_search"
                 required
             >
@@ -157,20 +157,23 @@
             </v-autocomplete>
         </v-col>
     </v-row>
-    {{ registrado }}
+    <!-- {{ registrado }} -->
     <div style="overflow-x:scroll; overflow-y:hidden; width:100%; margin-top:30px; height:460px;">
         <div  v-if="areE !== null && perE !== null"  class="by-preview" style="transform:scale(1);">
             <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;"> </iframe>
         </div>
     </div>
     <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
-        <div class="ml-2">
-            <v-btn height="38" small class="btn" dark color="primary" @click="dialogGuardar">Guardar PDF</v-btn>
+        <div class="ml-2" v-if="registrado === 0">
+            <v-btn height="38" small class="btn" dark color="primary" @click="dialogGuardar">Imprimir</v-btn>
+        </div>
+        <div class="ml-2" v-if="registrado === 1">
+                <v-btn height="38" small class="btn" color="grey-100" @click="dialogBloq">Imprimir</v-btn>
         </div>
 
-        <div class="ml-2">
+        <!-- <div class="ml-2">
             <v-btn height="38" small class="btn" dark color="primary" @click="PrintPdf">Print PDF</v-btn>
-        </div>
+        </div> -->
         <!-- <div class=" ml-2" small>
             <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
         </div> -->
@@ -180,11 +183,11 @@
         <v-dialog
             v-model="dialog"
             persistent
-            max-width="290"
+            max-width="300"
             >
             <v-card>
             <v-card-title class="text-h6 white--text primary lighten-1">
-                    Precausión!
+                    Advertencia!
             </v-card-title>
             <v-card-text>
                 <h4 class="mt-4 m-2" style="text-align:center;" >
@@ -205,6 +208,42 @@
                 color="primary lighten-1"
 
                 @click="generarPDF"
+            >
+                Continuar
+            </v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
+    </v-row>
+
+    <v-row justify="center">
+        <v-dialog
+            v-model="dialogBloqueado"
+            persistent
+            max-width="300"
+            >
+            <v-card>
+            <v-card-title class="text-h6 white--text primary lighten-1">
+                    Advertencia!
+            </v-card-title>
+            <v-card-text>
+                <h4 class="mt-4 m-2" style="text-align:center;" >
+                    Ya se  generó un documento para <span v-if="docSeleccionado !== null"> <span color="black"> {{docSeleccionado.dni}} </span> de {{ docSeleccionado.nombre }}, si desea continuar debe desbloquear el documento {{docSeleccionado.codigo }} </span>
+                </h4>
+            </v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="danger darken-1"
+                outlined
+                text
+                @click="dialogBloqueado = false"
+            >
+                Cancelar
+            </v-btn>
+            <v-btn
+                color="primary lighten-1"
+                disabled
             >
                 Continuar
             </v-btn>
@@ -248,6 +287,8 @@ export default {
         data: [],
         mensaje:'',
         registrado:0,
+        opcion:1,
+        dialogBloqueado:false,
       }
     },
     created() {
@@ -272,9 +313,52 @@ export default {
         ofiE: function(){
             this.getAreas();
         }
+
     },
 
     methods: {
+        opcionNoR(){
+            this.opcion = 1;
+            if(this.areE === null && this.perE !== null) {
+                 this.areE === null;
+                 this.getAreas();
+            }else {
+                if(this. areE !== null && this.perE === null ) {
+                    this.perE = null;
+                    this.getPersonas();
+                }
+                else {
+                    if(this.areE !== null && this.perE !== null) {
+                        this.perE = null;
+                        this.areE = null;
+                        this.getPersonas();
+                        this.getAreas();
+                    }
+
+                }
+            }
+        },
+        opcionTodos(){
+            this.opcion = 0;
+            if(this.areE === null && this.perE !== null) {
+                this.getAreas();
+                this.areE === null;
+            }else {
+                if(this. areE !== null && this.perE === null ) {
+                    this.perE = null;
+                    this.getPersonas();
+                }
+                else {
+                    if(this.areE !== null && this.perE !== null) {
+                        this.perE = null;
+                        this.areE = null;
+                        this.getPersonas();
+                        this.getAreas();
+                    }
+
+                }
+            }
+        },
         customFilter(item, queryText, itemText) {
             const nombre = item.nombre.toLowerCase();
             const codigo = item.codigo.toLowerCase();
@@ -322,9 +406,18 @@ export default {
                     return res.data.datos.data;
                 }else {
                     if (this.ofiE === null && this.perE !== null ){
-                        let res = await axios.get("/admin/areas/getAreasByPersonaInv/"+this.perE);
-                        this.areas = res.data.datos;
-                        return res.data.datos.data;
+                        if (this.opcion === 0) {
+                            let res = await axios.get("/admin/areas/getAreasByPersonaInv/"+this.perE);
+                            this.areas = res.data.datos;
+                            return res.data.datos.data;
+                        }
+                        else {
+                            if (this.opcion === 1) {
+                                let res = await axios.get("/admin/areas/getAreasByPersonaInvNoR/"+this.perE);
+                                this.areas = res.data.datos;
+                                return res.data.datos.data;
+                            }
+                        }
                     }
 
                 }
@@ -337,6 +430,7 @@ export default {
             this.documentos = res.data.datos;
             return res.data.datos.data;
         },
+
         async getPersonas() {
             if (this.areE === null ){
                 let res = await axios.get("/admin/personas/getPersonasInv");
@@ -345,10 +439,21 @@ export default {
                 return res.data.datos.data;
             }
             else {
-                let res = await axios.get("/admin/personas/getPersonasByAreaInv/"+this.areE);
-                console.log(res.data);
-                this.personas = res.data.datos;
-                return res.data.datos.data;
+                if( this.areE !== null ){
+                    if (this.opcion === 0){
+                        let res = await axios.get("/admin/personas/getPersonasByAreaInv/"+this.areE);
+                        console.log(res.data);
+                        this.personas = res.data.datos;
+                        return res.data.datos.data;
+                    } else {
+                        if (this.opcion === 1) {
+                            let res = await axios.get("/admin/personas/getPersonasByAreaInvNoR/"+this.areE);
+                            console.log(res.data);
+                            this.personas = res.data.datos;
+                            return res.data.datos.data;
+                        }
+                    }
+                }
             }
         },
 
@@ -372,10 +477,15 @@ export default {
             this.registrado = 0;
             for(let i in this.documentos){
                 if (this.documentos[i].id_area === idA && this.documentos[i].id_persona === idP ){
-                    this.registrado = 1;
+                    if(this.documentos[i].estado ===  0 ){
+                        this.registrado = 1;
+                    }
                     this.docSeleccionado = this.documentos[i];
                 }
             }
+        },
+        dialogBloq(){
+            this.dialogBloqueado = true;
         },
         dialogGuardar(){
             this.mensaje = "Se bloquearan todos los bienes de este documento y los inventariadores no podrán registrar más bienes para";
@@ -392,12 +502,16 @@ export default {
                  console.log(response);
                  this.PDF=response.data.datos;
 //                 this.url = this.PDF.url+"#toolbar=0";
-                 this.url = this.PDF.url;
+                   this.PrintPdf(this.PDF.url);
+                   this.url = this.PDF.url;
              });
-
             this.text = "Documento Guardado"
             this.snackbar = true
-        },
+            this.getDocumentos()
+            this.areE = null;
+            this.ofiE = null;
+            this.perE = null;
+            },
 
         async Guardar() {
             this.PDF['id_persona'] = this.perE;
@@ -409,10 +523,10 @@ export default {
 
         },
 
-        PrintPdf () {
+        PrintPdf (URL) {
             var iframe = document.createElement('iframe');
             iframe.style.display = "none";
-            iframe.src = "http://localhost:8000/documents/cargos/CBI-24102022-0000032.pdf";
+            iframe.src = URL;
             document.body.appendChild(iframe);
             iframe.contentWindow.focus();
             iframe.contentWindow.print();
@@ -422,6 +536,10 @@ export default {
   }
 </script>
 <style scoped>
+.selec{
+    color: #0808a7;
+    font-weight: bold;
+}
 .by-preview{
     width:100%;
     height:100%;

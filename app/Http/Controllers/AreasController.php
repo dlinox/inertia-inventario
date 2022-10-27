@@ -59,10 +59,17 @@ class AreasController extends Controller
         return response()->json($this->response, 200);
     }
 
-
     public function getAreasByPersonaInv($id)
     {
         $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM inventario where id_persona = '.$id.');');
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+    public function getAreasByPersonaInvNoR($id)
+    {
+        $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM inventario where id_persona = '.$id.') AND ID NOT IN (SELECT ID_AREA from area_persona WHERE ID_PERSONA = '.$id.' );');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

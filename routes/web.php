@@ -27,8 +27,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 Route::get('/offline', function () {
     return view('vendor/laravelpwa/offline');
 });
@@ -37,20 +35,6 @@ Route::get('/offline', function () {
 Route::get('/', function () {
     return redirect('/login');
 });
-
-Route::post('/sent-email', [AuthController::class, 'sentEmailResetPassword'])
-    ->name('sent-email');
-
-
-Route::get('/change-password/', [AuthController::class, 'viewChangePassword'])
-    ->name('change-password');
-
-Route::post('/update-password/', [AuthController::class, 'saveNewPassword'])
-    ->name('update-password');
-
-
-Route::get('/reset-password', [AuthController::class, 'viewResetPasword'])
-    ->name('reset-password');
 
 Route::get('/login', [LoginController::class, 'index'])
     ->name('index');
@@ -88,9 +72,9 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
         Route::get('/getPersonas', 'getPersonas')->name('getpersonas');
         Route::get('/getPersonasByArea/{id}', 'getPersonasByArea')->name('getPersonasByArea');
-
         Route::get('/getPersonasInv', 'getPersonasInv')->name('getPersonasInv');
         Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
+        Route::get('/getPersonasByAreaInvNoR/{id}', 'getPersonasByAreaInvNoR')->name('getPersonasByAreaInvNoR');
     });
 
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
@@ -103,6 +87,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getAreasByOficinaInv/{id}', 'getAreasByOficinaInv')->name('getAreasByOficinaInv');
         Route::get('/getAreasByPersonaInv/{id}', 'getAreasByPersonaInv')->name('getAreasByPersonaInv');
         Route::get('/getAreasAllInv', 'getAreasAllInv')->name('getAreasAllInv');
+        Route::get('/getAreasByPersonaInvNoR/{id}', 'getAreasByPersonaInvNoR')->name('getAreasByPersonaInvNoR');
         Route::get('/getAreasP/{term}', 'getAreasP')->name('areasP');
     });
 
@@ -116,6 +101,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/generador', 'generador')->name('generador');
         Route::get('/explorador', 'explorador')->name('explorador');
         Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
+        Route::get('/getDocumentsActivos', 'getDocumentsActivos')->name('getDocumentsActivos');
         Route::get('/preview/{idArea}/{idP}', 'preview')->name('preview');
     });
 
@@ -125,7 +111,6 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::post('/guardar', 'saveDocument')->name('guardar');
         Route::get('/desbloquearBienes/{id}', 'desbloquearBienes')->name('desbloquearBienes');
     });
-    Route::get('/base', [PDFController::class, 'getPath'])->name('base')->middleware('auth');
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
     Route::get('/pdfBienes/{idP}/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
     Route::put('/bloquear/{id}', [PDFController::class, 'bloquear'])->name('bloquear')->middleware('auth');
@@ -139,13 +124,6 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
-
-    Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
-        ->name('perfil');
-
-    Route::post('/update-password', [InventarioController::class, 'updatePassword'])
-        ->name('update-password');
-
 
     Route::get('/get-inventario/{id}', [InventarioController::class, 'getInventario'])
         ->name('get-inventario');
