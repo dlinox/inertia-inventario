@@ -33,8 +33,8 @@
                 dense
                 >
             <template v-slot:item.acciones="{ item }" >
-                <div style="width: 90px;">
-                 <div class="flex" style="width:85px;">
+                <div style="width: 120px;">
+                 <div class="flex" style="width:115px;">
                     <v-btn  class="ml-0 p-0" style="width: 25px; height:25px;;" icon dark color="indigo" @click="desbloquear(item)" >
                         <v-icon color="primary" v-if="item.estado === 0" size="1.1rem">mdi-lock</v-icon>
                         <v-icon v-else color="grey" size="1.1rem">mdi-lock-open</v-icon>
@@ -44,6 +44,9 @@
                     </v-btn>
                     <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="eliminarDocumento(item)">
                         <v-icon size="1.1rem">mdi-delete</v-icon>
+                    </v-btn>
+                    <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="descargarExcel(item)">
+                        <v-icon size="1.1rem">mdi-download </v-icon>
                     </v-btn>
                 </div>
                </div>
@@ -89,6 +92,7 @@ export default {
         areas:[],
         documentos:[],
         snackbar:false,
+        timeout: 2000,
         text:'',
         documentoElegido: null,
         searchdocuments:'',
@@ -122,6 +126,14 @@ export default {
              this.snackbar = true
              this.getDocuments()
         },
+        async descargarExcel(item){
+            window.open("/admin/documentos/excel/"+item.id_area+"/"+item.id_persona, '_blank');
+            // await axios.get("/admin/documentos/excel/"+item.id_area+"/"+item.id_persona)
+            //  .then(response => {
+            //      console.log(response);
+            //  });
+        },
+
 
         async desbloquear( item ){
             await axios.get(`/admin/documentos/desbloquearBienes/${item.id}`);

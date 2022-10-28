@@ -1,5 +1,5 @@
 <?php
-
+use App\Exports\UsersExports;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AreaPersonaController;
 use App\Http\Controllers\AreasController;
@@ -110,6 +110,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::delete('/eliminar/{id}', 'destroy')->name('eliminarDocumento');
         Route::post('/guardar', 'saveDocument')->name('guardar');
         Route::get('/desbloquearBienes/{id}', 'desbloquearBienes')->name('desbloquearBienes');
+        Route::get('/excel/{a}/{p}', [UsersExports::class, 'export']);
     });
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
     Route::get('/pdfBienes/{idP}/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
