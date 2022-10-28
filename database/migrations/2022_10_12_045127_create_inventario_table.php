@@ -22,7 +22,7 @@ class CreateInventarioTable extends Migration
             $table->string('numero',60);
             $table->string('marca',60)->default('Generico');
             $table->string('serie',60);
-            $table->string('tipo');
+            $table->string('tipo')-> nullable();
             $table->string('idbienk',60);
             $table->unsignedBigInteger('id_persona');
             $table->integer('idpersona_otro');
