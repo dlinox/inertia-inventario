@@ -401,28 +401,27 @@
 
         <v-dialog v-model="dialog_delete" max-width="320">
             <v-card>
-
                 <div class="pt-4">
-                    <h4 class="text-center">
-                    Seguro de eliminar el registro?
-                </h4>
+                    <h4 class="text-center">Seguro de eliminar el registro?</h4>
                 </div>
-            
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
 
-                    <v-btn color="red darken-1" text @click="dialog_delete = false">
+                    <v-btn
+                        color="red darken-1"
+                        text
+                        @click="dialog_delete = false"
+                    >
                         Cancelar
                     </v-btn>
 
-                    <v-btn color="primary" text @click="dialog_delete = false">
+                    <v-btn color="primary" text @click="EliminarInventario()">
                         Aceptar
                     </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
     </v-container>
 </template>
 
@@ -493,19 +492,39 @@ export default {
             return item.nombres + " " + item.dni;
         },
 
+        async EliminarInventario() {
+            this.loadin_form = true;
+            let res = await axios.post(
+                "/inventario/eliminar-inventario",
+                this.data
+            );
+          
+
+            this.registrado = false;
+            this.activo = null;
+            this.$refs.form.reset();
+            this.loadin_form = false;
+            this.dialog_delete = false;
+        },
         async Guardar() {
             if (this.$refs.form.validate()) {
+                this.loadin_form = true;
                 let res = await axios.post(
                     "/inventario/guardar-inventario",
                     this.data
                 );
                 console.log(res.data);
 
+                this.registrado = false;
+                this.activo = null;
                 this.$refs.form.reset();
+                this.loadin_form = false;
             }
         },
 
         async getInventario(id) {
+            this.loadin_form = true;
+
             let res = await axios.get("/inventario/get-inventario/" + id);
 
             //this.data.id_inventario = id;
@@ -520,6 +539,7 @@ export default {
             await this.LLenarDatos(res.data.datos);
             this.data.id_inventario = id;
             this.is_edit = true;
+            this.loadin_form = false;
         },
         async BuscarPersonas(term) {
             let res = await axios.get("/inventario/search-personas/" + term);

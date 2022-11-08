@@ -186,6 +186,9 @@ export default {
         onSelectColumDobleClik(item) {
             this.$emit("setData", item);
             this.dialog = false;
+
+            this.bienes_result = [];
+            this.area_selected = null;
         },
 
         async getBienes(area, term = "", mostrar = "Todos", page = 1) {
@@ -205,6 +208,8 @@ export default {
         SeleccionarBien() {
             this.$emit("setData", this.tr_item);
             this.dialog = false;
+            this.bienes_result = [];
+            this.area_selected = null;
         },
     },
 

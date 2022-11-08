@@ -325,4 +325,22 @@ class InventarioController extends Controller
         $this->response['estado'] = false;
         return response()->json($this->response, 400);
     }
+
+    public function deleteInventario(Request $request)
+    {
+
+        $res = Inventario::where('codigo', $request->codigo)->first();
+
+        if ($res) {
+
+            $res->delete();
+            $this->response['mensaje'] = 'Exito, Inventario eliminado';
+            $this->response['estado'] = true;
+            return response()->json($this->response, 200);
+        }
+
+        $this->response['mensaje'] = 'Error';
+        $this->response['estado'] = false;
+        return response()->json($this->response, 200);
+    }
 }

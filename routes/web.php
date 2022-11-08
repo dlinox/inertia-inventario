@@ -1,4 +1,5 @@
 <?php
+
 use App\Exports\UsersExports;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AreaPersonaController;
@@ -155,6 +156,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/guardar-inventario', [InventarioController::class, 'saveInventario'])
         ->name('guardar-inventario');
+
+    Route::post('/eliminar-inventario', [InventarioController::class, 'deleteInventario'])
+        ->name('eliminar-inventario');
 });
 
 
