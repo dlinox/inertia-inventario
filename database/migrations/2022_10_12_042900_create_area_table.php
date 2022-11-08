@@ -15,6 +15,7 @@ class CreateAreaTable extends Migration
     {
         Schema::create('area', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('codigo',40);
             $table->string('nombre', 100);
             $table->boolean('estado')->default(1);
             $table->unsignedBigInteger('id_oficina');
