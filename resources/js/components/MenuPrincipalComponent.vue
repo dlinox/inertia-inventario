@@ -92,7 +92,7 @@ export default {
                     {
                         title: "Generador",
                         icon: "mdi-chart-bar",
-                        ruta: "/admin/reportes/"
+                        ruta: "/admin/reportes"
                     },
                     {
                         title: "Explorador",
@@ -109,7 +109,7 @@ export default {
                     {
                         title: "Asignar Persona",
                         icon: "mdi-users",
-                        ruta: "/admin/areas/"
+                        ruta: "/admin/areas"
                     },
                     {
                         title: "Bloquear Area",

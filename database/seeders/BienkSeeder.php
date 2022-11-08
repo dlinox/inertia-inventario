@@ -64,7 +64,7 @@ class BienkSeeder extends Seeder
         DB::table('bienk')->insert([ 'codigo' => 'MU0047', 'codigo_anterior' => 'MU0047','nombre' => 'MUEBLE DE MADERA PARA  COMPUTADORA','modelo' => 'SM','numero' =>47,'serie' => 'SN','id_persona' =>5,'idpersona_otro' =>0,'id_area' => 9,'id_estado' =>2, 'observaciones' => 'SIN OBSERVACIONES']);
         DB::table('bienk')->insert([ 'codigo' => 'SI0048', 'codigo_anterior' => 'SI0048','nombre' => 'SILLA DE MADERA','modelo' => 'SM','numero' =>48,'serie' => 'SN','id_persona' =>5,'idpersona_otro' =>0,'id_area' => 9,'id_estado' =>2, 'observaciones' => 'SIN OBSERVACIONES']);
         DB::table('bienk')->insert([ 'codigo' => 'SI0049', 'codigo_anterior' => 'SI0049','nombre' => 'SILLA DE MADERA','modelo' => 'SM','numero' =>49,'serie' => 'SN','id_persona' =>5,'idpersona_otro' =>0,'id_area' => 9,'id_estado' =>3, 'observaciones' => 'SIN OBSERVACIONES']);
-        DB::table('bienk')->insert([ 'codigo' => 'SI0049', 'codigo_anterior' => 'SI0049','nombre' => 'SILLA DE MADERA','modelo' => 'SM','numero' =>50,'serie' => 'SN','id_persona' =>5,'idpersona_otro' =>0,'id_area' => 9,'id_estado' =>3, 'observaciones' => 'SIN OBSERVACIONES']);
+        DB::table('bienk')->insert([ 'codigo' => 'SI0050', 'codigo_anterior' => 'SI0050','nombre' => 'SILLA DE MADERA','modelo' => 'SM','numero' =>50,'serie' => 'SN','id_persona' =>5,'idpersona_otro' =>0,'id_area' => 9,'id_estado' =>3, 'observaciones' => 'SIN OBSERVACIONES']);
         DB::table('bienk')->insert([ 'codigo' => 'ME0051', 'codigo_anterior' => 'ME0051','nombre' => 'MESA DE MADERA','modelo' => 'SM','numero' =>51,'serie' => 'SN','id_persona' =>3,'idpersona_otro' =>0,'id_area' => 10,'id_estado' =>3, 'observaciones' => 'SIN OBSERVACIONES']);
         DB::table('bienk')->insert([ 'codigo' => 'SI0052', 'codigo_anterior' => 'SI0052','nombre' => 'SILLA DE MADERA','modelo' => 'SM','numero' =>52,'serie' => 'SN','id_persona' =>3,'idpersona_otro' =>0,'id_area' => 10,'id_estado' =>2, 'observaciones' => 'SIN OBSERVACIONES']);
         DB::table('bienk')->insert([ 'codigo' => 'CO0053', 'codigo_anterior' => 'CO0053','nombre' => 'COMPUTADORA LENOVO','modelo' => 'LN2121','numero' =>53,'serie' => 'L0005','id_persona' =>3,'idpersona_otro' =>0,'id_area' => 10,'id_estado' =>3, 'observaciones' => 'SIN OBSERVACIONES']);
@@ -104,13 +104,6 @@ class BienkSeeder extends Seeder
         DB::table('bienk')->insert([ 'codigo' => 'ET0087', 'codigo_anterior' => 'ET0087','nombre' => 'ESTANTE DE MADERA','modelo' => 'SM','numero' =>87,'serie' => 'SN','id_persona' =>8,'idpersona_otro' =>0,'id_area' => 19,'id_estado' =>1, 'observaciones' => 'SIN OBSERVACIONES']);
         DB::table('bienk')->insert([ 'codigo' => 'PA0088', 'codigo_anterior' => 'PA0088','nombre' => 'PAPELERA DE METAL','modelo' => 'SM','numero' =>88,'serie' => 'SN','id_persona' =>8,'idpersona_otro' =>0,'id_area' => 19,'id_estado' =>1, 'observaciones' => 'SIN OBSERVACIONES']);
         DB::table('bienk')->insert([ 'codigo' => 'SI0089', 'codigo_anterior' => 'SI0089','nombre' => 'SILLA DE MADERA','modelo' => 'SM','numero' =>89,'serie' => 'SN','id_persona' =>8,'idpersona_otro' =>0,'id_area' => 19,'id_estado' =>1, 'observaciones' => 'SIN OBSERVACIONES']);
-
-
-
-
-
-
-
 
     }
 }

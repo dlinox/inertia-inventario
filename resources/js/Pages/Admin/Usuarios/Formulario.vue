@@ -250,21 +250,6 @@
                                                             </v-list-item-subtitle>
                                                         </v-list-item-content>
 
-                                                        <v-list-item-action>
-                                                            <v-btn
-                                                                icon
-                                                                @click="
-                                                                    info_area.dialog =
-                                                                        !info_area.dialog
-                                                                "
-                                                            >
-                                                                <v-icon
-                                                                    color="grey lighten-1"
-                                                                >
-                                                                    mdi-dots-horizontal-circle
-                                                                </v-icon>
-                                                            </v-btn>
-                                                        </v-list-item-action>
                                                     </v-list-item>
                                                 </v-list>
                                             </template>

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog scrollable persistent v-model="dialog" width="800">
+    <v-dialog v-model="dialog" fullscreen scrollable>
         <template v-slot:activator="{ on, attrs }">
             <v-btn
                 class="mx-sm-2 order-sm-3"
@@ -13,20 +13,15 @@
         </template>
 
         <v-card>
-            <v-card-title class="white--text text-h6 grey darken-1">
-                Busqueda Avanzada
-                <v-spacer />
-                <v-btn
-                    class="mr-auto"
-                    icon
-                    color="white"
-                    @click="dialog = false"
-                >
-                    <v-icon>mdi-close-circle</v-icon>
-                </v-btn>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text class="mt-4" style="height: 80vh">
+            <v-toolbar>
+                <v-app-bar-nav-icon @click="dialog = false">
+                    <v-icon>mdi-arrow-left</v-icon>
+                </v-app-bar-nav-icon>
+
+                <v-toolbar-title>Busqueda Avanzada</v-toolbar-title>
+            </v-toolbar>
+
+            <v-card-text class="mt-4" style="height: 90vh">
                 <v-row class="mt-3">
                     <v-col cols="12" class="pb-1 pt-0">
                         <v-autocomplete
@@ -161,8 +156,8 @@
                                         </template>
                                         <template
                                             v-else-if="
-                                                (item.id_inventario &&
-                                                item.bloqueado)
+                                                item.id_inventario &&
+                                                item.bloqueado
                                             "
                                         >
                                             <v-chip
@@ -377,4 +372,5 @@ export default {
     color: blue;
     font-weight: 600;
 }
+
 </style>

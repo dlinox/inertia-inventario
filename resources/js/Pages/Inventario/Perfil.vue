@@ -120,19 +120,7 @@
                                         </v-list-item-subtitle>
                                     </v-list-item-content>
 
-                                    <v-list-item-action>
-                                        <v-btn
-                                            icon
-                                            @click="
-                                                info_area.dialog =
-                                                    !info_area.dialog
-                                            "
-                                        >
-                                            <v-icon color="grey lighten-1">
-                                                mdi-dots-horizontal-circle
-                                            </v-icon>
-                                        </v-btn>
-                                    </v-list-item-action>
+                                   
                                 </v-list-item>
                             </v-list>
                         </template>
@@ -186,6 +174,16 @@
                         @click="ChangePassword()"
                     >
                         Guardar Contraseña
+                    </v-btn>
+
+                    <v-btn
+                        color="red"
+                        class="mt-3"
+                        block
+                        text
+                        @click="dialog_change_pass = !dialog_change_pass"
+                    >
+                        Cancelar
                     </v-btn>
                 </v-form>
             </v-card>
@@ -244,14 +242,12 @@ export default {
                     let res = await axios.post("/inventario/update-password", {
                         password: this.password,
                     });
-                 
+
                     this.dialog_change_pass = false;
                     this.loading_btn = false;
                 } catch (error) {
-
                     this.mensaje = error.response.data.error;
                     this.loading_btn = false;
-
                 }
             }
         },

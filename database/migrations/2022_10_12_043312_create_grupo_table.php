@@ -17,9 +17,9 @@ class CreateGrupoTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_usuario');
-            $table->timestamps();
             $table->foreign('id_usuario')->references('id')->on('users');
             $table->foreign('id_area')->references('id')->on('area');
+            $table->timestamps();
         });
     }
 

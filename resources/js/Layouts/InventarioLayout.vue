@@ -44,7 +44,7 @@
             <slot />
         </v-main>
 
-        <ReLogin :user="user"  :dialog="dialog_relogin"  @dialog="dialog_relogin = $event" />
+        <!-- <ReLogin :user="user"  :dialog="dialog_relogin"  @dialog="dialog_relogin = $event" />-->
     </v-app>
 </template>
 
@@ -57,7 +57,6 @@ export default {
 
         items: [
             { text: "Perfil", icon: "mdi-account" },
-            { text: "Configuracion", icon: "mdi-cog" },
             { text: "Salir", icon: "mdi-power" },
         ],
         selectedMenu: null,

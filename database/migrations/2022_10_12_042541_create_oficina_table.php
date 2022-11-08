@@ -16,7 +16,7 @@ class CreateOficinaTable extends Migration
         Schema::create('oficina', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre',160);
-            $table->char('codigo',50);
+            $table->char('codigo',20);
             $table->timestamps();
         });
     }

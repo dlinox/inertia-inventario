@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombres');
             $table->string('apellidos');
+            $table->char('celular', 9)->unique()->nullable();
             $table->integer('rol')->default(1);
             $table->boolean('estado')->default(1);
             $table->string('email')->unique();
