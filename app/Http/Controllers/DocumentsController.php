@@ -5,7 +5,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AreaPersona;
+use App\Exports\UsersExports;
+use App\Exports\tableExports;
 
+use Maatwebsite\Excel\Facades\Excel;
 //Auth::routes();
 use App\Models\Documento;
 use App\Models\Inventario;
@@ -100,5 +103,9 @@ class DocumentsController extends Controller {
     public function store(Request $request)
     {
 
+    }
+
+    public function export($a, $p){
+        return Excel::download(new tableExports($a, $p), 'invoices.xlsx');
     }
 }

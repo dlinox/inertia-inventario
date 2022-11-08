@@ -1,5 +1,10 @@
 <template>
     <v-container>
+        <div>
+            <a href="/export/3/1" > export </a> 
+            <v-btn  @click="generarExcel" type=""> crear Excel </v-btn>
+        </div>    
+
         <v-card>
             <v-card-title>
 
@@ -97,6 +102,7 @@ export default {
           { text: 'Asignar', align: 'center', value:'acciones' },
         ],
         areas: [],
+        king:'king',
         personas:[],
       }
     },
@@ -120,6 +126,18 @@ export default {
             console.log(res.data);
             this.personas = res.data.datos;
             //            return res.data.datos.data;
+        },
+
+        async generarExcel() {
+            let params = {
+                'a': 2,
+                'p': 1
+            }
+//            var url = '/export/3/1';
+//            let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+            let url = '/export/2,1';
+                window.location.href = url; // esto redireccionará al usuario a la ruta de descarga
+
         },
 
         abrirDialog(item){

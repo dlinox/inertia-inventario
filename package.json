@@ -21,6 +21,7 @@
         "@inertiajs/inertia-vue": "^0.8.0",
         "@inertiajs/progress": "^0.2.7",
         "@mdi/font": "^7.0.96",
+        "chart.js": "^3.9.1",
         "postcss-import": "^14.1.0",
         "postcss-nesting": "^10.1.10",
         "vue": "^2.7.8",

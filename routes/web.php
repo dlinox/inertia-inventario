@@ -1,5 +1,6 @@
 <?php
 use App\Exports\UsersExports;
+use App\Exports\tableExports;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AreaPersonaController;
 use App\Http\Controllers\AreasController;
@@ -31,6 +32,10 @@ Route::get('/offline', function () {
     return view('vendor/laravelpwa/offline');
 });
 
+// Route::post('/excel/table', function(){
+//     return (new tableExports)->download('areas.xlsx');
+// });
+//Route::get('/export/{a},{p}', [DocumentsController::class, 'export']);
 
 Route::get('/', function () {
     return redirect('/login');
@@ -103,6 +108,20 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
         Route::get('/getDocumentsActivos', 'getDocumentsActivos')->name('getDocumentsActivos');
         Route::get('/preview/{idArea}/{idP}', 'preview')->name('preview');
+        Route::get('/getDocumentsF/{e},{i},{f}', 'getDocumentsF')->name('getDocumentsF');
+
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
+        Route::get('/avanceGlobal', 'avanceGlobal')->name('avanceGlobal');
+        Route::get('/ranking', 'ranking')->name('ranking');
+        Route::get('/avanceCargos', 'avanceCargos')->name('avanceCargos');
+        Route::get('/regDiario', 'regDiario')->name('regDiario');
+        Route::get('/RegXdia/{f}', 'RegXdia')->name('RegXdia');
+        Route::get('/OficinasAvanzadas','OficinasAvanzadas')->name('OficinasAvanzadas');
+        Route::get('/getCountOficina/{idO}','getCountOficina')->name('getCountOficina');
+        Route::get('/getCountArea/{id}','getCountArea')->name('getCountArea');
+
+
+
     });
 
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {

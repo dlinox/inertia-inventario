@@ -18,6 +18,7 @@ class ReportesController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+
     public function getDocumentsActivos(){
         //$res = AreaPersona::select()->orderBy('id', 'DESC')->get();
         $res = DB::select('SELECT area_persona.*, area_persona.fecha, area.nombre, persona.dni FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id) WHERE ESTADO = 0 ORDER BY area_persona.id desc;
@@ -27,9 +28,25 @@ class ReportesController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+
+    public function getDocumentsF($estado, $i, $f_fin ){
+        //$res = AreaPersona::select()->orderBy('id', 'DESC')->get();
+        $res = DB::select("SELECT area_persona.*, area_persona.fecha, area.nombre, persona.dni FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id) WHERE fecha BETWEEN (".$i." AND ".$f_fin.") AND ESTADO != ".$estado." ORDER BY area_persona.id desc;");
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+
     public function index()
     {
         return Inertia::render('Admin/Reportes/');
+    }
+
+    public function dashboard()
+    {
+        return Inertia::render('Admin/Reportes/Reportes/index.vue');
     }
 
     public function preview($idArea,$idP){
@@ -43,7 +60,6 @@ class ReportesController extends Controller
         $datos['oficina'] = $oficina[0];
         $datos['area'] = $area[0];
         $datos['responsable'] = $responsable[0];
-
 //        $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = '.$idArea.';');
         return Inertia::render('Admin/Reportes/Preview/',  ['datos' => $datos]);
 
@@ -56,5 +72,113 @@ class ReportesController extends Controller
     public function explorador(){
         return Inertia::render('Admin/Explorador/');
     }
+
+    /*******  REPORTES *****/
+    public function avanceGlobal(){
+        $h = date('Y-m-d');
+
+        $actual = DB::select('SELECT count(*) as registros from inventario;');
+        $antes = DB::select('SELECT count(*) as registros from bienk;');
+        $ayer = DB::select('SELECT count(*) as registros FROM `inventario` WHERE date(created_at) = DATE_ADD(CURRENT_DATE, INTERVAL -1 DAY);');
+        $hoy = DB::select('SELECT count(*) as registros FROM `inventario` WHERE date(created_at) = CURRENT_DATE;');
+
+        $this->response['estado'] = true;
+        $this->response['g_actual'] = $actual[0];
+        $this->response['g_antes'] = $antes[0];
+        $this->response['g_ayer'] = $ayer[0];
+        $this->response['g_hoy'] = $hoy[0];
+        return response()->json($this->response, 200);
+    }
+
+    public function ranking(){
+        $h = date('Y-m-d');
+        $avanceDiario = DB::select('SELECT USERS.NOMBRES, USERS.APELLIDOS, INVENTARIO.ID_USUARIO, COUNT(INVENTARIO.codigo) AS NREGISTROS FROM INVENTARIO INNER JOIN USERS ON INVENTARIO.ID_USUARIO = USERS.ID GROUP BY INVENTARIO.ID_USUARIO  ORDER BY NREGISTROS DESC ;');
+
+        $this->response['estado'] = true;
+        $this->response['avance_diario'] = $avanceDiario;
+        return response()->json($this->response, 200);
+    }
+
+    public function avanceCargos(){
+
+        $cargos = DB::select('SELECT count(*) as registros FROM area_persona where estado = 0');
+ //     $totalCargos = DB::select('SELECT COUNT(DISTINCT id_area, id_persona) as registros from bienk ');
+        $nOficinas = DB::select('SELECT COUNT(*) as registros from oficina where id IN (SELECT area.id_oficina from area where id in (SELECT id_area FROM area_persona))');
+        $totalCargosInv = DB::select('SELECT COUNT(DISTINCT id_area, id_persona) as registros from inventario');
+        $nAreas = DB::select('SELECT count(area.id_oficina) as registros from area where id in (SELECT id_area FROM area_persona)');
+
+        $this->response['estado'] = true;
+        $this->response['cargos'] = $cargos[0];
+        $this->response['nOficinas'] = $nOficinas[0];
+        $this->response['nAreas'] = $nAreas[0];
+        $this->response['totalCargosInv'] = $totalCargosInv[0];
+        return response()->json($this->response, 200);
+    }
+
+    public function regDiario(){
+
+        $diario = DB::select('SELECT COUNT(*) AS REGISTROS, date(created_at) as FECHA FROM INVENTARIO WHERE date(created_at) <= CURRENT_DATE GROUP BY date(created_at) ORDER BY date(created_at) DESC LIMIT 5;');
+            //$cont = 5;
+        $n = $this->sz($diario);
+        $regs = [];
+        for($i=0, $n; $n>=0; $n--, $i++){
+            $regs[$i] = $diario[$n];
+        }
+        $registros = [];
+        $fechas = [];
+
+        foreach ($regs as $key => $registro) {
+            $registros[$key] = $registro->REGISTROS;
+            $fechas[$key] = $registro->FECHA;
+        }
+        $this->response['estado'] = true;
+        $this->response['datos'] = $diario;
+        $this->response['registros'] = $registros;
+            $this->response['fechas'] = $fechas;
+
+        return response()->json($this->response, 200);
+    }
+
+    public function RegXdia( $fecha ){
+        $regDiario = DB::select('SELECT inventario.*, area.nombre as a FROM inventario JOIN AREA ON inventario.id_area = area.id where fecha = '.$fecha.'; ');
+
+        $this->response['registros'] = $regDiario;
+        return response()->json($this->response, 200);
+    }
+
+    public function OficinasAvanzadas(){
+        $oficina = DB::select('SELECT oficina.id from inventario JOIN area ON inventario.id_area = area.id JOIN oficina ON area.id_oficina = oficina.id GROUP BY oficina.id;');
+        $oficinas = [];
+
+        foreach ($oficina as $key => $registro) {
+            $ofi = DB::select('SELECT COUNT(inventario.id) as registros, oficina.* from inventario JOIN area ON inventario.id_area = area.id JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = '.$registro->id.";");
+            $oficinas[$key] = $ofi[0];
+        }
+
+        $this->response['oficinas'] = $oficinas;
+        return response()->json($this->response, 200);
+
+    }
+
+    public function getCountOficina($idO){
+        $oficina = DB::select('SELECT COUNT(inventario.id) as registros, oficina.id from inventario JOIN area ON inventario.id_area = area.id  JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = '.$idO.';');
+        $this->response['oficina'] = $oficina;
+        return response()->json($this->response, 200);
+    }
+
+    public function getCountArea($id){
+        $areas = DB::select('SELECT area.id, area.nombre, area.codigo, count(area.codigo) as registros from inventario JOIN area ON inventario.id_area = area.id JOIN oficina ON area.id_oficina = oficina.id WHERE area.id_oficina = '.$id.' GROUP BY area.id');
+        $this->response['areas'] = $areas;
+        return response()->json($this->response, 200);
+    }
+
+    private function sz( $array){
+        $cont = 0;
+        foreach ($array as $key => $item) {
+            $cont = $key;
+        }
+        return $cont;
+    }
+
 
 }

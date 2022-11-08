@@ -20,7 +20,7 @@
         </template>
       </v-snackbar>
     </div>
-    <v-row style="background: white">
+    <v-row style="background: white; margin-bottom:-25px;" >
         <v-col md="9" lg="9">
             <h3>Cargo de bienes </h3>
         </v-col>
@@ -80,7 +80,7 @@
                 label="Area"
                 outlined
                 :items="areas"
-                :filter="customFilter"
+                :filter="customFilterAreas"
                 item-value="id"
                 item-text="nombre"
                 :search-input.sync="areas_search"
@@ -89,13 +89,7 @@
                 <template v-slot:no-data>
                     <v-list-item>
                         <v-list-item-title>
-                            <template v-if="oficinas_search?.length > 0">
-                                Datos no encontrados para
-                                <strong>
-                                    {{ oficinas_search }}
-                                </strong>
-                            </template>
-                            <template v-else>
+                            <template >
                                 No hay registros
                             </template>
                         </v-list-item-title>
@@ -158,9 +152,9 @@
         </v-col>
     </v-row>
     <!-- {{ registrado }} -->
-    <div style="overflow-x:scroll; overflow-y:hidden; width:100%; margin-top:30px; height:460px;">
+    <div style=" overflow-y:hidden; width:100%; margin-top:30px; height:425px;" class="contenedorIframe" >
         <div  v-if="areE !== null && perE !== null"  class="by-preview" style="transform:scale(1);">
-            <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;"> </iframe>
+            <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;  border:solid 0.5px #cdcdf4;"> </iframe>
         </div>
     </div>
     <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
@@ -206,7 +200,6 @@
             </v-btn>
             <v-btn
                 color="primary lighten-1"
-
                 @click="generarPDF"
             >
                 Continuar
@@ -360,6 +353,16 @@ export default {
             }
         },
         customFilter(item, queryText, itemText) {
+            const nombre = item.nombre.toLowerCase();
+            const codigo = item.codigo.toLowerCase();
+            const searchText = queryText.toLowerCase();
+            return (
+                nombre.indexOf(searchText) > -1 ||
+                codigo.indexOf(searchText) > -1
+             );
+        },
+        
+        customFilterAreas(item, queryText, itemText) {
             const nombre = item.nombre.toLowerCase();
             const codigo = item.codigo.toLowerCase();
             const searchText = queryText.toLowerCase();
@@ -555,10 +558,16 @@ width: 100% !important;
    overflow-x: visible;
    white-space: nowrap;
   }
+.contenedorIframe{
+    background: none;
+}
 .hijo{
     transform: scale(0.6)
 }
 @media (max-width: 600px) {
+    .contenedorIframe{
+        overflow-x:scroll;
+    }
   .botones {
     width: 100%;
     justify-content: space-between;

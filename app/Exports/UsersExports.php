@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithDrawings;
@@ -15,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class UsersExports implements FromView, WithColumnWidths,  WithDrawings, WithStyles
 {
+    use Exportable;
 
     public function __construct( $idArea = "", $idP="")
 {
