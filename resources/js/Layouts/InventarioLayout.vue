@@ -44,7 +44,7 @@
             <slot />
         </v-main>
 
-        <ReLogin :user="user"  :dialog="dialog_relogin"  @dialog="dialog_relogin = $event" />
+        <!-- <ReLogin :user="user"  :dialog="dialog_relogin"  @dialog="dialog_relogin = $event" />-->
     </v-app>
 </template>
 

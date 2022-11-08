@@ -49,14 +49,15 @@ class CreateInventarioTable extends Migration
 
 
             $table->unsignedBigInteger('id_persona');
-            $table->unsignedBigInteger('idpersona_otro');
+            $table->integer('idpersona_otro')->nullable();
+
             $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_usuario');
             $table->unsignedBigInteger('id_estado');
             $table->unsignedBigInteger('id_area_persona')->nullable();
 
             $table->foreign('id_persona')->references('id')->on('persona');
-            $table->foreign('idpersona_otro')->references('id')->on('persona');
+            //$table->foreign('idpersona_otro')->references('id')->on('persona');
             $table->foreign('id_area')->references('id')->on('area');
             $table->foreign('id_usuario')->references('id')->on('users');
             $table->foreign('id_estado')->references('id')->on('estado');
