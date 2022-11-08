@@ -25,17 +25,6 @@ class DocumentsController extends Controller {
         return response()->json($this->response, 200);
     }
 
-    // public function verReportes(){
-
-    //     return Inertia::render('Admin/ExploradorDocs/',['documents' => Document::all() ]);
-
-    // }
-
-    // public function cerrarInventario(){
-
-    //     return Inertia::render('Admin/Cierre/',[ ]);
-
-    // }
     public function saveDocument(Request $request)
     {
         $ldate = date('Y-m-d');

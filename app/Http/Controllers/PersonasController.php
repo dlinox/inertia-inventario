@@ -26,10 +26,9 @@ class PersonasController extends Controller
         return response()->json($this->response, 200);
     }
 
-
     public function getPersonasInv()
     {
-        $res = DB::select('SELECT * from persona WHERE id IN (SELECT id_persona FROM inventario);');
+        $res = DB::select('SELECT *, concat(persona.nombres," ",persona.paterno," ",persona.materno) as nombre from persona WHERE id IN (SELECT id_persona FROM inventario);');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -38,7 +37,16 @@ class PersonasController extends Controller
 
     public function getPersonasByAreaInv($id)
     {
-        $res = DB::select('SELECT * from persona WHERE id IN (SELECT id_persona FROM inventario where id_area = '.$id.');');
+        $res = DB::select('SELECT *, concat(persona.nombres," ",persona.paterno," ",persona.materno) as nombre from persona WHERE id IN (SELECT id_persona FROM inventario where id_area = '.$id.');');
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function getPersonasByAreaInvNoR($id)
+    {
+        $res = DB::select('SELECT *, concat(persona.nombres," ",persona.paterno," ",persona.materno) as nombre from persona WHERE id IN (SELECT id_persona FROM inventario where id_area = '.$id.') AND ID NOT IN (SELECT ID_PERSONA from area_persona WHERE ID_AREA = '.$id.' );');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

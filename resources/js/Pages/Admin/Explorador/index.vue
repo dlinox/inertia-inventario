@@ -33,8 +33,8 @@
                 dense
                 >
             <template v-slot:item.acciones="{ item }" >
-                <div style="width: 90px;">
-                 <div class="flex" style="width:85px;">
+                <div style="width: 120px;">
+                 <div class="flex" style="width:115px;">
                     <v-btn  class="ml-0 p-0" style="width: 25px; height:25px;;" icon dark color="indigo" @click="desbloquear(item)" >
                         <v-icon color="primary" v-if="item.estado === 0" size="1.1rem">mdi-lock</v-icon>
                         <v-icon v-else color="grey" size="1.1rem">mdi-lock-open</v-icon>
@@ -45,6 +45,9 @@
                     <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="eliminarDocumento(item)">
                         <v-icon size="1.1rem">mdi-delete</v-icon>
                     </v-btn>
+                    <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="descargarExcel(item)">
+                        <v-icon size="1.1rem">mdi-download </v-icon>
+                    </v-btn>
                 </div>
                </div>
             </template>
@@ -52,6 +55,28 @@
             </v-data-table>
             </div>
        </div>
+
+       <div class="text-center">
+      <v-snackbar
+        v-model="snackbar"
+        :timeout="timeout"
+      >
+        {{ text }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="blue"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
+
+
     </v-container>
 </template>
 <script>
@@ -66,6 +91,9 @@ export default {
         personas:[],
         areas:[],
         documentos:[],
+        snackbar:false,
+        timeout: 2000,
+        text:'',
         documentoElegido: null,
         searchdocuments:'',
         headersdocuments: [
@@ -98,6 +126,14 @@ export default {
              this.snackbar = true
              this.getDocuments()
         },
+        async descargarExcel(item){
+            window.open("/admin/documentos/excel/"+item.id_area+"/"+item.id_persona, '_blank');
+            // await axios.get("/admin/documentos/excel/"+item.id_area+"/"+item.id_persona)
+            //  .then(response => {
+            //      console.log(response);
+            //  });
+        },
+
 
         async desbloquear( item ){
             await axios.get(`/admin/documentos/desbloquearBienes/${item.id}`);
