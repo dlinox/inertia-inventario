@@ -127,6 +127,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
 
+    Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
+        ->name('perfil');
+
     Route::get('/get-inventario/{id}', [InventarioController::class, 'getInventario'])
         ->name('get-inventario');
 
