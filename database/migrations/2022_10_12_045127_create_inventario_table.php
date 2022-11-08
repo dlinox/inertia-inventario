@@ -18,7 +18,6 @@ class CreateInventarioTable extends Migration
             $table->char('codigo', 13)->unique();
             $table->char('codigo_anterior', 13);
             $table->string('nombre', 130);
-<<<<<<< HEAD
             $table->string('modelo', 60);
             $table->string('numero', 60);
             $table->string('marca', 60)->default('Generico');
@@ -47,16 +46,12 @@ class CreateInventarioTable extends Migration
 
             $table->boolean('estado')->default(1);
             $table->string('observaciones', 150);
-
-
-=======
             $table->string('modelo',60);
             $table->string('numero',60);
             $table->string('marca',60)->default('Generico');
             $table->string('serie',60);
             $table->string('tipo')-> nullable();
             $table->string('idbienk',60);
->>>>>>> 203a4e8e685eaf8b1499f7313c611e415ead4b9a
             $table->unsignedBigInteger('id_persona');
             $table->integer('idpersona_otro')->nullable();
 

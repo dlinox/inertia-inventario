@@ -1,13 +1,14 @@
 <template>
-    <v-container>
-        <h1>Dashboard</h1>
-       
-    </v-container>
+    <div>
+        <Dashboard/>
+    </div>
 </template>
 
 <script>
+import Dashboard from './Reportes/Reportes'
 import Layout from "@/Layouts/AdminLayout";
 export default {
+    components:{Dashboard},
     metaInfo: { title: "Dashboard" },
     layout: Layout,
     data: () => ({
