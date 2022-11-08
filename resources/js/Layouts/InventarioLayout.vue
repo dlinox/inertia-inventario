@@ -57,7 +57,6 @@ export default {
 
         items: [
             { text: "Perfil", icon: "mdi-account" },
-            { text: "Configuracion", icon: "mdi-cog" },
             { text: "Salir", icon: "mdi-power" },
         ],
         selectedMenu: null,

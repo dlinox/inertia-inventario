@@ -1,26 +1,21 @@
 <template>
-    <v-dialog scrollable persistent v-model="dialog" width="800">
+    <v-dialog v-model="dialog" fullscreen scrollable>
         <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" block dark v-bind="attrs" v-on="on">
                 Areas Asignadas
             </v-btn>
         </template>
 
-        <v-card>
-            <v-card-title class="white--text text-h6 grey darken-1">
-                Areas Asignadas
-                <v-spacer />
-                <v-btn
-                    class="mr-auto"
-                    icon
-                    color="white"
-                    @click="dialog = false"
-                >
-                    <v-icon>mdi-close-circle</v-icon>
-                </v-btn>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text style="height: 80vh">
+        <v-card tile>
+            <v-toolbar>
+                <v-app-bar-nav-icon  @click="dialog = false"> 
+                    <v-icon>mdi-arrow-left</v-icon>
+                </v-app-bar-nav-icon>
+
+                <v-toolbar-title> Areas Asignadas</v-toolbar-title>
+            </v-toolbar>
+
+            <v-card-text style="height: 90vh">
                 <v-autocomplete
                     v-model="area_selected"
                     :items="areas"
@@ -85,10 +80,7 @@
                                     disabled
                                 >
                                     <td>
-                                 
-                                        <template
-                                            v-if="item.estado == 0"
-                                        >
+                                        <template v-if="item.estado == 0">
                                             <v-chip
                                                 small
                                                 color="grey"
@@ -99,14 +91,19 @@
                                             </v-chip>
                                         </template>
 
-                                        <template v-else-if="item.id_inventario">
+                                        <template
+                                            v-else-if="item.id_inventario"
+                                        >
                                             <v-chip
                                                 small
                                                 color="green"
                                                 outlined
                                                 class="ma-2"
                                             >
-                                                <small>REGISTRADO {{item.estado}} </small>
+                                                <small
+                                                    >REGISTRADO
+                                                    {{ item.estado }}
+                                                </small>
                                             </v-chip>
                                         </template>
 
