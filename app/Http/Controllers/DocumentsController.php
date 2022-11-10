@@ -96,6 +96,7 @@ class DocumentsController extends Controller {
     public function destroy($id){
         $document = AreaPersona::find($id);
         File::delete(public_path("$document->url"));
+        $this->desbloquearBienes($id);
         $document->delete();
         return "Documento Eliminado";
     }

@@ -116,13 +116,12 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/ranking', 'ranking')->name('ranking');
         Route::get('/avanceCargos', 'avanceCargos')->name('avanceCargos');
         Route::get('/regDiario', 'regDiario')->name('regDiario');
+        Route::get('/regDiarioG', 'regDiarioG')->name('regDiarioG');
         Route::get('/RegXdia/{f}', 'RegXdia')->name('RegXdia');
         Route::get('/OficinasAvanzadas','OficinasAvanzadas')->name('OficinasAvanzadas');
         Route::get('/getCountOficina/{idO}','getCountOficina')->name('getCountOficina');
         Route::get('/getCountArea/{id}','getCountArea')->name('getCountArea');
-
-
-
+        
     });
 
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {

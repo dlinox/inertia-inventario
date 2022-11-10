@@ -17,7 +17,7 @@
                 :key="i"
                 style="background:#bcbcbc13; margin:5px;"
                 >
-                    <v-list-item-content v-if="i < 4"  >
+                    <v-list-item-content v-if="i < maximo"  >
                         <!-- {{total}} -->
                         <div style=" display:flex; justify-content: space-between;">
                             <div>
@@ -41,7 +41,7 @@
 <script>
 
 export default {
-    props:['total'],
+    props:['total','maximo'],
     data () {
         return {
             items: [],

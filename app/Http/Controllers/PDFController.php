@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Inventario;
 use App\Models\AreaPersona;
 use App\Models\Document;
 use App\Models\Bienk;
@@ -95,9 +96,25 @@ class PDFController extends Controller
         $doc['id_usuario'] = Auth::id();
         AreaPersona::create($doc);
 
+        $this->bloquearBienes( $idArea, $idP);
         $this->response['mensaje'] = 'PDF';
         $this->response['estado'] = true;
         $this->response['datos'] = $doc;
+        return response()->json($this->response, 200);
+    }
+
+    private function bloquearBienes( $id_a, $id_p ){
+        $bienes = DB::select('SELECT * from inventario WHERE id_area =  '.$id_a.' AND id_persona = '.$id_p.';');
+        foreach ($bienes as $p) {
+            $this->cambiar($p, 0);
+        }
+    }
+
+    private function cambiar($bienes, $estado){
+        $res = Inventario::find($bienes->id);
+        $res->estado = $estado;
+        $res->save();
+        $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 
