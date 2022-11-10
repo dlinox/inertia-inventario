@@ -118,7 +118,7 @@ class ReportesController extends Controller
     public function regDiario(){
 
         $diario = DB::select('SELECT COUNT(*) AS REGISTROS, date(created_at) as FECHA FROM INVENTARIO WHERE date(created_at) <= CURRENT_DATE GROUP BY date(created_at) ORDER BY date(created_at) DESC LIMIT 5;');
-            //$cont = 5;
+        //$cont = 5;
         $n = $this->sz($diario);
         $regs = [];
         for($i=0, $n; $n>=0; $n--, $i++){
@@ -134,14 +134,21 @@ class ReportesController extends Controller
         $this->response['estado'] = true;
         $this->response['datos'] = $diario;
         $this->response['registros'] = $registros;
-            $this->response['fechas'] = $fechas;
+        $this->response['fechas'] = $fechas;
+        return response()->json($this->response, 200);
+    }
 
+    public function regDiarioG(){
+
+        $diario = DB::select('SELECT COUNT(*) AS REGISTROS, date(created_at) as FECHA FROM INVENTARIO WHERE date(created_at) <= CURRENT_DATE GROUP BY date(created_at) ORDER BY date(created_at) DESC;');
+        $registros = DB::select('SELECT inventario.id, inventario.codigo, inventario.nombre, inventario.estado,  DATE(inventario.created_at) as fecha, area.nombre as area, CONCAT(users.nombres, users.apellidos) as usuario FROM INVENTARIO JOIN area ON inventario.id_area = area.id JOIN users on inventario.id_usuario = users.id  WHERE  date(inventario.created_at) <= CURRENT_DATE ORDER BY DATE(inventario.created_at) DESC;');
+        $this->response['datos'] = $diario;
+        $this->response['registros'] = $registros;
         return response()->json($this->response, 200);
     }
 
     public function RegXdia( $fecha ){
         $regDiario = DB::select('SELECT inventario.*, area.nombre as a FROM inventario JOIN AREA ON inventario.id_area = area.id where fecha = '.$fecha.'; ');
-
         $this->response['registros'] = $regDiario;
         return response()->json($this->response, 200);
     }

@@ -24,37 +24,28 @@ class CreateBienkTable extends Migration
             $table->string('numero', 60)->nullable();
             $table->string('tipo', 60)->nullable();
             $table->string('observaciones', 150)->nullable();
-
             $table->char('nro_orden_compra', 5)->nullable();
             $table->date('fecha_orden_compra')->nullable();
-
             $table->char('fte_financiamiento', 2)->nullable();
-
             $table->char('nro_pecosa', 5)->nullable();
             $table->date('fecha_pecosa')->nullable();
-
             $table->integer('vida_util_meses')->nullable();
             $table->integer('vida_util_empleada_meses')->nullable();
-
             $table->double('valor_adquisicion', 10,2)->nullable();
             $table->double('depreciacion_acumulada_2021', 10,2)->nullable();
             $table->char('cuenta_contable', 15)->nullable();
-
             $table->char('anio_fabrica', 4)->nullable();
             $table->char('estado', 2)->nullable();
-
-            //Area ? 
+            //Area ?
             $table->char('codigo_ubicacion', 5)->nullable();
             $table->string('nombre_ubicacion', 100)->nullable();
-
             //persona
             $table->integer('idpersona_otro')->nullable();
-
             $table->char('dni', 9)->nullable();
             $table->string('paterno', 60)->nullable();
             $table->string('materno', 60)->nullable();
             $table->string('nombres', 60)->nullable();
-            $table->string('nro_celular', 60)->nullable();            
+            $table->string('nro_celular', 60)->nullable();
 
             $table->char('numero_cargo_personal', 5)->nullable();
             $table->date('fecha_cargo_personal')->nullable();

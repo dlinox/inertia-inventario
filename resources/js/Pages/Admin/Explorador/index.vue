@@ -315,7 +315,6 @@ export default {
             this.getDocuments()
             this.text = "Bienes Desbloquedos"
             this.snackbar = true
-            return res.data.datos;
         },
         Filtrar (){
             this.getDocuments()
