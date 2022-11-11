@@ -32,9 +32,9 @@ class CreateIventarioOldsTable extends Migration
             $table->char('proveedor_ruc', 11)->nullable();
             $table->integer('nro_pecosa');
             $table->date('fecha_pecosa')->nullable();
-            $table->double('vida_util', 7, 6)->nullable();
+            $table->double('vida_util', 10, 6)->nullable();
             $table->date('fecha_vida_util')->nullable();
-            $table->double('valor_adquisicion', 10, 6)->default(0);
+            $table->decimal('valor_adquisicion', 20, 6)->default(0);
             $table->double('valor_inicial', 10, 2);
             $table->double('valor_depreciacion', 10, 2);
             $table->date('fecha_baja_bien')->nullable();
