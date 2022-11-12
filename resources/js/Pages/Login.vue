@@ -68,7 +68,7 @@
                         :loading="loading_btn"
                         @click="IngresarSistema"
                     >
-                        INGRESARss
+                        INGRESAR
                     </v-btn>
 
                     <div class="d-flex text-center mt-2">

@@ -81,6 +81,8 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getPersonasInv', 'getPersonasInv')->name('getPersonasInv');
         Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
         Route::get('/getPersonasByAreaInvNoR/{id}', 'getPersonasByAreaInvNoR')->name('getPersonasByAreaInvNoR');
+        Route::post('/savePersonasImport','savePersonasImport')->name('savePersonasImport');
+
     });
 
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
@@ -121,7 +123,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/OficinasAvanzadas','OficinasAvanzadas')->name('OficinasAvanzadas');
         Route::get('/getCountOficina/{idO}','getCountOficina')->name('getCountOficina');
         Route::get('/getCountArea/{id}','getCountArea')->name('getCountArea');
-        
+
     });
 
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {
