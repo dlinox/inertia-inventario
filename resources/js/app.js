@@ -10,6 +10,7 @@ import {
 } from '@inertiajs/progress'
 import vuetify from './plugin/vuetify';
 
+
 import '@mdi/font/css/materialdesignicons.css';
 
 
@@ -18,6 +19,7 @@ InertiaProgress.init({
 })
 Vue.use(plugin)
 Vue.use(VueMeta)
+
 
 const el = document.getElementById('app')
 

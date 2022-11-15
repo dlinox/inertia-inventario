@@ -1,17 +1,12 @@
 <template>
     <div style="width: 100%; height: 100%;">
-      <v-card elevation="0" v-for="item in data" :key="item.id" style="margin-bottom:5px">
-          <div class="d-flex" style="justify-content:space-between">
-            <span>{{ item.codigo }}</span>
-            <span>Reg. {{ item.registros }}</span>
-          </div>
-          <div>
-            <span>{{item.nombre}}</span>
-          </div>
+        <v-card elevation="0" class="pl-0" v-for="item in data" :key="item.id" style="margin-bottom:5px; cursor:pointer;">
+        <div class="d-flex pa-2 pl-0" style="justify-content:space-between; ">
+            <span> <span class="mdi mdi-label-outline"></span> {{ item.nombre }}</span>
+            <span style=" font-weight: bold;">{{ item.registros }}</span>
+        </div>
           <hr style="height:0.1rem; border:solid 0.5px #cdcdcd9d;">
       </v-card>
-
-
     </div>
   </template>
 

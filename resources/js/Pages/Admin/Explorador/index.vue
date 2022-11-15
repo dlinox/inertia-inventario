@@ -11,7 +11,7 @@
 
                     <div class="mt-5">
                         <h4 class="pb-3 grey--text text--darken-2">
-                            Filtros {{estado}} {{date}} {{datef}}
+                            Filtros
                         </h4>
                         <v-menu
                             ref="menux"
@@ -31,7 +31,7 @@
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
-                                >    
+                                >
                                     <v-icon
                                         slot="append">
                                         mdi-calendar
@@ -67,7 +67,7 @@
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
-                                >    
+                                >
                                     <v-icon
                                         slot="append">
                                         mdi-calendar
@@ -96,7 +96,7 @@
 
                     </div>
                 </v-container>
-                
+
                 <template v-slot:append>
                     <div class="pa-2" >
                         <v-btn @click="Filtrar" block color="primary" >
@@ -107,8 +107,8 @@
             </v-navigation-drawer>
             <div class="content" :class="drawer ? '' : 'full'">
                 <v-container>
-    
-                    
+
+
 
 
 
@@ -118,9 +118,9 @@
                                 <h5>
                                     Cargos personales
                                 </h5>
-                                
+
                             </div>
-                            
+
                             <div style="width:100%; display: flex; justify-content: space-between; ">
                                 <v-btn
                                     x-small
@@ -153,7 +153,7 @@
                         >
                         <v-data-table
                             :headers="headersdocuments"
-                            :items="documentos"item
+                            :items="documentos"
                             :search="searchdocuments"
                             hide-default-footer
                             dense
@@ -224,8 +224,8 @@ export default {
             {'id': 1, 'name': 'Activos'},
             {'id': 0, 'name': 'Desactivados'},
         ],
-        
-        estado: null,
+
+        estado: 1,
         picker: null,
         drawer: true,
 
@@ -261,29 +261,41 @@ export default {
 
         async getDocuments() {
             if(this.estado === null && this.date === null && this.datef === null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/2,1900-01-01,2100-12-31");
+                let res = await axios.get("/admin/reportes/getDocumentsF/2,'1900-01-01','2100-12-31'");
                 this.documentos = res.data.datos;
                 return res.data.datos.data;
             }
             if(this.estado === null && this.date === null && this.datef !== null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+',1900-01-01,'+this.datef);
+                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'1900-01-01',"+this.datef);
                 this.documentos = res.data.datos;
                 return res.data.datos.data;
             }
             if(this.estado !== null && this.date === null && this.datef === null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+',1900-01-01,2100-12-31');
+                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'1900-01-01','2100-12-31'");
                 this.documentos = res.data.datos;
                 return res.data.datos.data;
             }
 
-            if(this.estado !== null && this.date === null && this.datef === null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+',1900-01-01,2100-12-31');
+            if(this.estado === null && this.date !== null && this.datef === null ) {
+                let res = await axios.get("/admin/reportes/getDocumentsF/2,'"+this.date+"','2100-12-31'");
+                this.documentos = res.data.datos;
+                return res.data.datos.data;
+            }
+
+            if(this.estado !== null && this.date !== null && this.datef === null ) {
+                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'"+this.date+"','2100-12-31'");
+                this.documentos = res.data.datos;
+                return res.data.datos.data;
+            }
+
+            if(this.estado === null && this.date !== null && this.datef !== null ) {
+                let res = await axios.get("/admin/reportes/getDocumentsF/2,'"+this.date+"','"+this.datef+"'");
                 this.documentos = res.data.datos;
                 return res.data.datos.data;
             }
 
             if(this.estado !== null && this.date !== null && this.datef !== null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+','+this.date+','+this.datef);
+                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'"+this.date+"','"+this.datef+"'");
                 this.documentos = res.data.datos;
                 return res.data.datos.data;
             }
@@ -321,7 +333,7 @@ export default {
         }
 
     },
-    
+
     watch: {
 
     },
