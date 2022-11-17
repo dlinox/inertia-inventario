@@ -1,9 +1,7 @@
 <template>
     <v-app class="app-wrapper">
         <v-app-bar  color="white">
-           
             <v-spacer />
-
             <v-menu offset-y>
                 <template v-slot:activator="{ attrs, on }">
                     <v-btn
@@ -80,26 +78,7 @@ export default {
             }
         },
     },
-    mounted() {
-        window.addEventListener("focus", () => {
-            this.focus = new Date();
-            console.log("focus");
-            if (!this.blur) return;
-            let diff = this.focus - this.blur;
-            diff = diff / 1000 / 60;
-            console.log(diff);
-            if (diff > 60) {
-                this.session = false;
-                this.dialog_relogin = true;
-                //comprobar si hay sesion activa
-                //mostrar ReLogin
-            }
-        });
-        window.addEventListener("blur", () => {
-            this.blur = new Date();
-            console.log("salio: " + this.blur);
-        });
-    },
+
 };
 </script>
 

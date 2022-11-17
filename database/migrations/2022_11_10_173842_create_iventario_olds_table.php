@@ -23,7 +23,7 @@ class CreateIventarioOldsTable extends Migration
             $table->string('nro_serie', 30)->nullable();
             $table->char('anio_fabricacion')->nullable(); //cambiar a date
             $table->string('estado_actual', 20);
-            $table->string('ubicación', 120);
+            $table->integer('area_id');
             $table->char('persona_dni', 8);
             $table->integer('nro_cargo_personal');
             $table->date('fecha_cargo');
@@ -42,7 +42,6 @@ class CreateIventarioOldsTable extends Migration
             $table->char('sub_cta', 10);
             $table->integer('mayor');
             $table->string('observaciones', 150);
-
             $table->timestamps();
         });
     }

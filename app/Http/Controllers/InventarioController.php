@@ -6,6 +6,7 @@ use App\Models\Area;
 use App\Models\Bienk;
 use App\Models\Estado;
 use App\Models\Inventario;
+use App\Models\IventarioOld;
 use App\Models\Oficina;
 use App\Models\Persona;
 use App\Models\User;
@@ -17,7 +18,15 @@ use Inertia\Inertia;
 
 class InventarioController extends Controller
 {
-    //
+
+    protected $bienK;
+    protected $inventario;
+
+    public function __construct()
+    {
+        $this->bienK = new Bienk;
+        $this->inventario = new Inventario;
+    }
 
     public function index()
     {
@@ -75,8 +84,8 @@ class InventarioController extends Controller
 
     public function getInventarioByCode(Request $request)
     {
-        $res = BienK::select('bienk.*', 'area.id_oficina')
-            ->join('area', 'area.id', '=', 'id_area')
+        $res = IventarioOld::select('*')
+            //->join('area', 'area.id', '=', 'id_area')
             //->join('oficina', 'oficina.id', '=', 'area.id_oficina')
             ->where('codigo', $request->codigo)
             ->first();
@@ -118,9 +127,13 @@ class InventarioController extends Controller
             ->get();
 
         $estados = Estado::all();
+        $oficinas = Oficina::all();
+        $areas = Area::all();
 
         return Inertia::render('Inventario/', [
+            'areas' => $areas,
             'estados' => $estados,
+            'oficinas' => $oficinas,
             'mis_areas' => $mis_areas
         ]);
     }
@@ -190,9 +203,9 @@ class InventarioController extends Controller
 
     public function searchCodigos($codigo = '')
     {
-        $res = Bienk::select('bienk.*', 'area.id_oficina')
-            ->join('area', 'area.id', '=', 'id_area')->where('codigo', 'LIKE', $codigo . '%')
-
+        $res = IventarioOld::select('*')
+            //->join('area', 'area.id', '=', 'id_area')
+            ->where('codigo', 'LIKE', $codigo . '%')
             ->get();
         //text
 
@@ -290,6 +303,7 @@ class InventarioController extends Controller
 
     public function getInventario($id)
     {
+
         $res = Inventario::select('inventario.*', 'area.id_oficina')
             ->join('area', 'area.id', '=', 'inventario.id_area')
             ->where('inventario.id', $id)
@@ -341,6 +355,21 @@ class InventarioController extends Controller
 
         $this->response['mensaje'] = 'Error';
         $this->response['estado'] = false;
+        return response()->json($this->response, 200);
+    }
+
+    public function getBienByCodigo(Request $request)
+    {
+
+
+        if (!$request->registrado) {
+            $res = $this->bienK->getDataByCode($request->codigo);
+        } else {
+        }
+
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 }

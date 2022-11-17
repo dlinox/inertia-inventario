@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Inventario extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'inventario';
     protected $fillable = [
         'codigo',
@@ -18,7 +18,7 @@ class Inventario extends Model
         'numero',
         'serie',
         'idbienk',
-        'id_persona', 
+        'id_persona',
         'idpersona_otro',
         'id_area',
         'id_usuario',
@@ -26,4 +26,13 @@ class Inventario extends Model
         'estado',
         'observaciones',
     ];
+
+    public function getDataByCode($codigo)
+    {
+        $res = $this::where('codigo', $codigo)
+            ->first();
+        $res['persona'] = Persona::where('dni', $res->persona_dni)->first();
+        //$res['oficina//'] = Area::where('id', $res->area_id)->first();
+        return $res;
+    }
 }
