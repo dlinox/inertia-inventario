@@ -123,18 +123,15 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/regDiario', 'regDiario')->name('regDiario');
         Route::get('/regDiarioG', 'regDiarioG')->name('regDiarioG');
         Route::get('/RegXdia/{f}', 'RegXdia')->name('RegXdia');
-<<<<<<< HEAD
         Route::get('/OficinasAvanzadas', 'OficinasAvanzadas')->name('OficinasAvanzadas');
         Route::get('/getCountOficina/{idO}', 'getCountOficina')->name('getCountOficina');
         Route::get('/getCountArea/{id}', 'getCountArea')->name('getCountArea');
-=======
         Route::get('/OficinasAvanzadas','OficinasAvanzadas')->name('OficinasAvanzadas');
         Route::get('/OficinasAvanzadasCargos','OficinasAvanzadasCargos')->name('OficinasAvanzadasCargos');
         Route::get('/getCountOficina/{idO}','getCountOficina')->name('getCountOficina');
         Route::get('/getCountArea/{id}','getCountArea')->name('getCountArea');
         Route::get('/getCountAreaCargos/{id}','getCountAreaCargos')->name('getCountAreaCargos');
         Route::get('/getCargrosByArea/{id}','getCargrosByArea')->name('getCargrosByArea');
->>>>>>> 91bcaa1d7b6ca00cb57d8f4c86148ddd43fc6247
     });
 
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {
