@@ -18,6 +18,9 @@ use App\Mail\PruebaMail;
 use App\Models\AreaPersona;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+
+
+require __DIR__ . './inventario/web.php';
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -120,6 +123,9 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/regDiario', 'regDiario')->name('regDiario');
         Route::get('/regDiarioG', 'regDiarioG')->name('regDiarioG');
         Route::get('/RegXdia/{f}', 'RegXdia')->name('RegXdia');
+        Route::get('/OficinasAvanzadas', 'OficinasAvanzadas')->name('OficinasAvanzadas');
+        Route::get('/getCountOficina/{idO}', 'getCountOficina')->name('getCountOficina');
+        Route::get('/getCountArea/{id}', 'getCountArea')->name('getCountArea');
         Route::get('/OficinasAvanzadas','OficinasAvanzadas')->name('OficinasAvanzadas');
         Route::get('/OficinasAvanzadasCargos','OficinasAvanzadasCargos')->name('OficinasAvanzadasCargos');
         Route::get('/getCountOficina/{idO}','getCountOficina')->name('getCountOficina');
@@ -154,6 +160,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/get-inventario/{id}', [InventarioController::class, 'getInventario'])
         ->name('get-inventario');
+
+    Route::post('/get-bien-by-codigo', [InventarioController::class, 'getBienByCodigo'])
+        ->name('get-bien-by-codigo');
 
     Route::post('/getbienbycodigo', [InventarioController::class, 'getInventarioByCode'])
         ->name('getBien');

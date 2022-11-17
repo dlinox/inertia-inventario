@@ -13,42 +13,49 @@ class CreateInventarioTable extends Migration
      */
     public function up()
     {
+
+
+
+
         Schema::create('inventario', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->char('codigo', 13)->unique();
-            $table->char('codigo_anterior', 13);
-            $table->string('nombre', 130);
-            $table->string('modelo', 60);
-            $table->string('numero', 60);
-            $table->string('marca', 60)->default('Generico');
-            $table->string('serie', 60);
-            $table->string('tipo', 60)->nullable();
-            $table->boolean('estado')->default(1);
-            $table->string('observaciones', 150);
 
-            $table->string('idbienk', 60);
+            $table->id();
+            $table->char('codigo', 12)->unique();
+            $table->char('codigo_siga', 12)->nullable();
+            $table->string('descripcion', 100);
+            $table->string('modelo', 50);
+            $table->string('marca', 50);
+            $table->string('nro_serie', 30);
 
-            $table->char('nro_ordenech_compra', 5)->nullable();
-            $table->date('fa_orden_compra')->nullable();
-
-            $table->char('fte_financiamiento', 2)->nullable();
-
-            $table->char('nro_pecosa', 5)->nullable();
+            $table->char('anio_fabricacion')->nullable(); //cambiar a date
+            //$table->string('estado_actual', 20);
+            $table->integer('nro_cargo_personal')->nullable();
+            $table->date('fecha_cargo')->nullable();
+            $table->integer('nro_orden')->nullable();
+            $table->date('fecha_compra')->nullable();
+            $table->char('proveedor_ruc', 11)->nullable();
+            $table->integer('nro_pecosa')->nullable();
             $table->date('fecha_pecosa')->nullable();
+            $table->double('vida_util', 10, 6)->nullable();
+            $table->date('fecha_vida_util')->nullable();
+            $table->decimal('valor_adquisicion', 20, 6)->default(0);
+            $table->double('valor_inicial', 10, 2)->nullable();
+            $table->double('valor_depreciacion', 10, 2)->nullable();
+            $table->date('fecha_baja_bien')->nullable();
+            $table->string('clasificador', 15)->nullable();
+            $table->char('sub_cta', 10)->nullable();
+            $table->integer('mayor')->nullable();
+            $table->string('observaciones', 150)->nullable();
 
-            $table->integer('vida_util_meses')->nullable();
-            $table->integer('vida_util_empleada_meses')->nullable();
+            $table->string('tipo', 60)->nullable();
+            $table->string('idbienk', 60)->nullable();
+            $table->boolean('estado')->default(1); //bloqueado?
 
-            $table->double('valor_adquisicion', 10, 2)->nullable();
-            $table->double('depreciacion_acumulada_2021', 10, 2)->nullable();
-            $table->char('cuenta_contable', 15)->nullable();
+            //$table->integer('vida_util_empleada_meses')->nullable();
 
-            $table->char('anio_fabrica', 4)->nullable();
-            //$table->char('estado', 2)->nullable();
-
-            $table->unsignedBigInteger('id_persona');
             $table->integer('idpersona_otro')->nullable();
-
+            
+            $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_usuario');
             $table->unsignedBigInteger('id_estado');
