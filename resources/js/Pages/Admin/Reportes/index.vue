@@ -72,7 +72,7 @@
 
         </v-col>
         <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class="p-0 " >
-            <v-autocomplete 
+            <v-autocomplete
                 v-model="areE"
                 clearable
                 class="mt-0 pt-0"
@@ -305,6 +305,8 @@ export default {
         },
         ofiE: function(){
             this.getAreas();
+            this.areE = null;
+            this.perE = null;
         }
 
     },
@@ -361,7 +363,7 @@ export default {
                 codigo.indexOf(searchText) > -1
              );
         },
-        
+
         customFilterAreas(item, queryText, itemText) {
             const nombre = item.nombre.toLowerCase();
             const codigo = item.codigo.toLowerCase();
