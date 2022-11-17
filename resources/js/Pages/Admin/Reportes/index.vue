@@ -72,7 +72,7 @@
 
         </v-col>
         <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class="p-0 " >
-            <v-autocomplete
+            <v-autocomplete 
                 v-model="areE"
                 clearable
                 class="mt-0 pt-0"
