@@ -7,7 +7,6 @@
                         <v-app-bar-nav-icon @click="drawer = !drawer">
                             <v-icon>mdi-filter-menu</v-icon>
                         </v-app-bar-nav-icon>
-
                         Personas
                     </v-toolbar-title>
                 </v-toolbar>
@@ -22,6 +21,7 @@
                         outlined
                         dense
                     ></v-text-field>
+
                 </v-toolbar>
             </div>
         </div>
@@ -72,7 +72,10 @@
                                         <th class="text-left">A. Materno</th>
                                         <th class="text-left">DNI</th>
                                         <th class="text-left">Tipo</th>
-                                        <th class="text-left"></th>
+                                        <th class="text-left d-flex" style="width:60px;">
+                                            <v-icon class="mr-1" color="primary" style="cursor:pointer" @click="dialogImpExp = true">mdi-arrow-up-bold-box-outline</v-icon>
+                                            <v-icon class="ml-1" color="primary" style="cursor:pointer" @click="descargarExcel()">mdi-arrow-down-bold-box-outline</v-icon>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -164,6 +167,7 @@
                             class=""
                             :length="pages"
                         ></v-pagination>
+
                     </v-card>
                 </v-container>
             </div>
@@ -212,6 +216,57 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+        <v-dialog
+            v-model="dialogImpExp"
+            width="600px"
+            >
+            <v-card>
+                <v-card-title>
+                    <span class="text-h6">Importar Personas </span>
+                </v-card-title>
+                <v-card-text>
+
+                    <v-file-input id="archivoExcel" type="file"  label="File input" @change="subirExcel()" append-icon=""></v-file-input>
+                    <v-simple-table v-if="personasImp.length > 0">
+                            <template v-slot:default>
+                                <tbody>
+                                    <tr v-for="(item, index) in personasImp" :key="index">
+                                        <td>{{ item[0] }}</td>
+                                        <td>{{ item[1] }}</td>
+                                        <td>{{ item[2] }}</td>
+                                        <td>{{ item[3] }}</td>
+                                    </tr>
+                                </tbody>
+                            </template>
+                        </v-simple-table>
+
+                </v-card-text>
+                <v-card-actions>
+
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="primary darken-1"
+                        primary
+                        @click="dialogImpExp = false"
+                        NoCaps
+                        outlined
+                    >
+                        Cancelar
+                    </v-btn>
+                    <v-btn
+                        color="primary darken-1"
+                        primary
+                        @click="guardarImportados"
+                        NoCaps
+                    >
+                        Guardar
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+
+
     </div>
 </template>
 <script>
@@ -219,6 +274,8 @@ import Layout from "@/Layouts/AdminLayout";
 import SelectOficina from "@/components/autocomplete/SelectOficina.vue";
 import axios from "axios";
 import { Inertia } from "@inertiajs/inertia";
+import readXlsFile from "read-excel-file";
+import exportFromJSON from "export-from-json";
 
 export default {
     metaInfo: { title: "Usuarios" },
@@ -228,7 +285,6 @@ export default {
     },
 
     data: () => ({
-
         tipos: [
             {'id': 1, 'name': 'Docente'},
             {'id': 2, 'name': 'Administrativo'},
@@ -245,7 +301,7 @@ export default {
         oficina: null,
         areas: [],
         area: null,
-        
+
         rol: null,
         tipo: null,
 
@@ -261,6 +317,17 @@ export default {
         pages: 1,
         usuario_search: "",
         list_usuarios: [],
+
+        dialogImpExp: false,
+        personasImp:[],
+
+        headerImport:[
+            {text:'Dni', value:'0'},
+            {text:'Nombres ', value:'1'},
+            {text:'Paterno', value:'2'},
+            {text:'Materno', value:'3'},
+        ]
+
     }),
     computed: {
         size_display: {
@@ -318,7 +385,7 @@ export default {
             this.list_usuarios = res;
         },
         SelectMenu(op, user) {
-    
+
             if (op =="Editar") {
                 this.getFormularioUsuario(user.id);
             }
@@ -327,7 +394,6 @@ export default {
         async getFormularioUsuario(id = "") {
             Inertia.get("/admin/personas/formulario/" + id);
             //let res = await axios.get("/admin/usuarios/get-formulario/" + id);
-
             //console.log(res.data);
         },
 
@@ -347,6 +413,28 @@ export default {
             this.user_asignar = {};
             this.dialog_asignar = false;
         },
+
+        subirExcel(){
+            const input = document.getElementById("archivoExcel");
+            readXlsFile(input.files[0]).then((rows) => {
+                this.personasImp =  rows;
+            });
+        },
+        descargarExcel(){
+
+            const data = this.list_usuarios;
+            const filename = 'personas';
+            const exportType = exportFromJSON.types.xls
+            exportFromJSON({data,filename, exportType})
+        },
+        async guardarImportados(){
+            await axios.post("/admin/personas/savePersonasImport", {
+                data: this.personasImp,
+            });
+            this.list_usuarios = await this.getUsuarios();
+        }
+
+
     },
     async created() {
         this.drawer = this.$vuetify.breakpoint.width > 960 ? true : false;

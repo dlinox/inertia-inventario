@@ -1,5 +1,6 @@
 <template>
   <v-container>
+
     <v-row no-gutters dense>
       <v-col class="d-flex lef" cols="12" xs="12" sm="12" md="6" style=" padding-bottom:10px;">
         <v-row no-gutters dense class="" >
@@ -31,7 +32,7 @@
         <v-row no-gutters dense class="" >
             <v-col cols="12" xs="12" sm="4" md="4" class="cuadros" >
                 <v-row no-gutters>
-                    <v-col class="d-flex cuadro1" cols="6" xs="6" sm="12" md="12" >
+                    <v-col class="d-flex cuadro1" @click="abrirOficinaCargos" style="cursor: pointer;" cols="6" xs="6" sm="12" md="12" >
                         <CuadroDatos :datos="grafico5"/>
                     </v-col>
                     <v-col class="d-flex cuadro2" cols="6" xs="6" sm="12" md="12">
@@ -78,10 +79,10 @@
     >
       <v-card>
         <v-card-title>
-          <span class="text-h6">Registrados Hoy</span>
+          <span class="text-h6">Registrados Hoy </span>
         </v-card-title>
-        <v-card-text>
-            <RegistroXdia fecha='2022-11-05'/>
+        <v-card-text class="pa-0">
+            <RegistroXdia :fecha="hoydia"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -104,8 +105,8 @@
         <v-card-title>
           <span class="text-h6">Registrados Ayer</span>
         </v-card-title>
-        <v-card-text>
-            <RegistroXdia fecha='2022-11-04'/>
+        <v-card-text class="pa-0">
+            <RegistroXdia :fecha="ayer"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -128,7 +129,7 @@
         <v-card-title>
           <span class="text-h6">Avance Global</span>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="pa-0">
             <v-expansion-panels focusable accordion tile>
                 <v-expansion-panel
                     v-for="(item,i) in oficinas.oficinas"
@@ -136,8 +137,8 @@
                 >
                     <v-expansion-panel-header>
                         <div class="d-flex" style="justify-content:space-between">
-                            <span> <!-- {{item.codigo}}  - --> {{item.nombre}} </span>
-                             <span>Reg. <OficinaCount :oficina=item.id /></span>
+                            <span style="font-size:.9rem;"> <!-- {{item.codigo}}  - --> {{item.nombre}} </span>
+                             <span style="font-weight:bold; padding-right: 10px;">  <OficinaCount :oficina=item.id /></span>
                         </div>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
@@ -162,8 +163,47 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog
+      v-model="dialogoficinaCargos"
+      width="600px"
+    >
+      <v-card >
+        <v-card-title>
+          <span class="text-h6">Oficinas con cargos impresos</span>
+        </v-card-title>
+        <v-card-text class="pa-0">
+            <v-expansion-panels focusable accordion tile>
+                <v-expansion-panel
+                    v-for="(item,i) in oficinasCargos.oficinas"
+                    :key="i"
+                >
+                    <v-expansion-panel-header>
+                        <div class="d-flex" style="justify-content:space-between">
+                            <span style="font-size:.9rem;"> <span class="mdi mdi-domain mr-2" ></span> {{item.nombre}} </span>
+                             <span style="font-weight:bold; padding-right: 10px;"><!-- {{ item.registros }} --> </span>
+                        </div>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <div style="margin-left:25px;">
+                            <AreaCountCargos :oficina = item.id />
+                        </div>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
 
-
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary darken-1"
+            primary
+            @click="dialogoficinaCargos = false"
+          >
+            Aceptar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
 
     <v-dialog
@@ -174,7 +214,7 @@
         <v-card-title>
           <span class="text-h6">Registros en los ultimos días</span>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="pa-0">
             <v-expansion-panels focusable accordion tile>
                 <v-expansion-panel
                     v-for="(item,i) in dataxdias"
@@ -197,7 +237,7 @@
                                 <div><span> {{ itemD.nombre}} </span></div>
                                 <div><span style="color:grey; font-size: .7rem; "> {{ itemD.area }} - {{ itemD.usuario}} </span></div>
                               </div>
-                            </div> 
+                            </div>
                           </div>
                         </div>
                     </v-expansion-panel-content>
@@ -240,29 +280,6 @@
     </v-dialog>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <v-dialog
       v-model="dialogDocuments"
       width="600px"
@@ -271,7 +288,7 @@
         <v-card-title>
           <span class="text-h6">Cargos </span>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="pa-0">
           <v-simple-table dense>
             <template v-slot:default>
               <thead>
@@ -326,24 +343,30 @@ import Inventaristas from './Components/Inventaristas'
 import Barras from './Components/Barras.vue'
 import RegistroXdia from './Components/RegistroXdia.vue'
 import AreaCount from './Components/AreasCount.vue'
+import AreaCountCargos from './Components/AreasCountCargos.vue'
 import OficinaCount from './Components/OficinaCount.vue'
 
+
 export default {
-  components: {CuadroDatos, CircularData, SparkLine, Inventaristas, Barras, RegistroXdia, AreaCount, OficinaCount},
+  components: {CuadroDatos, CircularData, SparkLine, Inventaristas, Barras, RegistroXdia, AreaCount, AreaCountCargos, OficinaCount},
   metaInfo: { title: "Dashboard" },
   layout: Layout,
   data(){
     return{
+        hoydia: null,
+        ayer:null,
         dialog: false,
+        dialogoficinaCargos: false,
         dialogAyer: false,
         dialogGlobal: false,
         diaglogXdia: false,
         dialogInvetaristas:false,
         oficinas:[],
+        oficinasCargos:[],
         documentos:[],
         dataxdias:[],
         dataxdiaDatos:[],
-        dialogDocuments:[],
+        dialogDocuments:false,
         grafico1 : {
             color:'success',
             titulo:'Avance Global',
@@ -381,7 +404,8 @@ export default {
             nroanterior:"",
             nroactual:1022,
             label:'',
-            label2:'Oficinas Registradas'
+            label2:'Oficinas Registradas',
+
         },
         grafico6 : {
             nroanterior:"",
@@ -391,6 +415,10 @@ export default {
         }
 
     }
+  },
+  mounted(){
+    this.hoydia = this.getFecha(0)
+    this.ayer = this.getFecha(-1)
   },
 
   created(){
@@ -423,7 +451,7 @@ export default {
     },
 
     async getDocuments() {
-      let res = await axios.get("/admin/reportes/getDocumentsF/3,1900-01-01,2100-12-31");
+      let res = await axios.get("/admin/reportes/getDocumentsF/3,'1900-01-01','2100-12-31'");
       this.documentos = res.data.datos;
     },
 
@@ -437,6 +465,31 @@ export default {
         let res = await axios.get("/admin/reportes/OficinasAvanzadas");
         this.oficinas = res.data;
     },
+
+    async avanceOficinasCargos() {
+        let res = await axios.get("/admin/reportes/OficinasAvanzadasCargos");
+        this.oficinasCargos = res.data;
+    },
+
+    abrirOficinaCargos(){
+        this.avanceOficinasCargos();
+        this.dialogoficinaCargos = true;
+    },
+
+
+    getFecha(dates) {
+        var dd = new Date();
+        var n = dates || 0;
+        dd.setDate(dd.getDate() + n);
+        var y = dd.getFullYear();
+        var m = dd.getMonth() + 1;
+        var d = dd.getDate();
+        m = m < 10 ? "0" + m: m;
+        d = d < 10 ? "0" + d: d;
+        var day = y + "-" + m + "-" + d;
+        return day;
+    },
+
 
   }
 };

@@ -147,4 +147,43 @@ class PersonasController extends Controller
 
         return response()->json($this->response, 200);
     }
+
+    public function savePersonasImport(Request $request)
+    {
+        $datos= $request->data;
+
+        $n = $this->sz($request->data);
+
+        for($i=1; $i<=$n; $i++){
+            $peronsa = Persona::create([
+                'nombres' => $datos[$i][1],
+                'paterno' => $datos[$i][2],
+                'materno' => $datos[$i][3],
+                'dni' => $datos[$i][0],
+                'id_tipo_persona' => 1,
+            ]);
+        }
+        return $request->data[$n][0];
+        // $usuario = Persona::create([
+        //     'nombres' => $request->nombres,
+        //     'paterno' => $request->paterno,
+        //     'materno' => $request->materno,
+        //     'dni' => $request->dni,
+        //     'id_tipo_persona' => $request->id_tipo_persona,
+        // ]);
+
+        // $this->response['estado'] = true;
+        // $this->response['datos'] = $usuario;
+
+        // return response()->json($this->response, 200);
+    }
+    private function sz( $array){
+        $cont = 0;
+        foreach ($array as $key => $item) {
+            $cont = $key;
+        }
+        return $cont;
+    }
+
+
 }

@@ -25,11 +25,11 @@ class CreateInventarioTable extends Migration
             $table->string('tipo', 60)->nullable();
             $table->boolean('estado')->default(1);
             $table->string('observaciones', 150);
-            
+
             $table->string('idbienk', 60);
 
-            $table->char('nro_orden_compra', 5)->nullable();
-            $table->date('fecha_orden_compra')->nullable();
+            $table->char('nro_ordenech_compra', 5)->nullable();
+            $table->date('fa_orden_compra')->nullable();
 
             $table->char('fte_financiamiento', 2)->nullable();
 
@@ -52,14 +52,12 @@ class CreateInventarioTable extends Migration
             $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_usuario');
             $table->unsignedBigInteger('id_estado');
-            $table->unsignedBigInteger('id_area_persona')->nullable();
 
             $table->foreign('id_persona')->references('id')->on('persona');
             //$table->foreign('idpersona_otro')->references('id')->on('persona');
             $table->foreign('id_area')->references('id')->on('area');
             $table->foreign('id_usuario')->references('id')->on('users');
             $table->foreign('id_estado')->references('id')->on('estado');
-            $table->foreign('id_area_persona')->references('id')->on('area_persona');
 
             $table->timestamps();
         });
