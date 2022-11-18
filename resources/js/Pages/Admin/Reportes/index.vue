@@ -305,6 +305,8 @@ export default {
         },
         ofiE: function(){
             this.getAreas();
+            this.areE = null;
+            this.perE = null;
         }
 
     },
@@ -361,7 +363,7 @@ export default {
                 codigo.indexOf(searchText) > -1
              );
         },
-        
+
         customFilterAreas(item, queryText, itemText) {
             const nombre = item.nombre.toLowerCase();
             const codigo = item.codigo.toLowerCase();

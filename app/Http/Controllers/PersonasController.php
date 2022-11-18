@@ -46,7 +46,7 @@ class PersonasController extends Controller
 
     public function getPersonasByAreaInvNoR($id)
     {
-        $res = DB::select('SELECT *, concat(persona.nombres," ",persona.paterno," ",persona.materno) as nombre from persona WHERE id IN (SELECT id_persona FROM inventario where id_area = '.$id.') AND ID NOT IN (SELECT ID_PERSONA from area_persona WHERE ID_AREA = '.$id.' );');
+        $res = DB::select('SELECT *, concat(persona.nombres," ",persona.paterno," ",persona.materno) as nombre from persona WHERE id IN (SELECT id_persona FROM inventario where id_area = '.$id.') AND ID NOT IN (SELECT ID_PERSONA from area_persona WHERE ID_AREA = '.$id.' AND estado = 0 );');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -55,7 +55,7 @@ class PersonasController extends Controller
 
     public function getPersonasByArea($id){
 
-        $res = DB::select('SELECT * FROM PERSONA WHERE ID IN (SELECT area_persona.id_persona FROM `area_persona` WHERE id_area = ' . $id . ')');
+        $res = DB::select('SELECT * FROM PERSONA WHERE ID IN (SELECT area_persona.id_persona FROM `area_persona` WHERE id_area = ' . $id . ' )');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

@@ -137,7 +137,7 @@
                 >
                     <v-expansion-panel-header>
                         <div class="d-flex" style="justify-content:space-between">
-                            <span style="font-size:.9rem;"> <!-- {{item.codigo}}  - --> {{item.nombre}} </span>
+                            <span style="font-size:.9rem;"> <span class="mdi mdi-domain mr-2" ></span> {{item.nombre}} </span>
                              <span style="font-weight:bold; padding-right: 10px;">  <OficinaCount :oficina=item.id /></span>
                         </div>
                     </v-expansion-panel-header>

@@ -44,7 +44,7 @@
                                 first-day-of-week = "1"
                                 v-model="date"
                                 :active-picker.sync="activePicker"
-                                :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+
                                 min="2010-01-01"
                             ></v-date-picker>
                         </v-menu>
@@ -79,7 +79,7 @@
                                 first-day-of-week = "1"
                                 v-model="datef"
                                 :active-picker.sync="activePickerf"
-                                :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+
                                 min="2010-01-01"
                             ></v-date-picker>
                         </v-menu>
