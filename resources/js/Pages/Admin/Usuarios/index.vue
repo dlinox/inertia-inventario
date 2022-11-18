@@ -256,6 +256,7 @@
         </v-dialog>
     </div>
 </template>
+
 <script>
 import Layout from "@/Layouts/AdminLayout";
 import SelectOficina from "@/components/autocomplete/SelectOficina.vue";
@@ -364,7 +365,7 @@ export default {
         },
 
         async getFormularioUsuario(id = "") {
-            Inertia.get("/admin/usuarios/formulario/"+ id );
+            Inertia.get("/admin/usuarios/formulario/" + id);
             //let res = await axios.get("/admin/usuarios/get-formulario/" + id);
 
             //console.log(res.data);
@@ -427,6 +428,7 @@ export default {
         },
 
         async oficina_asig(val) {
+            console.log('aquiiii');
             if (!val) return;
             let res = await axios.get("/get-data/areas/by-oficina/" + val);
             this.areas_asig = res.data.datos;

@@ -21,7 +21,6 @@
                         outlined
                         dense
                     ></v-text-field>
-
                 </v-toolbar>
             </div>
         </div>
@@ -56,7 +55,6 @@
                             dense
                             clearable
                         ></v-autocomplete>
-
                     </div>
                 </v-container>
             </v-navigation-drawer>
@@ -72,9 +70,24 @@
                                         <th class="text-left">A. Materno</th>
                                         <th class="text-left">DNI</th>
                                         <th class="text-left">Tipo</th>
-                                        <th class="text-left d-flex" style="width:60px;">
-                                            <v-icon class="mr-1" color="primary" style="cursor:pointer" @click="dialogImpExp = true">mdi-arrow-up-bold-box-outline</v-icon>
-                                            <v-icon class="ml-1" color="primary" style="cursor:pointer" @click="descargarExcel()">mdi-arrow-down-bold-box-outline</v-icon>
+                                        <th
+                                            class="text-left d-flex"
+                                            style="width: 60px"
+                                        >
+                                            <v-icon
+                                                class="mr-1"
+                                                color="primary"
+                                                style="cursor: pointer"
+                                                @click="dialogImpExp = true"
+                                                >mdi-arrow-up-bold-box-outline</v-icon
+                                            >
+                                            <v-icon
+                                                class="ml-1"
+                                                color="primary"
+                                                style="cursor: pointer"
+                                                @click="descargarExcel()"
+                                                >mdi-arrow-down-bold-box-outline</v-icon
+                                            >
                                         </th>
                                     </tr>
                                 </thead>
@@ -89,7 +102,7 @@
                                             {{ item.materno }}
                                         </td>
 
-                                       <td>
+                                        <td>
                                             {{ item.dni }}
                                         </td>
 
@@ -166,8 +179,8 @@
                             v-model="page"
                             class=""
                             :length="pages"
+                            :total-visible="5"
                         ></v-pagination>
-
                     </v-card>
                 </v-container>
             </div>
@@ -217,33 +230,36 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog
-            v-model="dialogImpExp"
-            width="600px"
-            >
+        <v-dialog v-model="dialogImpExp" width="600px">
             <v-card>
                 <v-card-title>
                     <span class="text-h6">Importar Personas </span>
                 </v-card-title>
                 <v-card-text>
-
-                    <v-file-input id="archivoExcel" type="file"  label="File input" @change="subirExcel()" append-icon=""></v-file-input>
+                    <v-file-input
+                        id="archivoExcel"
+                        type="file"
+                        label="File input"
+                        @change="subirExcel()"
+                        append-icon=""
+                    ></v-file-input>
                     <v-simple-table v-if="personasImp.length > 0">
-                            <template v-slot:default>
-                                <tbody>
-                                    <tr v-for="(item, index) in personasImp" :key="index">
-                                        <td>{{ item[0] }}</td>
-                                        <td>{{ item[1] }}</td>
-                                        <td>{{ item[2] }}</td>
-                                        <td>{{ item[3] }}</td>
-                                    </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
-
+                        <template v-slot:default>
+                            <tbody>
+                                <tr
+                                    v-for="(item, index) in personasImp"
+                                    :key="index"
+                                >
+                                    <td>{{ item[0] }}</td>
+                                    <td>{{ item[1] }}</td>
+                                    <td>{{ item[2] }}</td>
+                                    <td>{{ item[3] }}</td>
+                                </tr>
+                            </tbody>
+                        </template>
+                    </v-simple-table>
                 </v-card-text>
                 <v-card-actions>
-
                     <v-spacer></v-spacer>
                     <v-btn
                         color="primary darken-1"
@@ -264,9 +280,7 @@
                     </v-btn>
                 </v-card-actions>
             </v-card>
-            </v-dialog>
-
-
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -286,14 +300,13 @@ export default {
 
     data: () => ({
         tipos: [
-            {'id': 1, 'name': 'Docente'},
-            {'id': 2, 'name': 'Administrativo'},
-            {'id': 3, 'name': 'C.A.S.'},
+            { id: 1, name: "Docente" },
+            { id: 2, name: "Administrativo" },
+            { id: 3, name: "C.A.S." },
         ],
         dialog_asignar: false,
         user_asignar: {},
         itemsOptions: [
-
             { text: "Editar", icon: "mdi-pen" },
             { text: "Eliminar", icon: "mdi-delete" },
         ],
@@ -319,15 +332,14 @@ export default {
         list_usuarios: [],
 
         dialogImpExp: false,
-        personasImp:[],
+        personasImp: [],
 
-        headerImport:[
-            {text:'Dni', value:'0'},
-            {text:'Nombres ', value:'1'},
-            {text:'Paterno', value:'2'},
-            {text:'Materno', value:'3'},
-        ]
-
+        headerImport: [
+            { text: "Dni", value: "0" },
+            { text: "Nombres ", value: "1" },
+            { text: "Paterno", value: "2" },
+            { text: "Materno", value: "3" },
+        ],
     }),
     computed: {
         size_display: {
@@ -343,11 +355,7 @@ export default {
         },
     },
     methods: {
-        async getUsuarios(
-            term = "",
-            tipo = "",
-            page = 1
-        ) {
+        async getUsuarios(term = "", tipo = "", page = 1) {
             this.loading_table = true;
             let res = await axios.post(
                 "/admin/personas/get-personas?page=" + page,
@@ -385,8 +393,7 @@ export default {
             this.list_usuarios = res;
         },
         SelectMenu(op, user) {
-
-            if (op =="Editar") {
+            if (op == "Editar") {
                 this.getFormularioUsuario(user.id);
             }
         },
@@ -414,27 +421,24 @@ export default {
             this.dialog_asignar = false;
         },
 
-        subirExcel(){
+        subirExcel() {
             const input = document.getElementById("archivoExcel");
             readXlsFile(input.files[0]).then((rows) => {
-                this.personasImp =  rows;
+                this.personasImp = rows;
             });
         },
-        descargarExcel(){
-
+        descargarExcel() {
             const data = this.list_usuarios;
-            const filename = 'personas';
-            const exportType = exportFromJSON.types.xls
-            exportFromJSON({data,filename, exportType})
+            const filename = "personas";
+            const exportType = exportFromJSON.types.xls;
+            exportFromJSON({ data, filename, exportType });
         },
-        async guardarImportados(){
+        async guardarImportados() {
             await axios.post("/admin/personas/savePersonasImport", {
                 data: this.personasImp,
             });
             this.list_usuarios = await this.getUsuarios();
-        }
-
-
+        },
     },
     async created() {
         this.drawer = this.$vuetify.breakpoint.width > 960 ? true : false;
@@ -448,10 +452,7 @@ export default {
         async usuario_search(val) {
             if (!val) return;
 
-            let res = await this.getUsuarios(
-                val,
-                this.tipo,
-            );
+            let res = await this.getUsuarios(val, this.tipo);
             this.list_usuarios = res;
         },
         async page(val, old_val) {

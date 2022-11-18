@@ -8,7 +8,7 @@
 
         <v-card tile>
             <v-toolbar>
-                <v-app-bar-nav-icon  @click="dialog = false"> 
+                <v-app-bar-nav-icon @click="dialog = false">
                     <v-icon>mdi-arrow-left</v-icon>
                 </v-app-bar-nav-icon>
 
@@ -63,9 +63,9 @@
                             <thead class="grey lighten-3">
                                 <tr>
                                     <th class="text-left">Estado</th>
-                                    <th class="text-left">Nombre</th>
+                                    <th class="text-left">Descripcion</th>
                                     <th class="text-left">Codigo</th>
-                                    <th class="text-left">Cod. Ant.</th>
+                                    <th class="text-left">Cod. SIGA</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,36 +77,18 @@
                                     ]"
                                     @click="onSelectColum(item, index)"
                                     @dblclick="onSelectColumDobleClik(item)"
-                                    disabled
                                 >
                                     <td>
-                                        <template v-if="item.estado == 0">
+                                        <template v-if="item.registrado == 1">
                                             <v-chip
                                                 small
                                                 color="grey"
                                                 outlined
                                                 class="ma-2"
                                             >
-                                                <small>BLOQUEDAO</small>
+                                                <small>REGISTRADO</small>
                                             </v-chip>
                                         </template>
-
-                                        <template
-                                            v-else-if="item.id_inventario"
-                                        >
-                                            <v-chip
-                                                small
-                                                color="green"
-                                                outlined
-                                                class="ma-2"
-                                            >
-                                                <small
-                                                    >REGISTRADO
-                                                    {{ item.estado }}
-                                                </small>
-                                            </v-chip>
-                                        </template>
-
                                         <template v-else>
                                             <v-chip
                                                 small
@@ -118,10 +100,10 @@
                                             </v-chip>
                                         </template>
                                     </td>
-                                    <td>{{ item.nombre }}</td>
+                                    <td>{{ item.descripcion }}</td>
                                     <td>{{ item.codigo }}</td>
                                     <td>
-                                        {{ item.codigo_anterior }}
+                                        {{ item.codigo_siga }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -134,6 +116,7 @@
                             v-model="page"
                             class=""
                             :length="pages"
+                            :total-visible="5"
                         ></v-pagination>
                         <v-spacer></v-spacer>
                     </v-card-actions>
@@ -184,6 +167,8 @@ export default {
             this.tr_item = item;
         },
         onSelectColumDobleClik(item) {
+
+            item.registrado = item.registrado == 1 ? true : false;
             this.$emit("setData", item);
             this.dialog = false;
 
@@ -206,6 +191,7 @@ export default {
         },
 
         SeleccionarBien() {
+            tr_item.registrado = tr_item.registrado == 1 ? true : false;
             this.$emit("setData", this.tr_item);
             this.dialog = false;
             this.bienes_result = [];

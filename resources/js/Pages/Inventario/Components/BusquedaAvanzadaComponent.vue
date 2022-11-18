@@ -126,12 +126,11 @@
                             <thead class="grey lighten-3">
                                 <tr>
                                     <th class="text-left">Estado</th>
-                                    <th class="text-left">Nombre</th>
+                                    <th class="text-left">Descripcion</th>
                                     <th class="text-left">Codigo</th>
-                                    <th class="text-left">Cod. Ant.</th>
+                                    <th class="text-left">Cod. SIGA</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 <tr
                                     v-for="(item, index) in bienes_result"
@@ -141,32 +140,16 @@
                                     ]"
                                     @click="onSelectColum(item, index)"
                                     @dblclick="onSelectColumDobleClik(item)"
-                                    disabled
                                 >
                                     <td>
-                                        <template v-if="item.id_inventario">
-                                            <v-chip
-                                                small
-                                                color="green"
-                                                outlined
-                                                class="ma-2"
-                                            >
-                                                <small>REGISTRADO</small>
-                                            </v-chip>
-                                        </template>
-                                        <template
-                                            v-else-if="
-                                                item.id_inventario &&
-                                                item.bloqueado
-                                            "
-                                        >
+                                        <template v-if="item.registrado == 1">
                                             <v-chip
                                                 small
                                                 color="grey"
                                                 outlined
                                                 class="ma-2"
                                             >
-                                                <small>NO REGISTRADO</small>
+                                                <small>REGISTRADO</small>
                                             </v-chip>
                                         </template>
                                         <template v-else>
@@ -180,10 +163,10 @@
                                             </v-chip>
                                         </template>
                                     </td>
-                                    <td>{{ item.nombre }}</td>
+                                    <td>{{ item.descripcion }}</td>
                                     <td>{{ item.codigo }}</td>
                                     <td>
-                                        {{ item.codigo_anterior }}
+                                        {{ item.codigo_siga }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -257,10 +240,12 @@ export default {
         },
         onSelectColumDobleClik(item) {
             console.log("Doble clic");
+            item.registrado = item.registrado == 1 ? true : false;
             this.$emit("setData", item);
             this.dialog = false;
         },
         SeleccionarBien() {
+            tr_item.registrado = tr_item.registrado == 1 ? true : false;
             this.$emit("setData", this.tr_item);
             this.dialog = false;
         },
@@ -372,5 +357,4 @@ export default {
     color: blue;
     font-weight: 600;
 }
-
 </style>

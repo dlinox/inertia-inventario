@@ -83,7 +83,7 @@ class PersonasController extends Controller
                     ->orWhere('persona.materno', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('persona.dni', 'LIKE', '%' . $request->term . '%');
             })
-            ->paginate(2);
+            ->paginate(10);
 
 
 

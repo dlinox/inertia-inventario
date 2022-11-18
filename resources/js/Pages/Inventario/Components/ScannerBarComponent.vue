@@ -62,9 +62,15 @@ export default {
     }),
     methods: {
         async onDecode(codigo) {
-            let res = await getBienKByCodigo(codigo);
-            this.$emit("setData", res);
 
+            let c = '742272740003';
+            let res = await axios.get("/autocomplete/bienes/" + c);
+
+            let item = res.data.datos[0];
+
+            item.registrado = item.registrado == 1 ? true : false;
+
+            this.$emit("setData", item);
             this.dialog = false;
         },
 

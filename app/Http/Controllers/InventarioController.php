@@ -217,19 +217,19 @@ class InventarioController extends Controller
 
     public function getBienes(Request $request)
     {
-        $res = BienK::select('bienk.*', 'area.id_oficina', 'inventario.id as id_inventario', 'inventario.estado')
+
+        $res = BienK::select('bienk.codigo', 'bienk.codigo_siga', 'bienk.descripcion', 'bienk.registrado')
             ->join('area', 'area.id', '=', 'bienk.id_area')
-            ->leftjoin('inventario', 'inventario.idbienk', '=', 'bienk.id')
             ->where(function ($query) use ($request) {
 
                 if ($request->mostrar == 'Registrados') {
                     $temp = $query
                         ->where('bienk.id_area', $request->area)
-                        ->whereNotNull('inventario.id');
+                        ->where('bienk.registrado', 1);
                 } else if ($request->mostrar == 'Sin registrar') {
                     $temp = $query
                         ->where('bienk.id_area', $request->area)
-                        ->whereNull('inventario.id');
+                        ->where('bienk.registrado', 0);
                 } else {
                     $temp = $query
                         ->where('bienk.id_area', $request->area);
@@ -240,9 +240,9 @@ class InventarioController extends Controller
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('bienk.codigo', 'LIKE', '%' . $request->term . '%')
-                    ->orWhere('bienk.codigo_anterior', 'LIKE', '%' . $request->term . '%')
-                    ->orWhere('bienk.nombre', 'LIKE', '%' . $request->term . '%');
-            })->paginate(2);
+                    ->orWhere('bienk.codigo_siga', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('bienk.descripcion', 'LIKE', '%' . $request->term . '%');
+            })->paginate(10);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

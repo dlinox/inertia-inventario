@@ -522,6 +522,7 @@ export default {
     }),
     methods: {
         async Guardar() {
+            console.log(this.form_data);
             if (this.$refs.form.validate()) {
                 this.loadin_form = true;
                 if (this.data_emit.registrado && this.is_edit) {

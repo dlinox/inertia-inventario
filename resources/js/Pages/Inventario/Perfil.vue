@@ -1,7 +1,10 @@
 <template>
-    <v-container class="my-3">
+    <v-container class="my-3 main-page">
         <v-card tile>
-            <v-card-title> Datos del Usuario </v-card-title>
+            <v-card-title>
+                <v-btn tile @click="atras" icon class="mr-2"> <v-icon >mdi-arrow-left</v-icon> </v-btn>
+                Datos del Usuario
+            </v-card-title>
             <v-divider></v-divider>
             <v-row class="pa-4" no-gutter>
                 <v-col cols="12" sm="4">
@@ -60,7 +63,7 @@
                 </v-col>
             </v-row>
         </v-card>
-
+        <!--
         <v-card tile>
             <v-card-title> Areas Asignadas </v-card-title>
             <v-divider></v-divider>
@@ -137,6 +140,7 @@
                 </v-expansion-panel>
             </v-expansion-panels>
         </v-card>
+    -->
 
         <v-dialog
             v-model="dialog_change_pass"
@@ -251,14 +255,23 @@ export default {
                 }
             }
         },
+        atras(){
+            this.$inertia.get("/inventario/");
+        }
     },
     watch: {},
 
     async created() {
         console.log(this.data);
         if (this.datos) {
-            await this.getInformacionArea();
+            // await this.getInformacionArea();
         }
     },
 };
 </script>
+
+<style scoped>
+.main-page {
+    min-height: 90vh;
+}
+</style>

@@ -116,7 +116,7 @@ class AreasController extends Controller
         // if ($usuario != "") array_push($query_select, DB::raw("IF( users.id = $usuario ,  TRUE , FALSE) AS usuario"));
 
         $res = Area::select('area.*')
-            ->join('grupo', 'grupo.id_area', '=', 'area.id')
+            ->leftjoin('grupo', 'grupo.id_area', '=', 'area.id')
             ->where('area.id_oficina', $oficina)
             ->where('grupo.id_usuario', '!=', $usuario)
             ->get();
