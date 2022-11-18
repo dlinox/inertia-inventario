@@ -22,37 +22,65 @@
 
                     <v-col cols="12" sm="auto" class="ml-auto py-2 py-md-3">
                         <AreasAsignadasComponent
+                            v-if="!is_new"
                             @setData="data_emit = $event"
                             :areas="mis_areas"
                         />
                     </v-col>
-                    <v-col cols="12">
-                        <div
-                            class="d-flex flex-wrap align-items-center justify-space-between"
-                        >
-                            <ScannerBarComponent
-                                @setData="data_emit = $event"
-                            />
 
-                            <SearchCodeComponente
-                                class="order-last order-sm-2"
-                                @setData="data_emit = $event"
-                            />
+                    <template v-if="is_new">
+                        <v-col cols="12 my-2">
+                            <v-btn
+                                class="order-sm-4"
+                                dark
+                                outlined
+                                block
+                                color="red"
+                                @click="is_new = false"
+                            >
+                                <v-icon left> mdi-close </v-icon>
+                                Cancelar
+                            </v-btn>
+                        </v-col>
+                    </template>
 
-                            <BusquedaAvanzadaComponent
-                                @setData="data_emit = $event"
-                            />
+                    <template v-else>
+                        <v-col cols="12 my-2">
+                            <div
+                                class="d-flex flex-wrap align-items-center justify-space-between"
+                            >
+                                <ScannerBarComponent
+                                    @setData="data_emit = $event"
+                                />
 
-                            <FormNuevoComponent />
-                        </div>
-                    </v-col>
+                                <SearchCodeComponente
+                                    class="order-last order-sm-2"
+                                    @setData="data_emit = $event"
+                                />
+
+                                <BusquedaAvanzadaComponent
+                                    @setData="data_emit = $event"
+                                />
+
+                                <v-btn
+                                    class="order-sm-4"
+                                    dark
+                                    outlined
+                                    color="primary"
+                                    @click="is_new = true"
+                                >
+                                    <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                            </div>
+                        </v-col>
+                    </template>
                 </v-row>
 
                 <v-form ref="form" v-model="form_valid" lazy-validation>
                     <v-row class="" align="center">
                         <v-col cols="12" class="pb-4 pt-0">
                             <v-alert
-                                v-if="registrado && activo"
+                                v-if="data_emit.registrado && form_data.estado"
                                 type="warning"
                                 border="left"
                             >
@@ -69,7 +97,7 @@
                                 <template v-if="is_edit">
                                     <v-btn
                                         color="red"
-                                        @click="CancelarEdicion()"
+                                        @click="editInventario(false)"
                                     >
                                         Cancelar
                                     </v-btn>
@@ -86,9 +114,7 @@
 
                                     <v-btn
                                         color="secondary"
-                                        @click="
-                                            getInventario(form_data.registrado)
-                                        "
+                                        @click="editInventario(true)"
                                     >
                                         Editar
                                     </v-btn>
@@ -96,7 +122,7 @@
                             </v-alert>
 
                             <v-alert
-                                v-if="!activo && registrado"
+                                v-if="data_emit.registrado && !form_data.estado"
                                 type="warning"
                                 border="left"
                                 color="blue-grey"
@@ -114,7 +140,7 @@
                                 outlined
                                 v-model="form_data.codigo"
                                 :rules="nameRules"
-                                disabled
+                                :disabled="!is_new"
                                 required
                             ></v-text-field>
                         </v-col>
@@ -126,7 +152,7 @@
                                 outlined
                                 v-model="form_data.descripcion"
                                 :rules="nameRules"
-                                disabled
+                                :disabled="!is_new"
                                 required
                             ></v-text-field>
                         </v-col>
@@ -137,7 +163,7 @@
                                 label="Marca"
                                 outlined
                                 v-model="form_data.marca"
-                                disabled
+                                :disabled="!is_new"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
@@ -148,7 +174,7 @@
                                 outlined
                                 v-model="form_data.modelo"
                                 :rules="nameRules"
-                                disabled
+                                :disabled="!is_new"
                                 required
                             ></v-text-field>
                         </v-col>
@@ -160,7 +186,7 @@
                                 outlined
                                 v-model="form_data.nro_serie"
                                 :rules="nameRules"
-                                disabled
+                                :disabled="!is_new"
                                 required
                             ></v-text-field>
                         </v-col>
@@ -173,7 +199,7 @@
                                 item_text="nombre"
                                 item_value="id"
                                 :rules="nameRules"
-                                :disabled="editar_registrado"
+                                :disabled="disable_input"
                             />
                         </v-col>
 
@@ -192,7 +218,7 @@
                                 :loading="loading_search_persona"
                                 :rules="nameRules"
                                 required
-                                :disabled="editar_registrado"
+                                :disabled="disable_input"
                             >
                                 <template v-slot:no-data>
                                     <v-list-item>
@@ -234,13 +260,20 @@
                                 </template>
                             </v-autocomplete>
 
-                            <template v-if="!respo_2 && !form_data.idpersona_otro">
+                            <template
+                                v-if="
+                                    !show_persona_otro &&
+                                    !form_data.idpersona_otro
+                                "
+                            >
                                 <v-btn
-                                    :disabled="editar_registrado"
+                                    :disabled="disable_input"
                                     class="ml-2"
                                     dark
                                     color="primary"
-                                    @click="respo_2 = !respo_2"
+                                    @click="
+                                        show_persona_otro = !show_persona_otro
+                                    "
                                 >
                                     <v-icon>mdi-account-plus</v-icon>
                                 </v-btn>
@@ -248,7 +281,7 @@
                         </v-col>
 
                         <v-col
-                            v-if="respo_2 || form_data.idpersona_otro"
+                            v-if="show_persona_otro || form_data.idpersona_otro"
                             cols="12"
                             class="pb-1 pt-0 d-flex"
                         >
@@ -266,7 +299,7 @@
                                 :loading="loading_search_persona_otro"
                                 :rules="nameRules"
                                 required
-                                :disabled="editar_registrado"
+                                :disabled="disable_input"
                             >
                                 <template v-slot:no-data>
                                     <v-list-item>
@@ -311,16 +344,17 @@
                                 class="ml-2"
                                 dark
                                 color="red"
-                                @click="respo_2 = !respo_2"
+                                @click="show_persona_otro = !show_persona_otro"
+                                :disabled="disable_input"
                             >
-                                <v-icon>mdi-account-minus</v-icon>
+                                <v-icon dark>mdi-account-minus</v-icon>
                             </v-btn>
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
                             <v-autocomplete
                                 v-model="form_data.id_oficina"
-                                :disabled="editar_registrado"
+                                :disabled="disable_input"
                                 :items="oficinas"
                                 :rules="nameRules"
                                 label="Oficina"
@@ -331,7 +365,6 @@
                                 clearable
                                 dense
                                 outlined
-                                
                             >
                                 <template v-slot:selection="data">
                                     <small>
@@ -356,7 +389,7 @@
                         <v-col cols="12" class="pb-1 pt-0">
                             <v-autocomplete
                                 v-model="form_data.id_area"
-                                :disabled="editar_registrado"
+                                :disabled="disable_input"
                                 clearable
                                 class="mt-0 pt-0"
                                 dense
@@ -369,9 +402,10 @@
                                 required
                             ></v-autocomplete>
                         </v-col>
+
                         <v-col cols="12" class="pb-1 pt-0">
                             <v-textarea
-                                :disabled="editar_registrado"
+                                :disabled="disable_input"
                                 class="mt-0 pt-0"
                                 label="Observacion"
                                 dense
@@ -382,9 +416,10 @@
                                 required
                             ></v-textarea>
                         </v-col>
-                        <v-col cols="12" class="pb-1 pt-0">
+
+                        <v-col cols="12" class="pb-3 pt-0">
                             <v-btn
-                                :disabled="editar_registrado"
+                                :disabled="disable_input"
                                 block
                                 class="mr-2"
                                 color="primary"
@@ -401,25 +436,31 @@
 
         <v-dialog v-model="dialog_delete" max-width="320">
             <v-card>
-                <div class="pt-4">
-                    <h4 class="text-center">Seguro de eliminar el registro?</h4>
+                <div class="pa-3">
+                    <h4 class="text-center my-3">Seguro de eliminar el registro?</h4>
+
+                    <v-divider></v-divider>
+
+                    <div class="d-flex justify-center mt-3">
+                        <v-btn
+                            color="red darken-1"
+                            text
+                            dense
+                            @click="dialog_delete = false"
+                        >
+                            Cancelar
+                        </v-btn>
+
+                        <v-btn
+                            color="green"
+                            text
+                            dense
+                            @click="deleteInventario()"
+                        >
+                            Aceptar
+                        </v-btn>
+                    </div>
                 </div>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-
-                    <v-btn
-                        color="red darken-1"
-                        text
-                        @click="dialog_delete = false"
-                    >
-                        Cancelar
-                    </v-btn>
-
-                    <v-btn color="primary" text @click="EliminarInventario()">
-                        Aceptar
-                    </v-btn>
-                </v-card-actions>
             </v-card>
         </v-dialog>
     </div>
@@ -435,7 +476,6 @@ import AreasAsignadasComponent from "@/Pages/Inventario/Components/AreasAsignada
 import BusquedaAvanzadaComponent from "@/Pages/Inventario/Components/BusquedaAvanzadaComponent.vue";
 import SearchCodeComponente from "./Components/FormComponents/SearchCodeComponente.vue";
 import ScannerBarComponent from "./Components/ScannerBarComponent.vue";
-import FormNuevoComponent from "./Components/FormNuevoComponent.vue";
 import SimpleAutoCompleteInput from "./Components/FormComponents/SimpleAutoCompleteInput.vue";
 
 export default {
@@ -444,7 +484,6 @@ export default {
         BusquedaAvanzadaComponent,
         SearchCodeComponente,
         ScannerBarComponent,
-        FormNuevoComponent,
         SimpleAutoCompleteInput,
     },
     props: {
@@ -458,6 +497,7 @@ export default {
         form_data: {},
         form_valid: true,
         loadin_form: false,
+        disable_input: false,
 
         areas_by_oficina: [],
 
@@ -470,70 +510,55 @@ export default {
         loading_search_persona_otro: false,
 
         data_emit: {},
-        
+
         dialog_delete: false,
 
         is_edit: false,
+        is_new: false,
 
-        respo_2: false,
+        show_persona_otro: false,
 
         nameRules: [(v) => !!v || "*Obligatorio"],
-
-        registrado: false,
-        activo: null,
-        editar_registrado: false,
     }),
     methods: {
-        async EliminarInventario() {
-            this.loadin_form = true;
-            let res = await axios.post(
-                "/inventario/eliminar-inventario",
-                this.data
-            );
-
-            this.registrado = false;
-            this.activo = null;
-            this.$refs.form.reset();
-            this.loadin_form = false;
-            this.dialog_delete = false;
-        },
-
         async Guardar() {
             if (this.$refs.form.validate()) {
                 this.loadin_form = true;
-
-                console.log(this.form_data);
-                
-                /*let res = await axios.post(
-                    "/inventario/guardar-inventario",
-                    this.data
-                );
-                console.log(res.data);*/
-
-                //this.registrado = false;
-                //this.activo = null;
-                //this.$refs.form.reset();
+                if (this.data_emit.registrado && this.is_edit) {
+                    await this.updateInventario();
+                } else {
+                    await this.createInventario();
+                }
+                this.resetAll();
                 this.loadin_form = false;
             }
         },
 
-        async getInventario(id) {
+        async createInventario() {
+            let res = await axios.post(
+                "/inventario/create-inventario",
+                this.form_data
+            );
+            console.log(res.data);
+        },
+        async updateInventario() {
+            let res = await axios.post(
+                "/inventario/update-inventario",
+                this.form_data
+            );
+            console.log(res.data);
+        },
+
+        async deleteInventario() {
+            
             this.loadin_form = true;
-
-            let res = await axios.get("/inventario/get-inventario/" + id);
-
-            //this.data.id_inventario = id;
-
-            this.activo =
-                res.data.datos.estado != null
-                    ? res.data.datos.estado == 0
-                        ? false
-                        : true
-                    : null;
-
-            await this.LLenarDatos(res.data.datos);
-            this.data.id_inventario = id;
-            this.is_edit = true;
+            let res = await axios.post(
+                "/inventario/delete-inventario",
+                this.form_data
+            );
+            console.log(res.data);
+            this.resetAll();
+            this.dialog_delete = false;
             this.loadin_form = false;
         },
 
@@ -542,61 +567,7 @@ export default {
             return res.data.datos;
         },
 
-        async BuscarOficinas(term) {
-            let res = await axios.get("/inventario/search-oficinas/" + term);
-            return res.data.datos;
-        },
-
-        async BuscarCodigos(codigo) {
-            let res = await axios.get("/inventario/search-codigos/" + codigo);
-            return res.data.datos;
-        },
-
-        CancelarEdicion() {
-            this.is_edit = false;
-            this.editar_registrado = true;
-
-            console.log("awuiiiii");
-            // this.resetAll();
-        },
-
-        async LLenarDatos(item) {
-            let res = await axios.get(
-                "/inventario/search-personas-by-id/" + item.id_persona
-            );
-
-            console.log(res.data.datos);
-
-            this.personas_res = res.data.datos;
-
-            if (item.idpersona_otro) {
-                let res = await axios.get(
-                    "/inventario/search-personas-by-id/" + item.idpersona_otro
-                );
-                this.personas_res_otro = res.data.datos;
-            }
-
-            let oficina = await axios.get(
-                "/inventario/search-oficina-by-id/" + item.id_oficina
-            );
-
-            this.oficinas_res.push(oficina.data.datos);
-
-            this.data = item;
-
-            console.log("aqui: " + item.id_inventario);
-
-            if (item.id_inventario != null) {
-                console.log("ya esta registrado");
-                this.editar_registrado = true;
-            } else {
-                console.log("es nuevo");
-                this.editar_registrado = false;
-            }
-        },
-
         personasFilter(item, queryText, itemText) {
-
             const nombres = item.nombres.toLowerCase();
             //const paterno = item.paterno.toLowerCase();
             //const materno = item.materno.toLowerCase();
@@ -611,41 +582,41 @@ export default {
                 dni.indexOf(searchText) > -1
             );
         },
-      
+
         resetAll() {
-            this.registrado = false;
-            this.activo = null;
-            this.editar_registrado = false;
+            this.form_data = {};
+            this.$refs.form.reset();
             this.is_edit = false;
-            this.data = {};
+            this.data_emit = false;
         },
 
         async getDataBien(item) {
             let res = await getBienByCodigo(item);
-
             this.form_data = res;
+            this.personas = [res.persona];
+            this.personas_otro = [res.persona_otro];
+        },
 
-            this.personas =  [res.persona];
-            console.log(res);
+        editInventario(val) {
+            this.is_edit = val;
+            this.disable_input = !val;
         },
     },
 
     watch: {
         async data_emit(item) {
+            if (!item) return;
+
             this.loadin_form = true;
             await this.getDataBien(item);
+            this.disable_input = item.registrado;
             this.loadin_form = false;
-            /* 
-            this.loadin_form = true;
-            this.registrado = val.id_inventario ? true : false;
-            this.activo =
-                val.estado != null ? (val.estado == 0 ? false : true) : null;
-            await this.LLenarDatos(val);
-            this.loadin_form = false;*/
+        },
+        is_new() {
+            this.resetAll();
         },
 
         async personas_search(val) {
-            console.log("personas search");
             if (!val) return;
             if (val.length < 2) return;
             this.loading_search_persona = true;
@@ -659,18 +630,8 @@ export default {
             if (val.length < 2) return;
             this.loading_search_persona_otro = true;
             let res = await this.BuscarPersonas(val);
-            this.personas_res_otro = res;
+            this.personas_otro = res;
             this.loading_search_persona_otro = false;
-        },
-
-        async oficinas_search(val) {
-            console.log("oficnas search");
-            if (!val) return;
-            if (val.length < 2) return;
-            this.oficinas_search_loading = true;
-            let res = await this.BuscarOficinas(val);
-            this.oficinas_res = res;
-            this.oficinas_search_loading = false;
         },
 
         "form_data.id_oficina": function (val) {

@@ -340,14 +340,105 @@ class InventarioController extends Controller
         return response()->json($this->response, 400);
     }
 
-    public function deleteInventario(Request $request)
+    public function getBienByCodigo(Request $request)
     {
+        if (!$request->registrado) {
+            $res = $this->bienK->getDataByCode($request->codigo);
+        } else {
+            $res = $this->inventario->getDataByCode($request->codigo);
+        }
 
-        $res = Inventario::where('codigo', $request->codigo)->first();
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function createInventario(Request $request)
+    {
+        $res = Inventario::create([
+            'codigo' => $request->codigo,
+            'codigo_siga' => $request->codigo_siga,
+            'descripcion' => $request->descripcion,
+            'modelo' => $request->modelo,
+            'marca' => $request->marca,
+            'nro_serie' => $request->nro_serie,
+            'anio_fabricacion' => $request->anio_fabricacion,
+            'nro_cargo_personal' => $request->nro_cargo_personal,
+            'fecha_cargo' => $request->fecha_cargo,
+            'nro_orden' => $request->nro_orden,
+            'fecha_compra' => $request->fecha_compra,
+            'proveedor_ruc' => $request->proveedor_ruc,
+            'nro_pecosa' => $request->nro_pecosa,
+            'fecha_pecosa' => $request->fecha_pecosa,
+            'vida_util' => $request->vida_util,
+            'fecha_vida_util' => $request->fecha_vida_util,
+            'valor_adquisicion' => $request->valor_adquisicion,
+            'valor_inicial' => $request->valor_inicial,
+            'valor_depreciacion' => $request->valor_depreciacion,
+            'fecha_baja_bien' => $request->fecha_baja_bien,
+            'clasificador' => $request->clasificador,
+            'sub_cta' => $request->sub_cta,
+            'mayor' => $request->mayor,
+            'observaciones' => $request->observaciones,
+
+            'tipo' => $request->codigo,
+            'idbienk' => $request->id,
+            'id_persona' => $request->id_persona,
+            'idpersona_otro' => $request->idpersona_otro,
+            'id_area' => $request->id_area,
+            'id_usuario' => Auth::user()->id,
+            'id_estado' => $request->id_estado,
+        ]);
 
         if ($res) {
 
+            if ($res->idbienk) {
+                Bienk::select('registrado')->where('id', $res->idbienk)->update(['registrado' => 1]);
+            }
+
+            $this->response['estado'] = true;
+            $this->response['datos'] = $res;
+            return response()->json($this->response, 200);
+        }
+
+
+        $this->response['mensaje'] = 'Error';
+        $this->response['estado'] = true;
+        $this->response['codigo'] =  $request->id_area;
+        return response()->json($this->response, 200);
+    }
+    public function updateInventario(Request $request)
+    {
+        $data = [
+            'id_persona' => $request->id_persona,
+            'idpersona_otro' => $request->idpersona_otro,
+            'id_area' => $request->id_area,
+            'id_usuario' => Auth::user()->id,
+            'id_estado' => $request->id_estado,
+            'observaciones' => $request->observaciones,
+        ];
+
+        $res = Inventario::where('codigo', $request->codigo)
+            ->update($data);
+
+        if ($res) {
+            $this->response['estado'] = true;
+            $this->response['datos'] = $res;
+            $this->response['mensaje'] = 'Editando';
+            return response()->json($this->response, 200);
+        }
+
+        $this->response['mensaje'] = 'Error al editar';
+        $this->response['estado'] = false;
+        return response()->json($this->response, 200);
+    }
+
+    public function deleteInventario(Request $request)
+    {
+        $res = Inventario::find($request->id);
+        if ($res) {
             $res->delete();
+            Bienk::select('registrado')->where('id', $res->idbienk)->update(['registrado' => 0]);
             $this->response['mensaje'] = 'Exito, Inventario eliminado';
             $this->response['estado'] = true;
             return response()->json($this->response, 200);
@@ -355,21 +446,6 @@ class InventarioController extends Controller
 
         $this->response['mensaje'] = 'Error';
         $this->response['estado'] = false;
-        return response()->json($this->response, 200);
-    }
-
-    public function getBienByCodigo(Request $request)
-    {
-
-
-        if (!$request->registrado) {
-            $res = $this->bienK->getDataByCode($request->codigo);
-        } else {
-        }
-
-
-        $this->response['estado'] = true;
-        $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 }

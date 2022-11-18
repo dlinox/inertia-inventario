@@ -54,8 +54,9 @@ export default {
         async codigo_search(val) {
             if (!val) return;
             this.codigos_search = val;
-            let item = this.codigos_res.filter((e) => e.codigo === val);
-            this.$emit("setData", item[0]);
+            let item = this.codigos_res.filter((e) => e.codigo === val)[0];
+            item.registrado = item.registrado == 1 ? true : false;
+            this.$emit("setData", item);
         },
 
         async codigos_search(val) {
