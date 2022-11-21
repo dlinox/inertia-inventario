@@ -167,7 +167,6 @@ export default {
             this.tr_item = item;
         },
         onSelectColumDobleClik(item) {
-
             item.registrado = item.registrado == 1 ? true : false;
             this.$emit("setData", item);
             this.dialog = false;
