@@ -101,23 +101,23 @@ export default {
                     },
                 ]
             },
-            {
-                title: "Areas",
-                icon: "mdi-chart-bar",
-                ruta: null,
-                sub_menu: [
-                    {
-                        title: "Asignar Persona",
-                        icon: "mdi-users",
-                        ruta: "/admin/areas"
-                    },
-                    {
-                        title: "Bloquear Area",
-                        icon: "mdi-lock",
-                            ruta: "/admin/areas/bloquear"
-                    },
-                ]
-            },
+            // {
+            //     title: "Areas",
+            //     icon: "mdi-chart-bar",
+            //     ruta: null,
+            //     sub_menu: [
+            //         {
+            //             title: "Asignar Persona",
+            //             icon: "mdi-users",
+            //             ruta: "/admin/areas"
+            //         },
+            //         {
+            //             title: "Bloquear Area",
+            //             icon: "mdi-lock",
+            //                 ruta: "/admin/areas/bloquear"
+            //         },
+            //     ]
+            // },
             {
                 title: "Administrador",
                 icon: "mdi-cog",

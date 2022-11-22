@@ -95,10 +95,21 @@ class DocumentsController extends Controller {
 
     public function destroy($id){
         $document = AreaPersona::find($id);
-        File::delete(public_path("$document->url"));
-        $this->desbloquearBienes($id);
-        $document->delete();
-        return "Documento Eliminado";
+        if (auth()->id() == $document->id_usuario){
+            File::delete(public_path("$document->url"));
+            $this->desbloquearBienes($id);
+            $document->delete();
+            $this->response['mensaje'] = 'Documento eliminado';
+            $this->response['estado'] = true;
+            $this->response['datos'] = $document;
+            return response()->json($this->response, 200);
+        }else{
+            $this->response['mensaje'] = 'Solo el usuario creador puede eliminar el documento';
+            $this->response['estado'] = true;
+            $this->response['datos'] = $document;
+            return response()->json($this->response, 401);
+        }
+
     }
 
     public function store(Request $request)
