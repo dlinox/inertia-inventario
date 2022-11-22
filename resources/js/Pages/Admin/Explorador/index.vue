@@ -147,7 +147,119 @@
                         <div
                         max-width="900"
                         >
-                        <v-data-table
+
+                        <v-card :loading="loading_table">
+                        <v-simple-table>
+                            <template v-slot:default>
+                                <thead class="grey lighten-1">
+                                    <tr>
+                                        <th class="text-left">Codigo</th>
+                                        <th class="text-left">Responsable</th>
+                                        <th class="text-left">Nombre</th>
+                                        <th
+                                            class="text-left d-flex"
+                                            style="width: 60px"
+                                        >
+                                            <v-icon
+                                                class="mr-1"
+                                                color="primary"
+                                                style="cursor: pointer"
+                                                @click="dialogImpExp = true"
+                                                >mdi-arrow-up-bold-box-outline</v-icon
+                                            >
+                                            <v-icon
+                                                class="ml-1"
+                                                color="primary"
+                                                style="cursor: pointer"
+                                                @click="descargarExcel()"
+                                                >mdi-arrow-down-bold-box-outline</v-icon
+                                            >
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="(item, index) in documentos"
+                                        :key="index"
+                                    >
+                                        <td>{{ item.codigo }}</td>
+                                        <td>{{ item.dni }}</td>
+                                        <td>{{ item.nombre }}
+                                        </td>
+                                        <td>
+                                            <v-menu offset-y>
+                                                <template
+                                                    v-slot:activator="{
+                                                        attrs,
+                                                        on,
+                                                    }"
+                                                >
+                                                    <v-btn
+                                                        icon
+                                                        text
+                                                        color="primary"
+                                                        class=""
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                    >
+                                                        <v-icon>
+                                                            mdi-dots-vertical
+                                                        </v-icon>
+                                                    </v-btn>
+                                                </template>
+
+                                                <v-list dense>
+                                                    <v-subheader
+                                                        >Opciones</v-subheader
+                                                    >
+                                                    <v-list-item-group
+                                                        color="primary"
+                                                    >
+                                                        <v-list-item
+                                                            v-for="(
+                                                                val, i
+                                                            ) in itemsOptions"
+                                                            :key="i"
+                                                            @click="
+                                                                SelectMenu(
+                                                                    val.text,
+                                                                    item
+                                                                )
+                                                            "
+                                                        >
+                                                            <v-list-item-icon>
+                                                                <v-icon
+                                                                    v-text="
+                                                                        val.icon
+                                                                    "
+                                                                ></v-icon>
+                                                            </v-list-item-icon>
+                                                            <v-list-item-content>
+                                                                <v-list-item-title
+                                                                    v-text="
+                                                                        val.text
+                                                                    "
+                                                                ></v-list-item-title>
+                                                            </v-list-item-content>
+                                                        </v-list-item>
+                                                    </v-list-item-group>
+                                                </v-list>
+                                            </v-menu>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </template>
+                        </v-simple-table>
+
+                        <v-pagination
+                            v-model="page"
+                            class=""
+                            :length="pages"
+                            :total-visible="5"
+                        ></v-pagination>
+                    </v-card>
+
+                        <!-- <v-data-table
                             :headers="headersdocuments"
                             :items="documentos"
                             :search="searchdocuments"
@@ -174,7 +286,7 @@
                         </div>
                         </template>
 
-                        </v-data-table>
+                        </v-data-table> -->
                         </div>
                 </div>
 
@@ -293,6 +405,12 @@ export default {
             {'id': 2, 'name': 'Todos'},
             {'id': 1, 'name': 'Activos'},
             {'id': 0, 'name': 'Desactivados'},
+        ],
+        itemsOptions: [
+            { text: "Desbloquear", icon: "mdi-pen" },
+            { text: "Ver cargo", icon: "mdi-eye" },
+            { text: "Descargar Excel", icon: "mdi-pen" },
+            { text: "Eliminar", icon: "mdi-delete" },
         ],
 
         estado: 1,
