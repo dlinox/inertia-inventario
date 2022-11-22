@@ -16,13 +16,13 @@
         }
     </style>
 </head>
-<body style="margin: 2.7cm 0cm 3cm 0cm; font-family: 'Ubuntu', sans-serif; " >
+<body style="margin: 3.05cm 0cm 3cm 0cm; font-family: 'Ubuntu', sans-serif; " >
     <header style="position: fixed;
         display:flex;
         top: -40;
         left: -10;
         rigth: 0;
-        height: 210px;
+        height: 160px;
         /* background:pink; */
         width:100vw;
         color: Black;
@@ -151,9 +151,9 @@
         </table>
     </footer>
 
-    <div style="height: 10px">
+    {{-- <div style="height: 10px">
         <span></span>
-    </div>
+    </div> --}}
     <div style="margin-left: -10px; margin-right:-10px;  font-size:10pt; ">
     <table style="width: 100%; border-collapse: collapse; ">
         <thead >

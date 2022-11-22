@@ -108,10 +108,6 @@
             <div class="content" :class="drawer ? '' : 'full'">
                 <v-container>
 
-
-
-
-
                     <div class="mt-0  p-4"  style="margin: 0px; min-height: 530px; background-color: white; " >
                         <v-card-title>
                             <div style="width:100%; margin-bottom:10px;" >
@@ -202,6 +198,80 @@
                 </v-snackbar>
                 </div>
 
+
+
+                <v-row justify="center">
+                    <v-dialog
+                        v-model="dialogError"
+                        persistent
+                        max-width="300"
+                        >
+                        <v-card>
+                            <!-- <v-card-title class="text-h6 white--text primary lighten-1">
+                                !Error!
+                            </v-card-title> -->
+                        <v-card-text>
+                            <div>
+                                <div style="height:90px; justify-content: center; align-items: center;" class="d-flex pt-4">
+                                    <v-icon dark color="red" style="font-size:4.5rem">
+                                        mdi-alert-circle-outline
+                                    </v-icon>
+                                </div>
+                            </div>
+                            <h3 class="mt-5 m-2" style="text-align:center;" >
+                                No tiene permiso para realizar esta acción
+                                <!-- Ya se  generó un documento para <span v-if="docSeleccionado !== null"> <span color="black"> {{docSeleccionado.dni}} </span> de {{ docSeleccionado.nombre }}, si desea continuar debe desbloquear el documento {{docSeleccionado.codigo }} </span> -->
+                            </h3>
+                        </v-card-text>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="primary dark"
+                            @click="dialogError = false"
+                        >
+                            Aceptar
+                        </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    </v-dialog>
+
+                    <v-row justify="center">
+                        <v-dialog
+                            v-model="dialogEliminar"
+                            persistent
+                            max-width="300"
+                            >
+                            <v-card>
+                            <v-card-title class="text-h6 white--text primary lighten-1">
+                                    Advertencia!
+                            </v-card-title>
+                            <v-card-text>
+                                <h4 class="mt-4 m-2" style="text-align:center;" >
+                                    Está seguro que quiere eliminar el <span v-if="docSeleccionado !== null"> <span color="black"> {{docSeleccionado.dni}} </span> de {{ docSeleccionado.nombre }}, si desea continuar debe desbloquear el documento {{docSeleccionado.codigo }} </span>
+                                </h4>
+                            </v-card-text>
+                            <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="danger darken-1"
+                                outlined
+                                text
+                                @click="dialogEliminar = false"
+                            >
+                                Cancelar
+                            </v-btn>
+                            <v-btn
+                                color="primary lighten-1"
+                                disabled
+                            >
+                                Continuar
+                            </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                        </v-dialog>
+                    </v-row>
+                </v-row>
+
                 </v-container>
             </div>
         </div>
@@ -227,7 +297,7 @@ export default {
 
         estado: 1,
         picker: null,
-        drawer: true,
+        drawer: false,
 
         activePicker: null,
         activePickerf: null,
@@ -235,7 +305,6 @@ export default {
         datef: null,
         menux: false,
         menuf: false,
-
 
         dialog: false,
         personas:[],
@@ -252,6 +321,9 @@ export default {
           { text: 'Responsable', align: 'start', filterable: true, value: 'dni', },
           { text: 'Area', align: 'start', filterable: true, value: 'nombre', },
         ],
+
+        dialogError:false,
+        dialogEliminar:false,
 
     }),
     created() {
@@ -308,12 +380,19 @@ export default {
         async eliminarDocumento(item){
             await axios.delete(`/admin/documentos/eliminar/${item.id}`)
              .then(response => {
-                 console.log(response);
+                this.text = "Documento eliminado"
+                this.snackbar = true
+                this.getDocuments()
+             }, error => {
+                if (error.response.status === 401) {
+                    this.dialogError = true;
+                    return error;
+                }
              });
-             this.text = "Documento eliminado"
-             this.snackbar = true
-             this.getDocuments()
+
         },
+
+
         async descargarExcel(item){
             window.location.href ="/admin/documentos/excel/"+item.id_area+"/"+item.id_persona, '_blank';
             // await axios.get("/admin/documentos/excel/"+item.id_area+"/"+item.id_persona)
