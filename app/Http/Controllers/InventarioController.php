@@ -120,7 +120,7 @@ class InventarioController extends Controller
 
         $current_user =  Auth::user();
 
-        $mis_areas = Area::select()
+        $mis_areas = Area::select('area.*', 'grupo.id_area')
             ->join('grupo', 'grupo.id_area', '=', 'area.id')
             ->where('grupo.id_usuario', $current_user->id)
             //->where('id_oficina', $id)

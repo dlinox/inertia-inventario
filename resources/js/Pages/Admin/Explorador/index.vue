@@ -247,7 +247,7 @@
                             </v-card-title>
                             <v-card-text>
                                 <h4 class="mt-4 m-2" style="text-align:center;" >
-                                    Está seguro que quiere eliminar el <span v-if="docSeleccionado !== null"> <span color="black"> {{docSeleccionado.dni}} </span> de {{ docSeleccionado.nombre }}, si desea continuar debe desbloquear el documento {{docSeleccionado.codigo }} </span>
+                                    <!-- Está seguro que quiere eliminar el <span v-if="docSeleccionado !== null"> <span color="black"> {{docSeleccionado.dni}} </span> de {{ docSeleccionado.nombre }}, si desea continuar debe desbloquear el documento {{docSeleccionado.codigo }} </span> -->
                                 </h4>
                             </v-card-text>
                             <v-card-actions>

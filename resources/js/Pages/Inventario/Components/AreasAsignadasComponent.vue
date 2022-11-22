@@ -16,6 +16,7 @@
             </v-toolbar>
 
             <v-card-text style="height: 90vh">
+      
                 <v-autocomplete
                     v-model="area_selected"
                     :items="areas"

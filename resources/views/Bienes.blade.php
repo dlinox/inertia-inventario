@@ -177,10 +177,10 @@
                 <tr>
                     <td style="border: solid 1px black; width:20px; text-align:center;"><span style="font-size: 9pt;  font-weight: bold; ">{{$key+1}}</span></td>
                     <td style="border: solid 1px black; width:80px; text-align:center; "><span style="font-size: 8pt;  font-weight: bold;">{{$bien->codigo}}</span></td>
-                    <td style="border: solid 1px black; width:320px;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->nombre}}</span></td>
+                    <td style="border: solid 1px black; width:320px;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->descripcion}}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->modelo }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->marca }}</span></td>
-                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->serie }}</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->nro_serie }}</span></td>
                     <td style="border: solid 1px black;width:100px;"><span style="font-size: 8pt;  font-weight: bold;"></span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;"><!-- $bien->color--> </span></td>
                     <td style="border: solid 1px black;  width:30px; text-align:center;"><span style="font-size: 8pt;  font-weight: bold;">
@@ -196,17 +196,17 @@
                         Y
                         @endif
                     </span></td>
-                    <td style="border: solid 1px black; width:40px; text-align:center;"><span style="font-size: 8pt;  font-weight: bold;">{{$bien->numero}}</span></td>
+                    <td style="border: solid 1px black; width:40px; text-align:center;"><span style="font-size: 8pt;  font-weight: bold;">{{$bien->nro_orden}}</span></td>
                     <td style="border: solid 1px black; width:150px;"><span style="font-size: 8pt;  font-weight: bold;">{{$bien->observaciones}}</span></td>
                 </tr>
             @else
             <tr>
                 <td style="border: solid 1px black; width:20px; text-align:center;"><span style="font-size: 8pt;">{{$key+1}}</span></td>
                 <td style="border: solid 1px black; width:80px; text-align:center;"><span style="font-size: 8pt;">{{$bien->codigo}}</span></td>
-                <td style="border: solid 1px black; width:320px;"><span style="font-size: 8pt;">{{ $bien->nombre}}</span></td>
+                <td style="border: solid 1px black; width:320px;"><span style="font-size: 8pt;">{{ $bien->descripcion}}</span></td>
                 <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->modelo }}</span></td>
                 <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->marca }}</span></td>
-                <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->serie }}</span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->nro_serie }}</span></td>
                 <td style="border: solid 1px black; width:100px;"><span style="font-size: 8pt;"> <!-- $bien->color--> </span></td>
                 <td style="border: solid 1px black;"><span style="font-size: 8pt;"><!-- $bien->color--> </span></td>
                 <td style="border: solid 1px black; width:30px; text-align:center;"><span style="font-size: 8pt;">
@@ -222,7 +222,7 @@
                     Y
                     @endif
                 </span></td>
-                <td style="border: solid 1px black; width:40px; text-align:center;"><span style="font-size: 8pt;">{{ $bien->numero }}</span></td>
+                <td style="border: solid 1px black; width:40px; text-align:center;"><span style="font-size: 8pt;">{{ $bien->nro_orden }}</span></td>
                 <td style="border: solid 1px black; width:150px;"><span style="font-size: 8pt;">{{ $bien->observaciones }} </span></td>
             </tr>
 

@@ -79,57 +79,65 @@
                 <v-form ref="form" v-model="form_valid" lazy-validation>
                     <v-row class="" align="center">
                         <v-col cols="12" class="pb-4 pt-0">
-                            <v-alert
-                                v-if="data_emit.registrado && form_data.estado"
-                                type="warning"
-                                border="left"
-                            >
-                                <small>
-                                    <b>
-                                        El elemento ya se encuentra registrado.
-                                    </b>
-                                </small>
-
-                                <v-divider class="my-3"> </v-divider>
-
-                                <v-spacer></v-spacer>
-
-                                <template v-if="is_edit">
-                                    <v-btn
-                                        color="red"
-                                        @click="editInventario(false)"
-                                    >
-                                        Cancelar
-                                    </v-btn>
-                                </template>
-
-                                <template v-else>
-                                    <v-btn
-                                        outlined
-                                        color="dark"
-                                        @click="dialog_delete = !dialog_delete"
-                                    >
-                                        Eliminar
-                                    </v-btn>
-
-                                    <v-btn
-                                        color="secondary"
-                                        @click="editInventario(true)"
-                                    >
-                                        Editar
-                                    </v-btn>
-                                </template>
-                            </v-alert>
-
-                            <v-alert
+                            <template
                                 v-if="data_emit.registrado && !form_data.estado"
-                                type="warning"
-                                border="left"
-                                color="blue-grey"
                             >
-                                Elemento bloqueado, no se puede hacer
-                                modificaiones.
-                            </v-alert>
+                                <v-alert
+                                    type="warning"
+                                    border="left"
+                                    color="blue-grey"
+                                >
+                                    Elemento bloqueado, no se puede hacer
+                                    modificaiones.
+                                </v-alert>
+                            </template>
+
+                            <template v-else>
+                                <v-alert
+                                    v-if="data_emit.registrado"
+                                    type="warning"
+                                    border="left"
+                                >
+                                    <small>
+                                        <b>
+                                            El elemento ya se encuentra
+                                            registrado.
+                                        </b>
+                                    </small>
+
+                                    <v-divider class="my-3"> </v-divider>
+
+                                    <v-spacer></v-spacer>
+
+                                    <template v-if="is_edit">
+                                        <v-btn
+                                            color="red"
+                                            @click="editInventario(false)"
+                                        >
+                                            Cancelar
+                                        </v-btn>
+                                    </template>
+
+                                    <template v-else>
+                                        <v-btn
+                                            outlined
+                                            color="dark"
+                                            @click="
+                                                dialog_delete = !dialog_delete
+                                            "
+                                        >
+                                            Eliminar
+                                        </v-btn>
+
+                                        <v-btn
+                                            color="secondary"
+                                            @click="editInventario(true)"
+                                        >
+                                            Editar
+                                        </v-btn>
+                                    </template>
+                                </v-alert>
+                            </template>
                         </v-col>
 
                         <v-col cols="12" sm="4" md="4" class="pb-1 pt-0">
@@ -437,7 +445,9 @@
         <v-dialog v-model="dialog_delete" max-width="320">
             <v-card>
                 <div class="pa-3">
-                    <h4 class="text-center my-3">Seguro de eliminar el registro?</h4>
+                    <h4 class="text-center my-3">
+                        Seguro de eliminar el registro?
+                    </h4>
 
                     <v-divider></v-divider>
 
@@ -551,7 +561,6 @@ export default {
         },
 
         async deleteInventario() {
-            
             this.loadin_form = true;
             let res = await axios.post(
                 "/inventario/delete-inventario",
