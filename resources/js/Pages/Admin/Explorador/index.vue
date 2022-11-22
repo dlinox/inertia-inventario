@@ -152,31 +152,12 @@
                             :headers="headersdocuments"
                             :items="documentos"
                             :search="searchdocuments"
-                            :itemsPerPage="5"
-
+                            :itemsPerPage="pages"
                             :mobile-breakpoint="100"
                             :page="page"
                             hide-default-footer
                             >
                         <template v-slot:item.acciones="{ item }" >
-                            <!-- <div style="width: 120px;">
-                            <div class="flex" style="width:115px;">
-                                <v-btn  class="ml-0 p-0" style="width: 25px; height:25px;;" icon dark color="indigo" @click="desbloquear(item)" >
-                                    <v-icon color="primary" v-if="item.estado === 0" size="1.1rem">mdi-lock</v-icon>
-                                    <v-icon v-else color="grey" size="1.1rem">mdi-lock-open</v-icon>
-                                </v-btn>
-
-                                <v-btn class="ml-0" style="width: 25px; height:25px;;" icon dark color="primary" @click="verDocumento(item)" >
-                                    <v-icon size="1.1rem">mdi-eye</v-icon>
-                                </v-btn>
-
-                                <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="eliminarDocumento(item)">
-                                    <v-icon size="1.1rem">mdi-delete</v-icon>
-                                </v-btn>
-                                <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="descargarExcel(item)">
-                                    <v-icon size="1.1rem">mdi-download </v-icon>
-                                </v-btn>
-                            </div> -->
                             <div>
                             <v-menu offset-y>
                                     <template
@@ -227,7 +208,7 @@
                                             </v-list-item-content>
                                         </v-list-item>
 
-                                        <v-list-item @click="eliminarDocumento(item)">
+                                        <v-list-item @click="abrirModalEliminar(item)">
                                             <v-list-item-icon  style="margin-right: -10px;" >
                                                 <v-icon color="primary" size="1.1rem">mdi-delete</v-icon>
                                             </v-list-item-icon>
@@ -244,27 +225,20 @@
                                                 <span style="margin-left: 10px;" >Descargar</span>
                                             </v-list-item-content>
                                         </v-list-item>
-                                            <!-- <v-list-item v-for="( val, i ) in itemsOptions" :key="i"
-                                                @click=" SelectMenu( val.text, item )"
-                                            >
-                                                <v-list-item-icon>
-                                                    <v-icon
-                                                        v-text="
-                                                            val.icon
-                                                        "
-                                                    ></v-icon>
-                                                </v-list-item-icon>
-                                                <v-list-item-content>
-                                                    <v-list-item-title
-                                                        v-text="
-                                                            val.text
-                                                        "
-                                                    ></v-list-item-title>
-                                                </v-list-item-content>
-                                            </v-list-item> -->
                                         </v-list-item-group>
                                     </v-list>
                                 </v-menu>
+                            </div>
+                        </template>
+                        <template v-slot:item.codigo="{ item }">
+                            <div class="d-flex">
+                                <span class="mdi mdi-clipboard-text mr-3"></span>
+                                <span>{{ item.codigo }}</span>
+                            </div>
+                        </template>
+                        <template v-slot:item.responsable="{ item }" style="min-width:660px;">
+                            <div class="d-flex">
+                                <span>{{ item.dni  }}</span>
                             </div>
                         </template>
 
@@ -272,7 +246,7 @@
                         <div>
                             <v-pagination
                                 v-model="page"
-                                :length="5"
+                                :length="nregistros + 1"
                                 :total-visible="5"
                             ></v-pagination>
                         </div>
@@ -347,8 +321,8 @@
                                     Advertencia!
                             </v-card-title>
                             <v-card-text>
-                                <h4 class="mt-4 m-2" style="text-align:center;" >
-                                    <!-- Está seguro que quiere eliminar el <span v-if="docSeleccionado !== null"> <span color="black"> {{docSeleccionado.dni}} </span> de {{ docSeleccionado.nombre }}, si desea continuar debe desbloquear el documento {{docSeleccionado.codigo }} </span> -->
+                                <h4 class="mt-5 m-2" style="text-align:center;" >
+                                    Está seguro que quiere eliminar el cargo <span v-if="docSeleccionado !== null"> <span color="black"> {{docSeleccionado.codigo }} </span></span>
                                 </h4>
                             </v-card-text>
                             <v-card-actions>
@@ -363,7 +337,7 @@
                             </v-btn>
                             <v-btn
                                 color="primary lighten-1"
-                                disabled
+                                @click="eliminarDocumento"
                             >
                                 Continuar
                             </v-btn>
@@ -371,6 +345,7 @@
                         </v-card>
                         </v-dialog>
                     </v-row>
+
                 </v-row>
 
                 </v-container>
@@ -396,10 +371,6 @@ export default {
             {'id': 0, 'name': 'Desactivados'},
         ],
 
-
-
-
-
         estado: 1,
         picker: null,
         drawer: false,
@@ -421,15 +392,19 @@ export default {
         documentoElegido: null,
         searchdocuments:'',
         headersdocuments: [
-          { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', class:'grey lighten-1' },
-          { text: 'Responsable', align: 'start', filterable: true, value: 'dni', class:'grey lighten-1',  },
-          { text: 'Area', align: 'start', filterable: true, value: 'nombre', class:'grey lighten-1' },
+          { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"220px", class:'grey lighten-1' },
+          { text: 'Responsable', align: 'center', filterable: false, width:"130px", value: 'dni', class:'grey lighten-1',  },
+          { text: 'Area', align: 'start', filterable: true, value: 'nombre', width:"300px", minWidth:'250px', class:'grey lighten-1' },
           { text: ' ', align: 'right', value:'acciones', maxWidth:'50px', class:'grey lighten-1'  },
         ],
 
         dialogError:false,
         dialogEliminar:false,
         page:1,
+        pages:8,
+        nregistros:1,
+
+        docSeleccionado:null,
 
         itemsOptions: [
             { text: "Desbloquear", icon: "mdi-lock-open" },
@@ -448,40 +423,101 @@ export default {
             if(this.estado === null && this.date === null && this.datef === null ) {
                 let res = await axios.get("/admin/reportes/getDocumentsF/2,'1900-01-01','2100-12-31'");
                 this.documentos = res.data.datos;
+                let resto = res.data.count[0].registros % this.pages;
+                if(resto > 0){
+                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0) );
+
+                }
+                else {
+                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
+                }
+                //this.nregistros = res.registros;
                 return res.data.datos.data;
             }
             if(this.estado === null && this.date === null && this.datef !== null ) {
                 let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'1900-01-01',"+this.datef);
                 this.documentos = res.data.datos;
+                let resto = res.data.count[0].registros % this.pages;
+                if(resto > 0){
+                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
+                }
+                else {
+                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
+                }
+                //this.nregistros = res.registros;
                 return res.data.datos.data;
             }
             if(this.estado !== null && this.date === null && this.datef === null ) {
                 let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'1900-01-01','2100-12-31'");
                 this.documentos = res.data.datos;
+                let resto = res.data.count[0].registros % this.pages;
+                if(resto > 0){
+                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
+
+                }
+                else {
+                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
+                }
+                //this.nregistros = res.registros;
                 return res.data.datos.data;
             }
 
             if(this.estado === null && this.date !== null && this.datef === null ) {
                 let res = await axios.get("/admin/reportes/getDocumentsF/2,'"+this.date+"','2100-12-31'");
                 this.documentos = res.data.datos;
+                let resto = res.data.count[0].registros % this.pages;
+                if(resto > 0){
+                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
+
+                }
+                else {
+                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
+                }
+                //this.nregistros = res.registros;
                 return res.data.datos.data;
             }
 
             if(this.estado !== null && this.date !== null && this.datef === null ) {
                 let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'"+this.date+"','2100-12-31'");
                 this.documentos = res.data.datos;
+                let resto = res.data.count[0].registros % this.pages;
+                if(resto > 0){
+                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
+                }
+                else {
+                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
+                }
+                //this.nregistros = res.registros;
                 return res.data.datos.data;
             }
 
             if(this.estado === null && this.date !== null && this.datef !== null ) {
                 let res = await axios.get("/admin/reportes/getDocumentsF/2,'"+this.date+"','"+this.datef+"'");
                 this.documentos = res.data.datos;
+                let resto = res.data.count[0].registros % this.pages;
+                if(resto > 0){
+                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
+
+                }
+                else {
+                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
+                }
+                //this.nregistros = res.registros;
                 return res.data.datos.data;
             }
 
             if(this.estado !== null && this.date !== null && this.datef !== null ) {
                 let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'"+this.date+"','"+this.datef+"'");
                 this.documentos = res.data.datos;
+                let resto = res.data.count[0].registros % this.pages;
+                if(resto > 0){
+                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
+                    // this.nregistros = (res.data.count[0].registros - resto)  + 1;
+                }
+                else {
+                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
+                }
+                //this.nregistros = res.registros;
                 return res.data.datos.data;
             }
 
@@ -490,7 +526,10 @@ export default {
             window.open(item.url, '_blank');
         },
 
-
+        abrirModalEliminar(item){
+            this.docSeleccionado = item;
+            this.dialogEliminar = true;
+        },
 
         async eliminarDocumento(item){
             await axios.delete(`/admin/documentos/eliminar/${item.id}`)
@@ -504,9 +543,9 @@ export default {
                     return error;
                 }
              });
-
+            this.docSeleccionado = null;
+            this.dialogEliminar = false;
         },
-
 
         async descargarExcel(item){
             window.location.href ="/admin/documentos/excel/"+item.id_area+"/"+item.id_persona, '_blank';
