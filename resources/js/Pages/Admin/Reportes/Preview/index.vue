@@ -99,14 +99,14 @@
             <td align="center" v-else style="border: solid 1px black;"><span style="font-size: 8pt;"> {{index+1}}</span></td>
             <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.codigo}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.codigo}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.nombre}}</span></td>
-            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt; ">{{bien.nombre}}</span></td>
+            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.descripcion}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt; ">{{bien.descripcion}}</span></td>
             <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.modelo}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.modelo}}</span></td>
             <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.marca}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;  ">{{bien.marca}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.serie}}</span></td>
-            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.serie}}</span></td>
+            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.nro_serie}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.nro_serie}}</span></td>
             <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;"></span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
             <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">NEGRO</span></td>

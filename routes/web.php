@@ -114,6 +114,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getDocumentsActivos', 'getDocumentsActivos')->name('getDocumentsActivos');
         Route::get('/preview/{idArea}/{idP}', 'preview')->name('preview');
         Route::get('/getDocumentsF/{e},{i},{f}', 'getDocumentsF')->name('getDocumentsF');
+        Route::post('/getDocumentsF', 'getDocumentsF')->name('getDocumentsFP');
 
         Route::get('/dashboard', 'dashboard')->name('dashboard');
         Route::get('/avanceGlobal', 'avanceGlobal')->name('avanceGlobal');
@@ -193,7 +194,7 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/create-inventario', [InventarioController::class, 'createInventario'])
         ->name(' create-inventario');
-    
+
     Route::post('/update-inventario', [InventarioController::class, 'updateInventario'])
         ->name(' update-inventario');
 

@@ -105,6 +105,7 @@
                     </div>
                 </template>
             </v-navigation-drawer>
+
             <div class="content" :class="drawer ? '' : 'full'">
                 <v-container>
 
@@ -140,153 +141,141 @@
                                     hide-details
                                     >
                                     </v-text-field>
-                                    <v-icon  outlined style=" margin-left:10px; font-size: 1.2rem" @click="drawer = !drawer">mdi-filter-outline</v-icon>
+                                    <!-- <v-icon  outlined style=" margin-left:10px; font-size: 1.2rem" @click="drawer = !drawer">mdi-filter-outline</v-icon> -->
                                 </div>
                             </div>
                         </v-card-title>
                         <div
                         max-width="900"
                         >
-
-                        <v-card :loading="loading_table">
-                        <v-simple-table>
-                            <template v-slot:default>
-                                <thead class="grey lighten-1">
-                                    <tr>
-                                        <th class="text-left">Codigo</th>
-                                        <th class="text-left">Responsable</th>
-                                        <th class="text-left">Nombre</th>
-                                        <th
-                                            class="text-left d-flex"
-                                            style="width: 60px"
-                                        >
-                                            <v-icon
-                                                class="mr-1"
-                                                color="primary"
-                                                style="cursor: pointer"
-                                                @click="dialogImpExp = true"
-                                                >mdi-arrow-up-bold-box-outline</v-icon
-                                            >
-                                            <v-icon
-                                                class="ml-1"
-                                                color="primary"
-                                                style="cursor: pointer"
-                                                @click="descargarExcel()"
-                                                >mdi-arrow-down-bold-box-outline</v-icon
-                                            >
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        v-for="(item, index) in documentos"
-                                        :key="index"
-                                    >
-                                        <td>{{ item.codigo }}</td>
-                                        <td>{{ item.dni }}</td>
-                                        <td>{{ item.nombre }}
-                                        </td>
-                                        <td>
-                                            <v-menu offset-y>
-                                                <template
-                                                    v-slot:activator="{
-                                                        attrs,
-                                                        on,
-                                                    }"
-                                                >
-                                                    <v-btn
-                                                        icon
-                                                        text
-                                                        color="primary"
-                                                        class=""
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                    >
-                                                        <v-icon>
-                                                            mdi-dots-vertical
-                                                        </v-icon>
-                                                    </v-btn>
-                                                </template>
-
-                                                <v-list dense>
-                                                    <v-subheader
-                                                        >Opciones</v-subheader
-                                                    >
-                                                    <v-list-item-group
-                                                        color="primary"
-                                                    >
-                                                        <v-list-item
-                                                            v-for="(
-                                                                val, i
-                                                            ) in itemsOptions"
-                                                            :key="i"
-                                                            @click="
-                                                                SelectMenu(
-                                                                    val.text,
-                                                                    item
-                                                                )
-                                                            "
-                                                        >
-                                                            <v-list-item-icon>
-                                                                <v-icon
-                                                                    v-text="
-                                                                        val.icon
-                                                                    "
-                                                                ></v-icon>
-                                                            </v-list-item-icon>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title
-                                                                    v-text="
-                                                                        val.text
-                                                                    "
-                                                                ></v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-list-item-group>
-                                                </v-list>
-                                            </v-menu>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
-
-                        <v-pagination
-                            v-model="page"
-                            class=""
-                            :length="pages"
-                            :total-visible="5"
-                        ></v-pagination>
-                    </v-card>
-
-                        <!-- <v-data-table
+                        <v-data-table
                             :headers="headersdocuments"
                             :items="documentos"
                             :search="searchdocuments"
+                            :itemsPerPage="5"
+
+                            :mobile-breakpoint="100"
+                            :page="page"
                             hide-default-footer
-                            dense
                             >
                         <template v-slot:item.acciones="{ item }" >
-                            <div style="width: 120px;">
+                            <!-- <div style="width: 120px;">
                             <div class="flex" style="width:115px;">
                                 <v-btn  class="ml-0 p-0" style="width: 25px; height:25px;;" icon dark color="indigo" @click="desbloquear(item)" >
                                     <v-icon color="primary" v-if="item.estado === 0" size="1.1rem">mdi-lock</v-icon>
                                     <v-icon v-else color="grey" size="1.1rem">mdi-lock-open</v-icon>
                                 </v-btn>
+
                                 <v-btn class="ml-0" style="width: 25px; height:25px;;" icon dark color="primary" @click="verDocumento(item)" >
                                     <v-icon size="1.1rem">mdi-eye</v-icon>
                                 </v-btn>
+
                                 <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="eliminarDocumento(item)">
                                     <v-icon size="1.1rem">mdi-delete</v-icon>
                                 </v-btn>
                                 <v-btn style="width: 25px; height:25px;;" icon dark color="indigo" @click="descargarExcel(item)">
                                     <v-icon size="1.1rem">mdi-download </v-icon>
                                 </v-btn>
+                            </div> -->
+                            <div>
+                            <v-menu offset-y>
+                                    <template
+                                        v-slot:activator="{
+                                            attrs,
+                                            on,
+                                        }"
+                                    >
+                                        <v-btn
+                                            icon
+                                            text
+                                            color="primary"
+                                            class=""
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        >
+                                            <v-icon>
+                                                mdi-dots-vertical
+                                            </v-icon>
+                                        </v-btn>
+                                    </template>
+
+                                    <v-list dense>
+                                        <v-subheader
+                                            >Opciones
+                                        </v-subheader
+                                        >
+                                        <v-list-item-group
+                                            color="primary"
+                                        >
+
+                                        <v-list-item @click="desbloquear(item)">
+                                            <v-list-item-icon  style="margin-right: -10px;" >
+                                                <v-icon color="primary" v-if="item.estado === 0" size="1.1rem">mdi-lock</v-icon>
+                                                <v-icon v-else color="grey" size="1.1rem">mdi-lock-open</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <span style="margin-left: 10px;" >Desbloquear</span>
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item @click="verDocumento(item)">
+                                            <v-list-item-icon  style="margin-right: -10px;" >
+                                                <v-icon color="primary" size="1.1rem">mdi-eye</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <span style="margin-left: 10px;" >Ver</span>
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item @click="eliminarDocumento(item)">
+                                            <v-list-item-icon  style="margin-right: -10px;" >
+                                                <v-icon color="primary" size="1.1rem">mdi-delete</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <span style="margin-left: 10px;" >Eliminar</span>
+                                            </v-list-item-content>
+                                        </v-list-item>
+
+                                        <v-list-item @click="descargarExcel(item)">
+                                            <v-list-item-icon  style="margin-right: -10px;" >
+                                                <v-icon color="primary" size="1.1rem">mdi-download</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <span style="margin-left: 10px;" >Descargar</span>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                            <!-- <v-list-item v-for="( val, i ) in itemsOptions" :key="i"
+                                                @click=" SelectMenu( val.text, item )"
+                                            >
+                                                <v-list-item-icon>
+                                                    <v-icon
+                                                        v-text="
+                                                            val.icon
+                                                        "
+                                                    ></v-icon>
+                                                </v-list-item-icon>
+                                                <v-list-item-content>
+                                                    <v-list-item-title
+                                                        v-text="
+                                                            val.text
+                                                        "
+                                                    ></v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item> -->
+                                        </v-list-item-group>
+                                    </v-list>
+                                </v-menu>
                             </div>
-                        </div>
                         </template>
 
-                        </v-data-table> -->
+                        </v-data-table>
+                        <div>
+                            <v-pagination
+                                v-model="page"
+                                :length="5"
+                                :total-visible="5"
+                            ></v-pagination>
+                        </div>
                         </div>
                 </div>
 
@@ -406,12 +395,10 @@ export default {
             {'id': 1, 'name': 'Activos'},
             {'id': 0, 'name': 'Desactivados'},
         ],
-        itemsOptions: [
-            { text: "Desbloquear", icon: "mdi-pen" },
-            { text: "Ver cargo", icon: "mdi-eye" },
-            { text: "Descargar Excel", icon: "mdi-pen" },
-            { text: "Eliminar", icon: "mdi-delete" },
-        ],
+
+
+
+
 
         estado: 1,
         picker: null,
@@ -434,14 +421,22 @@ export default {
         documentoElegido: null,
         searchdocuments:'',
         headersdocuments: [
-          { text: ' ', align: 'right', value:'acciones', maxWidth:'50px'  },
-          { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', },
-          { text: 'Responsable', align: 'start', filterable: true, value: 'dni', },
-          { text: 'Area', align: 'start', filterable: true, value: 'nombre', },
+          { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', class:'grey lighten-1' },
+          { text: 'Responsable', align: 'start', filterable: true, value: 'dni', class:'grey lighten-1',  },
+          { text: 'Area', align: 'start', filterable: true, value: 'nombre', class:'grey lighten-1' },
+          { text: ' ', align: 'right', value:'acciones', maxWidth:'50px', class:'grey lighten-1'  },
         ],
 
         dialogError:false,
         dialogEliminar:false,
+        page:1,
+
+        itemsOptions: [
+            { text: "Desbloquear", icon: "mdi-lock-open" },
+            { text: "Ver cargo", icon: "mdi-eye" },
+            { text: "Descargar Excel", icon: "mdi-download" },
+            { text: "Eliminar", icon: "mdi-delete" },
+        ],
 
     }),
     created() {

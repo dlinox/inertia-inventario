@@ -42,7 +42,7 @@ class UsersExports implements FromView, WithColumnWidths,  WithDrawings, WithSty
             'oficina' => DB::select('SELECT oficina.id, oficina.codigo, oficina.nombre FROM oficina WHERE oficina.id IN (SELECT area.id_oficina FROM area WHERE area.id ='.$this->idArea.');'),
             'area' => DB::select('SELECT * from  area WHERE area.id ='.$this->idArea.';'),
             'responsable' => DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id ='.$this->idP),
-            'responsable2' => DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id IN (SELECT DISTINCT(idpersona_otro) from bienk WHERE id_area ='.$this->idArea.');'),
+            'responsable2' => DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id IN (SELECT DISTINCT(idpersona_otro) from inventario WHERE id_area ='.$this->idArea.');'),
             'inventarista' => DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = '.$this->idArea.' and id_persona = '.$this->idP.');'),
             'bienes' => DB::select('SELECT * from inventario WHERE id_area = '.$this->idArea.' and id_persona = '.$this->idP.';'),
             'ldate' => date('d-m-Y'),
