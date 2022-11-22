@@ -11,7 +11,8 @@ use Inertia\Inertia;
 
 class AreasController extends Controller
 {
-    public function getAreasP($term){
+    public function getAreasP($term)
+    {
 
         $res = DB::select("SELECT * FROM AREA WHERE id IN (SELECT id_area FROM inventario)  ");
         $this->response['estado'] = true;
@@ -52,7 +53,7 @@ class AreasController extends Controller
 
     public function getAreasByOficinaInv($id)
     {
-        $res = DB::select('SELECT * from area WHERE id_oficina = '.$id.' AND id IN (SELECT id_area FROM inventario);');
+        $res = DB::select('SELECT * from area WHERE id_oficina = ' . $id . ' AND id IN (SELECT id_area FROM inventario);');
         $this->response['mensaje'] = 'Exito papi';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -61,7 +62,7 @@ class AreasController extends Controller
 
     public function getAreasByPersonaInv($id)
     {
-        $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM inventario where id_persona = '.$id.');');
+        $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM inventario where id_persona = ' . $id . ');');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -69,7 +70,7 @@ class AreasController extends Controller
     }
     public function getAreasByPersonaInvNoR($id)
     {
-        $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM inventario where id_persona = '.$id.') AND ID NOT IN (SELECT ID_AREA from area_persona WHERE ID_PERSONA = '.$id.' AND area_persona.estado = 0 );');
+        $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM inventario where id_persona = ' . $id . ') AND ID NOT IN (SELECT ID_AREA from area_persona WHERE ID_PERSONA = ' . $id . ' AND area_persona.estado = 0 );');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -109,7 +110,7 @@ class AreasController extends Controller
         return response()->json($this->response, 200);
     }
 
-    public function getAreasByOficina($oficina, $usuario = "")
+    public function getAreasByOficina($oficina, $usuario = 0)
     {
 
         //$query_select = ['area.*'];
@@ -118,7 +119,11 @@ class AreasController extends Controller
         $res = Area::select('area.*')
             ->leftjoin('grupo', 'grupo.id_area', '=', 'area.id')
             ->where('area.id_oficina', $oficina)
-            ->where('grupo.id_usuario', '!=', $usuario)
+            ->where(function ($query) use ($usuario) {
+                return $query
+                    ->Where('grupo.id_usuario', '!=', $usuario)
+                    ->orWhere('grupo.id_usuario', NULL);
+            })
             ->get();
         //text
 

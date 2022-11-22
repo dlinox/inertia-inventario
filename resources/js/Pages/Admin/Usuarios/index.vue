@@ -431,6 +431,7 @@ export default {
             console.log('aquiiii');
             if (!val) return;
             let res = await axios.get("/get-data/areas/by-oficina/" + val);
+            
             this.areas_asig = res.data.datos;
         },
 
