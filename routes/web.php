@@ -193,9 +193,13 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/create-inventario', [InventarioController::class, 'createInventario'])
         ->name(' create-inventario');
-    
+
     Route::post('/update-inventario', [InventarioController::class, 'updateInventario'])
         ->name(' update-inventario');
+
+    Route::post('/save-foto', [InventarioController::class, 'saveFoto'])
+        ->name('save-foto');
+
 
     Route::post('/delete-inventario', [InventarioController::class, 'deleteInventario'])
         ->name('delete-inventario');

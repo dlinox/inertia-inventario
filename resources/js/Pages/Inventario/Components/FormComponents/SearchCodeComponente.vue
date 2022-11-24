@@ -1,5 +1,6 @@
 <template>
     <v-autocomplete
+        ref="autocomplete"
         v-model="codigo_search"
         clearable
         dense
@@ -57,6 +58,7 @@ export default {
             let item = this.codigos_res.filter((e) => e.codigo === val)[0];
             item.registrado = item.registrado == 1 ? true : false;
             this.$emit("setData", item);
+            this.reset();
         },
 
         async codigos_search(val) {
@@ -70,6 +72,12 @@ export default {
         },
     },
     methods: {
+        reset() {
+            this.$nextTick(() => {
+                this.codigo_search = null;
+                this.$refs.autocomplete.internalSearch = null;
+            });
+        },
         filterKey(e) {
             const key = e.key;
             console.log(key);

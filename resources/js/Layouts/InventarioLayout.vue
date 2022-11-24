@@ -1,6 +1,6 @@
 <template>
     <v-app class="app-wrapper">
-        <v-app-bar  color="white">
+        <v-app-bar color="white">
             <v-spacer />
             <v-menu offset-y>
                 <template v-slot:activator="{ attrs, on }">
@@ -72,19 +72,19 @@ export default {
             if (menu == "Perfil") {
                 this.$inertia.get("/inventario/perfil");
             } else if (menu == "Configuracion") {
-
             } else if (menu == "Salir") {
                 this.$inertia.post("/logout");
             }
         },
     },
-
 };
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap");
 
 .main-wrapper {
+    font-family: "Nunito", sans-serif;
     background-color: #eaeaea;
 }
 
@@ -114,8 +114,6 @@ export default {
     padding-top: 0;
     margin-bottom: 0px;
 }
-
-
 
 .v-text-field .v-input__control,
 .v-text-field .v-input__slot,

@@ -167,13 +167,14 @@ export default {
             this.tr_index = index;
             this.tr_item = item;
         },
-        onSelectColumDobleClik(item) {
-            item.registrado = item.registrado == 1 ? true : false;
+        async onSelectColumDobleClik(item) {
+            item.registrado = await item.registrado == 1 ? true : false;
+
+            console.log(item);
             this.$emit("setData", item);
             this.dialog = false;
-
-            this.bienes_result = [];
-            this.area_selected = null;
+            this.resetAll();
+          
         },
 
         async getBienes(area, term = "", mostrar = "Todos", page = 1) {
@@ -186,6 +187,7 @@ export default {
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
             this.pages = res.data.datos.last_page;
+            console.log(res.data.datos.data);
 
             return res.data.datos.data;
         },
@@ -194,9 +196,17 @@ export default {
             tr_item.registrado = tr_item.registrado == 1 ? true : false;
             this.$emit("setData", this.tr_item);
             this.dialog = false;
+            this.resetAll();
+           
+        },
+
+        resetAll(){
             this.bienes_result = [];
             this.area_selected = null;
-        },
+            this.page=  1;
+            this.total_result=  0;
+            this.pages=  1;
+        }
     },
 
     watch: {

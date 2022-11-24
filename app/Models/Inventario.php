@@ -44,6 +44,8 @@ class Inventario extends Model
         'id_area',
         'id_usuario',
         'id_estado',
+
+        'foto_ref'
     ];
 
     public function getDataByCode($codigo)

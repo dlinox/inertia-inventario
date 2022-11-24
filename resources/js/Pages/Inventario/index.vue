@@ -16,11 +16,22 @@
 
             <v-container>
                 <v-row class="" align="center" no-gutters>
-                    <v-col cols="12" sm="7" md="8" class="px-1 py-2 py-md-3">
-                        <div class="text-h6">Registar</div>
+                    <v-col cols="12" sm="4" class="px-1 py-2 py-md-3">
+                        <v-btn outlined @click="file_foto = !file_foto">
+                            <template v-if="file_foto">
+                                <v-icon color="primary">mdi-camera</v-icon>
+                            </template>
+                            <template v-else>
+                                <v-icon color="red">mdi-camera-off</v-icon>
+                            </template>
+                        </v-btn>
                     </v-col>
 
-                    <v-col cols="12" sm="auto" class="ml-auto py-2 py-md-3">
+                    <v-col
+                        cols="12"
+                        sm="auto"
+                        class="d-flex ml-auto py-2 py-md-3"
+                    >
                         <AreasAsignadasComponent
                             v-if="!is_new"
                             @setData="data_emit = $event"
@@ -83,9 +94,8 @@
                                 v-if="data_emit.registrado && !form_data.estado"
                             >
                                 <v-alert
-                                    type="warning"
                                     border="left"
-                                    color="blue-grey"
+                                    color="blue-grey lighten-3"
                                 >
                                     Elemento bloqueado, no se puede hacer
                                     modificaiones.
@@ -97,6 +107,7 @@
                                     v-if="data_emit.registrado"
                                     type="warning"
                                     border="left"
+                                    color="blue-grey lighten-3"
                                 >
                                     <small>
                                         <b>
@@ -106,8 +117,6 @@
                                     </small>
 
                                     <v-divider class="my-3"> </v-divider>
-
-                                    <v-spacer></v-spacer>
 
                                     <template v-if="is_edit">
                                         <v-btn
@@ -120,20 +129,19 @@
 
                                     <template v-else>
                                         <v-btn
-                                            outlined
+                                            color="secondary"
+                                            @click="editInventario(true)"
+                                        >
+                                            Editar
+                                        </v-btn>
+
+                                        <v-btn
                                             color="dark"
                                             @click="
                                                 dialog_delete = !dialog_delete
                                             "
                                         >
                                             Eliminar
-                                        </v-btn>
-
-                                        <v-btn
-                                            color="secondary"
-                                            @click="editInventario(true)"
-                                        >
-                                            Editar
                                         </v-btn>
                                     </template>
                                 </v-alert>
@@ -425,6 +433,18 @@
                             ></v-textarea>
                         </v-col>
 
+                        <v-col v-if="file_foto" cols="12" class="pb-3 pt-0">
+                            <v-file-input
+                                accept="image/png, image/jpeg, image/bmp"
+                                v-model="form_data.foto_ref"
+                                :disabled="disable_input"
+                                dense
+                                outlined
+                                counter
+                                show-size
+                            ></v-file-input>
+                        </v-col>
+
                         <v-col cols="12" class="pb-3 pt-0">
                             <v-btn
                                 :disabled="disable_input"
@@ -473,6 +493,12 @@
                 </div>
             </v-card>
         </v-dialog>
+        <AlertComponent
+            :show_alert="show_alert"
+            :msg_alert="msg_alert"
+            :type_alert="type_alert"
+            @setAlert="show_alert = $event"
+        />
     </div>
 </template>
 
@@ -487,6 +513,7 @@ import BusquedaAvanzadaComponent from "@/Pages/Inventario/Components/BusquedaAva
 import SearchCodeComponente from "./Components/FormComponents/SearchCodeComponente.vue";
 import ScannerBarComponent from "./Components/ScannerBarComponent.vue";
 import SimpleAutoCompleteInput from "./Components/FormComponents/SimpleAutoCompleteInput.vue";
+import AlertComponent from "./Components/AlertComponent.vue";
 
 export default {
     components: {
@@ -495,6 +522,7 @@ export default {
         SearchCodeComponente,
         ScannerBarComponent,
         SimpleAutoCompleteInput,
+        AlertComponent,
     },
     props: {
         estados: Array,
@@ -504,6 +532,8 @@ export default {
     },
     layout: Layout,
     data: () => ({
+        file_foto: false,
+
         form_data: {},
         form_valid: true,
         loadin_form: false,
@@ -529,8 +559,26 @@ export default {
         show_persona_otro: false,
 
         nameRules: [(v) => !!v || "*Obligatorio"],
+
+        //alerta
+        show_alert: false,
+        msg_alert: "",
+        type_alert: "",
     }),
     methods: {
+        setDataAlert(response) {
+            this.msg_alert = response.mensaje;
+            this.type_alert = response.estado ? "success" : "red";
+            this.show_alert = true;
+        },
+        async guardarFoto(id) {
+            const formData = new FormData();
+            formData.append("foto", this.form_data.foto_ref);
+            formData.append("id", id);
+            let res = await axios.post("/inventario/save-foto", formData);
+            console.log(res.data);
+        },
+
         async Guardar() {
             console.log(this.form_data);
             if (this.$refs.form.validate()) {
@@ -550,14 +598,22 @@ export default {
                 "/inventario/create-inventario",
                 this.form_data
             );
-            console.log(res.data);
+
+            if (res.data.estado && this.file_foto) {
+                let res_foto = await this.guardarFoto(res.data.id);
+            }
+
+            this.setDataAlert(res.data);
         },
         async updateInventario() {
             let res = await axios.post(
                 "/inventario/update-inventario",
                 this.form_data
             );
-            console.log(res.data);
+            if (res.data.estado && this.file_foto) {
+                let res_foto = await this.guardarFoto(res.data.id);
+            }
+            this.setDataAlert(res.data);
         },
 
         async deleteInventario() {
@@ -566,7 +622,8 @@ export default {
                 "/inventario/delete-inventario",
                 this.form_data
             );
-            console.log(res.data);
+
+            this.setDataAlert(res.data);
             this.resetAll();
             this.dialog_delete = false;
             this.loadin_form = false;
@@ -617,10 +674,12 @@ export default {
         async data_emit(item) {
             if (!item) return;
 
-            this.loadin_form = true;
+            console.log(item);
+
+            //this.loadin_form = true;
             await this.getDataBien(item);
-            this.disable_input = item.registrado;
-            this.loadin_form = false;
+            //this.disable_input = item.registrado;
+            //this.loadin_form = false;
         },
         is_new() {
             this.resetAll();

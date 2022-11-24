@@ -57,7 +57,10 @@ class Bienk extends Model
             ->first();
 
         $res['persona'] = Persona::where('dni', $res->persona_dni)->first();
-        $res['id_persona']  = $res['persona']->id;
+        if($res['persona']){
+            $res['id_persona']  = $res['persona']->id;
+        }
+      
         //$res['oficina//'] = Area::where('id', $res->area_id)->first();
         return $res;
     }
