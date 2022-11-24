@@ -12,7 +12,7 @@
             </v-btn>
         </template>
 
-        <v-card>
+        <v-card tile>
             <v-toolbar>
                 <v-app-bar-nav-icon @click="dialog = false">
                     <v-icon>mdi-arrow-left</v-icon>
@@ -21,40 +21,21 @@
                 <v-toolbar-title>Busqueda Avanzada</v-toolbar-title>
             </v-toolbar>
 
-            <v-card-text class="mt-4" style="height: 90vh">
+            <v-card-text style="height: 90vh">
                 <v-row class="mt-3">
                     <v-col cols="12" class="pb-1 pt-0">
                         <v-autocomplete
                             v-model="oficina_selected"
-                            clearable
-                            class="mt-0 pt-0"
-                            dense
-                            label="Oficina"
-                            outlined
-                            :items="oficinas_res"
-                            :filter="customFilterOficina"
+                            :items="oficinas"
+                            label="Oficinas"
                             item-value="id"
-                            :search-input.sync="oficinas_search"
+                            item-text="nombre"
+                            class="mt-0 pt-0"
                             required
+                            clearable
+                            dense
+                            outlined
                         >
-                            <template v-slot:no-data>
-                                <v-list-item>
-                                    <v-list-item-title>
-                                        <template
-                                            v-if="oficinas_search?.length > 2"
-                                        >
-                                            Datos no encontrados para
-                                            <strong>
-                                                {{ oficinas_search }}
-                                            </strong>
-                                        </template>
-                                        <template v-else>
-                                            Digite más de
-                                            <strong> 2</strong> caracteres.
-                                        </template>
-                                    </v-list-item-title>
-                                </v-list-item>
-                            </template>
                             <template v-slot:selection="data">
                                 <small>
                                     <strong>{{ data.item.codigo }}</strong>
@@ -178,6 +159,7 @@
                         <v-pagination
                             v-model="page"
                             class=""
+                            :total-visible="5"
                             :length="pages"
                         ></v-pagination>
                         <v-spacer></v-spacer>
@@ -187,10 +169,9 @@
             <v-divider></v-divider>
 
             <v-card-actions>
+                <h5>Total: {{ total_result }}</h5>
                 <v-spacer></v-spacer>
-                <v-btn small color="primary" @click="SeleccionarBien">
-                    <v-icon left>mdi-check</v-icon> Seleccionar
-                </v-btn>
+              
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -199,6 +180,9 @@
 import axios from "axios";
 
 export default {
+    props: {
+        oficinas: Array,
+    },
     data: () => ({
         loading_table: false,
 
@@ -243,6 +227,7 @@ export default {
             item.registrado = item.registrado == 1 ? true : false;
             this.$emit("setData", item);
             this.dialog = false;
+            this.resetAll();
         },
         SeleccionarBien() {
             tr_item.registrado = tr_item.registrado == 1 ? true : false;
@@ -277,6 +262,14 @@ export default {
         async BuscarOficinas(term) {
             let res = await axios.get("/inventario/search-oficinas/" + term);
             return res.data.datos;
+        },
+
+        resetAll() {
+            this.bienes_result = [];
+            this.area_selected = null;
+            this.page = 1;
+            this.total_result = 0;
+            this.pages = 1;
         },
     },
 
@@ -352,9 +345,9 @@ export default {
 
 <style>
 .tr-selected {
-    background-color: rgba(0, 0, 255, 0.2);
+    background-color: rgba(1, 48, 90, 0.2);
     border: 1px dashed #444;
-    color: blue;
+    color: #01305a;
     font-weight: 600;
 }
 </style>

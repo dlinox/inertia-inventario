@@ -322,17 +322,15 @@ class InventarioController extends Controller
             'password' => ['required'],
         ]);
 
-        $current_user = Auth::user();
-
         if ($validate) {
 
-            $current_user->password = Hash::make($request->password);
-            $current_user->save();
+            $res = User::where('id', Auth::user()->id)->update(['password' => Hash::make($request->password)]);
 
-
-            $this->response['mensaje'] = 'Correo Enviado. Revise su bandeja de entrada.';
-            $this->response['estado'] = true;
-            return response()->json($this->response, 200);
+            if ($res) {
+                $this->response['mensaje'] = 'Contraseña Actualizada';
+                $this->response['estado'] = true;
+                return response()->json($this->response, 200);
+            }
         }
 
         $this->response['error'] = 'El email no existe.';
@@ -484,7 +482,7 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
-   
+
     public function getBienesByCode($codigo)
     {
         $res = $this->bienK->searchDataByCode($codigo);

@@ -156,6 +156,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
         ->name('perfil');
 
+    Route::post('/update-password', [InventarioController::class, 'updatePassword'])
+        ->name('update-password');
+
     Route::get('/get-inventario/{id}', [InventarioController::class, 'getInventario'])
         ->name('get-inventario');
 
@@ -230,3 +233,4 @@ Route::middleware('auth')->name('autocomplete.')->prefix('autocomplete')->group(
         Route::get('/all-info/{oficina}/{usuario?}', 'getAllInfoArea')->name('all-info');
     });
 });
+

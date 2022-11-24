@@ -128,9 +128,7 @@
             <v-card-actions>
                 <h5>Total: {{ total_result }}</h5>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="SeleccionarBien()">
-                    <v-icon left>mdi-check</v-icon> Seleccionar
-                </v-btn>
+              
             </v-card-actions>
         </v-card>
     </v-dialog>
