@@ -16,17 +16,6 @@
 
             <v-container>
                 <v-row class="" align="center" no-gutters>
-                    <v-col cols="12" sm="4" class="px-1 py-2 py-md-3">
-                        <v-btn outlined @click="file_foto = !file_foto">
-                            <template v-if="file_foto">
-                                <v-icon color="primary">mdi-camera</v-icon>
-                            </template>
-                            <template v-else>
-                                <v-icon color="red">mdi-camera-off</v-icon>
-                            </template>
-                        </v-btn>
-                    </v-col>
-
                     <v-col
                         cols="12"
                         sm="auto"
@@ -423,7 +412,7 @@
                             <v-textarea
                                 :disabled="disable_input"
                                 class="mt-0 pt-0"
-                                label="Observacion"
+                                label="Observación"
                                 dense
                                 outlined
                                 rows="2"
@@ -433,8 +422,10 @@
                             ></v-textarea>
                         </v-col>
 
-                        <v-col v-if="file_foto" cols="12" class="pb-3 pt-0">
+                        <v-col cols="12" class="d-flex justify-content-end pb-3 pt-0">
                             <v-file-input
+                                v-if="file_foto"
+                                label="Foto referencial"
                                 accept="image/png, image/jpeg, image/bmp"
                                 v-model="form_data.foto_ref"
                                 :disabled="disable_input"
@@ -443,6 +434,15 @@
                                 counter
                                 show-size
                             ></v-file-input>
+
+                            <v-btn text @click="file_foto = !file_foto">
+                                <template v-if="file_foto">
+                                    <v-icon color="primary">mdi-camera</v-icon>
+                                </template>
+                                <template v-else>
+                                    <v-icon color="red">mdi-camera-off</v-icon>
+                                </template>
+                            </v-btn>
                         </v-col>
 
                         <v-col cols="12" class="pb-3 pt-0">
