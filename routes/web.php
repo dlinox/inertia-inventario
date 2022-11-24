@@ -216,3 +216,16 @@ Route::middleware('auth')->name('get-data.')->prefix('get-data')->group(function
         Route::get('/all-info/{oficina}/{usuario?}', 'getAllInfoArea')->name('all-info');
     });
 });
+
+
+Route::middleware('auth')->name('autocomplete.')->prefix('autocomplete')->group(function () {
+
+    Route::controller(InventarioController::class)->name('bienes.')->prefix('bienes')->group(function () {
+        Route::get('/{codigo}', 'getBienesByCode');
+    });
+
+    Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
+        Route::get('/by-oficina/{oficina}/{usuario?}', 'getAreasByOficina')->name('by-oficina');
+        Route::get('/all-info/{oficina}/{usuario?}', 'getAllInfoArea')->name('all-info');
+    });
+});
