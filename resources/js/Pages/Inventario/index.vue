@@ -676,10 +676,10 @@ export default {
 
             console.log(item);
 
-            //this.loadin_form = true;
+            this.loadin_form = true;
             await this.getDataBien(item);
-            //this.disable_input = item.registrado;
-            //this.loadin_form = false;
+            this.disable_input = item.registrado;
+            this.loadin_form = false;
         },
         is_new() {
             this.resetAll();
