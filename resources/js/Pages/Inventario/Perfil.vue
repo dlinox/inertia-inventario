@@ -2,7 +2,9 @@
     <v-container class="my-3 main-page">
         <v-card tile>
             <v-card-title>
-                <v-btn tile @click="atras" icon class="mr-2"> <v-icon >mdi-arrow-left</v-icon> </v-btn>
+                <v-btn tile @click="atras" icon class="mr-2">
+                    <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
                 Datos del Usuario
             </v-card-title>
             <v-divider></v-divider>
@@ -255,9 +257,9 @@ export default {
                 }
             }
         },
-        atras(){
-            this.$inertia.get("/inventario/");
-        }
+        atras() {
+            window.history.back();
+        },
     },
     watch: {},
 

@@ -19,8 +19,6 @@ use App\Models\AreaPersona;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
-
-require __DIR__ . './inventario/web.php';
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -198,6 +196,10 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/update-inventario', [InventarioController::class, 'updateInventario'])
         ->name(' update-inventario');
 
+    Route::post('/save-foto', [InventarioController::class, 'saveFoto'])
+        ->name('save-foto');
+
+
     Route::post('/delete-inventario', [InventarioController::class, 'deleteInventario'])
         ->name('delete-inventario');
 });
@@ -208,6 +210,19 @@ Route::middleware('auth')->name('get-data.')->prefix('get-data')->group(function
 
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
         Route::get('/{term}', 'getOficinas')->name('term');
+    });
+
+    Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
+        Route::get('/by-oficina/{oficina}/{usuario?}', 'getAreasByOficina')->name('by-oficina');
+        Route::get('/all-info/{oficina}/{usuario?}', 'getAllInfoArea')->name('all-info');
+    });
+});
+
+
+Route::middleware('auth')->name('autocomplete.')->prefix('autocomplete')->group(function () {
+
+    Route::controller(InventarioController::class)->name('bienes.')->prefix('bienes')->group(function () {
+        Route::get('/{codigo}', 'getBienesByCode');
     });
 
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {

@@ -14,11 +14,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class InventarioController extends Controller
 {
-
     protected $bienK;
     protected $inventario;
 
@@ -364,7 +364,7 @@ class InventarioController extends Controller
             'nro_serie' => $request->nro_serie,
             'anio_fabricacion' => $request->anio_fabricacion,
             'nro_cargo_personal' => $request->nro_cargo_personal,
-            'fecha_cargo' => $request->fecha_cargo,
+            'fecha_cargo' => $request->fecha_cargo  == "0000-00-00" ? NULL :  $request->fecha_cargo,
             'nro_orden' => $request->nro_orden,
             'fecha_compra' => $request->fecha_compra,
             'proveedor_ruc' => $request->proveedor_ruc,
@@ -397,23 +397,29 @@ class InventarioController extends Controller
             }
 
             $this->response['estado'] = true;
-            $this->response['datos'] = $res;
+            $this->response['mensaje'] = 'Registrado con exito';
+            $this->response['id'] = $res->id;
             return response()->json($this->response, 200);
         }
 
-
         $this->response['mensaje'] = 'Error';
-        $this->response['estado'] = true;
+        $this->response['estado'] = false;
+        $this->response['mensaje'] = 'Error al registrar';
         $this->response['codigo'] =  $request->id_area;
         return response()->json($this->response, 200);
     }
     public function updateInventario(Request $request)
     {
+        if ($request->id_usuario != Auth::user()->id) {
+            $this->response['estado'] = false;
+            $this->response['mensaje'] = 'No puede editar registros de otro usuario';
+            return response()->json($this->response, 200);
+        }
         $data = [
             'id_persona' => $request->id_persona,
             'idpersona_otro' => $request->idpersona_otro,
             'id_area' => $request->id_area,
-            'id_usuario' => Auth::user()->id,
+            //'id_usuario' => Auth::user()->id,
             'id_estado' => $request->id_estado,
             'observaciones' => $request->observaciones,
         ];
@@ -423,8 +429,8 @@ class InventarioController extends Controller
 
         if ($res) {
             $this->response['estado'] = true;
-            $this->response['datos'] = $res;
-            $this->response['mensaje'] = 'Editando';
+            $this->response['id'] = $request->id;
+            $this->response['mensaje'] = 'Editado con exito';
             return response()->json($this->response, 200);
         }
 
@@ -436,7 +442,15 @@ class InventarioController extends Controller
     public function deleteInventario(Request $request)
     {
         $res = Inventario::find($request->id);
+
         if ($res) {
+
+            if ($res->id_usuario != Auth::user()->id) {
+                $this->response['estado'] = false;
+                $this->response['mensaje'] = 'No puede eliminar registros de otro usuario';
+                return response()->json($this->response, 200);
+            }
+
             $res->delete();
             Bienk::select('registrado')->where('id', $res->idbienk)->update(['registrado' => 0]);
             $this->response['mensaje'] = 'Exito, Inventario eliminado';
@@ -446,6 +460,36 @@ class InventarioController extends Controller
 
         $this->response['mensaje'] = 'Error';
         $this->response['estado'] = false;
+        return response()->json($this->response, 200);
+    }
+
+    public function saveFoto(Request $request)
+    {
+        if ($request->file('foto')) {
+            if ($request->id) {
+                $res = Inventario::find($request->id);
+                $path = Storage::disk('public')->put('Fotos/Referencia/' . $res->codigo, $request->file('foto'));
+
+                $res->foto_ref = asset($path);
+                $res->save();
+
+                $this->response['mensaje'] = 'Exito';
+                $this->response['estado'] = true;
+                return response()->json($this->response, 200);
+            }
+        }
+
+        $this->response['mensaje'] = 'Error';
+        $this->response['estado'] = false;
+        return response()->json($this->response, 200);
+    }
+
+   
+    public function getBienesByCode($codigo)
+    {
+        $res = $this->bienK->searchDataByCode($codigo);
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 }

@@ -100,6 +100,12 @@
             <div class="content" :class="drawer ? '' : 'full'">
                 <v-container>
                     <v-card :loading="loading_table">
+                        <v-overlay absolute :value="loading_table">
+                            <v-progress-circular
+                                indeterminate
+                                size="64"
+                            ></v-progress-circular>
+                        </v-overlay>
                         <v-simple-table>
                             <template v-slot:default>
                                 <thead class="grey lighten-1">
@@ -428,10 +434,10 @@ export default {
         },
 
         async oficina_asig(val) {
-            console.log('aquiiii');
+            console.log("aquiiii");
             if (!val) return;
             let res = await axios.get("/get-data/areas/by-oficina/" + val);
-            
+
             this.areas_asig = res.data.datos;
         },
 
