@@ -9,12 +9,9 @@ use App\Models\Inventario;
 class InventarioController extends Controller
 {
     protected $bienK;
-    protected $inventario;
-
     public function __construct()
     {
         $this->bienK = new Bienk;
-        $this->inventario = new Inventario;
     }
     public function getBienesByCode($codigo)
     {

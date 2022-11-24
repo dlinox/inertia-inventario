@@ -19,7 +19,6 @@ use Inertia\Inertia;
 
 class InventarioController extends Controller
 {
-
     protected $bienK;
     protected $inventario;
 
@@ -482,6 +481,15 @@ class InventarioController extends Controller
 
         $this->response['mensaje'] = 'Error';
         $this->response['estado'] = false;
+        return response()->json($this->response, 200);
+    }
+
+   
+    public function getBienesByCode($codigo)
+    {
+        $res = $this->bienK->searchDataByCode($codigo);
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 }
