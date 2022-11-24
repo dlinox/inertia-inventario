@@ -19,8 +19,6 @@ use App\Models\AreaPersona;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
-
-require __DIR__ . './inventario/web.php';
 /*
 |--------------------------------------------------------------------------
 | Web Routes
