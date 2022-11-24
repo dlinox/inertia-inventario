@@ -86,7 +86,7 @@ class UsuarioController extends Controller
                     ->orWhere('users.email', 'LIKE', '%' . $request->term . '%');
             })
             ->groupBy('users.id')
-            ->paginate(2);
+            ->paginate(10);
 
 
         $res->getCollection()->transform(function ($item) {

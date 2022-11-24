@@ -61,6 +61,13 @@
             <div class="content" :class="drawer ? '' : 'full'">
                 <v-container>
                     <v-card :loading="loading_table">
+
+                        <v-overlay absolute :value="loading_table">
+                            <v-progress-circular
+                                indeterminate
+                                size="64"
+                            ></v-progress-circular>
+                        </v-overlay>
                         <v-simple-table>
                             <template v-slot:default>
                                 <thead class="grey lighten-1">
