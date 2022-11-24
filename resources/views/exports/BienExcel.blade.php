@@ -73,10 +73,10 @@
         <tr>
             <td valign="top" align="center">{{ $key+1 }}</td>
             <td valign="top" align="left">{{ $invoice->codigo }}</td>
-            <td valign="top" align="left">{{ $invoice->nombre }}</td>
+            <td valign="top" align="left">{{ $invoice->descripcion }}</td>
             <td valign="top" align="left">{{ $invoice->modelo }}</td>
             <td valign="top" align="left">{{ $invoice->marca }}</td>
-            <td valign="top" align="left">{{ $invoice->serie }}</td>
+            <td valign="top" align="left">{{ $invoice->nro_serie }}</td>
             <td valign="top" align="left"></td>
             <td valign="top" align="left"></td>
             <td valign="top" align="left">
@@ -92,7 +92,7 @@
                 Chatarra
             @endif
             </td>
-            <td valign="top" align="left">{{ $invoice->numero }}</td>
+            <td valign="top" align="left">{{ $invoice->nro_orden }}</td>
             <td valign="top" align="left">{{ $invoice->observaciones }}</td>
         </tr>
     @endforeach

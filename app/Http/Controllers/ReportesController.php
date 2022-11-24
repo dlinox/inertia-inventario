@@ -31,18 +31,42 @@ class ReportesController extends Controller
 
     public function getDocumentsF($estado, $i, $f_fin ){
 
+        $count = null;
         if($estado == 2 ){
             $res = DB::select('SELECT area_persona.*, area_persona.fecha, area.nombre, persona.dni FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id) WHERE fecha BETWEEN '.$i.' AND '.$f_fin.' ORDER BY area_persona.id desc;');
+            $count = DB::select('SELECT count(persona.dni) as registros FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id) WHERE fecha BETWEEN '.$i.' AND '.$f_fin.' ORDER BY area_persona.id desc;');
         }else {
             //$res = AreaPersona::select()->orderBy('id', 'DESC')->get();
             $res = DB::select('SELECT area_persona.*, area_persona.fecha, area.nombre, persona.dni FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id) WHERE fecha BETWEEN '.$i.' AND '.$f_fin.' AND ESTADO != '.$estado.' ORDER BY area_persona.id desc;');
+            $count = DB::select('SELECT count(persona.dni) as registros FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id) WHERE fecha BETWEEN '.$i.' AND '.$f_fin.' AND ESTADO != '.$estado.' ORDER BY area_persona.id desc;');
         }
 
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
+        $this->response['count'] = $count;
         return response()->json($this->response, 200);
     }
+
+    public function getDocumentsFP(Request $request)
+    {
+ //       $res = DB::select('SELECT area_persona.*, area_persona.fecha, area.nombre, persona.dni FROM ((area_persona INNER JOIN area ON area_persona.id_area = area.id)INNER JOIN persona ON area_persona.id_persona = persona.id) WHERE fecha BETWEEN '.$i.' AND '.$f_fin.' AND ESTADO != '.$estado.' ORDER BY area_persona.id desc;');
+        $res = AreaPersona::select('*')
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('dni', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('codigo', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('nombre', 'LIKE', '%' . $request->term . '%')
+                    ->whereBetween('fecha', [$request->inicio, $request->fin])
+                    ->where('estado');
+            })->paginate(10);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+
 
 
     public function index()
