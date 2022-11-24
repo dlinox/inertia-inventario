@@ -258,7 +258,7 @@ export default {
             }
         },
         atras() {
-            this.$inertia.get("/inventario/");
+            window.history.back();
         },
     },
     watch: {},
