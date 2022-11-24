@@ -673,9 +673,6 @@ export default {
     watch: {
         async data_emit(item) {
             if (!item) return;
-
-            console.log(item);
-
             this.loadin_form = true;
             await this.getDataBien(item);
             this.disable_input = item.registrado;

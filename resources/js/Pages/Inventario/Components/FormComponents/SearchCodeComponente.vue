@@ -58,6 +58,9 @@ export default {
             let item = this.codigos_res.filter((e) => e.codigo === val)[0];
             item.registrado = item.registrado == 1 ? true : false;
             this.$emit("setData", item);
+            this.codigo_search = "";
+            this.codigos_res = [];
+            this.codigos_search = "";
             this.reset();
         },
 
