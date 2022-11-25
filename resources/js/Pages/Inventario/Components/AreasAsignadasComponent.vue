@@ -12,7 +12,56 @@
                     <v-icon>mdi-arrow-left</v-icon>
                 </v-app-bar-nav-icon>
 
-                <v-toolbar-title> Areas Asignadas xd</v-toolbar-title>
+                <v-toolbar-title> Areas Asignadas</v-toolbar-title>
+
+                <v-spacer></v-spacer>
+                <!-- <v-icon>mdi-account-group</v-icon> -->
+                <div>
+                <v-menu offset-y>
+                    <template
+                        v-slot:activator="{
+                            attrs,
+                            on,
+                        }"
+                    >
+                        <v-btn
+                            icon
+                            text
+                            color="primary"
+                            class=""
+                            v-bind="attrs"
+                            v-on="on"
+                        >
+                            <v-icon>
+                                mdi-account-group
+                            </v-icon>
+                        </v-btn>
+                    </template>
+
+                    <v-list dense>
+                        <v-subheader
+                            >Equipo
+                        </v-subheader
+                        >
+                        <v-list-item-group
+                            color="primary"
+                        >
+
+                        <!-- <pre>{{team}}</pre> -->
+
+                        <v-list-item v-for="it in team" :key="it.id" >
+                            <!-- <v-list-item-icon  style="margin-right: -10px;" >
+                                <v-icon color="primary" size="1.1rem">mdi-acount</v-icon>
+                            </v-list-item-icon> -->
+                            <v-list-item-content>
+                                <span style="margin-left: 10px; font-size: .85rem;" >{{it.nombres}} {{it.apellidos}}</span>
+                            </v-list-item-content>
+                        </v-list-item>
+                        </v-list-item-group>
+                    </v-list>
+                </v-menu>
+                </div>
+
             </v-toolbar>
 
             <v-card-text style="height: 90vh">
@@ -159,6 +208,8 @@ export default {
         page: 1,
         total_result: 0,
         pages: 1,
+        team:[],
+
     }),
     methods: {
         onSelectColum(item, index) {
@@ -189,6 +240,12 @@ export default {
             return res.data.datos.data;
         },
 
+        async getTeam() {
+            let res = await axios.get("inventario/getTeam/" + this.area_selected);
+            console.log(res.data);
+            this.team = res.data.datos;
+            //            return res.data.datos.data;
+        },
         SeleccionarBien() {
             tr_item.registrado = tr_item.registrado == 1 ? true : false;
             this.$emit("setData", this.tr_item);
@@ -213,8 +270,10 @@ export default {
             this.tr_index = null;
             this.loading_table = true;
             let res = await this.getBienes(val);
+            this.getTeam();
             this.bienes_result = res;
             this.loading_table = false;
+
         },
 
         async area_search(val) {

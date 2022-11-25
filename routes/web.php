@@ -103,6 +103,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getAreasP/{term}', 'getAreasP')->name('areasP');
     });
 
+
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
         Route::get('/getallOficinas', 'getallOficinas')->name('getallOficinas');
         Route::get('/getOficinasByAreas/{id}', 'getOficinasByAreas')->name('getOficinasByAreas');
@@ -212,6 +213,8 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/delete-inventario', [InventarioController::class, 'deleteInventario'])
         ->name('delete-inventario');
+
+    Route::get('/getTeam/{id}', [AreasController::class, 'getTeam'] )->name('getTeam');
 });
 
 

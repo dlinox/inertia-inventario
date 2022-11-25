@@ -154,4 +154,13 @@ class AreasController extends Controller
         $this->response['mensaje'] =   $oficina;
         return response()->json($this->response, 200);
     }
+
+    public function getTeam($id_area)
+    {
+        $res = DB::select('SELECT grupo.*, users.nombres, users.apellidos FROM grupo JOIN users ON id_usuario = users.id WHERE id_area = '.$id_area);
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
 }
