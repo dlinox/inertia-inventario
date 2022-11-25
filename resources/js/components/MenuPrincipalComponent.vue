@@ -134,11 +134,11 @@ export default {
                         ruta: "/admin/personas",
                     },
 
-                    {
+                   /* {
                         title: "Inventario",
                         icon: "mdi-fencing",
                         ruta: "/admin/inventario",
-                    },
+                    },*/
                 ],
             },
         ],
