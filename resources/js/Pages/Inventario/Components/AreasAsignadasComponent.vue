@@ -12,7 +12,7 @@
                     <v-icon>mdi-arrow-left</v-icon>
                 </v-app-bar-nav-icon>
 
-                <v-toolbar-title> Areas Asignadas</v-toolbar-title>
+                <v-toolbar-title> Areas Asignadas xd</v-toolbar-title>
             </v-toolbar>
 
             <v-card-text style="height: 90vh">
