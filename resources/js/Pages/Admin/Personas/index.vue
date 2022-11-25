@@ -121,64 +121,18 @@
                                         </td>
 
                                         <td>
-                                            <v-menu offset-y>
-                                                <template
-                                                    v-slot:activator="{
-                                                        attrs,
-                                                        on,
-                                                    }"
-                                                >
-                                                    <v-btn
-                                                        icon
-                                                        text
-                                                        color="primary"
-                                                        class=""
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                    >
-                                                        <v-icon>
-                                                            mdi-dots-vertical
-                                                        </v-icon>
-                                                    </v-btn>
-                                                </template>
 
-                                                <v-list dense>
-                                                    <v-subheader
-                                                        >Opciones</v-subheader
-                                                    >
-                                                    <v-list-item-group
-                                                        color="primary"
-                                                    >
-                                                        <v-list-item
-                                                            v-for="(
-                                                                val, i
-                                                            ) in itemsOptions"
-                                                            :key="i"
-                                                            @click="
-                                                                SelectMenu(
-                                                                    val.text,
-                                                                    item
-                                                                )
-                                                            "
-                                                        >
-                                                            <v-list-item-icon>
-                                                                <v-icon
-                                                                    v-text="
-                                                                        val.icon
-                                                                    "
-                                                                ></v-icon>
-                                                            </v-list-item-icon>
-                                                            <v-list-item-content>
-                                                                <v-list-item-title
-                                                                    v-text="
-                                                                        val.text
-                                                                    "
-                                                                ></v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </v-list-item>
-                                                    </v-list-item-group>
-                                                </v-list>
-                                            </v-menu>
+                                            <v-btn
+                                                icon
+                                                text
+                                                color="primary"
+                                                class=""
+                                                @click="getFormularioUsuario(item.id)"
+                                            >
+                                                <v-icon>
+                                                    mdi-plus-circle
+                                                </v-icon>
+                                            </v-btn>
                                         </td>
                                     </tr>
                                 </tbody>
