@@ -189,6 +189,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/get-bienes', [InventarioController::class, 'getBienes'])
         ->name('get-bienes');
 
+    Route::post('/get-bienes-usuario', [InventarioController::class, 'getBienesUsuarios'])
+        ->name('get-bienes-usuario');
+
     Route::post('/guardar-inventario', [InventarioController::class, 'saveInventario'])
         ->name('guardar-inventario');
 
@@ -233,4 +236,3 @@ Route::middleware('auth')->name('autocomplete.')->prefix('autocomplete')->group(
         Route::get('/all-info/{oficina}/{usuario?}', 'getAllInfoArea')->name('all-info');
     });
 });
-

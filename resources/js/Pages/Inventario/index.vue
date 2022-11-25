@@ -527,6 +527,7 @@
                 </template>
             </v-btn>
         </v-fab-transition>
+
     </div>
 </template>
 
@@ -560,6 +561,8 @@ export default {
     },
     layout: Layout,
     data: () => ({
+  
+
         file_foto: false,
 
         form_data: {},
@@ -596,6 +599,9 @@ export default {
         foto_ref: null,
     }),
     methods: {
+
+      
+
         setDataAlert(response) {
             this.msg_alert = response.mensaje;
             this.type_alert = response.estado ? "success" : "red";

@@ -3,7 +3,6 @@
         <v-app-bar color="white">
             <v-spacer />
 
- 
             <v-menu offset-y>
                 <template v-slot:activator="{ attrs, on }">
                     <v-btn
@@ -45,6 +44,47 @@
         </v-main>
 
         <!-- <ReLogin :user="user"  :dialog="dialog_relogin"  @dialog="dialog_relogin = $event" />-->
+
+        <v-dialog
+            v-model="dialog_change_pass"
+            persistent
+            :overlay="false"
+            max-width="400px"
+        >
+            <v-card>
+                <v-card-title class="text-h6">
+                    Cambiar contraseña
+                </v-card-title>
+
+                <v-form
+                    class="px-5 py-4"
+                    ref="form"
+                    v-model="valid"
+                    lazy-validation
+                >
+                    <v-text-field
+                        v-model="password"
+                        :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[rules.required, rules.min]"
+                        :type="show_password ? 'text' : 'password'"
+                        label="Nueva Contraseña"
+                        counter
+                        @click:append="show_password = !show_password"
+                    ></v-text-field>
+
+                    <v-btn
+                        :disabled="!valid"
+                        color="primary"
+                        class="mt-1"
+                        block
+                        :loading="loading_btn"
+                        @click="ChangePassword()"
+                    >
+                        Guardar Contraseña
+                    </v-btn>
+                </v-form>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -63,13 +103,47 @@ export default {
         focus: false,
         blur: false,
         session: true,
+
+        //cambair contraseña
+        dialog_change_pass: false,
+        show_password: false,
+        password: "",
+        valid: true,
+        loading_btn: false,
+
+        rules: {
+            required: (value) => !!value || "Requerido.",
+            min: (v) => v.length >= 4 || "Min 4 caracteres",
+        },
+        //cambair contraseña
     }),
     computed: {
         user() {
             return this.$page.props.auth.user;
         },
     },
+    async created() {
+        console.log(this.user);
+
+        this.dialog_change_pass =  !this.user.estado_password;
+    },
     methods: {
+        async ChangePassword() {
+            if (this.$refs.form.validate()) {
+                try {
+                    this.loading_btn = true;
+                    let res = await axios.post("/inventario/update-password", {
+                        password: this.password,
+                    });
+
+                    this.dialog_change_pass = false;
+                    this.loading_btn = false;
+                } catch (error) {
+             
+                    this.loading_btn = false;
+                }
+            }
+        },
         SelectMenu(menu) {
             if (menu == "Perfil") {
                 this.$inertia.get("/inventario/perfil");
