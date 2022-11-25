@@ -34,6 +34,10 @@ Route::get('/offline', function () {
     return view('vendor/laravelpwa/offline');
 });
 
+/*
+Route::get('/offline', [LoginController::class, 'offlineView'])
+    ->name('offline');*/
+
 // Route::post('/excel/table', function(){
 //     return (new tableExports)->download('areas.xlsx');
 // });
