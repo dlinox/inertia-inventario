@@ -427,9 +427,8 @@
                             ></v-textarea>
                         </v-col>
 
-                        <v-col cols="12" class="pb-1 pt-0">
+                        <v-col v-if="file_foto" cols="12" class="pb-1 pt-0">
                             <v-file-input
-                                v-if="file_foto"
                                 label="Foto referencial"
                                 accept="image/png, image/jpeg, image/bmp"
                                 v-model="foto_ref"
@@ -454,7 +453,7 @@
                             ></v-img
                         ></v-col>
 
-                        <v-col cols="12" class="pb-3 pt-3">
+                        <v-col cols="12" class="pb-3 pt-0">
                             <v-btn
                                 :disabled="disable_input"
                                 block
@@ -527,7 +526,6 @@
                 </template>
             </v-btn>
         </v-fab-transition>
-
     </div>
 </template>
 
@@ -561,8 +559,6 @@ export default {
     },
     layout: Layout,
     data: () => ({
-  
-
         file_foto: false,
 
         form_data: {},
@@ -599,9 +595,6 @@ export default {
         foto_ref: null,
     }),
     methods: {
-
-      
-
         setDataAlert(response) {
             this.msg_alert = response.mensaje;
             this.type_alert = response.estado ? "success" : "red";
@@ -612,11 +605,11 @@ export default {
             formData.append("foto", this.foto_ref);
             formData.append("id", id);
             let res = await axios.post("/inventario/save-foto", formData);
-            console.log(res.data);
+        
         },
 
         async Guardar() {
-            console.log(this.form_data);
+           
             if (this.$refs.form.validate()) {
                 this.loadin_form = true;
                 if (this.data_emit.registrado && this.is_edit) {
@@ -738,7 +731,7 @@ export default {
         },
 
         "form_data.id_oficina": function (val) {
-            console.log("aquiiiiii");
+           
             this.areas_by_oficina = this.areas.filter(
                 (e) => e.id_oficina === val
             );

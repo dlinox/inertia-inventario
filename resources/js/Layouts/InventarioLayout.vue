@@ -123,8 +123,6 @@ export default {
         },
     },
     async created() {
-        console.log(this.user);
-
         this.dialog_change_pass =  !this.user.estado_password;
     },
     methods: {

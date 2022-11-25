@@ -215,7 +215,6 @@ export default {
         async Editar(id) {
             let res = await axios.get("/inventario/get-inventario/" + id);
 
-            console.log(res.data);
         },
 
         onSelectColum(item, index) {
@@ -223,7 +222,7 @@ export default {
             this.tr_item = item;
         },
         onSelectColumDobleClik(item) {
-            console.log("Doble clic");
+          
             item.registrado = item.registrado == 1 ? true : false;
             this.$emit("setData", item);
             this.dialog = false;
@@ -292,7 +291,7 @@ export default {
         },
 
         async oficina_selected(val) {
-            console.log(val);
+     
             let res = await axios.get("/inventario/search-areas/" + val);
             this.areas_by_oficna = res.data.datos;
         },

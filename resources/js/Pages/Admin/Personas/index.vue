@@ -34,7 +34,11 @@
                     <v-btn
                         block
                         color="primary"
-                        @click="getFormularioUsuario()"
+                        @click="
+                            () => {
+                                this.$inertia.get('/admin/usuarios/formulario');
+                            }
+                        "
                     >
                         <v-icon left>mdi-plus</v-icon>
                         Nuevo
@@ -61,7 +65,6 @@
             <div class="content" :class="drawer ? '' : 'full'">
                 <v-container>
                     <v-card :loading="loading_table">
-
                         <v-overlay absolute :value="loading_table">
                             <v-progress-circular
                                 indeterminate

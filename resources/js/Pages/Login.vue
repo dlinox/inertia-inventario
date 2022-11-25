@@ -9,7 +9,7 @@
                     alt=""
                 />
             </div>
-            <v-card class="mx-auto elevation-10" max-width="400">
+            <v-card tile flat class="mx-auto" max-width="400">
                 <v-img
                     gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,6)"
                     class="white--text align-end"
@@ -71,7 +71,7 @@
                         INGRESAR
                     </v-btn>
 
-                    <div class="d-flex text-center mt-2">
+                    <div v-if="false" class="d-flex text-center mt-2">
                         <Link href="/reset-password">
                             <small>Olvidaste tu contraseña?</small>
                         </Link>
@@ -92,8 +92,8 @@ export default {
     data: () => ({
         loading_btn: false,
         show_password: false,
-        email: "dpumaticona@gmail.com",
-        password: "demo",
+        email: "",
+        password: "",
         valid: true,
 
         show_mensaje: false,
