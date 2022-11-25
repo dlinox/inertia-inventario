@@ -365,20 +365,19 @@ export default {
             if (op == "Asignar Area") {
                 this.asignarArea(user);
             } else if (op == "Editar") {
-                console.log();
                 this.getFormularioUsuario(user.id);
             }
         },
 
         async getFormularioUsuario(id = "") {
-            this.$inertia.get("/admin/usuarios/formulario/" + id);
+            this.$inertia.get("/admin/usuarios/formulario");
             //Inertia.get("/admin/usuarios/formulario/" + id);
             //let res = await axios.get("/admin/usuarios/get-formulario/" + id);
             //console.log(res.data);
         },
 
         async asignarArea(user) {
-            console.log(user);
+
             this.user_asignar = user;
             this.dialog_asignar = true;
         },

@@ -254,7 +254,7 @@ export default {
                     this.datos.oficinas[i]
                 );
             }
-            console.log(this.datos.oficinas);
+
             this.areas_listas = true;
         },
 
@@ -281,7 +281,7 @@ export default {
     watch: {},
 
     async created() {
-        console.log(this.data);
+    
         if (this.datos) {
             // await this.getInformacionArea();
         }

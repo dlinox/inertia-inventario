@@ -605,11 +605,11 @@ export default {
             formData.append("foto", this.foto_ref);
             formData.append("id", id);
             let res = await axios.post("/inventario/save-foto", formData);
-            console.log(res.data);
+        
         },
 
         async Guardar() {
-            console.log(this.form_data);
+           
             if (this.$refs.form.validate()) {
                 this.loadin_form = true;
                 if (this.data_emit.registrado && this.is_edit) {
@@ -731,7 +731,7 @@ export default {
         },
 
         "form_data.id_oficina": function (val) {
-            console.log("aquiiiiii");
+           
             this.areas_by_oficina = this.areas.filter(
                 (e) => e.id_oficina === val
             );

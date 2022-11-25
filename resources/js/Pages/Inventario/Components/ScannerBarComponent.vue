@@ -33,6 +33,7 @@
                     @decode="onDecode"
                     @loaded="onLoaded"
                 ></StreamBarcodeReader>
+                {{scanner_res}}
             </div>
 
 
@@ -59,10 +60,12 @@ export default {
     data: () => ({
         dialog: false,
         loading_camera: true,
+        scanner_res: '',
     }),
     methods: {
         async onDecode(codigo) {
 
+            this.scanner_res = codigo;
             let res = await axios.get("/autocomplete/bienes/" + codigo);
             let item = res.data.datos[0];
             item.registrado = item.registrado == 1 ? true : false;
@@ -72,7 +75,6 @@ export default {
 
         onLoaded() {
             this.loading_camera = false;
-            console.log("funciona ptm funcionaaa");
         },
     },
 };

@@ -75,7 +75,7 @@ export default {
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
             this.pages = res.data.datos.last_page;
-            console.log(res.data.datos.data);
+            
 
             return res.data.datos.data;
         },

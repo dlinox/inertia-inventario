@@ -83,7 +83,7 @@ export default {
         },
         filterKey(e) {
             const key = e.key;
-            console.log(key);
+           
             if (
                 !Number.isInteger(parseInt(key)) &&
                 key != "Backspace" &&

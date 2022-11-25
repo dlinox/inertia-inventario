@@ -168,7 +168,7 @@ export default {
         async onSelectColumDobleClik(item) {
             item.registrado = await item.registrado == 1 ? true : false;
 
-            console.log(item);
+        
             this.$emit("setData", item);
             this.dialog = false;
             this.resetAll();
@@ -185,8 +185,7 @@ export default {
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
             this.pages = res.data.datos.last_page;
-            console.log(res.data.datos.data);
-
+   
             return res.data.datos.data;
         },
 
