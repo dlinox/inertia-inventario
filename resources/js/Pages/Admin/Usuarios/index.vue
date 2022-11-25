@@ -35,7 +35,11 @@
                     <v-btn
                         block
                         color="primary"
-                        @click="getFormularioUsuario()"
+                        @click="
+                            () => {
+                                this.$inertia.get('/admin/usuarios/formulario');
+                            }
+                        "
                     >
                         <v-icon left>mdi-plus</v-icon>
                         Nuevo
@@ -370,14 +374,13 @@ export default {
         },
 
         async getFormularioUsuario(id = "") {
-            this.$inertia.get("/admin/usuarios/formulario");
+            this.$inertia.get("/admin/usuarios/formulario/" + id);
             //Inertia.get("/admin/usuarios/formulario/" + id);
             //let res = await axios.get("/admin/usuarios/get-formulario/" + id);
             //console.log(res.data);
         },
 
         async asignarArea(user) {
-
             this.user_asignar = user;
             this.dialog_asignar = true;
         },
