@@ -254,6 +254,7 @@ class InventarioController extends Controller
     {
         $res = Inventario::select('inventario.codigo', 'inventario.codigo_siga', 'inventario.descripcion', 'area.id', 'area.nombre')
             ->join('area', 'area.id', '=', 'inventario.id_area')
+            ->where('inventario.id_usuario', Auth::user()->id)
             ->paginate(10);
 
         $this->response['estado'] = true;

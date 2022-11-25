@@ -381,7 +381,7 @@ export default {
             id: null,
             nombres: "",
             apellidos: "",
-            rol: "",
+            rol: 2,
             estado: 1,
             email: "",
             oficinas: "",

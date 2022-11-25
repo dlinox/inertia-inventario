@@ -371,9 +371,9 @@ export default {
         },
 
         async getFormularioUsuario(id = "") {
-            Inertia.get("/admin/usuarios/formulario/" + id);
+            this.$inertia.get("/admin/usuarios/formulario/" + id);
+            //Inertia.get("/admin/usuarios/formulario/" + id);
             //let res = await axios.get("/admin/usuarios/get-formulario/" + id);
-
             //console.log(res.data);
         },
 

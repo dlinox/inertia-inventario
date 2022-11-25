@@ -13,12 +13,26 @@
                     <h4
                         class="pb-0 grey--text text--darken-2 text-sm-start text-sm-end"
                     >
-                        Nombres y Apellidos:
+                        Nombres:
                     </h4>
                 </v-col>
                 <v-col cols="12" sm="8">
                     <h4 class="pb-0 grey--text text--darken-4">
-                        {{ datos.nombres }} {{ datos.apellidos }}
+                        {{ datos.nombres }} 
+                    </h4>
+                </v-col>
+
+
+                <v-col cols="12" sm="4">
+                    <h4
+                        class="pb-0 grey--text text--darken-2 text-sm-start text-sm-end"
+                    >
+                      Apellidos:
+                    </h4>
+                </v-col>
+                <v-col cols="12" sm="8">
+                    <h4 class="pb-0 grey--text text--darken-4">
+                       {{ datos.apellidos }}
                     </h4>
                 </v-col>
 
@@ -35,7 +49,7 @@
                     </h4>
                 </v-col>
 
-                <v-col cols="12" sm="4">
+                <!--<v-col cols="12" sm="4">
                     <h4
                         class="pb-0 grey--text text--darken-2 text-sm-start text-sm-end"
                     >
@@ -46,7 +60,7 @@
                     <h4 class="pb-0 grey--text text--darken-4">
                         {{ datos.rol_name }}
                     </h4>
-                </v-col>
+                </v-col> -->
 
                 <v-col cols="12" sm="4">
                     <h4
