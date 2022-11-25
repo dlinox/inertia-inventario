@@ -8,9 +8,20 @@
     <title>Document</title>
     @laravelPWA
 </head>
+<style>
+    body{
+        width: 100vw;
+        height: 100vh;
+        background-color: #fefefe;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+</style>
 
 <body>
-    <h1>You are currently not connected to any networks.</h1>
+    <h1>No tiene conecion a internet</h1>
 </body>
 
 </html>

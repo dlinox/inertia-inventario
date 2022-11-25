@@ -54,4 +54,9 @@ class LoginController extends Controller
 
         return Redirect::route('login');
     }
+    
+    public function offlineView()
+    {
+        return Inertia::render('Offline');
+    }
 }

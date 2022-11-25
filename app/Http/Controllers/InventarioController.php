@@ -250,6 +250,18 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
+    public function getBienesUsuarios(Request $request)
+    {
+        $res = Inventario::select('inventario.codigo', 'inventario.codigo_siga', 'inventario.descripcion', 'area.id', 'area.nombre')
+            ->join('area', 'area.id', '=', 'inventario.id_area')
+            ->paginate(10);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        $this->response['mensaje'] =   $request->area;
+        return response()->json($this->response, 200);
+    }
+
     public function saveInventario(Request $request)
     {
 
@@ -322,20 +334,18 @@ class InventarioController extends Controller
             'password' => ['required'],
         ]);
 
-        $current_user = Auth::user();
-
         if ($validate) {
 
-            $current_user->password = Hash::make($request->password);
-            $current_user->save();
+            $res = User::where('id', Auth::user()->id)->update(['password' => Hash::make($request->password), 'estado_password' => 1]);
 
-
-            $this->response['mensaje'] = 'Correo Enviado. Revise su bandeja de entrada.';
-            $this->response['estado'] = true;
-            return response()->json($this->response, 200);
+            if ($res) {
+                $this->response['mensaje'] = 'Contraseña Actualizada';
+                $this->response['estado'] = true;
+                return response()->json($this->response, 200);
+            }
         }
 
-        $this->response['error'] = 'El email no existe.';
+        $this->response['error'] = 'Error al actualizar al contraseña.';
         $this->response['estado'] = false;
         return response()->json($this->response, 400);
     }
@@ -484,7 +494,7 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
-   
+
     public function getBienesByCode($codigo)
     {
         $res = $this->bienK->searchDataByCode($codigo);

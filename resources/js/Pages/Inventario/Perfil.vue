@@ -65,6 +65,8 @@
                 </v-col>
             </v-row>
         </v-card>
+        <TablaBienesRegistrados />
+
         <!--
         <v-card tile>
             <v-card-title> Areas Asignadas </v-card-title>
@@ -199,9 +201,10 @@
 
 <script>
 import Layout from "@/Layouts/InventarioLayout";
+import TablaBienesRegistrados from "./Components/Tablas/TablaBienesRegistrados.vue";
 
 export default {
-    components: {},
+    components: { TablaBienesRegistrados },
     props: {
         datos: Object,
     },

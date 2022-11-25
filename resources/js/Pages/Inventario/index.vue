@@ -16,6 +16,10 @@
 
             <v-container>
                 <v-row class="" align="center" no-gutters>
+                    <v-col cols="12" sm="auto" class="py-2 py-md-3">
+                        <strong> REGISTRO DE INVENTARIOS</strong>
+                    </v-col>
+
                     <v-col
                         cols="12"
                         sm="auto"
@@ -59,6 +63,7 @@
                                 />
 
                                 <BusquedaAvanzadaComponent
+                                    :oficinas="oficinas"
                                     @setData="data_emit = $event"
                                 />
 
@@ -422,30 +427,34 @@
                             ></v-textarea>
                         </v-col>
 
-                        <v-col cols="12" class="d-flex justify-content-end pb-3 pt-0">
+                        <v-col cols="12" class="pb-1 pt-0">
                             <v-file-input
                                 v-if="file_foto"
                                 label="Foto referencial"
                                 accept="image/png, image/jpeg, image/bmp"
-                                v-model="form_data.foto_ref"
+                                v-model="foto_ref"
                                 :disabled="disable_input"
                                 dense
                                 outlined
                                 counter
                                 show-size
                             ></v-file-input>
-
-                            <v-btn text @click="file_foto = !file_foto">
-                                <template v-if="file_foto">
-                                    <v-icon color="primary">mdi-camera</v-icon>
-                                </template>
-                                <template v-else>
-                                    <v-icon color="red">mdi-camera-off</v-icon>
-                                </template>
-                            </v-btn>
                         </v-col>
 
-                        <v-col cols="12" class="pb-3 pt-0">
+                        <v-col
+                            v-if="form_data.foto_ref"
+                            cols="12"
+                            class="pb-1 pt-0"
+                        >
+                            <v-img
+                                :src="form_data.foto_ref"
+                                height="250"
+                                contain
+                                class="grey darken-4"
+                            ></v-img
+                        ></v-col>
+
+                        <v-col cols="12" class="pb-3 pt-3">
                             <v-btn
                                 :disabled="disable_input"
                                 block
@@ -499,6 +508,26 @@
             :type_alert="type_alert"
             @setAlert="show_alert = $event"
         />
+
+        <v-fab-transition>
+            <v-btn
+                small
+                dark
+                absolute
+                top
+                left
+                fab
+                @click="file_foto = !file_foto"
+            >
+                <template v-if="file_foto">
+                    <v-icon small>mdi-camera</v-icon>
+                </template>
+                <template v-else>
+                    <v-icon small color="red lighten-3">mdi-camera-off</v-icon>
+                </template>
+            </v-btn>
+        </v-fab-transition>
+
     </div>
 </template>
 
@@ -532,6 +561,8 @@ export default {
     },
     layout: Layout,
     data: () => ({
+  
+
         file_foto: false,
 
         form_data: {},
@@ -564,8 +595,13 @@ export default {
         show_alert: false,
         msg_alert: "",
         type_alert: "",
+
+        foto_ref: null,
     }),
     methods: {
+
+      
+
         setDataAlert(response) {
             this.msg_alert = response.mensaje;
             this.type_alert = response.estado ? "success" : "red";
@@ -573,7 +609,7 @@ export default {
         },
         async guardarFoto(id) {
             const formData = new FormData();
-            formData.append("foto", this.form_data.foto_ref);
+            formData.append("foto", this.foto_ref);
             formData.append("id", id);
             let res = await axios.post("/inventario/save-foto", formData);
             console.log(res.data);
@@ -655,6 +691,7 @@ export default {
             this.$refs.form.reset();
             this.is_edit = false;
             this.data_emit = false;
+            this.foto_ref = null;
         },
 
         async getDataBien(item) {

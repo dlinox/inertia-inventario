@@ -34,6 +34,10 @@ Route::get('/offline', function () {
     return view('vendor/laravelpwa/offline');
 });
 
+/*
+Route::get('/offline', [LoginController::class, 'offlineView'])
+    ->name('offline');*/
+
 // Route::post('/excel/table', function(){
 //     return (new tableExports)->download('areas.xlsx');
 // });
@@ -156,6 +160,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
         ->name('perfil');
 
+    Route::post('/update-password', [InventarioController::class, 'updatePassword'])
+        ->name('update-password');
+
     Route::get('/get-inventario/{id}', [InventarioController::class, 'getInventario'])
         ->name('get-inventario');
 
@@ -185,6 +192,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/get-bienes', [InventarioController::class, 'getBienes'])
         ->name('get-bienes');
+
+    Route::post('/get-bienes-usuario', [InventarioController::class, 'getBienesUsuarios'])
+        ->name('get-bienes-usuario');
 
     Route::post('/guardar-inventario', [InventarioController::class, 'saveInventario'])
         ->name('guardar-inventario');

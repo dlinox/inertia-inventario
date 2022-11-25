@@ -4,7 +4,7 @@ return [
     'name' => 'APP Inventario UNAP',
     'manifest' => [
         'name' => env('APP_NAME', 'APP Inventario UNAP'),
-        'short_name' => 'PWA',
+        'short_name' => 'INVE',
         'start_url' => '/',
         'background_color' => '#ffffff',
         'theme_color' => '#000000',
