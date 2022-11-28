@@ -37,7 +37,7 @@ class PersonasController extends Controller
 
     public function getPersonasByAreaInv($id)
     {
-        $res = DB::select('SELECT *, concat(persona.nombres," ",persona.paterno," ",persona.materno) as nombre from persona WHERE id IN (SELECT id_persona FROM inventario where id_area = '.$id.');');
+        $res = DB::select('SELECT *, concat(persona.nombres," ",persona.paterno," ",persona.materno) as nombre from persona WHERE id IN (SELECT id_persona FROM inventario where id_area = "'.$id.'");');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

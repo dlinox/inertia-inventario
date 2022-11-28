@@ -23,8 +23,7 @@ class OficinaController extends Controller
     }
 
     public function getallOficinas(){
-        $res = DB::select('SELECT * FROM oficina where id IN ( SELECT id_oficina from area WHERE id IN ( SELECT id_area FROM inventario ));');
-
+        $res = DB::select('SELECT * FROM oficina where iduoper IN ( SELECT id_area FROM inventario );');
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
          return response()->json($this->response, 200);

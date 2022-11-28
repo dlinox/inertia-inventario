@@ -31,14 +31,14 @@
     <v-row class="inputs" style="background: white">
         <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class=" " >
             <v-autocomplete
-                v-model="ofiE"
+                v-model="areE"
                 clearable
                 dense
                 label="Oficina"
                 outlined
                 :items="oficinas"
                 :filter="customFilter"
-                item-value="id"
+                item-value="iduoper"
                 item-text="nombre"
                 :search-input.sync="oficinas_search"
                 required
@@ -70,42 +70,6 @@
                 </template>
             </v-autocomplete>
 
-        </v-col>
-        <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class="p-0 " >
-            <v-autocomplete
-                v-model="areE"
-                clearable
-                class="mt-0 pt-0"
-                dense
-                label="Area"
-                outlined
-                :items="areas"
-                :filter="customFilterAreas"
-                item-value="id"
-                item-text="nombre"
-                :search-input.sync="areas_search"
-                required
-            >
-                <template v-slot:no-data>
-                    <v-list-item>
-                        <v-list-item-title>
-                            <template >
-                                No hay registros
-                            </template>
-                        </v-list-item-title>
-                    </v-list-item>
-                </template>
-
-                <template v-slot:item="data">
-                    <v-list-item-content>
-                        <v-list-item-title v-html="data.item.codigo">
-                        </v-list-item-title>
-                        <v-list-item-subtitle>
-                            {{ data.item.nombre }}
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-                </template>
-            </v-autocomplete>
         </v-col>
 
         <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class="p-0" >
@@ -288,7 +252,6 @@ export default {
       }
     },
     created() {
-        this.getAreas()
         this.getPersonas()
         this.getOficinas()
         this.getDocumentos()
@@ -297,20 +260,13 @@ export default {
     watch:{
         areE: function(){
             this.getPersonas();
-            this.buscabyOficinaID(this.areEO)
             this.Registrado(this.areE, this.perE)
-            this.preview =  '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
         },
         perE: function(){
-            this.getAreas();
-            this.preview =  '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
+            this.preview = '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
             this.Registrado(this.areE, this.perE)
         },
-        ofiE: function(){
-            this.getAreas();
-            this.areE = null;
-            this.perE = null;
-        }
+
 
     },
 
@@ -387,52 +343,12 @@ export default {
         },
 
         async getOficinas() {
-            if (this.areE === null ){
-                let res = await axios.get("/admin/oficinas/getallOficinas");
-                console.log(res.data);
-                this.oficinas = res.data.datos;
-                return res.data.datos.data;
-            } else {
-                if(this.areE !== null ){
-
-                }
-            }
+            let res = await axios.get("/admin/oficinas/getallOficinas");
+            console.log(res.data);
+            this.oficinas = res.data.datos;
+            return res.data.datos.data;
         },
 
-        async getAreas() {
-            if (this.perE === null && this.ofiE === null){
-                let res = await axios.get("/admin/areas/getAreasAllInv");
-                this.areas = res.data.datos;
-                this.areas2 = res.data.datos;
-                return res.data.datos.data;
-            }
-            else
-            {
-                if (this.ofiE !== null  && this.perE === null){
-                    let res = await axios.get("/admin/areas/getAreasByOficinaInv/"+this.ofiE);
-                    this.areas = res.data.datos;
-                    return res.data.datos.data;
-                }else {
-                    if (this.ofiE === null && this.perE !== null ){
-                        if (this.opcion === 0) {
-                            let res = await axios.get("/admin/areas/getAreasByPersonaInv/"+this.perE);
-                            this.areas = res.data.datos;
-                            return res.data.datos.data;
-                        }
-                        else {
-                            if (this.opcion === 1) {
-                                let res = await axios.get("/admin/areas/getAreasByPersonaInvNoR/"+this.perE);
-                                this.areas = res.data.datos;
-                                return res.data.datos.data;
-                            }
-                        }
-                    }
-
-                }
-
-            }
-
-        },
         async getDocumentos() {
             let res = await axios.get("/admin/reportes/getDocuments");
             this.documentos = res.data.datos;

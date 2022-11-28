@@ -20,7 +20,7 @@ class CreateInventarioTable extends Migration
         Schema::create('inventario', function (Blueprint $table) {
 
             $table->id();
-
+            
             $table->string('tipo', 30)->nullable();
             $table->integer('idreg_anterior')->nullable();
             $table->string('cod_ubicacion', 30)->nullable();
