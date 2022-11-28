@@ -24,22 +24,21 @@ class GrupoController extends Controller
         $tamO = $this->sz($oficinas);
         $tamA = $this->sz($areas);
         $temp = [];
-        for($i = 0; $i< $tamO; $i++){
-            for($j = 0; $j<$tamA; $j++){
-                if($oficinas[$i]->id == $areas[$j]->id_oficina ) {
-                    array_push($temp, $areas[$j]);                    
+        for ($i = 0; $i < $tamO; $i++) {
+            for ($j = 0; $j < $tamA; $j++) {
+                if ($oficinas[$i]->id == $areas[$j]->id_oficina) {
+                    array_push($temp, $areas[$j]);
                 }
 
                 // if($temp != []) {
                 //     $oficinas[$i]->children = $temp;
                 // }
             }
-            if($temp != []){
+            if ($temp != []) {
                 $oficinas[$i]->children = $temp;
             }
 
             $temp = [];
-
         }
 
         $this->response['estado'] = true;
@@ -55,11 +54,11 @@ class GrupoController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
-    
-    
+
+
     public function getAreasOficinaByGrupo($id_oficina)
     {
-        $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM area JOIN grupo ON grupo.id_area = area.id WHERE id_oficina = '.$id_oficina.' );');
+        $res = DB::select('SELECT * from area WHERE id IN (SELECT id_area FROM area JOIN grupo ON grupo.id_area = area.id WHERE id_oficina = ' . $id_oficina . ' );');
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
@@ -67,22 +66,31 @@ class GrupoController extends Controller
 
     public function getUsuariosByAreas($id_oficina)
     {
-        $res = DB::select('SELECT users.* FROM users JOIN grupo ON grupo.id_usuario = users.id WHERE grupo.id_area = '.$id_oficina.';');
+        $res = DB::select('SELECT users.* FROM users JOIN grupo ON grupo.id_usuario = users.id WHERE grupo.id_area = ' . $id_oficina . ';');
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 
 
-    public function guardarGrupo(Request $request){
+    public function guardarGrupo(Request $request)
+    {
+
+
+
+        // $this->response['usuarios'] = $request->usuarios;
+        // $this->response['oficinas'] = $request->ofici;
+        // return response()->json($this->response, 200);
+
+
 
         foreach ($request->usuarios as $item) {
 
-            foreach ($request->oficinas as $oficina) {
+            foreach ($request->ofici as $oficina) {
 
-                //   $this->save($oficina['iduoper'], $item);
-                echo($oficina['iduoper']);
-                echo($item);
+                $this->save($oficina, $item);
+                //echo($oficina);
+                //echo($item);
 
             }
         }
@@ -90,21 +98,26 @@ class GrupoController extends Controller
         // return $area;
     }
 
-    private function save ($id_oficina, $id_usuario){
+    private function save($id_oficina, $id_usuario)
+    {
+
+       
+
 
         $registrado = null;
-        $registrado = DB::select('SELECT id FROM grupo where id_oficina = '.$id_oficina.' AND id_usuario = '.$id_usuario.';');
+        $registrado = DB::select("SELECT id FROM grupo where id_oficina = '$id_oficina'  AND id_usuario = $id_usuario");
 
-        if ($registrado == null ) {
+        if ($registrado == null) {
+
+
             $grupo = Grupo::create([
                 'id_oficina' => $id_oficina,
                 'id_usuario' => $id_usuario,
             ]);
             $this->response['mensaje'] = "Grupo guardado";
             $this->response['datos'] = $grupo;
-        
         }
-        
+
         $this->response['mensaje'] = "Grupo no guardado";
 
         return response()->json($this->response, 200);
@@ -127,8 +140,4 @@ class GrupoController extends Controller
     {
         return Inertia::render('Facilitador/Grupo/');
     }
-
-    
-
-
 }

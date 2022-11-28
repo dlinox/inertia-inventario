@@ -448,6 +448,7 @@ export default {
         },
 
         async Guardar() {
+            console.log();
             let res = await axios.post(
                 "/admin/grupo/guardar",{
                 usuarios: this.usuariosSelecionadas,

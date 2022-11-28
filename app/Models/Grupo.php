@@ -12,5 +12,6 @@ class Grupo extends Model
     protected $fillable = [
         'id_area',
         'id_usuario',
+        'id_oficina',
     ];
 }
