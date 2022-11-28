@@ -22,6 +22,7 @@ class Inventario extends Model
         'anio_adq',
         'modelo',
         'marca',
+        'medidas',
         'nro_serie',
         'val_libros',
         'dep_acum2019',
@@ -39,8 +40,8 @@ class Inventario extends Model
 
     public function getDataByCode($codigo)
     {
-        $res = $this::select('inventario.*', 'id_oficina')
-            ->join('area', 'inventario.id_area', '=', 'area.id')
+        $res = $this::select('inventario.*', 'iduoper as id_oficina')
+            ->join('oficina', 'inventario.id_area', '=', 'iduoper')
             ->where('inventario.codigo', $codigo)
             ->first();
 
