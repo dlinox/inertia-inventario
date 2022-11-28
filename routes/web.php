@@ -121,6 +121,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
         Route::get('/getallOficinas', 'getallOficinas')->name('getallOficinas');
+        Route::get('/getallOficinasG', 'getallOficinasG')->name('getOficinasG');
         Route::get('/getOficinasByAreas/{id}', 'getOficinasByAreas')->name('getOficinasByAreas');
     });
 

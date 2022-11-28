@@ -4,6 +4,8 @@
     <div>
         <v-card color="basil">  
 
+            <!-- {{oficinas}} -->
+
             <v-tabs
             v-model="tab"
             background-color="transparent"
@@ -70,7 +72,7 @@
                     color="basil"
                     flat
                     >
-                    <v-card-text>USuar</v-card-text>
+                    <v-card-text></v-card-text>
                     </v-card>
                 </v-tab-item>
             
@@ -117,6 +119,55 @@
 
                 <v-row class="mt-2">        
                     <v-col>
+                        <div class="pl-4 pr-4" style=" height: 40px; ">
+                            <v-autocomplete
+                                v-model="oficinasSelecionadas"
+                                clearable
+                                class="mt-0 pt-0"
+                                dense
+                                label="Persona"
+                                outlined
+                                :items="oficinas"
+                                :filter="customFilterOficina"
+                                item-value="iduoper"
+                                item-text="nombre"
+                                :search-input.sync="usuarios_search"
+                                required
+                                multiple
+                            >
+                                <template v-slot:selection="{ item, index }">
+                                    <v-chip v-if="index === 0">
+                                        <span>{{ item.nombre }}</span>
+                                    </v-chip>
+                                    <span
+                                    v-if="index === 1"
+                                    class="grey--text text-caption"
+                                    >
+                                    (+{{ oficinasSelecionadas.length - 1  }} others)
+                                    </span>
+                                </template>
+                                <template v-slot:no-data>
+                                    <v-list-item>
+                                        <v-list-item-title>
+                                            <template>
+                                                No hay registros en el inventario
+                                            </template>
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                </template>
+
+                                <template v-slot:item="data">
+                                    <v-list-item-content>
+                                        <v-list-item-title v-html="data.item.iduoper">
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle>
+                                            {{ data.item.nombre }}
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </template>
+                            </v-autocomplete>
+                        </div>
+                        <div class="mt-2"></div>
 
                         <div class="pl-4 pr-4" style=" height: 40px; ">
                             <v-autocomplete
@@ -230,8 +281,8 @@
                                             <v-card elevation="0"  style="border: solid 0.5px #cdcdcd">
                                                 <v-card-title><span style="font-size:1rem;"> Areas Selecionadas</span></v-card-title>
                                                 <v-card-text>
-                                                    <div v-for="item in tree" :key="item.id">
-                                                        <span class="mdi mdi-label-outline"></span> {{ item.name}}
+                                                    <div v-for="item in oficinasSelecionadas" :key="item.id">
+                                                        <span class="mdi mdi-label-outline"></span> {{ buscaOficinabyID(item) }}
                                                     </div>
                                                 </v-card-text>
                                             </v-card>
@@ -298,6 +349,7 @@ export default {
         usuarios:[],
         oficinas:[],
         usuariosSelecionadas:null,
+        oficinasSelecionadas:null,
         usuarios_search:"",
         search:"",
         dialog: false,
@@ -339,11 +391,18 @@ export default {
             return res.data.datos.data;
         },
 
+
         async getOficinas() {
-            let res = await axios.get("/admin/grupo/oficinas-grupo");
+            let res = await axios.get("/admin/oficinas/getallOficinasG");
             this.oficinas = res.data.datos;
             return res.data.datos.data;
         },
+
+        // async getOficinas() {
+        //     let res = await axios.get("/admin/oficina/o");
+        //     this.oficinas = res.data.datos;
+        //     return res.data.datos.data;
+        // },
 
 
         customFilterUsuario(item, queryText, itemText) {
@@ -353,6 +412,16 @@ export default {
             return (
                 nombres.indexOf(searchText) > -1 //||
                 //dni.indexOf(searchText) > -1
+             );
+        },
+
+        customFilterOficina(item, queryText, itemText) {
+            const nombres = item.nombre.toLowerCase();
+            const iduoper = item.iduoper.toLowerCase();
+            const searchText = queryText.toLowerCase();
+            return (
+                nombre.indexOf(searchText) > -1 ||
+                iduoper.indexOf(searchText) > -1
              );
         },
 
@@ -370,11 +439,19 @@ export default {
             }
         },
 
+        buscaOficinabyID(id){
+            for(let i in this.oficinas){
+                if (this.oficinas[i].iduoper === id ){
+                    return (this.oficinas[i].nombre ) 
+                }
+            }
+        },
+
         async Guardar() {
             let res = await axios.post(
                 "/admin/grupo/guardar",{
                 usuarios: this.usuariosSelecionadas,
-                areas: this.tree
+                ofici: this.oficinasSelecionadas
                 }
             );
         },
@@ -389,7 +466,7 @@ export default {
         },
     },
     created() {
-        this.getItemsGroup()
+        // this.getItemsGroup()
         this.getUsuarios()
         this.getOficinas()
     },

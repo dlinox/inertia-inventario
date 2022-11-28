@@ -6,6 +6,7 @@ use App\Models\Grupo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use PhpParser\Node\Stmt\Echo_;
 
 class GrupoController extends Controller
 {
@@ -64,37 +65,39 @@ class GrupoController extends Controller
         return response()->json($this->response, 200);
     }
 
-    public function getUsuariosByAreas($id_area)
+    public function getUsuariosByAreas($id_oficina)
     {
-        $res = DB::select('SELECT users.* FROM users JOIN grupo ON grupo.id_usuario = users.id WHERE grupo.id_area = '.$id_area.';');
+        $res = DB::select('SELECT users.* FROM users JOIN grupo ON grupo.id_usuario = users.id WHERE grupo.id_area = '.$id_oficina.';');
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 
 
-
     public function guardarGrupo(Request $request){
 
         foreach ($request->usuarios as $item) {
 
-            foreach ($request->areas as $area) {
+            foreach ($request->oficinas as $oficina) {
 
-                  $this->save($area['id']-1000, $item);
+                //   $this->save($oficina['iduoper'], $item);
+                echo($oficina['iduoper']);
+                echo($item);
+
             }
         }
 
         // return $area;
     }
 
-    private function save ($id_area, $id_usuario){
+    private function save ($id_oficina, $id_usuario){
 
         $registrado = null;
-        $registrado = DB::select('SELECT id FROM grupo where id_area = '.$id_area.' AND id_usuario = '.$id_usuario.';');
+        $registrado = DB::select('SELECT id FROM grupo where id_oficina = '.$id_oficina.' AND id_usuario = '.$id_usuario.';');
 
         if ($registrado == null ) {
             $grupo = Grupo::create([
-                'id_area' => $id_area,
+                'id_oficina' => $id_oficina,
                 'id_usuario' => $id_usuario,
             ]);
             $this->response['mensaje'] = "Grupo guardado";
