@@ -656,7 +656,7 @@ export default {
         async getDataBien(item) {
             let res = await getBienByCodigo(item);
 
-            console.log(res);
+     
 
             this.form_data = res;
             this.personas = [res.persona];

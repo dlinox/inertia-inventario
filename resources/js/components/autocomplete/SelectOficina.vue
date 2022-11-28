@@ -89,10 +89,10 @@ export default {
             this.oficinas_res = res;
         },
         async oficina_selected(val) {
-            console.log(val);
+        
             let res = await this.BuscarOficinas(val);
             this.oficinas_res = res;
-            console.log(res);
+
         },
     },
     computed: {
