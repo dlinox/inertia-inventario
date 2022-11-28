@@ -464,6 +464,13 @@ class InventarioController extends Controller
     public function getBienesByCode($codigo)
     {
         $res = $this->bienK->searchDataByCode($codigo);
+
+        if (count($res)  < 1) {
+            $this->response['estado'] = false;
+            $this->response['mensaje'] = 'Sin resutados para ' . $codigo;
+            $this->response['datos'] = $res;
+            return response()->json($this->response, 200);
+        }
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);

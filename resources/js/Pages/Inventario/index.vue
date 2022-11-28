@@ -63,7 +63,6 @@
                                 />
 
                                 <BusquedaAvanzadaComponent
-                                    :oficinas="oficinas"
                                     @setData="data_emit = $event"
                                 />
 
@@ -378,38 +377,7 @@
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
-                            <v-autocomplete
-                                v-model="form_data.id_oficina"
-                                :disabled="disable_input"
-                                :items="oficinas"
-                                :rules="nameRules"
-                                label="Oficina"
-                                item-value="iduoper"
-                                item-text="nombre"
-                                class="mt-0 pt-0"
-                                required
-                                clearable
-                                dense
-                                outlined
-                            >
-                                <template v-slot:selection="data">
-                                    <small>
-                                        <strong>{{ data.item.codigo }}</strong>
-                                        {{ data.item.nombre }}</small
-                                    >
-                                </template>
-                                <template v-slot:item="data">
-                                    <v-list-item-content>
-                                        <v-list-item-title
-                                            v-html="data.item.codigo"
-                                        >
-                                        </v-list-item-title>
-                                        <v-list-item-subtitle>
-                                            {{ data.item.nombre }}
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                </template>
-                            </v-autocomplete>
+                            <SelectOficina v-model="form_data.id_oficina" />
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
@@ -538,6 +506,7 @@ import SearchCodeComponente from "./Components/FormComponents/SearchCodeComponen
 import ScannerBarComponent from "./Components/ScannerBarComponent.vue";
 import SimpleAutoCompleteInput from "./Components/FormComponents/SimpleAutoCompleteInput.vue";
 import AlertComponent from "./Components/AlertComponent.vue";
+import SelectOficina from "../../components/autocomplete/SelectOficina.vue";
 
 export default {
     components: {
@@ -547,12 +516,12 @@ export default {
         ScannerBarComponent,
         SimpleAutoCompleteInput,
         AlertComponent,
+        SelectOficina,
     },
     props: {
         estados: Array,
         mis_areas: Array,
         areas: Array,
-        oficinas: Array,
     },
     layout: Layout,
     data: () => ({

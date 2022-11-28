@@ -24,36 +24,8 @@
             <v-card-text style="height: 90vh">
                 <v-row class="mt-3">
                     <v-col cols="12" class="pb-1 pt-0">
-                        <v-autocomplete
-                            v-model="oficina_selected"
-                            :items="oficinas"
-                            label="Oficinas"
-                            item-value="iduoper"
-                            item-text="nombre"
-                            class="mt-0 pt-0"
-                            required
-                            clearable
-                            dense
-                            outlined
-                        >
-                            <template v-slot:selection="data">
-                                <small>
-                                    <strong>{{ data.item.codigo }}</strong>
-                                    {{ data.item.nombre }}</small
-                                >
-                            </template>
-                            <template v-slot:item="data">
-                                <v-list-item-content>
-                                    <v-list-item-title
-                                        v-html="data.item.codigo"
-                                    >
-                                    </v-list-item-title>
-                                    <v-list-item-subtitle>
-                                        {{ data.item.nombre }}
-                                    </v-list-item-subtitle>
-                                </v-list-item-content>
-                            </template>
-                        </v-autocomplete>
+
+                        <SelectOficina   v-model="oficina_selected"/>
                     </v-col>
                 </v-row>
 
@@ -160,6 +132,7 @@
 </template>
 <script>
 import axios from "axios";
+import SelectOficina from "../../../components/autocomplete/SelectOficina.vue";
 
 export default {
     props: {
@@ -167,37 +140,28 @@ export default {
     },
     data: () => ({
         loading_table: false,
-
         tr_index: null,
         tr_item: {},
-
         items_combobox: ["Todos", "Registrados", "Sin registrar"],
-
         dialog: false,
         area_selected: null,
         search: "",
-
         bienes_result: [],
         mostrar_selected: "Todos",
         area_search: "",
-
         page: 1,
         total_result: 0,
         pages: 1,
-
         oficina_selected: null,
         oficinas_res: [],
         oficinas_search: "",
-
         area_selected: null,
         areas_by_oficna: [],
     }),
-
     methods: {
         async Editar(id) {
             let res = await axios.get("/inventario/get-inventario/" + id);
         },
-
         onSelectColum(item, index) {
             this.tr_index = index;
             this.tr_item = item;
@@ -213,36 +177,28 @@ export default {
             this.$emit("setData", this.tr_item);
             this.dialog = false;
         },
-
         async getBienes(area, term = "", mostrar = "Todos", page = 1) {
             let res = await axios.post("/inventario/get-bienes?page=" + page, {
                 area: area,
                 mostrar: mostrar,
                 term: term,
             });
-
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
             this.pages = res.data.datos.last_page;
-
             return res.data.datos.data;
         },
-
         customFilterOficina(item, queryText, itemText) {
             const nombre = item.nombre.toLowerCase();
             const codigo = item.codigo.toLowerCase();
             const searchText = queryText.toLowerCase();
-            return (
-                nombre.indexOf(searchText) > -1 ||
-                codigo.indexOf(searchText) > -1
-            );
+            return (nombre.indexOf(searchText) > -1 ||
+                codigo.indexOf(searchText) > -1);
         },
-
         async BuscarOficinas(term) {
             let res = await axios.get("/inventario/search-oficinas/" + term);
             return res.data.datos;
         },
-
         resetAll() {
             this.bienes_result = [];
             this.area_selected = null;
@@ -251,26 +207,24 @@ export default {
             this.pages = 1;
         },
     },
-
     watch: {
         async area_selected(val) {
-            if (!val) return;
-
+            if (!val)
+                return;
             this.tr_index = null;
             this.loading_table = true;
             let res = await this.getBienes(val);
             this.bienes_result = res;
             this.loading_table = false;
         },
-
         async oficinas_search(val) {
-            if (!val) return;
-            if (val.length < 2) return;
-
+            if (!val)
+                return;
+            if (val.length < 2)
+                return;
             let res = await this.BuscarOficinas(val);
             this.oficinas_res = res;
         },
-
         async oficina_selected(val) {
             this.tr_index = null;
             this.loading_table = true;
@@ -279,50 +233,32 @@ export default {
             this.bienes_result = res;
             this.loading_table = false;
         },
-
         async area_search(val) {
             //if (!val) return;
-
             this.tr_index = null;
             this.loading_table = true;
-            let res = await this.getBienes(
-                this.area_selected,
-                val,
-                this.mostrar_selected
-            );
+            let res = await this.getBienes(this.area_selected, val, this.mostrar_selected);
             this.bienes_result = res;
             this.loading_table = false;
         },
-
         async page(val, old_val) {
-            if (val == old_val) return;
-
+            if (val == old_val)
+                return;
             this.tr_index = null;
             this.loading_table = true;
-
-            let res = await this.getBienes(
-                this.area_selected,
-                this.area_search,
-                this.mostrar_selected,
-                val
-            );
+            let res = await this.getBienes(this.area_selected, this.area_search, this.mostrar_selected, val);
             this.bienes_result = res;
-
             this.loading_table = false;
         },
-
         async mostrar_selected(val) {
             this.tr_index = null;
             this.loading_table = true;
-            let res = await this.getBienes(
-                this.area_selected,
-                this.area_search,
-                val
-            );
+            let res = await this.getBienes(this.area_selected, this.area_search, val);
             this.bienes_result = res;
             this.loading_table = false;
         },
     },
+    components: { SelectOficina }
 };
 </script>
 
