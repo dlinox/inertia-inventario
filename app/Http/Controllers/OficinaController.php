@@ -30,6 +30,32 @@ class OficinaController extends Controller
          return response()->json($this->response, 200);
     }
 
+    public function getallOficinasG(){
+        $res = DB::select('SELECT * FROM oficina' );
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+         return response()->json($this->response, 200);
+    }
+
+    // public function getOficinasG(Request $request){
+
+
+    //     $res = Oficina::all();
+    //         // ->where(function ($query) use ($request) {
+    //         //     return $query
+    //         //         ->orWhere('iduoper', 'LIKE', '%' . $request->term . '%')
+    //         //         ->orWhere('nombre', 'LIKE', '%' . $request->term . '%');
+    //         // })
+    //         // ->paginate(7);
+
+    //     $this->response['estado'] = true;
+    //     $this->response['datos'] = $res;
+
+    //     return response()->json($this->response, 200);
+    // }
+
+
     public function getOficinasByAreas($id){
         $res = DB::select('SELECT * FROM oficina     where id_area IN (SELECT id_oficina FROM area WHERE id = '.$id.');');
         $this->response['estado'] = true;
