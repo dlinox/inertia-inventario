@@ -28,7 +28,7 @@
                             v-model="oficina_selected"
                             :items="oficinas"
                             label="Oficinas"
-                            item-value="id"
+                            item-value="iduoper"
                             item-text="nombre"
                             class="mt-0 pt-0"
                             required
@@ -54,20 +54,6 @@
                                 </v-list-item-content>
                             </template>
                         </v-autocomplete>
-                    </v-col>
-                    <v-col cols="12" class="pb-1 pt-0">
-                        <v-autocomplete
-                            clearable
-                            class="mt-0 pt-0"
-                            dense
-                            label="Area"
-                            outlined
-                            :items="areas_by_oficna"
-                            item-text="nombre"
-                            item-value="id"
-                            v-model="area_selected"
-                            required
-                        ></v-autocomplete>
                     </v-col>
                 </v-row>
 
@@ -109,7 +95,7 @@
                                     <th class="text-left">Estado</th>
                                     <th class="text-left">Descripcion</th>
                                     <th class="text-left">Codigo</th>
-                                    <th class="text-left">Cod. SIGA</th>
+                                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,9 +132,6 @@
                                     </td>
                                     <td>{{ item.descripcion }}</td>
                                     <td>{{ item.codigo }}</td>
-                                    <td>
-                                        {{ item.codigo_siga }}
-                                    </td>
                                 </tr>
                             </tbody>
                         </template>
@@ -171,7 +154,6 @@
             <v-card-actions>
                 <h5>Total: {{ total_result }}</h5>
                 <v-spacer></v-spacer>
-              
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -214,7 +196,6 @@ export default {
     methods: {
         async Editar(id) {
             let res = await axios.get("/inventario/get-inventario/" + id);
-
         },
 
         onSelectColum(item, index) {
@@ -222,7 +203,6 @@ export default {
             this.tr_item = item;
         },
         onSelectColumDobleClik(item) {
-          
             item.registrado = item.registrado == 1 ? true : false;
             this.$emit("setData", item);
             this.dialog = false;
@@ -286,14 +266,18 @@ export default {
         async oficinas_search(val) {
             if (!val) return;
             if (val.length < 2) return;
+
             let res = await this.BuscarOficinas(val);
             this.oficinas_res = res;
         },
 
         async oficina_selected(val) {
-     
-            let res = await axios.get("/inventario/search-areas/" + val);
-            this.areas_by_oficna = res.data.datos;
+            this.tr_index = null;
+            this.loading_table = true;
+            console.log(val);
+            let res = await this.getBienes(val);
+            this.bienes_result = res;
+            this.loading_table = false;
         },
 
         async area_search(val) {

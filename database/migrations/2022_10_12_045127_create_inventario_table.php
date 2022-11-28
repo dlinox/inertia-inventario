@@ -20,49 +20,42 @@ class CreateInventarioTable extends Migration
         Schema::create('inventario', function (Blueprint $table) {
 
             $table->id();
-            $table->char('codigo', 12)->unique();
-            $table->char('codigo_siga', 12)->nullable();
-            $table->string('descripcion', 100);
-            $table->string('modelo', 50);
-            $table->string('marca', 50);
-            $table->string('nro_serie', 30);
 
-            $table->char('anio_fabricacion')->nullable(); //cambiar a date
-            //$table->string('estado_actual', 20);
-            $table->integer('nro_cargo_personal')->nullable();
-            $table->date('fecha_cargo')->nullable();
-            $table->integer('nro_orden')->nullable();
-            $table->date('fecha_compra')->nullable();
-            $table->char('proveedor_ruc', 11)->nullable();
-            $table->integer('nro_pecosa')->nullable();
-            $table->date('fecha_pecosa')->nullable();
-            $table->double('vida_util', 10, 6)->nullable();
-            $table->date('fecha_vida_util')->nullable();
-            $table->decimal('valor_adquisicion', 20, 6)->default(0);
-            $table->double('valor_inicial', 10, 2)->nullable();
-            $table->double('valor_depreciacion', 10, 2)->nullable();
-            $table->date('fecha_baja_bien')->nullable();
-            $table->string('clasificador', 15)->nullable();
-            $table->char('sub_cta', 10)->nullable();
-            $table->integer('mayor')->nullable();
-            $table->string('observaciones', 150)->nullable();
+            $table->string('tipo', 30)->nullable();
+            $table->integer('idreg_anterior')->nullable();
+            $table->string('cod_ubicacion', 30)->nullable();
+           
 
-            $table->string('tipo', 60)->nullable();
+            $table->string('cuenta', 25)->nullable();
+            $table->string('codigo', 40)->nullable();
+            $table->string('codigo_anterior', 40)->nullable();
+            $table->string('descripcion', 200)->nullable();
+
+            $table->char('anio_adq', 4)->nullable(); //año adquisision
+            $table->string('modelo', 150)->nullable();
+            $table->string('marca', 150)->nullable();
+            $table->string('nro_serie', 130)->nullable();
+            $table->decimal('val_libros', 10, 6)->nullable();
+            $table->decimal('dep_acum2019', 10, 6)->nullable();
+            $table->string('medidas', 150)->nullable();
+            $table->string('color', 150)->nullable();
+            $table->string('observaciones', 250)->nullable();;
+
+        
             $table->string('idbienk', 60)->nullable();
             $table->boolean('estado')->default(1); //bloqueado?
-
             //$table->integer('vida_util_empleada_meses')->nullable();
-
             $table->integer('idpersona_otro')->nullable();
-            
+        
             $table->unsignedBigInteger('id_persona');
-            $table->unsignedBigInteger('id_area');
-            $table->unsignedBigInteger('id_usuario');
-            $table->unsignedBigInteger('id_estado');
+          
+            $table->unsignedBigInteger('id_usuario')->nullable();
+            $table->unsignedBigInteger('id_estado')->nullable();
+            $table->char('id_area',15)->nullable();
 
             $table->foreign('id_persona')->references('id')->on('persona');
             //$table->foreign('idpersona_otro')->references('id')->on('persona');
-            $table->foreign('id_area')->references('id')->on('area');
+            $table->foreign('id_area')->references('iduoper')->on('oficina');
             $table->foreign('id_usuario')->references('id')->on('users');
             $table->foreign('id_estado')->references('id')->on('estado');
 

@@ -38,46 +38,14 @@ class InventarioController extends Controller
     {
         $current_user = Auth::user();
 
-
-        $res = User::select(
-            'users.*',
-            DB::raw('GROUP_CONCAT(oficina.nombre SEPARATOR "|#|") as oficinas'),
-            DB::raw('GROUP_CONCAT(oficina.id SEPARATOR "|#|") as oficinas_ids')
-        )
-            ->leftjoin('grupo', 'grupo.id_usuario', '=', 'users.id')
-            ->leftjoin('area', 'area.id', '=', 'grupo.id_area')
-            ->leftjoin('oficina', 'area.id_oficina', '=', 'oficina.id')
-            ->where('users.id', $current_user->id)
-            ->groupBy('users.id')
-            ->first();
-
-        if (!$res) {
-            return false;
-        }
-
-        $oficinas = [];
-        $_oficinas_nombres =   $res->oficinas != "" ?  array_unique(explode("|#|", $res->oficinas)) : [];
-        $_oficinas_ids =   $res->oficinas_ids != "" ?  array_unique(explode("|#|", $res->oficinas_ids)) : [];
-
-        foreach ($_oficinas_nombres as $i => $oficina) {
-            $aux = [
-                'id'  => $_oficinas_ids[$i],
-                'nombre' => $oficina
-            ];
-            array_push($oficinas, $aux);
-        }
-
         $datos =
             [
-                'id' => $res->id,
-                'nombres' => $res->nombres,
-                'apellidos' => $res->apellidos,
-                'email' => $res->email,
-                'rol' => $res->rol,
-                'rol_name' => $res->getRoleNames()[0],
-                'oficinas' =>  $oficinas
+                'id' => $current_user->id,
+                'nombres' => $current_user->nombres,
+                'apellidos' => $current_user->apellidos,
+                'email' => $current_user->email,
+                'rol' => $current_user->rol,
             ];
-
 
         return Inertia::render('Inventario/Perfil', ['datos' => $datos]);
     }
@@ -218,8 +186,8 @@ class InventarioController extends Controller
     public function getBienes(Request $request)
     {
 
-        $res = BienK::select('bienk.codigo', 'bienk.codigo_siga', 'bienk.descripcion', 'bienk.registrado')
-            ->join('area', 'area.id', '=', 'bienk.id_area')
+        $res = BienK::select('bienk.codigo',  'bienk.descripcion', 'bienk.registrado')
+            ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area') //iduoper
             ->where(function ($query) use ($request) {
 
                 if ($request->mostrar == 'Registrados') {
@@ -240,7 +208,6 @@ class InventarioController extends Controller
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('bienk.codigo', 'LIKE', '%' . $request->term . '%')
-                    ->orWhere('bienk.codigo_siga', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('bienk.descripcion', 'LIKE', '%' . $request->term . '%');
             })->paginate(10);
 
@@ -366,33 +333,31 @@ class InventarioController extends Controller
 
     public function createInventario(Request $request)
     {
+
+
         $res = Inventario::create([
+
+            'tipo' => $request->tipo,
+            'idreg_anterior' => $request->idreg_anterior,
+            'cod_ubicacion' => $request->cod_ubicacion,
+            'cuenta' => $request->cuenta,
+
             'codigo' => $request->codigo,
-            'codigo_siga' => $request->codigo_siga,
+            'codigo_anterior' => $request->codigo_anterior,
             'descripcion' => $request->descripcion,
+
+            'anio_adq' => $request->anio_adq,
+
             'modelo' => $request->modelo,
             'marca' => $request->marca,
             'nro_serie' => $request->nro_serie,
-            'anio_fabricacion' => $request->anio_fabricacion,
-            'nro_cargo_personal' => $request->nro_cargo_personal,
-            'fecha_cargo' => $request->fecha_cargo  == "0000-00-00" ? NULL :  $request->fecha_cargo,
-            'nro_orden' => $request->nro_orden,
-            'fecha_compra' => $request->fecha_compra,
-            'proveedor_ruc' => $request->proveedor_ruc,
-            'nro_pecosa' => $request->nro_pecosa,
-            'fecha_pecosa' => $request->fecha_pecosa,
-            'vida_util' => $request->vida_util,
-            'fecha_vida_util' => $request->fecha_vida_util,
-            'valor_adquisicion' => $request->valor_adquisicion,
-            'valor_inicial' => $request->valor_inicial,
-            'valor_depreciacion' => $request->valor_depreciacion,
-            'fecha_baja_bien' => $request->fecha_baja_bien,
-            'clasificador' => $request->clasificador,
-            'sub_cta' => $request->sub_cta,
-            'mayor' => $request->mayor,
-            'observaciones' => $request->observaciones,
 
-            'tipo' => $request->codigo,
+
+            'val_libros' => $request->val_libros,
+            'dep_acum2019' => $request->dep_acum2019,
+            'color' => $request->color,
+
+            'observaciones' => $request->observaciones,
             'idbienk' => $request->id,
             'id_persona' => $request->id_persona,
             'idpersona_otro' => $request->idpersona_otro,
@@ -537,7 +502,8 @@ class InventarioController extends Controller
 
 
 
-    public function getBienesAllbyArea(Request $request){
+    public function getBienesAllbyArea(Request $request)
+    {
 
         $query_where = [];
         if ($request->id_area) array_push($query_where, ['inventario.id_area', '=', $request->id_area]);

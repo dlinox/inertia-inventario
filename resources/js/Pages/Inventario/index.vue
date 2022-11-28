@@ -149,9 +149,7 @@
                                 label="Codigo"
                                 outlined
                                 v-model="form_data.codigo"
-                                :rules="nameRules"
                                 :disabled="!is_new"
-                                required
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="8" md="8" class="pb-1 pt-0">
@@ -183,9 +181,7 @@
                                 label="Modelo"
                                 outlined
                                 v-model="form_data.modelo"
-                                :rules="nameRules"
                                 :disabled="!is_new"
-                                required
                             ></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
@@ -195,9 +191,29 @@
                                 label="Serie"
                                 outlined
                                 v-model="form_data.nro_serie"
-                                :rules="nameRules"
                                 :disabled="!is_new"
-                                required
+                            ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
+                            <v-text-field
+                                class="mt-0 pt-0"
+                                dense
+                                label="Color"
+                                outlined
+                                v-model="form_data.color"
+                                :disabled="disable_input"
+                            ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
+                            <v-text-field
+                                class="mt-0 pt-0"
+                                dense
+                                label="Medidas"
+                                outlined
+                                v-model="form_data.medidas"
+                                :disabled="disable_input"
                             ></v-text-field>
                         </v-col>
 
@@ -368,7 +384,7 @@
                                 :items="oficinas"
                                 :rules="nameRules"
                                 label="Oficina"
-                                item-value="id"
+                                item-value="iduoper"
                                 item-text="nombre"
                                 class="mt-0 pt-0"
                                 required
@@ -397,23 +413,6 @@
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
-                            <v-autocomplete
-                                v-model="form_data.id_area"
-                                :disabled="disable_input"
-                                clearable
-                                class="mt-0 pt-0"
-                                dense
-                                label="Area"
-                                outlined
-                                :items="areas_by_oficina"
-                                item-text="nombre"
-                                item-value="id"
-                                :rules="nameRules"
-                                required
-                            ></v-autocomplete>
-                        </v-col>
-
-                        <v-col cols="12" class="pb-1 pt-0">
                             <v-textarea
                                 :disabled="disable_input"
                                 class="mt-0 pt-0"
@@ -422,8 +421,6 @@
                                 outlined
                                 rows="2"
                                 v-model="form_data.observaciones"
-                                :rules="nameRules"
-                                required
                             ></v-textarea>
                         </v-col>
 
@@ -605,11 +602,9 @@ export default {
             formData.append("foto", this.foto_ref);
             formData.append("id", id);
             let res = await axios.post("/inventario/save-foto", formData);
-        
         },
 
         async Guardar() {
-           
             if (this.$refs.form.validate()) {
                 this.loadin_form = true;
                 if (this.data_emit.registrado && this.is_edit) {
@@ -689,6 +684,9 @@ export default {
 
         async getDataBien(item) {
             let res = await getBienByCodigo(item);
+
+            console.log(res);
+
             this.form_data = res;
             this.personas = [res.persona];
             this.personas_otro = [res.persona_otro];
@@ -731,7 +729,6 @@ export default {
         },
 
         "form_data.id_oficina": function (val) {
-           
             this.areas_by_oficina = this.areas.filter(
                 (e) => e.id_oficina === val
             );
