@@ -198,194 +198,6 @@
                                 v-slot:expanded-item="{ headers, item }"
                                 elevation="0"
                             >
-<<<<<<< HEAD
-                                <td
-                                    cellpadding="0"
-                                    style="background: white; transition: 2s"
-                                    :colspan="headers.length"
-                                    class="pa-0"
-                                >
-                                    <div>
-                                        <AreasByOficinaGrupo :oficina="item" />
-                                    </div>
-                                </td>
-                            </template>
-                        </v-data-table>
-                    </v-tab-item>
-                    <v-tab-item href="Usuarios">
-                        <v-card color="basil" flat>
-                            <v-card-text></v-card-text>
-                        </v-card>
-                    </v-tab-item>
-                </v-tabs-items>
-            </v-card>
-        </div>
-
-        <div class="text-center">
-            <v-dialog
-                v-model="dialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-            >
-                <v-card>
-                    <v-toolbar color="primary">
-                        <v-toolbar-items>
-                            <v-btn icon dark @click="dialog = false">
-                                <v-icon>mdi-close</v-icon>
-                            </v-btn>
-                        </v-toolbar-items>
-                        <v-toolbar-title style="color: white"
-                            >Añadir grupo</v-toolbar-title
-                        >
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                            <v-btn dark text @click="dialog = false"> </v-btn>
-                        </v-toolbar-items>
-                    </v-toolbar>
-                    <v-card-text>
-                        <v-row class="mt-2">
-                            <v-col>
-                                <div class="pl-4 pr-4" style="height: 40px">
-                                    <v-autocomplete
-                                        v-model="oficinasSelecionadas"
-                                        clearable
-                                        class="mt-0 pt-0"
-                                        dense
-                                        label="Persona"
-                                        outlined
-                                        :items="oficinas"
-                                        :filter="customFilterOficina"
-                                        item-value="iduoper"
-                                        item-text="nombre"
-                                        :search-input.sync="usuarios_search"
-                                        required
-                                        multiple
-                                    >
-                                        <template
-                                            v-slot:selection="{ item, index }"
-                                        >
-                                            <v-chip v-if="index === 0">
-                                                <span>{{ item.nombre }}</span>
-                                            </v-chip>
-                                            <span
-                                                v-if="index === 1"
-                                                class="grey--text text-caption"
-                                            >
-                                                (+{{
-                                                    oficinasSelecionadas.length -
-                                                    1
-                                                }}
-                                                others)
-                                            </span>
-                                        </template>
-                                        <template v-slot:no-data>
-                                            <v-list-item>
-                                                <v-list-item-title>
-                                                    <template>
-                                                        No hay registros en el
-                                                        inventario
-                                                    </template>
-                                                </v-list-item-title>
-                                            </v-list-item>
-                                        </template>
-
-                                        <template v-slot:item="data">
-                                            <v-list-item-content>
-                                                <v-list-item-title
-                                                    v-html="data.item.iduoper"
-                                                >
-                                                </v-list-item-title>
-                                                <v-list-item-subtitle>
-                                                    {{ data.item.nombre }}
-                                                </v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </template>
-                                    </v-autocomplete>
-                                </div>
-                                <div class="mt-2"></div>
-
-                                <div class="pl-4 pr-4" style="height: 40px">
-                                    <v-autocomplete
-                                        v-model="usuariosSelecionadas"
-                                        clearable
-                                        class="mt-0 pt-0"
-                                        dense
-                                        label="Persona"
-                                        outlined
-                                        :items="usuarios"
-                                        :filter="customFilterUsuario"
-                                        item-value="id"
-                                        item-text="nombre"
-                                        :search-input.sync="usuarios_search"
-                                        required
-                                        multiple
-                                    >
-                                        <template
-                                            v-slot:selection="{ item, index }"
-                                        >
-                                            <v-chip v-if="index === 0">
-                                                <span
-                                                    >{{ item.nombres }}
-                                                    {{ item.paterno }}
-                                                    {{ item.materno }}
-                                                </span>
-                                            </v-chip>
-                                            <span
-                                                v-if="index === 1"
-                                                class="grey--text text-caption"
-                                            >
-                                                (+{{
-                                                    usuariosSelecionadas.length -
-                                                    1
-                                                }}
-                                                others)
-                                            </span>
-                                        </template>
-                                        <template v-slot:no-data>
-                                            <v-list-item>
-                                                <v-list-item-title>
-                                                    <template>
-                                                        No hay registros en el
-                                                        inventario
-                                                    </template>
-                                                </v-list-item-title>
-                                            </v-list-item>
-                                        </template>
-
-                                        <template v-slot:item="data">
-                                            <v-list-item-content>
-                                                <v-list-item-title
-                                                    v-html="data.item.dni"
-                                                >
-                                                </v-list-item-title>
-                                                <v-list-item-subtitle>
-                                                    {{ data.item.nombres }}
-                                                    {{ data.item.paterno }}
-                                                    {{ data.item.materno }}
-                                                </v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </template>
-                                    </v-autocomplete>
-                                </div>
-                                <v-toolbar flat style="margin-bottom: -10px">
-                                    <v-text-field
-                                        v-model="search"
-                                        label="Buscar Areas"
-                                        dense
-                                        append-icon="mdi-magnify"
-                                        outlined
-                                        hide-details
-                                        clearable
-                                        clear-icon="mdi-close-circle-outline"
-                                    >
-                                    </v-text-field>
-                                </v-toolbar>
-                                <v-row>
-                                    <v-col lg="6" md="6" sm="12" xs="12">
-                                        <v-row>
-                                            <v-col>
-=======
                                 <template v-slot:selection="{ item, index }">
                                     <v-chip v-if="index === 0">
                                         <span>{{ item.nombres }} {{item.paterno}} {{ item.materno}} </span>
@@ -436,7 +248,6 @@
                                             <span style="color:#000000; font-size: 1rem; ">Oficinas Selecionadas</span>
                                             <v-card elevation="0"  style="border: solid 0.5px #cdcdcd; min-height: 200px;">
                                                 <!-- <v-card-title><span style="font-size:1rem;"> Areas Selecionadas</span></v-card-title> -->
->>>>>>> 2ba572a3e7aeaa806a74ebed7d08176d128eff7e
                                                 <v-card-text>
                                                     <v-treeview
                                                         :search="search"
@@ -460,93 +271,6 @@
                                                     >
                                                     </v-treeview>
                                                 </v-card-text>
-<<<<<<< HEAD
-                                            </v-col>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col lg="6" md="6" sm="12" xs="12">
-                                        <div
-                                            style="
-                                                overflow-y: scroll;
-                                                max-height: 400px;
-                                            "
-                                            class="treee"
-                                        >
-                                            <v-col class="pr-4">
-                                                <v-card
-                                                    elevation="0"
-                                                    style="
-                                                        border: solid 0.5px
-                                                            #cdcdcd;
-                                                    "
-                                                >
-                                                    <v-card-title>
-                                                        <span
-                                                            style="
-                                                                font-size: 1rem;
-                                                            "
-                                                        >
-                                                            Usuarios
-                                                            Selecionadas</span
-                                                        ></v-card-title
-                                                    >
-                                                    <v-card-text>
-                                                        <div
-                                                            v-for="item in usuariosSelecionadas"
-                                                            :key="item.id"
-                                                        >
-                                                            <span
-                                                                class="mdi mdi-label-outline"
-                                                            ></span>
-                                                            {{
-                                                                buscaPersonabyID(
-                                                                    item
-                                                                )
-                                                            }}
-                                                        </div>
-                                                    </v-card-text>
-                                                </v-card>
-                                            </v-col>
-                                            <v-col class="pr-4">
-                                                <v-card
-                                                    elevation="0"
-                                                    style="
-                                                        border: solid 0.5px
-                                                            #cdcdcd;
-                                                    "
-                                                >
-                                                    <v-card-title
-                                                        ><span
-                                                            style="
-                                                                font-size: 1rem;
-                                                            "
-                                                        >
-                                                            Areas
-                                                            Selecionadas</span
-                                                        ></v-card-title
-                                                    >
-                                                    <v-card-text>
-                                                        <div
-                                                            v-for="item in oficinasSelecionadas"
-                                                            :key="item.id"
-                                                        >
-                                                            <span
-                                                                class="mdi mdi-label-outline"
-                                                            ></span>
-                                                            {{
-                                                                buscaOficinabyID(
-                                                                    item
-                                                                )
-                                                            }}
-                                                        </div>
-                                                    </v-card-text>
-                                                </v-card>
-                                            </v-col>
-                                        </div>
-                                        <div></div>
-                                    </v-col>
-                                </v-row>
-=======
                                             </v-card>
                                         </div>    
                                     </div>
@@ -581,7 +305,6 @@
                         </v-card-actions>
                          
                     </v-col>
->>>>>>> 2ba572a3e7aeaa806a74ebed7d08176d128eff7e
 
                                 <v-card-actions>
                                     <v-btn text @click="limpiar"> Reset </v-btn>
@@ -624,14 +347,6 @@ export default {
         open: [1, 2],
         search: null,
         caseSensitive: false,
-<<<<<<< HEAD
-        usuarios: [],
-        oficinas: [],
-        usuariosSelecionadas: null,
-        oficinasSelecionadas: null,
-        usuarios_search: "",
-        search: "",
-=======
         usuarios:[],
         oficinas:[],
         usuariosSelecionadas:null,
@@ -639,7 +354,6 @@ export default {
         usuarios_search:"",
         oficinas_search:"",
         search:"",
->>>>>>> 2ba572a3e7aeaa806a74ebed7d08176d128eff7e
         dialog: false,
         
 
@@ -745,13 +459,6 @@ export default {
         },
 
         async Guardar() {
-<<<<<<< HEAD
-            console.log();
-            let res = await axios.post("/admin/grupo/guardar", {
-                usuarios: this.usuariosSelecionadas,
-                ofici: this.oficinasSelecionadas,
-            });
-=======
             let res = await axios.post(
                 "/admin/grupo/guardar",{
                 usuarios: this.usuariosSelecionadas,
@@ -761,7 +468,6 @@ export default {
             this.dialog = false;
             this.text = "Grupo Creado";
             this.snackbar = true;
->>>>>>> 2ba572a3e7aeaa806a74ebed7d08176d128eff7e
         },
         clickColumn(slotData) {
             const indexRow = slotData.index;
