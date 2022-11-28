@@ -13,10 +13,20 @@ class CreateOficinaTable extends Migration
      */
     public function up()
     {
+
+  
+
+
         Schema::create('oficina', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('nombre',160);
-            $table->char('codigo',20);
+            $table->char('iduoper',15)->primary();
+            $table->string('nombre',250)->nullable();//desuoper
+            $table->string('dependencia',200)->nullable();
+            $table->char('codigo',20)->nullable();
+            $table->char('flag',1)->nullable();
+            $table->string('dep1',200)->nullable();
+            $table->string('dep2',200)->nullable();
+            $table->string('dep',200)->nullable();
+            $table->char('tipo',1)->default(1);
             $table->timestamps();
         });
     }
