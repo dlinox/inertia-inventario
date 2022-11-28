@@ -14,7 +14,7 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-
+        
         return Inertia::render('Admin/Usuarios/', [
             'roles' =>  Role::all(),
         ]);

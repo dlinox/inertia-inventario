@@ -15,10 +15,10 @@ class CreateGrupoTable extends Migration
     {
         Schema::create('grupo', function (Blueprint $table) {
             $table->id();
-            $table->char('id_oficina',15);
+            $table->unsignedBigInteger('id_area');
             $table->unsignedBigInteger('id_usuario');
             $table->foreign('id_usuario')->references('id')->on('users');
-            $table->foreign('id_oficina')->references('iduoper')->on('oficina');
+            $table->foreign('id_area')->references('id')->on('area');
             $table->timestamps();
         });
     }
