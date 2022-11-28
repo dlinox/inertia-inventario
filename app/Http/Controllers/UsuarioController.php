@@ -14,7 +14,7 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-        
+
         return Inertia::render('Admin/Usuarios/', [
             'roles' =>  Role::all(),
         ]);
@@ -60,19 +60,16 @@ class UsuarioController extends Controller
 
         $query_where = [];
         if ($request->rol) array_push($query_where, ['users.rol', '=', $request->rol]);
-        if ($request->oficina) array_push($query_where, ['oficina.id', '=', $request->oficina]);
-        if ($request->area) array_push($query_where, ['area.id', '=', $request->area]);
+        if ($request->oficina) array_push($query_where, ['oficina.iduoper', '=', $request->oficina]);
+        //if ($request->area) array_push($query_where, ['area.id', '=', $request->area]);
 
         //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
         $res = User::select(
             'users.*',
-            DB::raw('GROUP_CONCAT(oficina.nombre SEPARATOR ",") as oficinas'),
-            DB::raw('GROUP_CONCAT(area.nombre SEPARATOR ",") as areas')
+            DB::raw('GROUP_CONCAT(oficina.nombre SEPARATOR ",") as oficinas')
         )
             ->leftjoin('grupo', 'grupo.id_usuario', '=', 'users.id')
-            ->leftjoin('area', 'area.id', '=', 'grupo.id_area')
-            ->leftjoin('oficina', 'area.id_oficina', '=', 'oficina.id')
-
+            ->leftjoin('oficina', 'oficina.iduoper', '=', 'grupo.id_oficina')
             //->where('bienk.id_area', $request->area)
 
             ->where($query_where)
@@ -153,11 +150,10 @@ class UsuarioController extends Controller
         $res = User::select(
             'users.*',
             DB::raw('GROUP_CONCAT(oficina.nombre SEPARATOR "|#|") as oficinas'),
-            DB::raw('GROUP_CONCAT(oficina.id SEPARATOR "|#|") as oficinas_ids')
+            DB::raw('GROUP_CONCAT(oficina.iduoper SEPARATOR "|#|") as oficinas_ids')
         )
             ->leftjoin('grupo', 'grupo.id_usuario', '=', 'users.id')
-            ->leftjoin('area', 'area.id', '=', 'grupo.id_area')
-            ->leftjoin('oficina', 'area.id_oficina', '=', 'oficina.id')
+            ->leftjoin('oficina', 'grupo.id_oficina', '=', 'oficina.iduoper')
             ->where('users.id', $id)
             ->groupBy('users.id')
             ->first();

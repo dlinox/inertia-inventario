@@ -195,7 +195,7 @@
                                             }}</strong>
                                         </v-expansion-panel-header>
 
-                                        <v-expansion-panel-content>
+                                        <!-- <v-expansion-panel-content>
                                             <template v-if="areas_listas">
                                                 <v-list subheader two-line>
                                                     <v-subheader inset>
@@ -262,7 +262,7 @@
                                                     ></v-progress-circular>
                                                 </div>
                                             </template>
-                                        </v-expansion-panel-content>
+                                        </v-expansion-panel-content> -->
                                     </v-expansion-panel>
                                 </v-expansion-panels>
                             </v-card>
@@ -279,8 +279,6 @@
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text class="mt-3">
-                    <SelectOficina v-model="oficina_asig"></SelectOficina>
-
                     <v-autocomplete
                         v-model="area_asig"
                         :items="areas_asig"
@@ -293,6 +291,51 @@
                     >
                     </v-autocomplete>
 
+                    <v-autocomplete
+                        v-model="oficina_selected"
+                        clearable
+                        class="mt-0 pt-0"
+                        dense
+                        label="Oficina"
+                        outlined
+                        :items="oficinas_res"
+                        :filter="customFilterOficina"
+                        item-value="id"
+                        item-text="nombre"
+                        :search-input.sync="oficinas_search"
+                        required
+                        multiple
+                    >
+                        <template v-slot:no-data>
+                            <v-list-item>
+                                <v-list-item-title>
+                                    <template
+                                        v-if="oficinas_search?.length > 2"
+                                    >
+                                        Datos no encontrados para
+                                        <strong>
+                                            {{ oficinas_search }}
+                                        </strong>
+                                    </template>
+                                    <template v-else>
+                                        Digite más de
+                                        <strong> 2</strong> caracteres.
+                                    </template>
+                                </v-list-item-title>
+                            </v-list-item>
+                        </template>
+
+                        <template v-slot:item="data">
+                            <v-list-item-content>
+                                <v-list-item-title v-html="data.item.codigo">
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+                                    {{ data.item.nombre }}
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                        </template>
+                    </v-autocomplete>
+
                     <v-btn
                         class="mr-3"
                         text
@@ -302,7 +345,7 @@
                         cancelar
                     </v-btn>
                     <v-btn
-                        :disabled="!area_asig.length > 0"
+                        :disabled="!oficina_selected.length > 0"
                         @click="guardarAsingar"
                     >
                         Asignar
@@ -362,7 +405,7 @@
 </template>
 <script>
 import Layout from "@/Layouts/AdminLayout";
-import SelectOficina from "@/components/autocomplete/SelectOficina.vue";
+
 import { Inertia } from "@inertiajs/inertia";
 
 export default {
@@ -405,6 +448,11 @@ export default {
         },
 
         areas_listas: false,
+
+        oficinas_res: [],
+        oficinas_search: "",
+        data_ofi: [],
+        oficina_selected: null
     }),
     computed: {},
     watch: {
@@ -417,6 +465,21 @@ export default {
         },
     },
     methods: {
+
+        customFilterOficina(item, queryText, itemText) {
+            const nombre = item.nombre.toLowerCase();
+            //const codigo = item.codigo.toLowerCase();
+            const searchText = queryText.toLowerCase();
+            return (
+                nombre.indexOf(searchText) > -1 
+                //codigo.indexOf(searchText) > -1
+            );
+        },
+        async BuscarOficinas(term) {
+            let res = await axios.get("/get-data/oficinas/" + term);
+            return res.data.datos;
+        },
+
         async Guardar() {
             if (this.$refs.form_user.validate()) {
                 let res = await axios.post(
@@ -448,14 +511,13 @@ export default {
         },
         async guardarAsingar() {
             let res = await axios.post("/admin/usuarios/asignar-area", {
-                areas: this.area_asig,
+                areas: this.oficina_selected,
                 usuario: this.form.id,
             });
 
-            if(res.data.estado){
-                Inertia.get('/admin/usuarios/formulario/'+ this.form.id);
+            if (res.data.estado) {
+                Inertia.get("/admin/usuarios/formulario/" + this.form.id);
             }
-            
         },
     },
     async created() {
@@ -463,75 +525,18 @@ export default {
         if (this.data && !this.is_nuevo) {
             this.data.rol = parseInt(this.data.rol);
             this.form = this.data;
-            await this.getInformacionArea();
+            // await this.getInformacionArea();
         }
     },
-    components: { SelectOficina },
+
+    watch: {
+        async oficinas_search(val) {
+            if (!val) return;
+            if (val.length < 2) return;
+            let res = await this.BuscarOficinas(val);
+            this.oficinas_res = res;
+        },
+    },
+
 };
 </script>
-
-<style>
-.wrapper-page {
-    width: 100%;
-    height: 100%;
-    background-color: #fafafa;
-}
-
-.page-heading {
-    display: flex;
-    justify-content: space-between;
-}
-.page-details {
-    width: 256px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-}
-.page-search {
-    width: calc(100% - 256px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.content-wrapper {
-    position: relative;
-    display: flex;
-    width: 100%;
-    height: 100%;
-}
-
-.content {
-    width: 100%;
-    margin-left: 256px;
-    transition: all 0.3s ease;
-}
-
-.content.full {
-    width: 100%;
-    margin-left: 0;
-}
-
-@media (max-width: 960px) {
-    .content {
-        margin-left: 0;
-    }
-
-    .page-details {
-        width: 200px;
-    }
-    .page-search {
-        width: calc(100% - 200px);
-    }
-}
-
-@media (max-width: 740px) {
-    .page-details {
-        width: 180px;
-    }
-    .page-search {
-        width: calc(100% - 180px);
-    }
-}
-
-.v-expansion-panel-content__wrap {
-    padding: 0 0 16px;
-}
-</style>

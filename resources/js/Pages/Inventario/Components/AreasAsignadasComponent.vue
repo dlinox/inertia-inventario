@@ -70,7 +70,7 @@
                     v-model="area_selected"
                     :items="areas"
                     item-text="nombre"
-                    item-value="id"
+                    item-value="iduoper"
                     label="Seleccione un Area"
                     class="my-4"
                     outlined
@@ -270,7 +270,7 @@ export default {
             this.tr_index = null;
             this.loading_table = true;
             let res = await this.getBienes(val);
-            this.getTeam();
+           // this.getTeam();
             this.bienes_result = res;
             this.loading_table = false;
 
