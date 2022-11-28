@@ -52,4 +52,20 @@ class Inventario extends Model
         //$res['oficina//'] = Area::where('id', $res->area_id)->first();
         return $res;
     }
+
+
+    public function getDataByRegAnt($idreg_anterior)
+    {
+        $res = $this::select('inventario.*', 'iduoper as id_oficina', 'idreg_anterior')
+            ->join('oficina', 'inventario.id_area', '=', 'iduoper')
+            ->where('inventario.idreg_anterior', $idreg_anterior)
+            ->first();
+
+        $res['persona'] = Persona::where('id', $res->id_persona)->first();
+        $res['persona_otro'] = Persona::where('id', $res->idpersona_otro)->first();
+        $res['id_persona']  = $res->id_persona;
+        $res['idpersona_otro']  = $res->idpersona_otro;
+        //$res['oficina//'] = Area::where('id', $res->area_id)->first();
+        return $res;
+    }
 }
