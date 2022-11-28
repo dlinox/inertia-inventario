@@ -5,6 +5,7 @@ use App\Exports\tableExports;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AreaPersonaController;
 use App\Http\Controllers\AreasController;
+use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\InventarioController;
@@ -63,11 +64,14 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(UsuarioController::class)->name('usuarios.')->prefix('usuarios')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/formulario/{id?}', 'getFormulario')->name('formulario');
-
+        
+        Route::get('/getUsuariosAll', 'getUsuariosAll')->name('getUsuariosAll');
         Route::post('/guardar', 'saveUsuario')->name('guardar');
 
         Route::post('/get-usuarios', 'getUsuarios')->name('get-usuarios');
         Route::post('/asignar-area', 'asignarArea')->name('asignar-area');
+
+
     });
 
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
@@ -88,6 +92,17 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getPersonasByAreaInvNoR/{id}', 'getPersonasByAreaInvNoR')->name('getPersonasByAreaInvNoR');
         Route::post('/savePersonasImport', 'savePersonasImport')->name('savePersonasImport');
     });
+
+    Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/items-group', 'getItemsGroup')->name('items-group');
+        Route::post('/guardar', 'guardarGrupo')->name('guardarGrupo');
+        Route::get('/oficinas-grupo', 'getOficinasByGrupo')->name('oficinas-grupo');
+        Route::get('/areas-grupo/{id}', 'getAreasOficinaByGrupo')->name('areas-grupo');
+        Route::get('/usuarios-areas-grupo/{id}', 'getUsuariosByAreas')->name('usuarios-area-grupo');
+
+    });
+
 
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -215,6 +230,43 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
         ->name('delete-inventario');
 
     Route::get('/getTeam/{id}', [AreasController::class, 'getTeam'] )->name('getTeam');
+});
+
+
+Route::middleware(['auth'])->name('facilitador.')->prefix('facilitador')->group(function () {
+
+    Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
+        Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
+    });
+    Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
+        Route::get('/', 'indexFacilitador')->name('inventario-facilitador');
+    });
+
+    Route::controller(OficinaController::class)->name('oficina.')->prefix('oficina')->group(function () {
+        Route::get('/get-oficinas', 'getOficinasFacilitador')->name('get-oficinas');
+    });
+
+    Route::controller(AreasController::class)->name('area.')->prefix('area')->group(function () {
+        Route::get('/get-areas', 'getAreas')->name('get-areas');
+        Route::get('/get-areas-oficina/{id}', 'getAreasByOficinaFacilitador')->name('getAreasByOficinaFacilitador');
+    });
+
+    Route::controller(PersonasController::class)->name('persona.')->prefix('persona')->group(function () {
+        Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
+    });
+
+    Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
+        Route::post('/get-bienes-all', 'getBienesAll')->name('get-bienes-all');
+        Route::post('/get-bienes-area', 'getBienesAllbyArea')->name('get-bienes-area');
+    });
+
+
+
+
+
+
+
+
 });
 
 

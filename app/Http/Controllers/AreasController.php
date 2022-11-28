@@ -163,4 +163,21 @@ class AreasController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+
+
+    /******************* FACILITADOR ********************/
+
+    //getAreasAllInv
+    public function getAreasByOficinaFacilitador($id)
+    {
+        $res = DB::select('SELECT * from area WHERE id_oficina = ' . $id. ';');
+        $this->response['mensaje'] = 'hecho';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+
+
+
 }

@@ -27,7 +27,9 @@
 
             <v-divider />
 
-            <menu-principal-component />
+                <menu-principal-component />
+
+            <!-- <MenuFacilitadorComponent /> -->
 
             <template v-slot:append>
                 <v-divider></v-divider>
@@ -104,9 +106,12 @@
 </template>
 <script>
 import MenuPrincipalComponent from "@/components/MenuPrincipalComponent";
+import MenuFacilitadorComponent from "@/components/MenuFacilitadorComponent";
+
 export default {
     components: {
         MenuPrincipalComponent,
+        MenuFacilitadorComponent,
     },
     data: () => ({
         drawer: true,

@@ -38,4 +38,13 @@ class OficinaController extends Controller
 
     }
 
+
+    public function getOficinasFacilitador() {
+        $res = DB::select('SELECT * FROM oficina;');
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+  
+
 }

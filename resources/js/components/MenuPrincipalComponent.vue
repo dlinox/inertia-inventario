@@ -83,6 +83,12 @@ export default {
         active_menu: 0,
         items: [
             { title: "Dashboard", icon: "mdi-home", ruta: "/admin" },
+            {
+                title: "Grupos",
+                icon: "mdi-account-group",
+                ruta: "/admin/grupo"
+            },
+
 
             {
                 title: "Reportes",

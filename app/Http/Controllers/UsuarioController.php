@@ -188,6 +188,15 @@ class UsuarioController extends Controller
                 'oficinas' =>  $oficinas
             ];
     }
+
+    public function getUsuariosAll()
+    {
+        $res = DB::select('SELECT *, concat(nombres," ",apellidos) as nombre from users;');
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
 }
 
 

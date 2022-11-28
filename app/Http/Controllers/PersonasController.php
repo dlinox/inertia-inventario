@@ -19,7 +19,7 @@ class PersonasController extends Controller
 
     public function getPersonas()
     {
-        $res = Persona::select()->get();
+        $res = DB::select('SELECT *, concat(persona.nombres," ",persona.paterno," ",persona.materno) as nombre from persona;');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -67,7 +67,6 @@ class PersonasController extends Controller
 
         $query_where = [];
         if ($request->tipo) array_push($query_where, ['persona.id_tipo_persona', '=', $request->tipo]);
-
 
         //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
         $res = Persona::select(
@@ -183,6 +182,24 @@ class PersonasController extends Controller
             $cont = $key;
         }
         return $cont;
+    }
+
+
+    /**************** FACILITADOR *****************/
+    public function getPersonasFacilitador(Request $request)
+    {
+        $res = Persona::select('*')
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('dni', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('nombres' , 'LIKE', '%' . $request->term . '%');
+            })->paginate(10);
+
+
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
     }
 
 

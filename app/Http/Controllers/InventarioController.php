@@ -503,4 +503,78 @@ class InventarioController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+
+
+    /************** FACILITADOR *********************/
+
+
+    public function indexFacilitador()
+    {
+        return Inertia::render('Facilitador/Inventario/');
+    }
+
+    public function getBienesAll(Request $request)
+    {
+        $res = Inventario::select('*')
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('codigo', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('descripcion', 'LIKE', '%' . $request->term . '%');
+            })->paginate(7);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+
+    // DB::table('categories as c')
+    // ->select('c.id', 'c.name', DB::raw('COUNT(p.id) as products_count'))
+    // ->leftJoin('products as p', 'c.id', 'p.product_type')
+    // ->groupBy('c.id')
+
+
+
+
+
+    public function getBienesAllbyArea(Request $request){
+
+        $query_where = [];
+        if ($request->id_area) array_push($query_where, ['inventario.id_area', '=', $request->id_area]);
+        if ($request->id_persona) array_push($query_where, ['inventario.id_persona', '=', $request->id_persona]);
+        //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
+        $res = Inventario::select(
+            'inventario.*',
+            'area.nombre as area'
+        )
+            ->leftjoin('area', 'area.id', '=', 'inventario.id_area')
+            ->where($query_where)
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('inventario.codigo', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
+            })
+            ->paginate(7);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+
+        return response()->json($this->response, 200);
+    }
+
+
+    // public function getBienesAllbyOfice(Request $request)
+    // {
+    //     $res = Inventario::select('*')
+    //         ->Join("area", "inventario.id_area","=","area.id")
+    //         ->where(function ($query) use ($request) {
+    //             return $query
+    //                 ->orWhere('codigo', 'LIKE', '%' . $request->term . '%')
+    //                 ->orWhere('descripcion', 'LIKE', '%' . $request->term . '%');
+    //         })->paginate(7);
+
+    //     $this->response['estado'] = true;
+    //     $this->response['datos'] = $res;
+    //     return response()->json($this->response, 200);
+    // }
 }
