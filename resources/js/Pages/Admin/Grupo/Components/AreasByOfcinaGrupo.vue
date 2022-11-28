@@ -1,32 +1,21 @@
 <template>
-<v-expansion-panels >
-    <v-expansion-panel
-    v-for="(item,i) in areas"
-    :key="i"
-    >
-    <v-expansion-panel-header dense>
-        <span> <span class="mdi mdi-label-outline pr-2 pl-4"></span> {{item.nombre}}</span>
-    </v-expansion-panel-header>
-
-    <v-expansion-panel-content>
-        <UsuariosXareasVue :area="item"/> 
-    </v-expansion-panel-content>
-
-    <!-- <v-expansion-panel-content v-for="(usuario,j) in usuarios" :key="j"
-    >
-        <span v-if="item.id = usuario.id_area" style="margin-left:42px" > <span class="mdi mdi-account-outline pr-2"></span> {{usuario.nombres}}</span>
-    </v-expansion-panel-content> -->
-    </v-expansion-panel>
-</v-expansion-panels>
+<div>
+    <div v-for="(usuario,j) in usuarios" :key="j" >
+      <div dense>
+        <span style="margin-left:42px" > <span class="mdi mdi-account-outline pr-2"></span> {{usuario.nombres}}</span>
+      </div>
+    
+    </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios';
-import UsuariosXareasVue from './UsuariosXareas.vue';
+// import UsuariosXareasVue from './UsuariosXareas.vue';
 
 export default {
   props:['oficina'],
-  components:{UsuariosXareasVue},
+  // components:{UsuariosXareasVue},
 
   data(){
     return{
@@ -35,14 +24,14 @@ export default {
     }
   },
   methods:{
-    async getAreasGroup() {
-      let res = await axios.get("/admin/grupo/areas-grupo/"+this.oficina.id);
-      this.areas = res.data.datos;
-      return res.data.datos.data;
-    },
+    // async getAreasGroup() {
+    //   let res = await axios.get("/admin/grupo/areas-grupo/"+this.oficina.id);
+    //   this.areas = res.data.datos;
+    //   return res.data.datos.data;
+    // },
 
     async getUsuariosAreasGroup() {
-      let res = await axios.get("/admin/grupo/usuarios-areas-grupo/"+this.oficina.id);
+      let res = await axios.get("/admin/grupo/usuarios-areas-grupo/"+this.oficina.iduoper);
       this.usuarios = res.data.datos;
       return res.data.datos.data;
     },
@@ -51,7 +40,7 @@ export default {
     
   },
   created () {
-    this.getAreasGroup();
+    // this.getAreasGroup();
     this.getUsuariosAreasGroup()
   },
 }
