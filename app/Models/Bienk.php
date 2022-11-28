@@ -51,8 +51,8 @@ class Bienk extends Model
 
     public function getDataByCode($codigo)
     {
-        $res = $this::select('bienk.*', 'id_oficina')
-            ->join('area', 'bienk.id_area', '=', 'area.id')
+        $res = $this::select('bienk.*', 'oficina.iduoper as id_oficina')
+            ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area')
             ->where('bienk.codigo', $codigo)
             ->first();
 
@@ -60,7 +60,7 @@ class Bienk extends Model
         if($res['persona']){
             $res['id_persona']  = $res['persona']->id;
         }
-      
+
         //$res['oficina//'] = Area::where('id', $res->area_id)->first();
         return $res;
     }
