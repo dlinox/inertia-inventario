@@ -153,7 +153,7 @@
                             :items="documentos"
                             :search="searchdocuments"
                             :itemsPerPage="pages"
-                            :mobile-breakpoint="100"
+                            :mobile-breakpoint="10"
                             :page="page"
                             hide-default-footer
                             >
@@ -250,7 +250,7 @@
                                 :total-visible="5"
                             ></v-pagination>
                         </div>
-                        </div>
+                        </div>  
                 </div>
 
                 <div class="text-center">

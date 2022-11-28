@@ -66,7 +66,7 @@ class GrupoController extends Controller
 
     public function getUsuariosByAreas($id_oficina)
     {
-        $res = DB::select('SELECT users.* FROM users JOIN grupo ON grupo.id_usuario = users.id WHERE grupo.id_area = ' . $id_oficina . ';');
+        $res = DB::select('SELECT users.* FROM users JOIN grupo ON grupo.id_usuario = users.id WHERE grupo.id_oficina = "' . $id_oficina . '";');
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
@@ -75,14 +75,6 @@ class GrupoController extends Controller
 
     public function guardarGrupo(Request $request)
     {
-
-
-
-        // $this->response['usuarios'] = $request->usuarios;
-        // $this->response['oficinas'] = $request->ofici;
-        // return response()->json($this->response, 200);
-
-
 
         foreach ($request->usuarios as $item) {
 
@@ -95,14 +87,14 @@ class GrupoController extends Controller
             }
         }
 
+        $this->response['mensaje'] = "Grupo Creado";
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
         // return $area;
     }
 
     private function save($id_oficina, $id_usuario)
     {
-
-       
-
 
         $registrado = null;
         $registrado = DB::select("SELECT id FROM grupo where id_oficina = '$id_oficina'  AND id_usuario = $id_usuario");

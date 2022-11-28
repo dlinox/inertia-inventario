@@ -2,6 +2,29 @@
 <v-container>
 
     <div>
+
+        <div class="text-center">
+        <v-snackbar
+            v-model="snackbar"
+            :timeout="timeout"
+        >
+            {{ text }}
+
+            <template v-slot:action="{ attrs }">
+            <v-btn
+                color="blue"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+            >
+                Close
+            </v-btn>
+            </template>
+        </v-snackbar>
+        </div>
+
+
+
         <v-card color="basil">  
 
             <!-- {{oficinas}} -->
@@ -23,14 +46,14 @@
                 
                 <v-tab-item href="Oficinas/Areas">
 
-
                     <v-data-table
                         :headers="dessertHeaders"
                         :items="oficinas"
                         :expanded.sync="expanded"
                         :search="search"
-                        item-key="id"
+                        item-key="iduoper"
                         show-expand
+                        :mobile-breakpoint="10"
                     >
                         <template v-slot:top>
                         <v-toolbar flat style="margin-bottom: -30px; padding-top: 10px;">
@@ -83,6 +106,9 @@
 
 
 
+
+
+
     <div class="text-center">
         <v-dialog
         v-model="dialog"
@@ -125,13 +151,13 @@
                                 clearable
                                 class="mt-0 pt-0"
                                 dense
-                                label="Persona"
+                                label="Oficinas"
                                 outlined
                                 :items="oficinas"
                                 :filter="customFilterOficina"
                                 item-value="iduoper"
                                 item-text="nombre"
-                                :search-input.sync="usuarios_search"
+                                :search-input.sync="oficinas_search"
                                 required
                                 multiple
                             >
@@ -217,82 +243,37 @@
                                 </template>
                             </v-autocomplete>
                         </div>
-                        <v-toolbar
-                        flat
-                        style="margin-bottom:-10px;"
-                        >
-
-                        <v-text-field
-                            v-model="search"
-                            label="Buscar Areas"
-                            dense
-                            append-icon="mdi-magnify"    
-                            outlined
-                            hide-details
-                            clearable
-                            clear-icon="mdi-close-circle-outline"
-                        >
-                
-                        </v-text-field>
-                        </v-toolbar>
                             <v-row >
-                                <v-col lg="6" md="6" sm="12" xs="12" >
-                                    <v-row>
-                                    <v-col >
-                                        <v-card-text>
-                                        <v-treeview
-                                            :search="search"
-                                            :filter="filter"
-                                            v-model="tree"
-                                            :items="items"
-                                            selected-color="indigo"
-                                            open-on-click
-                                            selectable
-                                            return-object
-                                            open-all
-                                            expand-icon="mdi-chevron-down"
-                                            on-icon="mdi-bookmark"
-                                            off-icon="mdi-bookmark-outline"
-                                            indeterminate-icon="mdi-bookmark-minus"
-                                            class="treee"
-                                            style="overflow-y:scroll; max-height: 400px;"
-                                        >
-                                        </v-treeview>
-                                        </v-card-text>
-                                    </v-col>
-
-
-
-                                    </v-row>
-                                </v-col>
-                                <v-col lg="6" md="6" sm="12" xs="12" >
-                                    <div style="overflow-y:scroll; max-height: 400px;" class="treee">   
-                                        <v-col class="pr-4">
-                                            <v-card elevation="0" style="border: solid 0.5px #cdcdcd ">
-                                                <v-card-title> <span style="font-size:1rem;"> Usuarios Selecionadas</span></v-card-title>
+                                <div class="mt-4" lg="12" md="12" sm="12" xs="12"  style="width: 100vw;"  >
+                                    <div style="overflow-y:scroll; height: 460px;" class="treee">   
+                                        <div class="pa-7 pr-4 pb-0 pt-2">
+                                            <span style="color:#000000; font-size: 1rem; ">Usuarios Selecionados</span>
+                                            <v-card elevation="0" style="border: solid 0.5px #cdcdcd; min-height: 110px; ">
+                                                <!-- <v-card-title> <span style="font-size:1rem;"> Usuarios Selecionadas</span></v-card-title> -->
                                                 <v-card-text>
                                                     <div v-for="item in usuariosSelecionadas" :key="item.id">
                                                         <span class="mdi mdi-label-outline"></span>  {{buscaPersonabyID(item)}}
                                                     </div>
                                                 </v-card-text>
                                             </v-card>
-                                        </v-col>
-                                        <v-col class="pr-4">
-                                            <v-card elevation="0"  style="border: solid 0.5px #cdcdcd">
-                                                <v-card-title><span style="font-size:1rem;"> Areas Selecionadas</span></v-card-title>
+                                        </div>
+                                        <div class="pa-7 pr-4 pt-2">
+                                            <span style="color:#000000; font-size: 1rem; ">Oficinas Selecionadas</span>
+                                            <v-card elevation="0"  style="border: solid 0.5px #cdcdcd; min-height: 200px;">
+                                                <!-- <v-card-title><span style="font-size:1rem;"> Areas Selecionadas</span></v-card-title> -->
                                                 <v-card-text>
                                                     <div v-for="item in oficinasSelecionadas" :key="item.id">
                                                         <span class="mdi mdi-label-outline"></span> {{ buscaOficinabyID(item) }}
                                                     </div>
                                                 </v-card-text>
                                             </v-card>
-                                        </v-col>    
+                                        </div>    
                                     </div>
                                     <div>
                                         
                                     </div>
 
-                                </v-col>
+                                </div>
                             </v-row>    
                             
                         <v-card-actions>
@@ -351,8 +332,15 @@ export default {
         usuariosSelecionadas:null,
         oficinasSelecionadas:null,
         usuarios_search:"",
+        oficinas_search:"",
         search:"",
         dialog: false,
+        
+
+        snackbar: false,
+        text: '',
+        timeout: 2000,
+        
 
         tab: null,
         tabs: [ 'Oficinas/Areas', 'Usuarios'],
@@ -416,7 +404,7 @@ export default {
         },
 
         customFilterOficina(item, queryText, itemText) {
-            const nombres = item.nombre.toLowerCase();
+            const nombre = item.nombre.toLowerCase();
             const iduoper = item.iduoper.toLowerCase();
             const searchText = queryText.toLowerCase();
             return (
@@ -428,6 +416,7 @@ export default {
         limpiar(){
             this.tree = [];
             this.usuariosSelecionadas = [];
+            this.oficinasSelecionadas = [];
         },
 
         
@@ -448,13 +437,15 @@ export default {
         },
 
         async Guardar() {
-            console.log();
             let res = await axios.post(
                 "/admin/grupo/guardar",{
                 usuarios: this.usuariosSelecionadas,
                 ofici: this.oficinasSelecionadas
                 }
             );
+            this.dialog = false;
+            this.text = "Grupo Creado";
+            this.snackbar = true;
         },
         clickColumn(slotData) {
             const indexRow = slotData.index;
