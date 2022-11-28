@@ -15,13 +15,19 @@ class CreatePersonaTable extends Migration
     {
         Schema::create('persona', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->char('dni', 8)->unique();
+            $table->char('dni', 8)->nullable();
             $table->string('paterno', 60)->nullable();
             $table->string('materno', 60)->nullable();
             $table->string('nombres', 80)->nullable();
-            $table->char('celular', 9)->unique()->nullable();
-            $table->unsignedBigInteger('id_tipo_persona');
-            $table->foreign('id_tipo_persona')->references('id')->on('tipo_persona');
+
+            $table->char('idtipoper')->nullable();
+            $table->char('idcondper', 1)->nullable();
+            $table->string('email', 80)->nullable();
+            $table->string('direccion', 80)->nullable();
+            $table->string('telefono', 80)->nullable();
+            
+          
+            $table->foreign('idtipoper')->references('id')->on('tipo_persona');
             $table->timestamps();
         });
     }

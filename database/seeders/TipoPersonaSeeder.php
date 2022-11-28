@@ -1,9 +1,11 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 class TipoPersonaSeeder extends Seeder
 {
     /**
@@ -14,14 +16,20 @@ class TipoPersonaSeeder extends Seeder
     public function run()
     {
         DB::table('tipo_persona')->insert([
-            'nombre' => 'docente',
+            'id' => '',
+            'nombre' => ' ',
         ]);
         DB::table('tipo_persona')->insert([
-            'nombre' => 'administrativo',
+            'id' => 1,
+            'nombre' => 'DOCENTE',
         ]);
         DB::table('tipo_persona')->insert([
-            'nombre' => 'C.A.S.',
+            'id' => 2,
+            'nombre' => 'ADMINISTRATIVO',
         ]);
-
+        DB::table('tipo_persona')->insert([
+            'id' => 3,
+            'nombre' => 'CAS',
+        ]);
     }
 }

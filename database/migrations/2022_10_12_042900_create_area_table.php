@@ -15,12 +15,12 @@ class CreateAreaTable extends Migration
     {
         Schema::create('area', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('codigo',40);
-            $table->string('nombre', 100);
-            $table->unsignedBigInteger('id_oficina')->nullable();
-            $table->unsignedBigInteger('id_persona')->nullable();
-            $table->foreign('id_persona')->references('id')->on('persona');
-            $table->foreign('id_oficina')->references('id')->on('oficina');
+            //$table->string('codigo',40);
+            //$table->string('nombre', 100);
+            //$table->unsignedBigInteger('id_oficina')->nullable();
+            //$table->unsignedBigInteger('id_persona')->nullable();
+            //$table->foreign('id_persona')->references('id')->on('persona');
+            //$table->foreign('id_oficina')->references('id')->on('oficina');
             $table->timestamps();
         });
     }

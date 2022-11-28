@@ -14,8 +14,9 @@ class CreateTipoPersonaTable extends Migration
     public function up()
     {
         Schema::create('tipo_persona', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->char('id');
             $table->string('nombre',50);
+            $table->primary('id');
             $table->timestamps();
         });
     }
