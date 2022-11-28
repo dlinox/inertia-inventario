@@ -13,6 +13,13 @@
         :search-input.sync="oficinas_search"
         required
     >
+        <template v-slot:selection="data">
+            <small>
+                <strong>{{ data.item.dependencia }}</strong>
+                {{ data.item.nombre }}</small
+            >
+        </template>
+
         <template v-slot:no-data>
             <v-list-item>
                 <v-list-item-title>
@@ -32,7 +39,7 @@
 
         <template v-slot:item="data">
             <v-list-item-content>
-                <v-list-item-title v-html="data.item.codigo">
+                <v-list-item-title v-html="data.item.dependencia">
                 </v-list-item-title>
                 <v-list-item-subtitle>
                     {{ data.item.nombre }}
@@ -45,7 +52,7 @@
 export default {
     name: "SelectOficina",
     props: {
-        value: Number,
+        value: String,
     },
     data: () => ({
         oficinas_res: [],
@@ -56,11 +63,11 @@ export default {
     methods: {
         customFilterOficina(item, queryText, itemText) {
             const nombre = item.nombre.toLowerCase();
-            const codigo = item.codigo.toLowerCase();
+            const dependencia = item.dependencia.toLowerCase();
             const searchText = queryText.toLowerCase();
             return (
                 nombre.indexOf(searchText) > -1 ||
-                codigo.indexOf(searchText) > -1
+                dependencia.indexOf(searchText) > -1
             );
         },
         async BuscarOficinas(term) {
@@ -74,6 +81,12 @@ export default {
             if (val.length < 2) return;
             let res = await this.BuscarOficinas(val);
             this.oficinas_res = res;
+        },
+        async oficina_selected(val) {
+            console.log(val);
+            let res = await this.BuscarOficinas(val);
+            this.oficinas_res = res;
+            console.log(res);
         },
     },
     computed: {

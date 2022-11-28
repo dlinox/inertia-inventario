@@ -16,23 +16,25 @@ class EstadoSeeder extends Seeder
     {
         DB::table('estado')->insert([
             'nombre' => 'Nuevo',
-            'codigo' => 'NU',
+            'codigo' => 'N',
         ]);
         DB::table('estado')->insert([
+            'nombre' => 'Regular',
+            'codigo' => 'R',
+        ]);
+
+        DB::table('estado')->insert([
             'nombre' => 'Bueno',
-            'codigo' => 'BU',
+            'codigo' => 'B',
         ]);
         DB::table('estado')->insert([
             'nombre' => 'Malo',
-            'codigo' => 'MA',
+            'codigo' => 'M',
         ]);
-        DB::table('estado')->insert([
-            'nombre' => 'Muy Malo',
-            'codigo' => 'MM',
-        ]);
+
         DB::table('estado')->insert([
             'nombre' => 'Chatarra',
-            'codigo' => 'CH',
+            'codigo' => 'Y',
         ]);
     }
 }

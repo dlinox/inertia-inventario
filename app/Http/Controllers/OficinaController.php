@@ -13,6 +13,8 @@ class OficinaController extends Controller
 
         $res = Oficina::where('nombre', 'LIKE', '%' . $term . '%')
             ->orWhere('codigo', 'LIKE', '%' . $term . '%')
+            ->orWhere('dependencia', 'LIKE', '%' . $term . '%')
+            ->orWhere('iduoper', 'LIKE', '%' . $term . '%')
             ->get();
         //text
 
