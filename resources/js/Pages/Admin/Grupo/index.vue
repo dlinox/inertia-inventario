@@ -1,396 +1,454 @@
 <template>
-<v-container>
+    <v-container>
+        <div>
+            <v-card color="basil">
+                <!-- {{oficinas}} -->
 
-    <div>
-        <v-card color="basil">  
-
-            <!-- {{oficinas}} -->
-
-            <v-tabs
-            v-model="tab"
-            background-color="transparent"
-            color="basil"
-            grow
-            >
-            <v-tab
-                v-for="(item, ind) in tabs" :key="ind"
-            >
-                {{ item }}
-            </v-tab>
-            </v-tabs>
-
-            <v-tabs-items v-model="tab">
-                
-                <v-tab-item href="Oficinas/Areas">
-
-
-                    <v-data-table
-                        :headers="dessertHeaders"
-                        :items="oficinas"
-                        :expanded.sync="expanded"
-                        :search="search"
-                        item-key="id"
-                        show-expand
-                    >
-                        <template v-slot:top>
-                        <v-toolbar flat style="margin-bottom: -30px; padding-top: 10px;">
-                            <v-spacer></v-spacer>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                class="ma-3 pa-1"
-                                outlined
-                                style="color:#0000006D; height: 40px;"
-                                @click="dialog = true"
-                                >
-                                <v-icon>mdi mdi-account-multiple-plus</v-icon>
-                            </v-btn>    
-                            <v-text-field
-                                v-model="search"
-                                append-icon="mdi-magnify"
-                                label="Buscar"
-                                outlined
-                                dense
-                                hide-details
-                                max-width="300px"
-                            ></v-text-field>
-                        </v-toolbar>
-                        </template>
-                        <template v-slot:item.nombre="slotData">
-                            <div style="cursor:pointer;" @click="clickColumn(slotData)"><span class="mdi mdi-domain mr-2"></span> {{ slotData.item.nombre }}</div>
-                        </template>
-                        <template  v-slot:expanded-item="{ headers, item }" elevation="0">
-                            <td  cellpadding="0" style="background:white; transition: 2s;   "  :colspan="headers.length" class="pa-0">
-                                <div>
-                                    <AreasByOficinaGrupo :oficina="item"/>
-                                </div>
-                            </td>
-                        </template>
-                    </v-data-table>
-                </v-tab-item>
-                <v-tab-item href="Usuarios">
-                    <v-card
+                <v-tabs
+                    v-model="tab"
+                    background-color="transparent"
                     color="basil"
-                    flat
-                    >
-                    <v-card-text></v-card-text>
-                    </v-card>
-                </v-tab-item>
-            
-            </v-tabs-items>
-        </v-card>
-
-    </div>
-
-
-
-    <div class="text-center">
-        <v-dialog
-        v-model="dialog"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
-        >
-        <v-card>
-            <v-toolbar color="primary">
-                <v-toolbar-items>
-                <v-btn
-                    icon
-                    dark
-                    @click="dialog = false"
+                    grow
                 >
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
-                
-            </v-toolbar-items>
-            <v-toolbar-title style="color:white">Añadir grupo</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-                    <v-btn
-                    dark
-                    text
-                    @click="dialog = false"
-                    >
-                    
-                    </v-btn>
-                </v-toolbar-items>
-             </v-toolbar>
-             <v-card-text>
-                
+                    <v-tab v-for="(item, ind) in tabs" :key="ind">
+                        {{ item }}
+                    </v-tab>
+                </v-tabs>
 
-                <v-row class="mt-2">        
-                    <v-col>
-                        <div class="pl-4 pr-4" style=" height: 40px; ">
-                            <v-autocomplete
-                                v-model="oficinasSelecionadas"
-                                clearable
-                                class="mt-0 pt-0"
-                                dense
-                                label="Persona"
-                                outlined
-                                :items="oficinas"
-                                :filter="customFilterOficina"
-                                item-value="iduoper"
-                                item-text="nombre"
-                                :search-input.sync="usuarios_search"
-                                required
-                                multiple
-                            >
-                                <template v-slot:selection="{ item, index }">
-                                    <v-chip v-if="index === 0">
-                                        <span>{{ item.nombre }}</span>
-                                    </v-chip>
-                                    <span
-                                    v-if="index === 1"
-                                    class="grey--text text-caption"
-                                    >
-                                    (+{{ oficinasSelecionadas.length - 1  }} others)
-                                    </span>
-                                </template>
-                                <template v-slot:no-data>
-                                    <v-list-item>
-                                        <v-list-item-title>
-                                            <template>
-                                                No hay registros en el inventario
-                                            </template>
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </template>
-
-                                <template v-slot:item="data">
-                                    <v-list-item-content>
-                                        <v-list-item-title v-html="data.item.iduoper">
-                                        </v-list-item-title>
-                                        <v-list-item-subtitle>
-                                            {{ data.item.nombre }}
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                </template>
-                            </v-autocomplete>
-                        </div>
-                        <div class="mt-2"></div>
-
-                        <div class="pl-4 pr-4" style=" height: 40px; ">
-                            <v-autocomplete
-                                v-model="usuariosSelecionadas"
-                                clearable
-                                class="mt-0 pt-0"
-                                dense
-                                label="Persona"
-                                outlined
-                                :items="usuarios"
-                                :filter="customFilterUsuario"
-                                item-value="id"
-                                item-text="nombre"
-                                :search-input.sync="usuarios_search"
-                                required
-                                multiple
-                            >
-                                <template v-slot:selection="{ item, index }">
-                                    <v-chip v-if="index === 0">
-                                        <span>{{ item.nombres }} {{item.paterno}} {{ item.materno}} </span>
-                                    </v-chip>
-                                    <span
-                                    v-if="index === 1"
-                                    class="grey--text text-caption"
-                                    >
-                                    (+{{ usuariosSelecionadas.length - 1  }} others)
-                                    </span>
-                                </template>
-                                <template v-slot:no-data>
-                                    <v-list-item>
-                                        <v-list-item-title>
-                                            <template>
-                                                No hay registros en el inventario
-                                            </template>
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </template>
-
-                                <template v-slot:item="data">
-                                    <v-list-item-content>
-                                        <v-list-item-title v-html="data.item.dni">
-                                        </v-list-item-title>
-                                        <v-list-item-subtitle>
-                                            {{ data.item.nombres }} {{ data.item.paterno }} {{ data.item.materno }}
-                                        </v-list-item-subtitle>
-                                    </v-list-item-content>
-                                </template>
-                            </v-autocomplete>
-                        </div>
-                        <v-toolbar
-                        flat
-                        style="margin-bottom:-10px;"
+                <v-tabs-items v-model="tab">
+                    <v-tab-item href="Oficinas/Areas">
+                        <v-data-table
+                            :headers="dessertHeaders"
+                            :items="oficinas"
+                            :expanded.sync="expanded"
+                            :search="search"
+                            item-key="id"
+                            show-expand
                         >
-
-                        <v-text-field
-                            v-model="search"
-                            label="Buscar Areas"
-                            dense
-                            append-icon="mdi-magnify"    
-                            outlined
-                            hide-details
-                            clearable
-                            clear-icon="mdi-close-circle-outline"
-                        >
-                
-                        </v-text-field>
-                        </v-toolbar>
-                            <v-row >
-                                <v-col lg="6" md="6" sm="12" xs="12" >
-                                    <v-row>
-                                    <v-col >
-                                        <v-card-text>
-                                        <v-treeview
-                                            :search="search"
-                                            :filter="filter"
-                                            v-model="tree"
-                                            :items="items"
-                                            selected-color="indigo"
-                                            open-on-click
-                                            selectable
-                                            return-object
-                                            open-all
-                                            expand-icon="mdi-chevron-down"
-                                            on-icon="mdi-bookmark"
-                                            off-icon="mdi-bookmark-outline"
-                                            indeterminate-icon="mdi-bookmark-minus"
-                                            class="treee"
-                                            style="overflow-y:scroll; max-height: 400px;"
+                            <template v-slot:top>
+                                <v-toolbar
+                                    flat
+                                    style="
+                                        margin-bottom: -30px;
+                                        padding-top: 10px;
+                                    "
+                                >
+                                    <v-spacer></v-spacer>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        class="ma-3 pa-1"
+                                        outlined
+                                        style="color: #0000006d; height: 40px"
+                                        @click="dialog = true"
+                                    >
+                                        <v-icon
+                                            >mdi
+                                            mdi-account-multiple-plus</v-icon
                                         >
-                                        </v-treeview>
-                                        </v-card-text>
-                                    </v-col>
-
-
-
-                                    </v-row>
-                                </v-col>
-                                <v-col lg="6" md="6" sm="12" xs="12" >
-                                    <div style="overflow-y:scroll; max-height: 400px;" class="treee">   
-                                        <v-col class="pr-4">
-                                            <v-card elevation="0" style="border: solid 0.5px #cdcdcd ">
-                                                <v-card-title> <span style="font-size:1rem;"> Usuarios Selecionadas</span></v-card-title>
-                                                <v-card-text>
-                                                    <div v-for="item in usuariosSelecionadas" :key="item.id">
-                                                        <span class="mdi mdi-label-outline"></span>  {{buscaPersonabyID(item)}}
-                                                    </div>
-                                                </v-card-text>
-                                            </v-card>
-                                        </v-col>
-                                        <v-col class="pr-4">
-                                            <v-card elevation="0"  style="border: solid 0.5px #cdcdcd">
-                                                <v-card-title><span style="font-size:1rem;"> Areas Selecionadas</span></v-card-title>
-                                                <v-card-text>
-                                                    <div v-for="item in oficinasSelecionadas" :key="item.id">
-                                                        <span class="mdi mdi-label-outline"></span> {{ buscaOficinabyID(item) }}
-                                                    </div>
-                                                </v-card-text>
-                                            </v-card>
-                                        </v-col>    
-                                    </div>
+                                    </v-btn>
+                                    <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Buscar"
+                                        outlined
+                                        dense
+                                        hide-details
+                                        max-width="300px"
+                                    ></v-text-field>
+                                </v-toolbar>
+                            </template>
+                            <template v-slot:item.nombre="slotData">
+                                <div
+                                    style="cursor: pointer"
+                                    @click="clickColumn(slotData)"
+                                >
+                                    <span class="mdi mdi-domain mr-2"></span>
+                                    {{ slotData.item.nombre }}
+                                </div>
+                            </template>
+                            <template
+                                v-slot:expanded-item="{ headers, item }"
+                                elevation="0"
+                            >
+                                <td
+                                    cellpadding="0"
+                                    style="background: white; transition: 2s"
+                                    :colspan="headers.length"
+                                    class="pa-0"
+                                >
                                     <div>
-                                        
+                                        <AreasByOficinaGrupo :oficina="item" />
                                     </div>
+                                </td>
+                            </template>
+                        </v-data-table>
+                    </v-tab-item>
+                    <v-tab-item href="Usuarios">
+                        <v-card color="basil" flat>
+                            <v-card-text></v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                </v-tabs-items>
+            </v-card>
+        </div>
 
-                                </v-col>
-                            </v-row>    
-                            
-                        <v-card-actions>
-                        <v-btn
-                            text
-                            @click="limpiar"
+        <div class="text-center">
+            <v-dialog
+                v-model="dialog"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
+            >
+                <v-card>
+                    <v-toolbar color="primary">
+                        <v-toolbar-items>
+                            <v-btn icon dark @click="dialog = false">
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                        </v-toolbar-items>
+                        <v-toolbar-title style="color: white"
+                            >Añadir grupo</v-toolbar-title
                         >
-                            Reset
-                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-items>
+                            <v-btn dark text @click="dialog = false"> </v-btn>
+                        </v-toolbar-items>
+                    </v-toolbar>
+                    <v-card-text>
+                        <v-row class="mt-2">
+                            <v-col>
+                                <div class="pl-4 pr-4" style="height: 40px">
+                                    <v-autocomplete
+                                        v-model="oficinasSelecionadas"
+                                        clearable
+                                        class="mt-0 pt-0"
+                                        dense
+                                        label="Persona"
+                                        outlined
+                                        :items="oficinas"
+                                        :filter="customFilterOficina"
+                                        item-value="iduoper"
+                                        item-text="nombre"
+                                        :search-input.sync="usuarios_search"
+                                        required
+                                        multiple
+                                    >
+                                        <template
+                                            v-slot:selection="{ item, index }"
+                                        >
+                                            <v-chip v-if="index === 0">
+                                                <span>{{ item.nombre }}</span>
+                                            </v-chip>
+                                            <span
+                                                v-if="index === 1"
+                                                class="grey--text text-caption"
+                                            >
+                                                (+{{
+                                                    oficinasSelecionadas.length -
+                                                    1
+                                                }}
+                                                others)
+                                            </span>
+                                        </template>
+                                        <template v-slot:no-data>
+                                            <v-list-item>
+                                                <v-list-item-title>
+                                                    <template>
+                                                        No hay registros en el
+                                                        inventario
+                                                    </template>
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </template>
 
-                        <v-spacer ></v-spacer>
+                                        <template v-slot:item="data">
+                                            <v-list-item-content>
+                                                <v-list-item-title
+                                                    v-html="data.item.iduoper"
+                                                >
+                                                </v-list-item-title>
+                                                <v-list-item-subtitle>
+                                                    {{ data.item.nombre }}
+                                                </v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </template>
+                                    </v-autocomplete>
+                                </div>
+                                <div class="mt-2"></div>
 
-                        <v-btn
-                            class="white--text" 
-                            color="primary darken-1"
-                            depressed
-                            @click="Guardar"
-                        >
-                            Guardar
-                            <v-icon right>
-                            mdi-content-save
-                            </v-icon>
-                        </v-btn>
-                        </v-card-actions>
-                         
-                    </v-col>
+                                <div class="pl-4 pr-4" style="height: 40px">
+                                    <v-autocomplete
+                                        v-model="usuariosSelecionadas"
+                                        clearable
+                                        class="mt-0 pt-0"
+                                        dense
+                                        label="Persona"
+                                        outlined
+                                        :items="usuarios"
+                                        :filter="customFilterUsuario"
+                                        item-value="id"
+                                        item-text="nombre"
+                                        :search-input.sync="usuarios_search"
+                                        required
+                                        multiple
+                                    >
+                                        <template
+                                            v-slot:selection="{ item, index }"
+                                        >
+                                            <v-chip v-if="index === 0">
+                                                <span
+                                                    >{{ item.nombres }}
+                                                    {{ item.paterno }}
+                                                    {{ item.materno }}
+                                                </span>
+                                            </v-chip>
+                                            <span
+                                                v-if="index === 1"
+                                                class="grey--text text-caption"
+                                            >
+                                                (+{{
+                                                    usuariosSelecionadas.length -
+                                                    1
+                                                }}
+                                                others)
+                                            </span>
+                                        </template>
+                                        <template v-slot:no-data>
+                                            <v-list-item>
+                                                <v-list-item-title>
+                                                    <template>
+                                                        No hay registros en el
+                                                        inventario
+                                                    </template>
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </template>
 
-                </v-row>
+                                        <template v-slot:item="data">
+                                            <v-list-item-content>
+                                                <v-list-item-title
+                                                    v-html="data.item.dni"
+                                                >
+                                                </v-list-item-title>
+                                                <v-list-item-subtitle>
+                                                    {{ data.item.nombres }}
+                                                    {{ data.item.paterno }}
+                                                    {{ data.item.materno }}
+                                                </v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </template>
+                                    </v-autocomplete>
+                                </div>
+                                <v-toolbar flat style="margin-bottom: -10px">
+                                    <v-text-field
+                                        v-model="search"
+                                        label="Buscar Areas"
+                                        dense
+                                        append-icon="mdi-magnify"
+                                        outlined
+                                        hide-details
+                                        clearable
+                                        clear-icon="mdi-close-circle-outline"
+                                    >
+                                    </v-text-field>
+                                </v-toolbar>
+                                <v-row>
+                                    <v-col lg="6" md="6" sm="12" xs="12">
+                                        <v-row>
+                                            <v-col>
+                                                <v-card-text>
+                                                    <v-treeview
+                                                        :search="search"
+                                                        :filter="filter"
+                                                        v-model="tree"
+                                                        :items="items"
+                                                        selected-color="indigo"
+                                                        open-on-click
+                                                        selectable
+                                                        return-object
+                                                        open-all
+                                                        expand-icon="mdi-chevron-down"
+                                                        on-icon="mdi-bookmark"
+                                                        off-icon="mdi-bookmark-outline"
+                                                        indeterminate-icon="mdi-bookmark-minus"
+                                                        class="treee"
+                                                        style="
+                                                            overflow-y: scroll;
+                                                            max-height: 400px;
+                                                        "
+                                                    >
+                                                    </v-treeview>
+                                                </v-card-text>
+                                            </v-col>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col lg="6" md="6" sm="12" xs="12">
+                                        <div
+                                            style="
+                                                overflow-y: scroll;
+                                                max-height: 400px;
+                                            "
+                                            class="treee"
+                                        >
+                                            <v-col class="pr-4">
+                                                <v-card
+                                                    elevation="0"
+                                                    style="
+                                                        border: solid 0.5px
+                                                            #cdcdcd;
+                                                    "
+                                                >
+                                                    <v-card-title>
+                                                        <span
+                                                            style="
+                                                                font-size: 1rem;
+                                                            "
+                                                        >
+                                                            Usuarios
+                                                            Selecionadas</span
+                                                        ></v-card-title
+                                                    >
+                                                    <v-card-text>
+                                                        <div
+                                                            v-for="item in usuariosSelecionadas"
+                                                            :key="item.id"
+                                                        >
+                                                            <span
+                                                                class="mdi mdi-label-outline"
+                                                            ></span>
+                                                            {{
+                                                                buscaPersonabyID(
+                                                                    item
+                                                                )
+                                                            }}
+                                                        </div>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-col>
+                                            <v-col class="pr-4">
+                                                <v-card
+                                                    elevation="0"
+                                                    style="
+                                                        border: solid 0.5px
+                                                            #cdcdcd;
+                                                    "
+                                                >
+                                                    <v-card-title
+                                                        ><span
+                                                            style="
+                                                                font-size: 1rem;
+                                                            "
+                                                        >
+                                                            Areas
+                                                            Selecionadas</span
+                                                        ></v-card-title
+                                                    >
+                                                    <v-card-text>
+                                                        <div
+                                                            v-for="item in oficinasSelecionadas"
+                                                            :key="item.id"
+                                                        >
+                                                            <span
+                                                                class="mdi mdi-label-outline"
+                                                            ></span>
+                                                            {{
+                                                                buscaOficinabyID(
+                                                                    item
+                                                                )
+                                                            }}
+                                                        </div>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-col>
+                                        </div>
+                                        <div></div>
+                                    </v-col>
+                                </v-row>
 
-             </v-card-text>
-        </v-card>
-        </v-dialog>
-    </div>
+                                <v-card-actions>
+                                    <v-btn text @click="limpiar"> Reset </v-btn>
 
-</v-container>
+                                    <v-spacer></v-spacer>
+
+                                    <v-btn
+                                        class="white--text"
+                                        color="primary darken-1"
+                                        depressed
+                                        @click="Guardar"
+                                    >
+                                        Guardar
+                                        <v-icon right>
+                                            mdi-content-save
+                                        </v-icon>
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
+        </div>
+    </v-container>
 </template>
 <script>
 import Layout from "@/Layouts/AdminLayout";
-import axios from 'axios';
-import AreasByOficinaGrupo from './Components/AreasByOfcinaGrupo.vue';
-
+import axios from "axios";
+import AreasByOficinaGrupo from "./Components/AreasByOfcinaGrupo.vue";
 
 export default {
-    components:{AreasByOficinaGrupo},
+    components: { AreasByOficinaGrupo },
 
     layout: Layout,
     data: () => ({
         tree: [],
         types: [],
-        items:[],
+        items: [],
         open: [1, 2],
         search: null,
         caseSensitive: false,
-        usuarios:[],
-        oficinas:[],
-        usuariosSelecionadas:null,
-        oficinasSelecionadas:null,
-        usuarios_search:"",
-        search:"",
+        usuarios: [],
+        oficinas: [],
+        usuariosSelecionadas: null,
+        oficinasSelecionadas: null,
+        usuarios_search: "",
+        search: "",
         dialog: false,
 
         tab: null,
-        tabs: [ 'Oficinas/Areas', 'Usuarios'],
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    
-        expanded: [],   
+        tabs: ["Oficinas/Areas", "Usuarios"],
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+        expanded: [],
         dessertHeaders: [
-          {
-            text: '',
-            align: 'start',
-            sortable: false,
-            value: 'nombre',
-          },
-          { text: 'name', value: 'data-table-expand' },
+            {
+                text: "",
+                align: "start",
+                sortable: false,
+                value: "nombre",
+            },
+            { text: "name", value: "data-table-expand" },
         ],
     }),
 
     computed: {
-      filter () {
-        return this.caseSensitive
-          ? (item, search, textKey) => item[textKey].indexOf(search) > -1
-          : undefined
-      },
+        filter() {
+            return this.caseSensitive
+                ? (item, search, textKey) => item[textKey].indexOf(search) > -1
+                : undefined;
+        },
     },
-    methods:{
-        
+    methods: {
         async getItemsGroup() {
             let res = await axios.get("/admin/grupo/items-group");
             this.items = res.data.datos;
             return res.data.datos.data;
         },
-        
+
         async getUsuarios() {
             let res = await axios.get("/admin/usuarios/getUsuariosAll");
             this.usuarios = res.data.datos;
             return res.data.datos.data;
         },
-
 
         async getOficinas() {
             let res = await axios.get("/admin/oficinas/getallOficinasG");
@@ -404,7 +462,6 @@ export default {
         //     return res.data.datos.data;
         // },
 
-
         customFilterUsuario(item, queryText, itemText) {
             const nombres = item.nombres.toLowerCase();
             //const dni = item.dni.toLowerCase();
@@ -412,7 +469,7 @@ export default {
             return (
                 nombres.indexOf(searchText) > -1 //||
                 //dni.indexOf(searchText) > -1
-             );
+            );
         },
 
         customFilterOficina(item, queryText, itemText) {
@@ -422,61 +479,65 @@ export default {
             return (
                 nombre.indexOf(searchText) > -1 ||
                 iduoper.indexOf(searchText) > -1
-             );
+            );
         },
 
-        limpiar(){
+        limpiar() {
             this.tree = [];
             this.usuariosSelecionadas = [];
         },
 
-        
-        buscaPersonabyID(id){
-            for(let i in this.usuarios){
-                if (this.usuarios[i].id === id ){
-                    return (this.usuarios[i].nombres+" "+this.usuarios[i].paterno + " " + this.usuarios[i].materno ) 
+        buscaPersonabyID(id) {
+            for (let i in this.usuarios) {
+                if (this.usuarios[i].id === id) {
+                    return (
+                        this.usuarios[i].nombres +
+                        " " +
+                        this.usuarios[i].paterno +
+                        " " +
+                        this.usuarios[i].materno
+                    );
                 }
             }
         },
 
-        buscaOficinabyID(id){
-            for(let i in this.oficinas){
-                if (this.oficinas[i].iduoper === id ){
-                    return (this.oficinas[i].nombre ) 
+        buscaOficinabyID(id) {
+            for (let i in this.oficinas) {
+                if (this.oficinas[i].iduoper === id) {
+                    return this.oficinas[i].nombre;
                 }
             }
         },
 
         async Guardar() {
             console.log();
-            let res = await axios.post(
-                "/admin/grupo/guardar",{
+            let res = await axios.post("/admin/grupo/guardar", {
                 usuarios: this.usuariosSelecionadas,
-                ofici: this.oficinasSelecionadas
-                }
-            );
+                ofici: this.oficinasSelecionadas,
+            });
         },
         clickColumn(slotData) {
             const indexRow = slotData.index;
-            const indexExpanded = this.expanded.findIndex(i => i === slotData.item);
+            const indexExpanded = this.expanded.findIndex(
+                (i) => i === slotData.item
+            );
             if (indexExpanded > -1) {
-            this.expanded.splice(indexExpanded, 1)
+                this.expanded.splice(indexExpanded, 1);
             } else {
-            this.expanded.push(slotData.item);
+                this.expanded.push(slotData.item);
             }
         },
     },
     created() {
         // this.getItemsGroup()
-        this.getUsuarios()
-        this.getOficinas()
+        this.getUsuarios();
+        this.getOficinas();
     },
-
 };
 </script>
 
 <style scoped>
-.treee{
+.treee {
     background: none;
 }
 .treee::-webkit-scrollbar {
@@ -484,12 +545,13 @@ export default {
 }
 
 .treee::-webkit-scrollbar:vertical {
-    width:10px;
+    width: 10px;
 }
 
-.treee::-webkit-scrollbar-button:increment,.treee::-webkit-scrollbar-button {
+.treee::-webkit-scrollbar-button:increment,
+.treee::-webkit-scrollbar-button {
     display: none;
-} 
+}
 
 .treee::-webkit-scrollbar:horizontal {
     height: 10px;
@@ -502,9 +564,9 @@ export default {
 }
 
 .treee::-webkit-scrollbar-track {
-    border-radius: 10px;  
+    border-radius: 10px;
 }
 .v-data-table__expanded.v-data-table__expanded__content {
-  box-shadow: none !important;
+    box-shadow: none !important;
 }
 </style>

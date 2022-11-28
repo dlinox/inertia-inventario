@@ -8,7 +8,7 @@
         outlined
         :items="oficinas_res"
         :filter="customFilterOficina"
-        item-value="id"
+        item-value="iduoper"
         item-text="nombre"
         :search-input.sync="oficinas_search"
         required
