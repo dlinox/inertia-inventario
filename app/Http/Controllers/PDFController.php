@@ -115,7 +115,7 @@ class PDFController extends Controller
     }
 
     private function bloquearBienes( $id_a, $id_p ){
-        $bienes = DB::select('SELECT * from inventario WHERE id_area =  '.$id_a.' AND id_persona = '.$id_p.';');
+        $bienes = DB::select('SELECT * from inventario WHERE id_area =  "'.$id_a.'" AND id_persona = '.$id_p.';');
         foreach ($bienes as $p) {
             $this->cambiar($p, 0);
         }
