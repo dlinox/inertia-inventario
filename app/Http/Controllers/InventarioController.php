@@ -219,8 +219,8 @@ class InventarioController extends Controller
 
     public function getBienesUsuarios(Request $request)
     {
-        $res = Inventario::select('inventario.codigo', 'inventario.codigo_siga', 'inventario.descripcion', 'area.id', 'area.nombre')
-            ->join('area', 'area.id', '=', 'inventario.id_area')
+        $res = Inventario::select('inventario.id', 'inventario.codigo',  'inventario.descripcion',  'oficina.nombre', 'oficina.dependencia', 'inventario.idbienk')
+            ->leftjoin('oficina', 'oficina.iduoper', '=', 'inventario.id_area')
             ->where('inventario.id_usuario', Auth::user()->id)
             ->paginate(10);
 
@@ -374,8 +374,10 @@ class InventarioController extends Controller
 
             $corr_area =  explode('.', $res->id_area)[0];
 
+            $corr_num = $this->AsignarCorrelativo($res);
+
             $res->corr_area =  $corr_area;
-            $res->corr_num = $this->AsignarCorrelativo($res);
+            $res->corr_num = $corr_num;
             $res->save();
 
             if ($res->idbienk) {
@@ -384,7 +386,7 @@ class InventarioController extends Controller
 
             $this->response['estado'] = true;
             $this->response['mensaje'] = 'Registrado con exito';
-            $this->response['corr_num'] = $this->AsignarCorrelativo($res);
+            $this->response['corr_num'] = $corr_num;
             $this->response['corr_area'] = $corr_area;
 
             return response()->json($this->response, 200);
