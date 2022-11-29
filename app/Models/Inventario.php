@@ -35,6 +35,8 @@ class Inventario extends Model
         'id_usuario',
         'id_estado',
         'foto_ref',
+        'corr_area',
+        'corr_num',
         'estado',
     ];
 
