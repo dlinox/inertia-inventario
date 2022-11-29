@@ -257,7 +257,7 @@ class InventarioController extends Controller
 
                 'id_persona' => $request->id_persona,
                 'idpersona_otro' => $request->idpersona_otro,
-                'id_area' => $request->id_area,
+                'id_area' => $request->id_oficina,
                 'id_usuario' => Auth::user()->id,
                 'id_estado' => $request->id_estado,
                 'observaciones' => $request->observaciones,
@@ -423,7 +423,7 @@ class InventarioController extends Controller
             'color' => $request->color,
             'id_persona' => $request->id_persona,
             'idpersona_otro' => $request->idpersona_otro,
-            'id_area' => $request->id_area,
+            'id_area' => $request->id_oficina,
             //'id_usuario' => Auth::user()->id,
             'id_estado' => $request->id_estado,
             'observaciones' => $request->observaciones,
