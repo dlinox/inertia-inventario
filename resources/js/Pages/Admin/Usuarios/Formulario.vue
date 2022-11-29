@@ -169,7 +169,7 @@
                             </v-card>
                         </v-tab-item>
 
-                        <v-tab-item>
+                        <!--     <v-tab-item>
                             <v-card class="py-4" flat tile>
                                 <v-card-title>
                                     Areas Asignadas
@@ -195,7 +195,7 @@
                                             }}</strong>
                                         </v-expansion-panel-header>
 
-                                        <!-- <v-expansion-panel-content>
+                                         <v-expansion-panel-content>
                                             <template v-if="areas_listas">
                                                 <v-list subheader two-line>
                                                     <v-subheader inset>
@@ -262,11 +262,11 @@
                                                     ></v-progress-circular>
                                                 </div>
                                             </template>
-                                        </v-expansion-panel-content> -->
+                                        </v-expansion-panel-content> -
                                     </v-expansion-panel>
                                 </v-expansion-panels>
                             </v-card>
-                        </v-tab-item>
+                        </v-tab-item> -->
                     </v-tabs-items>
                 </v-card>
             </v-container>
@@ -452,7 +452,7 @@ export default {
         oficinas_res: [],
         oficinas_search: "",
         data_ofi: [],
-        oficina_selected: null
+        oficina_selected: null,
     }),
     computed: {},
     watch: {
@@ -465,13 +465,12 @@ export default {
         },
     },
     methods: {
-
         customFilterOficina(item, queryText, itemText) {
             const nombre = item.nombre.toLowerCase();
             //const codigo = item.codigo.toLowerCase();
             const searchText = queryText.toLowerCase();
             return (
-                nombre.indexOf(searchText) > -1 
+                nombre.indexOf(searchText) > -1
                 //codigo.indexOf(searchText) > -1
             );
         },
@@ -537,6 +536,5 @@ export default {
             this.oficinas_res = res;
         },
     },
-
 };
 </script>
