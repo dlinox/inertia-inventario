@@ -60,7 +60,7 @@
                     </div>
                 </td>
                 <td width="650px" style=" white-space: nowrap; text-overflow: ellipsis; max-width: 650px;">
-                    <div style="text-align: left; overflow:hidden;">: @foreach ($area as $a){{ $a->nombre }} -  @endforeach  @foreach ($oficina as $o){{ $o->nombre }}  @endforeach  </div>
+                    <div style="text-align: left; overflow:hidden;">: @foreach ($oficina as $o){{ $o->nombre }}  @endforeach  </div>
                 </td>
                 <td align="right">
                     <div style=" width:188px; margin-right:.5cm; ">
@@ -71,7 +71,7 @@
             <tr>
                 <td>
                     <span>[DNI]Apellidos y Nombres</span>
-                    </divS>
+                    </div>
                 </td>
                 <td style=" width: 100%">
                     <div style="text-align: left">
@@ -181,22 +181,22 @@
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->modelo }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->marca }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->nro_serie }}</span></td>
-                    <td style="border: solid 1px black;width:100px;"><span style="font-size: 8pt;  font-weight: bold;"></span></td>
-                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;"><!-- $bien->color--> </span></td>
+                    <td style="border: solid 1px black;width:100px;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->medidas }}</span></td>
+                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->color }} </span></td>
                     <td style="border: solid 1px black;  width:30px; text-align:center;"><span style="font-size: 8pt;  font-weight: bold;">
                         @if ($bien->id_estado === 1)
                         N
                         @elseif ($bien->id_estado === 2)
                         R
                         @elseif ($bien->id_estado === 3)
-                        M
+                        B
                         @elseif ($bien->id_estado === 4)
-                        Y
+                        M
                         @else
                         Y
                         @endif
                     </span></td>
-                    <td style="border: solid 1px black; width:40px; text-align:center;"><span style="font-size: 8pt;  font-weight: bold;">{{$bien->nro_orden}}</span></td>
+                    <td style="border: solid 1px black; width:40px; text-align:center;"><span style="font-size: 8pt;  font-weight: bold;"><!--$bien->nro_orden --></span></td>
                     <td style="border: solid 1px black; width:150px;"><span style="font-size: 8pt;  font-weight: bold;">{{$bien->observaciones}}</span></td>
                 </tr>
             @else
@@ -207,22 +207,22 @@
                 <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->modelo }}</span></td>
                 <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->marca }}</span></td>
                 <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->nro_serie }}</span></td>
-                <td style="border: solid 1px black; width:100px;"><span style="font-size: 8pt;"> <!-- $bien->color--> </span></td>
-                <td style="border: solid 1px black;"><span style="font-size: 8pt;"><!-- $bien->color--> </span></td>
+                <td style="border: solid 1px black; width:100px;"><span style="font-size: 8pt;"> {{ $bien->medidas }} </span></td>
+                <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->color }} </span></td>
                 <td style="border: solid 1px black; width:30px; text-align:center;"><span style="font-size: 8pt;">
                     @if ($bien->id_estado === 1)
                     N
                     @elseif ($bien->id_estado === 2)
                     R
                     @elseif ($bien->id_estado === 3)
-                    M
+                    B
                     @elseif ($bien->id_estado === 4)
-                    Y
+                    M
                     @else
                     Y
                     @endif
                 </span></td>
-                <td style="border: solid 1px black; width:40px; text-align:center;"><span style="font-size: 8pt;">{{ $bien->nro_orden }}</span></td>
+                <td style="border: solid 1px black; width:40px; text-align:center;"><span style="font-size: 8pt;"><!-- $bien->nro_orden --> </span></td>
                 <td style="border: solid 1px black; width:150px;"><span style="font-size: 8pt;">{{ $bien->observaciones }} </span></td>
             </tr>
 

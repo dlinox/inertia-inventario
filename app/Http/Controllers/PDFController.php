@@ -40,7 +40,7 @@ class PDFController extends Controller
 
     public function desbloquear(Request $request,  $id) {
         $res = AreaPersona::find($id);
-        $res->estado = 1;
+        $res->estado = 1; 
         $res->save();
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
@@ -48,22 +48,22 @@ class PDFController extends Controller
 
     public function PDFBienes($idP,$idArea){
 
-        $registrado = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = '.$idArea.' AND estado = 0 ;');
+        $registrado = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = "'.$idArea.'"  AND estado = 0 ;');
 
         if($registrado != null){
             $this->response['mensaje'] = 'ITEM YA REGISTRADO';
             return response()->json($this->response, 200);
         }
         else{
-            $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = '.$idArea.';');
-            $oficina = DB::select('SELECT oficina.id, oficina.codigo, oficina.nombre FROM oficina WHERE oficina.id IN (SELECT area.id_oficina FROM area WHERE area.id ='.$idArea.')');
-            $area = DB::select('SELECT * from  area WHERE area.id ='.$idArea.';');
-            $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id ='.$idP);
-            $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = '.$idArea.' and id_persona = '.$idP.');');
-            $bienes = DB::select('SELECT * from inventario WHERE id_area = '.$idArea.' and id_persona = '.$idP.';');
+//            $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = "'. $idArea. '";');
+            $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $idArea .'";');
+//            $area = DB::select('SELECT * from  area WHERE area.id ='.$idArea.';');
+            $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id =' . $idP);
+            $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
+            $bienes = DB::select('SELECT * from inventario WHERE id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
             $ldate = date('Y-m-d');
             $lhour = date('H:i:s');
-            $pdf = PDF::loadView('Bienes', compact('bienes','oficina','inventaristas','area','responsable','ldate','lhour'));
+            $pdf = PDF::loadView('Bienes', compact('bienes','oficina','inventaristas','responsable','ldate','lhour'));
     //        $pdf->output(['/public','F']);
             $pdf->setPaper('a4','landscape');
             if (AreaPersona::max('id') > 0 ){
