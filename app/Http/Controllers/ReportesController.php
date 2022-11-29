@@ -95,7 +95,7 @@ class ReportesController extends Controller
         $datos['lhour'] = date('H:i:s');
         $datos['inventaristas'] = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
         $datos['oficina'] = $oficina[0];
-       // $datos['area'] = $area[0];
+       // $datos['area'] = $area[0];  
         $datos['responsable'] = $responsable[0];
         //        $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = '.$idArea.';');
         return Inertia::render('Admin/Reportes/Preview/',  ['datos' => $datos]);
@@ -132,7 +132,6 @@ class ReportesController extends Controller
     {
         $h = date('Y-m-d');
         $avanceDiario = DB::select('SELECT users.NOMBRES, users.APELLIDOS, inventario.ID_USUARIO, COUNT(inventario.codigo) AS NREGISTROS FROM inventario INNER JOIN users ON inventario.ID_USUARIO = users.ID GROUP BY inventario.ID_USUARIO  ORDER BY NREGISTROS DESC ;');
-
         $this->response['estado'] = true;
         $this->response['avance_diario'] = $avanceDiario;
         return response()->json($this->response, 200);
