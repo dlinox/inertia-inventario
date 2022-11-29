@@ -61,7 +61,7 @@ class DocumentsController extends Controller {
         $res = AreaPersona::find($id);
         $res->estado = 1;
         $res->save();
-        $bienes = DB::select('SELECT * from inventario WHERE id_area =  '.$res->id_area.' AND id_persona = '.$res->id_persona.';');
+        $bienes = DB::select('SELECT * from inventario WHERE id_area =  "'.$res->id_area.'" AND id_persona = '.$res->id_persona.';');
         foreach ($bienes as $p) {
             $this->cambiar($p, 1);
         }

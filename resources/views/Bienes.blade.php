@@ -60,7 +60,7 @@
                     </div>
                 </td>
                 <td width="650px" style=" white-space: nowrap; text-overflow: ellipsis; max-width: 650px;">
-                    <div style="text-align: left; overflow:hidden;">: @foreach ($oficina as $o){{ $o->nombre }}  @endforeach  </div>
+                    <div style="text-align: left; overflow:hidden;">: @foreach ($oficina as $o){{ $o->nombre }} - {{ $o->dependencia }}  @endforeach  </div>
                 </td>
                 <td align="right">
                     <div style=" width:188px; margin-right:.5cm; ">
