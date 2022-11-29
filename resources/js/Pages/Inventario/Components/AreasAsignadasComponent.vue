@@ -5,7 +5,6 @@
                 Areas Asignadas
             </v-btn>
         </template>
-
         <v-card tile>
             <v-toolbar>
                 <v-app-bar-nav-icon @click="dialog = false">
@@ -67,7 +66,23 @@
                     class="my-4"
                     outlined
                     dense
-                ></v-autocomplete>
+                >
+                    <template v-slot:selection="data">
+                        <small>
+                            <strong>{{ data.item.dependencia }}</strong>
+                            {{ data.item.nombre }}</small
+                        >
+                    </template>
+                    <template v-slot:item="data">
+                        <v-list-item-content>
+                            <v-list-item-title v-html="data.item.dependencia">
+                            </v-list-item-title>
+                            <v-list-item-subtitle>
+                                {{ data.item.nombre }}
+                            </v-list-item-subtitle>
+                        </v-list-item-content>
+                    </template>
+                </v-autocomplete>
 
                 <v-card :loading="loading_table">
                     <v-overlay absolute :value="loading_table">
@@ -139,8 +154,6 @@
                                     </td>
                                     <td>{{ item.codigo }}</td>
                                     <td>{{ item.descripcion }}</td>
-                                  
-                                  
                                 </tr>
                             </tbody>
                         </template>
@@ -243,7 +256,7 @@ export default {
             this.page = 1;
             this.total_result = 0;
             this.pages = 1;
-            this.mostrar_selected= "Todos";
+            this.mostrar_selected = "Todos";
         },
     },
 

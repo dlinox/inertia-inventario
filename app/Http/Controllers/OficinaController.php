@@ -54,6 +54,23 @@ class OficinaController extends Controller
         return response()->json($this->response, 200);
     }
 
+
+    public function getallOficinasDependencia()
+    {
+
+        $res = Oficina::select(
+            'dependencia',
+            DB::raw('GROUP_CONCAT(nombre SEPARATOR "|#|") as oficinas'),
+            DB::raw('GROUP_CONCAT(iduoper SEPARATOR "|#|") as oficinas_ids')
+        )
+            ->groupBy('dependencia')
+            ->get();
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        $this->response['esto'] = 'da';
+        return response()->json($this->response, 200);
+    }
     // public function getOficinasG(Request $request){
 
 

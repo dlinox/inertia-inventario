@@ -76,9 +76,11 @@ class GrupoController extends Controller
     public function guardarGrupo(Request $request)
     {
 
+        $oficinas =  explode('|#|', $request->ofici[0]);
+
         foreach ($request->usuarios as $item) {
 
-            foreach ($request->ofici as $oficina) {
+            foreach ($oficinas as $oficina) {
 
                 $this->save($oficina, $item);
                 //echo($oficina);
@@ -87,7 +89,7 @@ class GrupoController extends Controller
             }
         }
 
-        $this->response['mensaje'] = "Grupo Creado";
+        $this->response['mensaje'] = $oficinas;
         $this->response['estado'] = true;
         return response()->json($this->response, 200);
         // return $area;

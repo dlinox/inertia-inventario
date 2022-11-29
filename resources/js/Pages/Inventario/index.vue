@@ -484,7 +484,7 @@
             <v-card>
                 <div class="pa-3">
                     <h4 class="text-center my-3">
-                       INVENTARIO
+                       ETIQUETA: INVENTARIO
                     </h4>
                     <v-divider></v-divider>
                     <h1 class="text-center my-3">
