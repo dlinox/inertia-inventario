@@ -384,6 +384,7 @@
                                 :disabled="disable_input"
                                 :user="user.id"
                                 v-model="form_data.id_oficina"
+                                :rules="nameRules"
                             />
                         </v-col>
 

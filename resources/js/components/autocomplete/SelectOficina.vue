@@ -13,6 +13,8 @@
         :search-input.sync="oficinas_search"
         required
         :disabled="disabled"
+
+        :rules="rules"
     >
         <template v-slot:selection="data">
             <small>
@@ -60,6 +62,7 @@ export default {
             type: Boolean,
         },
         user: Number,
+        rules: Array,
     },
     data: () => ({
         oficinas_res: [],
