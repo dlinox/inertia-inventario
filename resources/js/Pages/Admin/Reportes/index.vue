@@ -261,6 +261,7 @@ export default {
         areE: function(){
             this.getPersonas();
             this.Registrado(this.areE, this.perE)
+            this.preview = null;
         },
         perE: function(){
             this.preview = '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
@@ -275,7 +276,7 @@ export default {
             this.opcion = 1;
             if(this.areE === null && this.perE !== null) {
                  this.areE === null;
-                 this.getAreas();
+                 this.getOficinas();
             }else {
                 if(this. areE !== null && this.perE === null ) {
                     this.perE = null;
@@ -286,7 +287,6 @@ export default {
                         this.perE = null;
                         this.areE = null;
                         this.getPersonas();
-                        this.getAreas();
                     }
 
                 }
