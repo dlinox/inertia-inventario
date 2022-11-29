@@ -179,7 +179,7 @@ class ReportesController extends Controller
     {
 
         $diario = DB::select('SELECT COUNT(*) AS REGISTROS, date(created_at) as FECHA FROM inventario WHERE date(created_at) <= CURRENT_DATE GROUP BY date(created_at) ORDER BY date(created_at) DESC;');
-        $registros = DB::select('SELECT inventario.id, inventario.codigo, inventario.descripcion, inventario.estado,  DATE(inventario.created_at) as fecha, area.nombre as area, CONCAT(users.nombres, users.apellidos) as usuario FROM inventario JOIN area ON inventario.id_area = area.id JOIN users on inventario.id_usuario = users.id  WHERE  date(inventario.created_at) <= CURRENT_DATE ORDER BY DATE(inventario.created_at) DESC;');
+        $registros = DB::select('SELECT inventario.id, inventario.codigo, inventario.descripcion, inventario.estado,  DATE(inventario.created_at) as fecha, oficina.nombre as area, CONCAT(users.nombres, users.apellidos) as usuario FROM inventario JOIN oficina ON inventario.id_area = oficina.iduoper JOIN users on inventario.id_usuario = users.id  WHERE  date(inventario.created_at) <= CURRENT_DATE ORDER BY DATE(inventario.created_at) DESC;');
         $this->response['datos'] = $diario;
         $this->response['registros'] = $registros;
         return response()->json($this->response, 200);
@@ -187,7 +187,7 @@ class ReportesController extends Controller
 
     public function RegXdia($fecha)
     {
-        $regDiario = DB::select('SELECT inventario.*, area.nombre as a FROM inventario JOIN area ON inventario.id_area = area.id where DATE(inventario.created_at) = ' . $fecha);
+        $regDiario = DB::select('SELECT inventario.*, oficina.nombre as a FROM inventario JOIN area ON inventario.id_area = oficina.iduoper where DATE(inventario.created_at) = ' . $fecha);
         $this->response['registros'] = $regDiario;
         return response()->json($this->response, 200);
     }
@@ -207,7 +207,7 @@ class ReportesController extends Controller
     }
 
     public function OficinasAvanzadasCargos()
-    {
+       {
 
         $oficina = DB::select('SELECT oficina.* from area_persona JOIN area ON area_persona.id_area = area.id JOIN oficina ON area.id_oficina = oficina.id GROUP BY oficina.id;');
         $oficinas = [];
@@ -223,7 +223,7 @@ class ReportesController extends Controller
 
     public function getCountOficina($idO)
     {
-        $oficina = DB::select('SELECT COUNT(inventario.id) as registros, oficina.id from inventario JOIN area ON inventario.id_area = area.id  JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = ' . $idO . ';');
+        $oficina = DB::select('SELECT COUNT(inventario.id) as registros, oficina.id from inventario JOIN oficina ON inventario.id_area = oficina.iduoper  WHERE oficina.iduoper = ' . $idO . ';');
         $this->response['oficina'] = $oficina;
         return response()->json($this->response, 200);
     }
