@@ -211,9 +211,12 @@
                                 dense
                                 label="Medidas"
                                 outlined
+                                persistent-hint
+                                hint="Largo x Ancho x Alto"
                                 v-model="form_data.medidas"
                                 :disabled="disable_input"
                             ></v-text-field>
+                            
                         </v-col>
 
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
@@ -377,9 +380,11 @@
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
-                            <SelectOficina 
-                            :disabled="disable_input"
-                            v-model="form_data.id_oficina" />
+                            <SelectOficina
+                                :disabled="disable_input"
+                                :user="user.id"
+                                v-model="form_data.id_oficina"
+                            />
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
@@ -475,6 +480,29 @@
             @setAlert="show_alert = $event"
         />
 
+        <v-dialog persistent v-model="dialog_corr" max-width="320">
+            <v-card>
+                <div class="pa-3">
+                    <h4 class="text-center my-3">
+                       INVENTARIO
+                    </h4>
+                    <v-divider></v-divider>
+                    <h1 class="text-center my-3">
+                        {{ corr_area }} - {{ corr_num }}
+                    </h1>
+
+                    <v-divider></v-divider>
+
+                    <div class="d-flex justify-center mt-3">
+                        <v-btn color="primary" dense @click="dialog_corr = !dialog_corr">
+                            Aceptar
+                        </v-btn>
+                    </div>
+                </div>
+            </v-card>
+        </v-dialog>
+
+
         <v-fab-transition>
             <v-btn
                 small
@@ -528,14 +556,12 @@ export default {
     layout: Layout,
     data: () => ({
         file_foto: false,
-
         form_data: {},
         form_valid: true,
         loadin_form: false,
         disable_input: false,
 
         areas_by_oficina: [],
-
         personas: [],
         personas_search: "",
         loading_search_persona: false,
@@ -543,16 +569,13 @@ export default {
         personas_otro: [],
         personas_search_otro: "",
         loading_search_persona_otro: false,
-
         data_emit: {},
 
         dialog_delete: false,
-
         is_edit: false,
         is_new: false,
 
         show_persona_otro: false,
-
         nameRules: [(v) => !!v || "*Obligatorio"],
 
         //alerta
@@ -561,6 +584,10 @@ export default {
         type_alert: "",
 
         foto_ref: null,
+        //correlativo
+        corr_num: "",
+        corr_area: "",
+        dialog_corr: false,
     }),
     methods: {
         setDataAlert(response) {
@@ -593,10 +620,11 @@ export default {
                 "/inventario/create-inventario",
                 this.form_data
             );
-
             if (res.data.estado && this.file_foto) {
-                let res_foto = await this.guardarFoto(res.data.id);
+                await this.guardarFoto(res.data.id);
             }
+
+            this.shwModalCorrelativo(res.data);
 
             this.setDataAlert(res.data);
         },
@@ -609,6 +637,12 @@ export default {
                 let res_foto = await this.guardarFoto(res.data.id);
             }
             this.setDataAlert(res.data);
+        },
+
+        shwModalCorrelativo(data) {
+            this.corr_num = data.corr_num;
+            this.corr_area = data.corr_area;
+            this.dialog_corr = true;
         },
 
         async deleteInventario() {
@@ -655,9 +689,6 @@ export default {
 
         async getDataBien(item) {
             let res = await getBienByCodigo(item);
-
-     
-
             this.form_data = res;
             this.personas = [res.persona];
             this.personas_otro = [res.persona_otro];
@@ -703,6 +734,12 @@ export default {
             this.areas_by_oficina = this.areas.filter(
                 (e) => e.id_oficina === val
             );
+        },
+    },
+
+    computed: {
+        user() {
+            return this.$page.props.auth.user;
         },
     },
 };

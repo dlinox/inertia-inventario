@@ -275,7 +275,7 @@ Route::middleware(['auth'])->name('facilitador.')->prefix('facilitador')->group(
 Route::middleware('auth')->name('get-data.')->prefix('get-data')->group(function () {
 
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
-        Route::get('/{term}', 'getOficinas')->name('term');
+        Route::get('/{term}/{user?}', 'getOficinas')->name('term');
     });
 
     Route::controller(AreasController::class)->name('areas.')->prefix('areas')->group(function () {

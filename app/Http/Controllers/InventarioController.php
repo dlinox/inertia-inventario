@@ -343,14 +343,11 @@ class InventarioController extends Controller
     public function createInventario(Request $request)
     {
 
-
         $res = Inventario::create([
-
             'tipo' => $request->tipo,
             'idreg_anterior' => $request->idreg_anterior,
             'cod_ubicacion' => $request->cod_ubicacion,
             'cuenta' => $request->cuenta,
-
             'codigo' => $request->codigo,
             'codigo_anterior' => $request->codigo_anterior,
             'descripcion' => $request->descripcion,
@@ -362,11 +359,9 @@ class InventarioController extends Controller
             'medidas' => $request->medidas,
             'nro_serie' => $request->nro_serie,
 
-
             'val_libros' => $request->val_libros,
             'dep_acum2019' => $request->dep_acum2019,
             'color' => $request->color,
-
             'observaciones' => $request->observaciones,
             'idbienk' => $request->id,
             'id_persona' => $request->id_persona,
@@ -378,13 +373,22 @@ class InventarioController extends Controller
 
         if ($res) {
 
+
+            $corr_area =  explode('.', $res->id_area)[0];
+
+            $res->corr_area =  $corr_area;
+            $res->corr_num = $this->AsignarCorrelativo($res);
+            $res->save();
+
             if ($res->idbienk) {
                 Bienk::select('registrado')->where('id', $res->idbienk)->update(['registrado' => 1]);
             }
 
             $this->response['estado'] = true;
             $this->response['mensaje'] = 'Registrado con exito';
-            $this->response['id'] = $res->id;
+            $this->response['corr_num'] = $this->AsignarCorrelativo($res);
+            $this->response['corr_area'] = $corr_area;
+
             return response()->json($this->response, 200);
         }
 
@@ -394,6 +398,19 @@ class InventarioController extends Controller
         $this->response['codigo'] =  $request->id_area;
         return response()->json($this->response, 200);
     }
+
+    public function AsignarCorrelativo($inventario)
+    {
+        $corr_area =  explode('.', $inventario->id_area)[0];
+        $last_num = Inventario::select('corr_num')->where('corr_area', $corr_area)->orderBy('corr_num')->first();
+
+        if ($last_num) {
+            return  $last_num->corr_num + 1;
+        } else {
+            return  1;
+        }
+    }
+
     public function updateInventario(Request $request)
     {
         if ($request->id_usuario != Auth::user()->id) {
