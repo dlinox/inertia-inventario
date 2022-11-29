@@ -98,7 +98,7 @@ class ReportesController extends Controller
        // $datos['area'] = $area[0];
         $datos['responsable'] = $responsable[0];
         //        $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = '.$idArea.';');
-        return Inertia::render('Admin/Reportes/Preview/',  ['datos' => $datos], ['X-Frame-Options:*']);
+        return Inertia::render('Admin/Reportes/Preview/',  ['datos' => $datos]);
     }
 
     public function generador()
