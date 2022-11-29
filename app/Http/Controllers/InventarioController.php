@@ -366,13 +366,12 @@ class InventarioController extends Controller
             'idbienk' => $request->id,
             'id_persona' => $request->id_persona,
             'idpersona_otro' => $request->idpersona_otro,
-            'id_area' => $request->id_area,
+            'id_area' => $request->id_oficina,
             'id_usuario' => Auth::user()->id,
             'id_estado' => $request->id_estado,
         ]);
 
         if ($res) {
-
 
             $corr_area =  explode('.', $res->id_area)[0];
 
