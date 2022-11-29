@@ -25,9 +25,9 @@
                         <v-tab>
                             <strong> Datos de Usuario</strong>
                         </v-tab>
-                        <v-tab>
+                        <!--   <v-tab>
                             <strong> Oficina / Areas</strong>
-                        </v-tab>
+                        </v-tab> -->
                     </v-tabs>
 
                     <v-tabs-items v-model="tab">
@@ -271,136 +271,6 @@
                 </v-card>
             </v-container>
         </div>
-
-        <v-dialog max-width="500" persistent v-model="dialog_asignar">
-            <v-card>
-                <v-card-title primary-title>
-                    Asignar Area - {{ form.nombres }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text class="mt-3">
-                    <v-autocomplete
-                        v-model="area_asig"
-                        :items="areas_asig"
-                        item-text="nombre"
-                        item-value="id"
-                        label="Seleccione un Area"
-                        outlined
-                        dense
-                        multiple
-                    >
-                    </v-autocomplete>
-
-                    <v-autocomplete
-                        v-model="oficina_selected"
-                        clearable
-                        class="mt-0 pt-0"
-                        dense
-                        label="Oficina"
-                        outlined
-                        :items="oficinas_res"
-                        :filter="customFilterOficina"
-                        item-value="id"
-                        item-text="nombre"
-                        :search-input.sync="oficinas_search"
-                        required
-                        multiple
-                    >
-                        <template v-slot:no-data>
-                            <v-list-item>
-                                <v-list-item-title>
-                                    <template
-                                        v-if="oficinas_search?.length > 2"
-                                    >
-                                        Datos no encontrados para
-                                        <strong>
-                                            {{ oficinas_search }}
-                                        </strong>
-                                    </template>
-                                    <template v-else>
-                                        Digite más de
-                                        <strong> 2</strong> caracteres.
-                                    </template>
-                                </v-list-item-title>
-                            </v-list-item>
-                        </template>
-
-                        <template v-slot:item="data">
-                            <v-list-item-content>
-                                <v-list-item-title v-html="data.item.codigo">
-                                </v-list-item-title>
-                                <v-list-item-subtitle>
-                                    {{ data.item.nombre }}
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </template>
-                    </v-autocomplete>
-
-                    <v-btn
-                        class="mr-3"
-                        text
-                        color="red"
-                        @click="dialog_asignar = false"
-                    >
-                        cancelar
-                    </v-btn>
-                    <v-btn
-                        :disabled="!oficina_selected.length > 0"
-                        @click="guardarAsingar"
-                    >
-                        Asignar
-                    </v-btn>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog max-width="500" persistent v-model="info_area.dialog">
-            <v-card dark>
-                <v-card-title primary-title>
-                    Informacion del area
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-container>
-                    <v-row>
-                        <v-col cols="12">
-                            <small>
-                                <strong> Responsable(s): </strong> Nombre del
-                                responsable
-                            </small>
-                        </v-col>
-                        <v-col
-                            cols="4"
-                            class="d-flex justify-content-center align-items-center"
-                        >
-                            <v-progress-circular
-                                :rotate="270"
-                                :size="100"
-                                :width="15"
-                                :value="30"
-                                color="teal"
-                            >
-                                30%
-                            </v-progress-circular>
-                        </v-col>
-                        <v-col cols="8">
-                            <v-progress-linear :value="25" height="15">
-                                <small> 25 % </small>
-                            </v-progress-linear>
-                        </v-col>
-                    </v-row>
-                </v-container>
-
-                <v-divider></v-divider>
-                <v-card-actions>
-                    <v-btn
-                        text
-                        color="red"
-                        @click="info_area.dialog = !info_area.dialog"
-                        >Salir</v-btn
-                    >
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 <script>
