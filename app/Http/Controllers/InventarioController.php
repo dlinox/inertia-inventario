@@ -208,6 +208,7 @@ class InventarioController extends Controller
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('bienk.codigo', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('bienk.idreg_anterior', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('bienk.descripcion', 'LIKE', '%' . $request->term . '%');
             })->paginate(10);
 
