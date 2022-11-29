@@ -43,17 +43,35 @@ class Bienk extends Model
 
     public function searchDataByCode($codigo)
     {
-        $res = $this::select('codigo', 'descripcion', 'registrado')
+        $res = $this::select('codigo', 'descripcion', 'registrado', 'idreg_anterior')
             ->where('codigo', 'LIKE', $codigo . '%')
             ->get();
         return $res;
     }
+
+
 
     public function getDataByCode($codigo)
     {
         $res = $this::select('bienk.*', 'oficina.iduoper as id_oficina')
             ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area')
             ->where('bienk.codigo', $codigo)
+            ->first();
+
+        $res['persona'] = Persona::where('dni', $res->persona_dni)->first();
+        if($res['persona']){
+            $res['id_persona']  = $res['persona']->id;
+        }
+
+        //$res['oficina//'] = Area::where('id', $res->area_id)->first();
+        return $res;
+    }
+
+    public function getDataByRegAnt($idreg_anterior)
+    {
+        $res = $this::select('bienk.*', 'oficina.iduoper as id_oficina')
+            ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area')
+            ->where('bienk.idreg_anterior', $idreg_anterior)
             ->first();
 
         $res['persona'] = Persona::where('dni', $res->persona_dni)->first();

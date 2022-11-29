@@ -377,7 +377,9 @@
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
-                            <SelectOficina v-model="form_data.id_oficina" />
+                            <SelectOficina 
+                            :disabled="disable_input"
+                            v-model="form_data.id_oficina" />
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
@@ -654,7 +656,7 @@ export default {
         async getDataBien(item) {
             let res = await getBienByCodigo(item);
 
-            console.log(res);
+     
 
             this.form_data = res;
             this.personas = [res.persona];

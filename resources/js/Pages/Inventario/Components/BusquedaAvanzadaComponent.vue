@@ -228,7 +228,7 @@ export default {
         async oficina_selected(val) {
             this.tr_index = null;
             this.loading_table = true;
-            console.log(val);
+           
             let res = await this.getBienes(val);
             this.bienes_result = res;
             this.loading_table = false;

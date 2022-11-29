@@ -186,7 +186,7 @@ class InventarioController extends Controller
     public function getBienes(Request $request)
     {
 
-        $res = BienK::select('bienk.codigo',  'bienk.descripcion', 'bienk.registrado')
+        $res = BienK::select('bienk.codigo',  'bienk.descripcion', 'bienk.registrado', 'bienk.idreg_anterior')
             ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area') //iduoper
             ->where(function ($query) use ($request) {
 
@@ -321,9 +321,17 @@ class InventarioController extends Controller
     public function getBienByCodigo(Request $request)
     {
         if (!$request->registrado) {
-            $res = $this->bienK->getDataByCode($request->codigo);
+            if ($request->codigo == "") {
+                $res = $this->bienK->getDataByRegAnt($request->idreg_anterior);
+            } else {
+                $res = $this->bienK->getDataByCode($request->codigo);
+            }
         } else {
-            $res = $this->inventario->getDataByCode($request->codigo);
+            if ($request->codigo == "") {
+                $res = $this->inventario->getDataByRegAnt($request->idreg_anterior);
+            } else {
+                $res = $this->inventario->getDataByCode($request->codigo);
+            }
         }
 
         $this->response['estado'] = true;
@@ -350,6 +358,7 @@ class InventarioController extends Controller
 
             'modelo' => $request->modelo,
             'marca' => $request->marca,
+            'medidas' => $request->medidas,
             'nro_serie' => $request->nro_serie,
 
 
@@ -392,6 +401,9 @@ class InventarioController extends Controller
             return response()->json($this->response, 200);
         }
         $data = [
+
+            'medidas' => $request->medidas,
+            'color' => $request->color,
             'id_persona' => $request->id_persona,
             'idpersona_otro' => $request->idpersona_otro,
             'id_area' => $request->id_area,

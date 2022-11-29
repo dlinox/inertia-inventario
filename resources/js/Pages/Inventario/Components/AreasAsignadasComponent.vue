@@ -242,7 +242,7 @@ export default {
 
         async getTeam() {
             let res = await axios.get("inventario/getTeam/" + this.area_selected);
-            console.log(res.data);
+           
             this.team = res.data.datos;
             //            return res.data.datos.data;
         },

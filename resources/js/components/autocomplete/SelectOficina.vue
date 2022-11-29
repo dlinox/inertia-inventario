@@ -12,6 +12,8 @@
         item-text="nombre"
         :search-input.sync="oficinas_search"
         required
+        :disabled="disabled"
+
     >
         <template v-slot:selection="data">
             <small>
@@ -53,6 +55,10 @@ export default {
     name: "SelectOficina",
     props: {
         value: String,
+        disabled:{
+            default: false,
+            type: Boolean
+        }
     },
     data: () => ({
         oficinas_res: [],
@@ -83,10 +89,10 @@ export default {
             this.oficinas_res = res;
         },
         async oficina_selected(val) {
-            console.log(val);
+        
             let res = await this.BuscarOficinas(val);
             this.oficinas_res = res;
-            console.log(res);
+
         },
     },
     computed: {
