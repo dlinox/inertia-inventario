@@ -45,7 +45,7 @@
                     </div>
                 </td>
                 <td style=" width: 650px;" >
-                    <div style="text-align: left"> <span>: {{datos.oficina.nombre}}  </span> </div>
+                    <div style="text-align: left"> <span>: {{datos.oficina.nombre}} {{datos.oficina.dependencia}} </span> </div>
                 </td>
                 <td align="right">
                     <div style=" width:188px; margin-right:.5cm; ">
