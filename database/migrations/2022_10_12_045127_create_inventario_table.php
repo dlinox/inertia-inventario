@@ -20,11 +20,11 @@ class CreateInventarioTable extends Migration
         Schema::create('inventario', function (Blueprint $table) {
 
             $table->id();
-            
+
             $table->string('tipo', 30)->nullable();
             $table->integer('idreg_anterior')->nullable();
             $table->string('cod_ubicacion', 30)->nullable();
-           
+
 
             $table->string('cuenta', 25)->nullable();
             $table->string('codigo', 40)->nullable();
@@ -41,24 +41,24 @@ class CreateInventarioTable extends Migration
             $table->string('color', 150)->nullable();
             $table->string('observaciones', 250)->nullable();;
 
-        
+
             $table->string('idbienk', 60)->nullable();
             $table->boolean('estado')->default(1); //bloqueado?
+
+            $table->char('corr_area', 2)->nullable();
+            $table->integer('corr_num')->nullable();
             //$table->integer('vida_util_empleada_meses')->nullable();
             $table->integer('idpersona_otro')->nullable();
-        
-            $table->unsignedBigInteger('id_persona');
-          
+            $table->unsignedBigInteger('id_persona')->nullable();
             $table->unsignedBigInteger('id_usuario')->nullable();
             $table->unsignedBigInteger('id_estado')->nullable();
-            $table->char('id_area',15)->nullable();
+            $table->char('id_area', 15)->nullable();
 
             $table->foreign('id_persona')->references('id')->on('persona');
             //$table->foreign('idpersona_otro')->references('id')->on('persona');
             $table->foreign('id_area')->references('iduoper')->on('oficina');
             $table->foreign('id_usuario')->references('id')->on('users');
             $table->foreign('id_estado')->references('id')->on('estado');
-
             $table->timestamps();
         });
     }

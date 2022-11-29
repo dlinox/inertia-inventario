@@ -13,7 +13,6 @@
         :search-input.sync="oficinas_search"
         required
         :disabled="disabled"
-
     >
         <template v-slot:selection="data">
             <small>
@@ -55,10 +54,12 @@ export default {
     name: "SelectOficina",
     props: {
         value: String,
-        disabled:{
+
+        disabled: {
             default: false,
-            type: Boolean
-        }
+            type: Boolean,
+        },
+        user: Number,
     },
     data: () => ({
         oficinas_res: [],
@@ -77,7 +78,10 @@ export default {
             );
         },
         async BuscarOficinas(term) {
-            let res = await axios.get("/get-data/oficinas/" + term);
+            let user_filter = this.user ? "/" + this.user : "";
+            let res = await axios.get(
+                "/get-data/oficinas/" + term + user_filter
+            );
             return res.data.datos;
         },
     },
@@ -89,10 +93,8 @@ export default {
             this.oficinas_res = res;
         },
         async oficina_selected(val) {
-        
             let res = await this.BuscarOficinas(val);
             this.oficinas_res = res;
-
         },
     },
     computed: {
