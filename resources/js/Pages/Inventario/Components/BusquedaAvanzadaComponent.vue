@@ -65,9 +65,9 @@
                             <thead class="grey lighten-3">
                                 <tr>
                                     <th class="text-left">Estado</th>
-                                    <th class="text-left">Descripcion</th>
+                                    <th class="text-left">Reg. Anterior</th>
                                     <th class="text-left">Codigo</th>
-                                  
+                                    <th class="text-left">Descripcion</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,29 +81,26 @@
                                     @dblclick="onSelectColumDobleClik(item)"
                                 >
                                     <td>
-                                        <template v-if="item.registrado == 1">
-                                            <v-chip
-                                                small
-                                                color="grey"
-                                                outlined
-                                                class="ma-2"
-                                            >
-                                                <small>REGISTRADO</small>
-                                            </v-chip>
-                                        </template>
-                                        <template v-else>
-                                            <v-chip
-                                                small
-                                                color="orange"
-                                                outlined
-                                                class="ma-2"
-                                            >
-                                                <small>NO REGISTRADO</small>
-                                            </v-chip>
-                                        </template>
+                                        <v-list-item-avatar
+                                            size="20"
+                                            :color="
+                                                item.registrado
+                                                    ? 'green'
+                                                    : 'grey'
+                                            "
+                                        >
+                                            <v-icon small dark>
+                                                mdi-checkbox-marked-circle
+                                            </v-icon>
+                                        </v-list-item-avatar>
                                     </td>
-                                    <td>{{ item.descripcion }}</td>
+                                    <td>
+                                        {{ item.idreg_anterior }}
+                                    </td>
                                     <td>{{ item.codigo }}</td>
+                                    <td>{{ item.descripcion }}</td>
+                                  
+                                  
                                 </tr>
                             </tbody>
                         </template>
@@ -205,6 +202,7 @@ export default {
             this.page = 1;
             this.total_result = 0;
             this.pages = 1;
+            this.mostrar_selected= "Todos";
         },
     },
     watch: {

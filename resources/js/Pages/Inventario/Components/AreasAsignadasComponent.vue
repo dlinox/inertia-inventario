@@ -17,55 +17,47 @@
                 <v-spacer></v-spacer>
                 <!-- <v-icon>mdi-account-group</v-icon> -->
                 <div>
-                <v-menu offset-y>
-                    <template
-                        v-slot:activator="{
-                            attrs,
-                            on,
-                        }"
-                    >
-                        <v-btn
-                            icon
-                            text
-                            color="primary"
-                            class=""
-                            v-bind="attrs"
-                            v-on="on"
-                        >
-                            <v-icon>
-                                mdi-account-group
-                            </v-icon>
-                        </v-btn>
-                    </template>
+                    <v-menu offset-y>
+                        <template v-slot:activator="{ attrs, on }">
+                            <v-btn
+                                icon
+                                text
+                                color="primary"
+                                class=""
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                <v-icon> mdi-account-group </v-icon>
+                            </v-btn>
+                        </template>
 
-                    <v-list dense>
-                        <v-subheader
-                            >Equipo
-                        </v-subheader
-                        >
-                        <v-list-item-group
-                            color="primary"
-                        >
+                        <v-list dense>
+                            <v-subheader>Equipo </v-subheader>
+                            <v-list-item-group color="primary">
+                                <!-- <pre>{{team}}</pre> -->
 
-                        <!-- <pre>{{team}}</pre> -->
-
-                        <v-list-item v-for="it in team" :key="it.id" >
-                            <!-- <v-list-item-icon  style="margin-right: -10px;" >
+                                <v-list-item v-for="it in team" :key="it.id">
+                                    <!-- <v-list-item-icon  style="margin-right: -10px;" >
                                 <v-icon color="primary" size="1.1rem">mdi-acount</v-icon>
                             </v-list-item-icon> -->
-                            <v-list-item-content>
-                                <span style="margin-left: 10px; font-size: .85rem;" >{{it.nombres}} {{it.apellidos}}</span>
-                            </v-list-item-content>
-                        </v-list-item>
-                        </v-list-item-group>
-                    </v-list>
-                </v-menu>
+                                    <v-list-item-content>
+                                        <span
+                                            style="
+                                                margin-left: 10px;
+                                                font-size: 0.85rem;
+                                            "
+                                            >{{ it.nombres }}
+                                            {{ it.apellidos }}</span
+                                        >
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list-item-group>
+                        </v-list>
+                    </v-menu>
                 </div>
-
             </v-toolbar>
 
             <v-card-text style="height: 90vh">
-      
                 <v-autocomplete
                     v-model="area_selected"
                     :items="areas"
@@ -113,9 +105,9 @@
                             <thead class="grey lighten-3">
                                 <tr>
                                     <th class="text-left">Estado</th>
-                                    <th class="text-left">Descripcion</th>
+                                    <th class="text-left">Reg. Anterior</th>
                                     <th class="text-left">Codigo</th>
-                                    <th class="text-left">Cod. SIGA</th>
+                                    <th class="text-left">Descripcion</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,32 +121,26 @@
                                     @dblclick="onSelectColumDobleClik(item)"
                                 >
                                     <td>
-                                        <template v-if="item.registrado == 1">
-                                            <v-chip
-                                                small
-                                                color="grey"
-                                                outlined
-                                                class="ma-2"
-                                            >
-                                                <small>REGISTRADO</small>
-                                            </v-chip>
-                                        </template>
-                                        <template v-else>
-                                            <v-chip
-                                                small
-                                                color="orange"
-                                                outlined
-                                                class="ma-2"
-                                            >
-                                                <small>NO REGISTRADO</small>
-                                            </v-chip>
-                                        </template>
+                                        <v-list-item-avatar
+                                            size="20"
+                                            :color="
+                                                item.registrado
+                                                    ? 'green'
+                                                    : 'grey'
+                                            "
+                                        >
+                                            <v-icon small dark>
+                                                mdi-checkbox-marked-circle
+                                            </v-icon>
+                                        </v-list-item-avatar>
                                     </td>
-                                    <td>{{ item.descripcion }}</td>
-                                    <td>{{ item.codigo }}</td>
                                     <td>
-                                        {{ item.codigo_siga }}
+                                        {{ item.idreg_anterior }}
                                     </td>
+                                    <td>{{ item.codigo }}</td>
+                                    <td>{{ item.descripcion }}</td>
+                                  
+                                  
                                 </tr>
                             </tbody>
                         </template>
@@ -177,7 +163,6 @@
             <v-card-actions>
                 <h5>Total: {{ total_result }}</h5>
                 <v-spacer></v-spacer>
-              
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -208,8 +193,7 @@ export default {
         page: 1,
         total_result: 0,
         pages: 1,
-        team:[],
-
+        team: [],
     }),
     methods: {
         onSelectColum(item, index) {
@@ -217,13 +201,11 @@ export default {
             this.tr_item = item;
         },
         async onSelectColumDobleClik(item) {
-            item.registrado = await item.registrado == 1 ? true : false;
+            item.registrado = (await item.registrado) == 1 ? true : false;
 
-        
             this.$emit("setData", item);
             this.dialog = false;
             this.resetAll();
-          
         },
 
         async getBienes(area, term = "", mostrar = "Todos", page = 1) {
@@ -236,13 +218,15 @@ export default {
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
             this.pages = res.data.datos.last_page;
-   
+
             return res.data.datos.data;
         },
 
         async getTeam() {
-            let res = await axios.get("inventario/getTeam/" + this.area_selected);
-           
+            let res = await axios.get(
+                "inventario/getTeam/" + this.area_selected
+            );
+
             this.team = res.data.datos;
             //            return res.data.datos.data;
         },
@@ -251,16 +235,16 @@ export default {
             this.$emit("setData", this.tr_item);
             this.dialog = false;
             this.resetAll();
-           
         },
 
-        resetAll(){
+        resetAll() {
             this.bienes_result = [];
             this.area_selected = null;
-            this.page=  1;
-            this.total_result=  0;
-            this.pages=  1;
-        }
+            this.page = 1;
+            this.total_result = 0;
+            this.pages = 1;
+            this.mostrar_selected= "Todos";
+        },
     },
 
     watch: {
@@ -270,10 +254,9 @@ export default {
             this.tr_index = null;
             this.loading_table = true;
             let res = await this.getBienes(val);
-           // this.getTeam();
+            // this.getTeam();
             this.bienes_result = res;
             this.loading_table = false;
-
         },
 
         async area_search(val) {
