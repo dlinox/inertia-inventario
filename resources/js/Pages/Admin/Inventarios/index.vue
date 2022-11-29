@@ -117,13 +117,12 @@ export default {
         searchbienes:"",
         headBienes: [
           { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"220px", class:'grey lighten-1' },
-          { text: 'corr-area', align: 'start', filterable: true, value: 'corr_area', class:'grey lighten-1' },
-          { text: 'corr-usu', align: 'start', filterable: true, value: 'corr_num', class:'grey lighten-1' },
+          { text: 'corr-area', align: 'start', filterable: true, value: 'corr_area',width:"60px", class:'grey lighten-1' },
+          { text: 'corr-num', align: 'start', filterable: true, value: 'corr_num', width:"60px", class:'grey lighten-1' },
           { text: 'Responsable', align: 'center', filterable: false, width:"130px", value: 'dni', class:'grey lighten-1',},
-          { text: 'Oficina', align: 'start', filterable: true, value: 'onombre', width:"300px", minWidth:'250px', class:'grey lighten-1' },
+          { text: 'Oficina', align: 'start', filterable: true, value: 'onombre', width:"230px", minWidth:'220px', class:'grey lighten-1' },
           { text: 'Dependencia', align: 'start', filterable: true, value: 'dependencia', width:"300px", minWidth:'250px', class:'grey lighten-1' },
-          { text: 'DNI', align: 'start', filterable: true, value: 'udni', width:"300px", minWidth:'250px', class:'grey lighten-1' },
-          { text: 'Usuario', align: 'start', filterable: true, value: 'unombre', width:"300px", minWidth:'250px', class:'grey lighten-1' },
+          { text: 'Usuario', align: 'start', filterable: true, value: 'unombre', width:"230px", minWidth:'220px', class:'grey lighten-1' },
           { text: '', align: 'right', value:'acciones', maxWidth:'50px', class:'grey lighten-1'  },
         ],
 

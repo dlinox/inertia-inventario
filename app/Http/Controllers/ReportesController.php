@@ -187,7 +187,7 @@ class ReportesController extends Controller
 
     public function RegXdia($fecha)
     {
-        $regDiario = DB::select('SELECT inventario.*, oficina.nombre as a FROM inventario JOIN area ON inventario.id_area = oficina.iduoper where DATE(inventario.created_at) = ' . $fecha);
+        $regDiario = DB::select('SELECT inventario.*, oficina.nombre as a FROM inventario JOIN oficina ON inventario.id_area = oficina.iduoper where DATE(inventario.created_at) = ' . $fecha);
         $this->response['registros'] = $regDiario;
         return response()->json($this->response, 200);
     }
@@ -198,7 +198,7 @@ class ReportesController extends Controller
         $oficinas = [];
 
         foreach ($oficina as $key => $registro) {
-            $ofi = DB::select('SELECT COUNT(inventario.id) as registros, oficina.* from inventario JOIN area ON inventario.id_area = area.id JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = ' . $registro->id . ";");
+            $ofi = DB::select('SELECT COUNT(inventario.id) as registros, oficina.* from inventario JOIN area ON inventario.id_area = oficina.iduoper JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = ' . $registro->id . ";");
             $oficinas[$key] = $ofi[0];
         }
 
@@ -209,11 +209,11 @@ class ReportesController extends Controller
     public function OficinasAvanzadasCargos()
        {
 
-        $oficina = DB::select('SELECT oficina.* from area_persona JOIN area ON area_persona.id_area = area.id JOIN oficina ON area.id_oficina = oficina.id GROUP BY oficina.id;');
+        $oficina = DB::select('SELECT oficina.* from area_persona JOIN oficina ON area_persona.id_area = oficina.iduoper GROUP BY oficina.id;');
         $oficinas = [];
 
         foreach ($oficina as $key => $registro) {
-            $ofi = DB::select('SELECT COUNT(area_persona.id) as registros, oficina.* from area_persona JOIN area ON area_persona.id_area = area.id JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = ' . $registro->id . " AND estado = 0;");
+            $ofi = DB::select('SELECT COUNT(area_persona.id) as registros, oficina.* from area_persona JOIN oficina ON area_persona.id_area = oficina.iduoper JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = ' . $registro->id . " AND estado = 0;");
             $oficinas[$key] = $ofi[0];
         }
 
