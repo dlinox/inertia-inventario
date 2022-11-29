@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace App\Http\Controllers;
 
 use App\Models\AreaPersona;
@@ -81,6 +83,8 @@ class ReportesController extends Controller
         return Inertia::render('Admin/Reportes/Reportes/index.vue');
     }
 
+    
+
     public function preview($idArea, $idP)
     {
 //        $oficina = DB::select('SELECT oficina.id, oficina.codigo, oficina.nombre FROM oficina WHERE oficina.id IN (SELECT area.id_oficina FROM area WHERE area.id =' . $idArea . ')');
@@ -94,7 +98,7 @@ class ReportesController extends Controller
        // $datos['area'] = $area[0];
         $datos['responsable'] = $responsable[0];
         //        $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = '.$idArea.';');
-        return Inertia::render('Admin/Reportes/Preview/',  ['datos' => $datos]);
+        return Inertia::render('Admin/Reportes/Preview/',  ['datos' => $datos], ['X-Frame-Options:*']);
     }
 
     public function generador()
@@ -194,11 +198,11 @@ class ReportesController extends Controller
 
     public function OficinasAvanzadas()
     {
-        $oficina = DB::select('SELECT oficina.id from inventario JOIN area ON inventario.id_area = area.id JOIN oficina ON area.id_oficina = oficina.id GROUP BY oficina.id;');
+        $oficina = DB::select('SELECT DISTINCT oficina.iduoper from inventario LEFT JOIN oficina on inventario.id_area = oficina.iduoper;');
         $oficinas = [];
 
         foreach ($oficina as $key => $registro) {
-            $ofi = DB::select('SELECT COUNT(inventario.id) as registros, oficina.* from inventario JOIN area ON inventario.id_area = oficina.iduoper JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = ' . $registro->id . ";");
+            $ofi = DB::select('SELECT COUNT(inventario.id) as registros, oficina.* from inventario JOIN oficina ON inventario.id_oficina = oficina.iduoper WHERE oficina.iduoper = ' . $registro->id . ";");
             $oficinas[$key] = $ofi[0];
         }
 
@@ -209,11 +213,11 @@ class ReportesController extends Controller
     public function OficinasAvanzadasCargos()
        {
 
-        $oficina = DB::select('SELECT oficina.* from area_persona JOIN oficina ON area_persona.id_area = oficina.iduoper GROUP BY oficina.id;');
+        $oficina = DB::select('SELECT oficina.* from area_persona JOIN oficina ON area_persona.id_area = oficina.iduoper GROUP BY oficina.iduoper;');
         $oficinas = [];
 
         foreach ($oficina as $key => $registro) {
-            $ofi = DB::select('SELECT COUNT(area_persona.id) as registros, oficina.* from area_persona JOIN oficina ON area_persona.id_area = oficina.iduoper JOIN oficina ON area.id_oficina = oficina.id WHERE oficina.id = ' . $registro->id . " AND estado = 0;");
+            $ofi = DB::select('SELECT COUNT(area_persona.id) as registros, oficina.* from area_persona JOIN oficina ON area_persona.id_area = oficina.iduoper JOIN oficina ON area.id_oficina = oficina.iduoper WHERE oficina.iduoper = ' . $registro->id . " AND estado = 0;");
             $oficinas[$key] = $ofi[0];
         }
 
