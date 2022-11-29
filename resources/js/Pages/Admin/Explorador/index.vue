@@ -527,12 +527,15 @@ export default {
         },
 
         abrirModalEliminar(item){
+            console.log("seleccionado: ", item.id);
             this.docSeleccionado = item;
             this.dialogEliminar = true;
         },
 
-        async eliminarDocumento(item){
-            await axios.delete(`/admin/documentos/eliminar/${item.id}`)
+        async eliminarDocumento(){
+
+
+            await axios.delete(`/admin/documentos/eliminar/${this.docSeleccionado.id}`)
              .then(response => {
                 this.text = "Documento eliminado"
                 this.snackbar = true
