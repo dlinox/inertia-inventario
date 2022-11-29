@@ -534,7 +534,6 @@ export default {
 
         async eliminarDocumento(){
 
-
             await axios.delete(`/admin/documentos/eliminar/${this.docSeleccionado.id}`)
              .then(response => {
                 this.text = "Documento eliminado"
