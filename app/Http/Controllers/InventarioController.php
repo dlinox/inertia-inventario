@@ -30,7 +30,6 @@ class InventarioController extends Controller
 
     public function index()
     {
-
         return Inertia::render('Admin/Inventarios/');
     }
 
@@ -565,6 +564,31 @@ class InventarioController extends Controller
 
         return response()->json($this->response, 200);
     }
+
+    public function getBiens()
+    {
+//        JOIN inventario.id_persona = persona.id'
+        $res = DB::select('SELECT inventario.*, users.nombres as unombre, users.apellidos as uapellido, oficina.nombre as onombre, persona.dni as dni from inventario join users on users.id = inventario.id_usuario join oficina on inventario.id_area = oficina.iduoper JOIN persona on inventario.id_persona = persona.id');
+
+        $this->response['datos'] = $res;
+
+        return response()->json($this->response, 200);
+    }
+
+
+
+    public function eliminarBienAdmin($id){
+        $bien = Inventario::find($id);
+            $bien->delete();
+            $this->response['mensaje'] = 'Bien eliminado';
+            $this->response['estado'] = true;
+            $this->response['datos'] = $bien;
+            return response()->json($this->response, 200);
+
+    }
+
+
+
 
 
     // public function getBienesAllbyOfice(Request $request)

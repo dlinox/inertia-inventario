@@ -21,7 +21,5 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
-
-
    
 }

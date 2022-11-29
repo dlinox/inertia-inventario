@@ -76,6 +76,9 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/getBiens', 'getBiens')->name('getBiens');
+        Route::delete('/eliminarbienadmin/{id}', 'eliminarBienAdmin')->name('eliminarBienAdmin');
+        
     });
 
     Route::controller(PersonasController::class)->name('personas.')->prefix('personas')->group(function () {
