@@ -402,7 +402,7 @@ class InventarioController extends Controller
     public function AsignarCorrelativo($inventario)
     {
         $corr_area =  explode('.', $inventario->id_area)[0];
-        $last_num = Inventario::select('corr_num')->where('corr_area', $corr_area)->orderBy('corr_num')->first();
+        $last_num = Inventario::select('corr_num')->where('corr_area', $corr_area)->orderByDesc('corr_num')->first();
 
         if ($last_num) {
             return  $last_num->corr_num + 1;
