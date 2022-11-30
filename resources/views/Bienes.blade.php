@@ -32,7 +32,7 @@
             <tr style="">
                 <td valgin="top">
                     <div style="width:270px; text-align:left; font-family: 'Ubuntu', sans-serif;">
-                        <span style="font-size:13pt; stroke:#000000; ">Universidad Nacional de Altiplano</span>
+                        <span style="font-size:13pt; stroke:#000000; ">Universidad Nacional del Altiplano</span>
                         <span style="font-size:10pt;">Comisión de Inventario Activos Fijos 2022</span>
                     </div>
                 </td>

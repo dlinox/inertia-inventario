@@ -565,6 +565,30 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
+    public function getBienesInv(Request $request)
+    {
+        $query_where = [];
+        if ($request->oficina) array_push($query_where, [DB::raw('substr(id_area, 1, 2)'), '=', $request->oficina]);
+        if ($request->dependencia) array_push($query_where, [DB::raw('substr(id_area, 4, 2)'), '=', $request->dependencia]);
+        //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
+        $res = Inventario::select(
+            'inventario.*',
+ 
+        )
+            ->where($query_where)
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('inventario.codigo', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
+            })
+            ->paginate(100);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+
     public function getBiens()
     {
 //        JOIN inventario.id_persona = persona.id'

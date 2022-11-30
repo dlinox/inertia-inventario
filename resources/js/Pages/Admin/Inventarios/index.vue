@@ -1,17 +1,39 @@
 <template>
     <v-container>
-        <h1>Bienes</h1>
-        <div style="width:300px; display:flex;" >
+        <v-row class="inputs mb-2" style="background: white">
+        <v-col sx="12" sm="12" md="4" lg="4" style="" class=" " >
+            <v-text-field
+                v-model="ofi"
+                label="Oficina"
+                hide-details
+                outlined
+                clearable
+                dense
+            ></v-text-field>
+        </v-col>
+        <v-col sx="12" sm="12" md="4" lg="4" style="" class="p-0" >
+            <v-text-field
+                v-model="dep"
+                label="Dependencia"
+                hide-details
+                outlined
+                clearable
+                dense
+            ></v-text-field>
+        </v-col>
+        <v-col sx="12" sm="12" md="4" lg="4" style="" class="p-0" >
             <v-text-field
             v-model="searchbienes"
             append-icon="mdi-magnify"
             outlined
+            label="Buscar"
             dense
             hide-details
             >
             </v-text-field>
-            <!-- <v-icon  outlined style=" margin-left:10px; font-size: 1.2rem" @click="drawer = !drawer">mdi-filter-outline</v-icon> -->
-        </div>
+        </v-col>
+    </v-row>
+
         <v-data-table
             :headers="headBienes"
             :items="bienes"
@@ -114,28 +136,35 @@ export default {
     layout: Layout,
     data: () => ({
         bienes:[],
+        ofi:null,
+        dep:null,
         searchbienes:"",
+            buscarBien: "",
         headBienes: [
-          { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"220px", class:'grey lighten-1' },
-          { text: 'corr-area', align: 'start', filterable: true, value: 'corr_area',width:"60px", class:'grey lighten-1' },
-          { text: 'corr-num', align: 'start', filterable: true, value: 'corr_num', width:"60px", class:'grey lighten-1' },
-          { text: 'Responsable', align: 'center', filterable: false, width:"130px", value: 'dni', class:'grey lighten-1',},
-          { text: 'Oficina', align: 'start', filterable: true, value: 'onombre', width:"230px", minWidth:'220px', class:'grey lighten-1' },
-          { text: 'Dependencia', align: 'start', filterable: true, value: 'dependencia', width:"300px", minWidth:'250px', class:'grey lighten-1' },
-          { text: 'Usuario', align: 'start', filterable: true, value: 'unombre', width:"230px", minWidth:'220px', class:'grey lighten-1' },
-          { text: '', align: 'right', value:'acciones', maxWidth:'50px', class:'grey lighten-1'  },
+          { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"120px", class:'pl-4 pr-0 grey lighten-1' },
+          { text: 'Nombre', align: 'start', filterable: true, value: 'descripcion',width:"60px", class:'pl-4 pr-0 grey lighten-1' },
+          { text: 'Oficina', align: 'center', filterable: true, value: 'id_area', width:"70px", class:'pl-0 pr-0 grey lighten-1' },
+          { text: 'Etiqueta', align: 'center', filterable: false, sortable: true, width:"70px", value: 'corr_num', class:'pl-0 pr-0 grey lighten-1',},
+          { align: 'right', value:'acciones', sortable: false, maxWidth:'30px', class:' pl-0 pr-0 grey lighten-1'},
         ],
 
     }),
     methods: {
-        async getBienes(){ 
-            let res = await axios.get("/admin/inventario/getBiens");
-            this.bienes = res.data.datos;
-            return res.data.datos.data;
-        },
+        // async getBienes(){ 
+        //     let res = await axios.get("/admin/inventario/getBiens");
+        //     this.bienes = res.data.datos;
+        //     return res.data.datos.data;
+        // },
+
+        async getBienes(term = "", page = 1) {
+                let res = await axios.post(
+                    "/admin/inventario/get-bienes-all?page=" + page,
+                    { term: term, oficina:this.ofi, dependencia: this.dep }
+                );
+                this.bienes = res.data.datos.data;
+            },
 
         async eliminar(item){
-
             await axios.delete(`/admin/inventario/eliminarbienadmin/${item.id}`)
             .then(response => {
                 this.text = "Documento eliminado"
@@ -151,6 +180,42 @@ export default {
         
     },
 
+    watch:{
+
+        async ofi(){
+            this.getBienes()
+        },
+
+        async dep(){
+            this.getBienes()
+        },
+
+        async searchbienes(val) {
+            if(val === null){
+                this.buscarBien = "zzz";
+            }
+            
+            // if (!val) return;
+            
+
+            if(this.ofi !== null){
+                let res = await this.getBienes(val);
+            }
+            else{
+                if(this.ofi !== null && this.dep !== null ){
+                    let res = await this.getBienes(val);
+                }
+                else{
+                    let res = await this.getBienes(
+                        val,
+                    );
+                }
+
+            }
+            // this.bienes = res;
+        },
+    },
+
     created() {
         this.getBienes()
     },
@@ -158,3 +223,11 @@ export default {
 
 };
 </script>
+<style scoped>
+@media (max-width: 600px) {
+    .inputs{
+        display: block;
+    }
+
+}
+</style>
