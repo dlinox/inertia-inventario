@@ -589,6 +589,18 @@ class InventarioController extends Controller
     }
 
 
+    
+
+    public function getBienInv($id)
+    {
+//        JOIN inventario.id_persona = persona.id'
+        $res = DB::select('SELECT inventario.*, users.nombres as unombre, users.apellidos as uapellido, oficina.nombre as onombre, oficina.dependencia as dependencia, persona.dni as dni from inventario left join users on users.id = inventario.id_usuario left join oficina on inventario.id_area = oficina.iduoper left join persona on inventario.id_persona = persona.id WHERE inventario.id = '.$id);
+
+        $this->response['datos'] = $res;
+
+        return response()->json($this->response, 200);
+    }
+
     public function getBiens()
     {
 //        JOIN inventario.id_persona = persona.id'
