@@ -32,7 +32,7 @@
             <tr style="">
                 <td valgin="top">
                     <div style="width:270px; text-align:left; font-family: 'Ubuntu', sans-serif;">
-                        <span style="font-size:13pt; stroke:#000000; ">Universidad Nacional de Altiplano</span>
+                        <span style="font-size:13pt; stroke:#000000; ">Universidad Nacional del Altiplano</span>
                         <span style="font-size:10pt;">Comisión de Inventario Activos Fijos 2022</span>
                     </div>
                 </td>
@@ -64,7 +64,7 @@
                 </td>
                 <td align="right">
                     <div style=" width:188px; margin-right:.5cm; ">
-                        <span>ID: 61.54.1-42262469-1</span>
+                        <span>ID: @foreach ($oficina as $o){{ $o->iduoper }}@endforeach @foreach ($responsable as $re) {{ $re->dni }}-{{ $re->idtipoper }} @endforeach</span>
                     </div>
                 </td>
             </tr>
@@ -173,7 +173,7 @@
         </thead>
         <tbody>
         @foreach ($bienes as $key=>$bien)
-            @if ($bien->tipo === '3')
+            @if ($bien->tipo === 'ACTIVO FIJO')
                 <tr>
                     <td style="border: solid 1px black; width:20px; text-align:center;"><span style="font-size: 9pt;  font-weight: bold; ">{{$key+1}}</span></td>
                     <td style="border: solid 1px black; width:80px; text-align:center; "><span style="font-size: 8pt;  font-weight: bold;">{{$bien->codigo}}</span></td>

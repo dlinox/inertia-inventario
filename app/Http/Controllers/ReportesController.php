@@ -14,8 +14,7 @@ class ReportesController extends Controller
     public function getDocuments()
     {
         //$res = AreaPersona::select()->orderBy('id', 'DESC')->get();
-        $res = DB::select('SELECT area_persona.*, area_persona.fecha, oficina.nombre, persona.dni FROM ((area_persona INNER JOIN oficina ON area_persona.id_area = oficina.iduoper)INNER JOIN persona ON area_persona.id_persona = persona.id) ORDER BY area_persona.id desc;
-        ');
+        $res = DB::select('SELECT area_persona.*, area_persona.fecha, oficina.nombre, persona.dni FROM ((area_persona INNER JOIN oficina ON area_persona.id_area = oficina.iduoper)INNER JOIN persona ON area_persona.id_persona = persona.id) ORDER BY area_persona.id desc;');
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -89,7 +88,7 @@ class ReportesController extends Controller
     {
 //        $oficina = DB::select('SELECT oficina.id, oficina.codigo, oficina.nombre FROM oficina WHERE oficina.id IN (SELECT area.id_oficina FROM area WHERE area.id =' . $idArea . ')');
         $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $idArea .'";');
-        $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id =' . $idP);
+        $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $idP);
         $datos['bienes'] = DB::select('SELECT * from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ';');
         $datos['lfecha'] = date('Y-m-d');
         $datos['lhour'] = date('H:i:s');

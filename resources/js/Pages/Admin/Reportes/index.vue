@@ -39,7 +39,7 @@
                 :items="oficinas"
                 :filter="customFilter"
                 item-value="iduoper"
-                item-text="nombre"
+                item-text="nombres"
                 :search-input.sync="oficinas_search"
                 required
             >
@@ -61,10 +61,10 @@
 
                 <template v-slot:item="data">
                     <v-list-item-content>
-                        <v-list-item-title v-html="data.item.codigo">
+                        <v-list-item-title v-html="data.item.iduoper">
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            {{ data.item.nombre }}
+                            {{ data.item.nombres }}
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </template>
@@ -314,12 +314,12 @@ export default {
             }
         },
         customFilter(item, queryText, itemText) {
-            const nombre = item.nombre.toLowerCase();
-            const codigo = item.codigo.toLowerCase();
+            const nombres = item.nombres.toLowerCase();
+            const iduoper = item.iduoper.toLowerCase();
             const searchText = queryText.toLowerCase();
             return (
-                nombre.indexOf(searchText) > -1 ||
-                codigo.indexOf(searchText) > -1
+                nombres.indexOf(searchText) > -1 ||
+                iduoper.indexOf(searchText) > -1
              );
         },
 
