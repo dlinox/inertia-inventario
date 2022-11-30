@@ -38,13 +38,13 @@ class UsersExports implements FromView, WithColumnWidths,  WithDrawings, WithSty
     public function view(): View
     {
         return view('exports.bienExcel', [
-            'invoices' => DB::select('SELECT * from inventario WHERE id_area = '.$this->idArea.' and id_persona = '.$this->idP.';'),
-            'oficina' => DB::select('SELECT oficina.id, oficina.codigo, oficina.nombre FROM oficina WHERE oficina.id IN (SELECT area.id_oficina FROM area WHERE area.id ='.$this->idArea.');'),
-            'area' => DB::select('SELECT * from  area WHERE area.id ='.$this->idArea.';'),
-            'responsable' => DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id ='.$this->idP),
-            'responsable2' => DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id IN (SELECT DISTINCT(idpersona_otro) from inventario WHERE id_area ='.$this->idArea.');'),
-            'inventarista' => DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = '.$this->idArea.' and id_persona = '.$this->idP.');'),
-            'bienes' => DB::select('SELECT * from inventario WHERE id_area = '.$this->idArea.' and id_persona = '.$this->idP.';'),
+            'invoices' => DB::select("SELECT * from inventario WHERE id_area = "."'".$this->idArea."'".' AND id_persona = '.$this->idP.';'),
+            'oficina' => DB::select('SELECT * from oficina WHERE iduoper = "'. $this->idArea .'";'),
+            'area' => DB::select('SELECT * from  area WHERE area.id = "'.$this->idArea.'";'),
+            'responsable' => DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $this->idP),
+            // 'responsable2' => DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id IN (SELECT DISTINCT(idpersona_otro) from bienk WHERE id_area = "'.$this->idArea.'");'),
+            'inventarista' => DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $this->idArea . '" and id_persona = ' . $this->idP . ');'),
+            'bienes' => DB::select('SELECT * from inventario WHERE id_area = "'.$this->idArea.'" AND id_persona = ' . $this->idP . ';'),
             'ldate' => date('d-m-Y'),
             'lhour' => date('H:i:s',strtotime('-5 hours'))
         ]);

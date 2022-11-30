@@ -38,7 +38,7 @@
       </tr>
       <tr>
         <td colspan="2">Responsable 2:</td>
-        <td colspan="6"><div style="text-align: left;"> <span> @foreach ($responsable2 as $re)<span>{{ $re->nombres }} {{ $re->paterno }} {{ $re->materno }} &nbsp; </span> @endforeach </div>
+        <td colspan="6"><div style="text-align: left;"> <span>  </div>
         </td>
         <td colspan="2">Hora:</td>
         <td valign="center" align="right"> {{$lhour}}</td>
@@ -72,27 +72,27 @@
     @foreach($invoices as $key=>$invoice)
         <tr>
             <td valign="top" align="center">{{ $key+1 }}</td>
-            <td valign="top" align="left">{{ $invoice->codigo }}</td>
+            <td valign="top" align="left">{{ "".$invoice->codigo }}</td>
             <td valign="top" align="left">{{ $invoice->descripcion }}</td>
             <td valign="top" align="left">{{ $invoice->modelo }}</td>
             <td valign="top" align="left">{{ $invoice->marca }}</td>
             <td valign="top" align="left">{{ $invoice->nro_serie }}</td>
-            <td valign="top" align="left"></td>
-            <td valign="top" align="left"></td>
+            <td valign="top" align="left">{{ $invoice->medidas }}</td>
+            <td valign="top" align="left">{{ $invoice->color }} </td>
             <td valign="top" align="left">
                 @if ($invoice->id_estado === 1)
-                Nuevo
+                N
                 @elseif ($invoice->id_estado === 2)
-                Bueno
+                R
                 @elseif ($invoice->id_estado === 3)
-                Malo
+                B
                 @elseif ($invoice->id_estado === 4)
-                Muy Malo
+                M
                 @else ($bien->id_estado === 5)
-                Chatarra
+                Y
             @endif
             </td>
-            <td valign="top" align="left">{{ $invoice->nro_orden }}</td>
+            <td valign="top" align="left"></td>
             <td valign="top" align="left">{{ $invoice->observaciones }}</td>
         </tr>
     @endforeach
