@@ -219,7 +219,7 @@ class InventarioController extends Controller
 
     public function getBienesUsuarios(Request $request)
     {
-        $res = Inventario::select('inventario.id', 'inventario.codigo',  'inventario.descripcion',  'oficina.nombre', 'oficina.dependencia', 'inventario.idbienk')
+        $res = Inventario::select('inventario.id', 'inventario.codigo',  'inventario.descripcion',  'oficina.nombre', 'oficina.dependencia', 'inventario.idbienk', 'inventario.corr_area','inventario.corr_num')
             ->leftjoin('oficina', 'oficina.iduoper', '=', 'inventario.id_area')
             ->where('inventario.id_usuario', Auth::user()->id)
             ->paginate(10);

@@ -16,9 +16,8 @@
             </v-toolbar>
 
             <div class="text-center">
-                <small>*Doble toque para selecionar</small> 
+                <small>*Doble toque para selecionar</small>
             </div>
-            
 
             <v-card-text style="height: 90vh">
                 <v-row class="mt-3">
@@ -43,6 +42,7 @@
                                     <th class="text-left">Codigo</th>
                                     <th class="text-left">Descripcion</th>
                                     <th class="text-left">Dependencia</th>
+                                    <th class="text-left">Sticker</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,6 +74,12 @@
                                         -
                                         {{ item.nombre }}
                                     </td>
+
+                                    <td>
+                                        {{ item.corr_area }}
+                                        -
+                                        {{ item.corr_num }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </template>
@@ -88,8 +94,6 @@
                         ></v-pagination>
                         <v-spacer></v-spacer>
                     </v-card-actions>
-
-                  
                 </v-card>
             </v-card-text>
         </v-card>
@@ -97,7 +101,6 @@
 </template>
 <script>
 import axios from "axios";
-
 
 export default {
     props: {
@@ -110,7 +113,6 @@ export default {
         page: 1,
         total_result: 0,
         pages: 1,
-        
     }),
     async created() {
         this.loading_table = true;
@@ -119,9 +121,9 @@ export default {
     },
 
     methods: {
-        async getBienes( page = 1) {
+        async getBienes(page = 1) {
             let res = await axios.post(
-                "/inventario/get-bienes-usuario?page=" + page,
+                "/inventario/get-bienes-usuario?page=" + page
             );
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
@@ -130,29 +132,25 @@ export default {
         },
 
         async onSelectColumDobleClik(item) {
-            item.registrado =  true ;
+            item.registrado = true;
             this.$emit("setData", item);
             this.dialog = false;
         },
     },
     watch: {
-
         async page(val, old_val) {
             if (val == old_val) return;
-            
+
             this.loading_table = true;
-            let res = await this.getBienes(
-                val
-            );
+            let res = await this.getBienes(val);
             this.bienes_result = res;
             this.loading_table = false;
         },
-  
 
-        async dialog(val){
-            if(val == false) return;
+        async dialog(val) {
+            if (val == false) return;
             this.bienes_result = await this.getBienes();
-        }
+        },
     },
 };
 </script>
