@@ -92,43 +92,34 @@
                         </v-list>
                     </v-menu>
                 </div>
-                <v-dialog
-                    v-model="dialogDetalle"
+    
+                <v-dialog 
+                max-width="450"
+                v-model="dialogDetalle">
+                    <v-card>
+                    <v-card-title class="text-h5 primary">
+                        <span style="color: white;">Detalles </span>
+                    </v-card-title>
+
+                    <v-card-text>
+                        <verDetalleBien :item="item"/>
+                    </v-card-text>
+
+                    <v-divider></v-divider>
+
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="primary"
+                        @click="dialogDetalle = false"
                     >
-                        <v-card
-                            
-                            color="white"
-                            max-width="400"
-                            min-height="500"
-                            >
-                            <v-card-title>
-                            <v-icon
-                                large
-                                left
-                            >
-                                mdi-group
-                            </v-icon>
-                            <span class="text-h6 font-weight-light">Detalles</span>
-                            </v-card-title>
-                            <v-card-text>
-                                <div>
-                                    <verDetalleBien :item="item"/>
-                                </div>
-                            </v-card-text>
-                            <v-card-actions style="background:white;">
-                            <v-spacer></v-spacer>
+                        Ok
+                    </v-btn>
+                    </v-card-actions>
+                </v-card>
 
-                            <v-btn
-                                color="primary darken-1"
-                                primary
-                                @click="dialogDetalles = false"
-                            >
-                                Ok
-                            </v-btn>
-                            </v-card-actions>
-                        </v-card>
 
-                    </v-dialog>
+                </v-dialog>
             </template>
             <template v-slot:item.codigo="{ item }">
                 <div class="d-flex">
