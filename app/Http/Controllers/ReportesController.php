@@ -88,7 +88,7 @@ class ReportesController extends Controller
     {
 //        $oficina = DB::select('SELECT oficina.id, oficina.codigo, oficina.nombre FROM oficina WHERE oficina.id IN (SELECT area.id_oficina FROM area WHERE area.id =' . $idArea . ')');
         $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $idArea .'";');
-        $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id =' . $idP);
+        $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $idP);
         $datos['bienes'] = DB::select('SELECT * from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ';');
         $datos['lfecha'] = date('Y-m-d');
         $datos['lhour'] = date('H:i:s');
