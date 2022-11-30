@@ -327,10 +327,13 @@ class InventarioController extends Controller
                 $res = $this->bienK->getDataByCode($request->codigo);
             }
         } else {
-            if ($request->codigo == "") {
-                $res = $this->inventario->getDataByRegAnt($request->idreg_anterior);
-            } else {
+
+            if ($request->codigo) {
                 $res = $this->inventario->getDataByCode($request->codigo);
+            } elseif ($request->idbienk ==  null) {
+                $res = $this->inventario->getDataById($request->id);
+            } else {
+                $res = $this->inventario->getDataByRegAnt($request->idreg_anterior);
             }
         }
 
@@ -603,7 +606,7 @@ class InventarioController extends Controller
 
     public function getBiens()
     {
-//        JOIN inventario.id_persona = persona.id'
+        //        JOIN inventario.id_persona = persona.id'
         $res = DB::select('SELECT inventario.*, users.nombres as unombre, users.apellidos as uapellido, oficina.nombre as onombre, oficina.dependencia as dependencia, persona.dni as dni from inventario left join users on users.id = inventario.id_usuario left join oficina on inventario.id_area = oficina.iduoper left join persona on inventario.id_persona = persona.id');
 
         $this->response['datos'] = $res;
@@ -613,14 +616,14 @@ class InventarioController extends Controller
 
 
 
-    public function eliminarBienAdmin($id){
+    public function eliminarBienAdmin($id)
+    {
         $bien = Inventario::find($id);
-            $bien->delete();
-            $this->response['mensaje'] = 'Bien eliminado';
-            $this->response['estado'] = true;
-            $this->response['datos'] = $bien;
-            return response()->json($this->response, 200);
-
+        $bien->delete();
+        $this->response['mensaje'] = 'Bien eliminado';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $bien;
+        return response()->json($this->response, 200);
     }
 
 

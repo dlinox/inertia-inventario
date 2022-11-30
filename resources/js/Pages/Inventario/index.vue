@@ -16,8 +16,19 @@
 
             <v-container>
                 <v-row class="" align="center" no-gutters>
-                    <v-col cols="12" sm="auto" class="py-2 py-md-3">
+                    <v-col cols="12" class="py-2 py-md-3">
                         <strong> REGISTRO DE INVENTARIOS</strong>
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        sm="auto"
+                        class="py-2 py-md-3 d-flex py-2 py-md-3"
+                    >
+                        <RegistrosComponent
+                            v-if="!is_new"
+                            @setData="data_emit = $event"
+                        />
                     </v-col>
 
                     <v-col
@@ -216,7 +227,6 @@
                                 v-model="form_data.medidas"
                                 :disabled="disable_input"
                             ></v-text-field>
-                            
                         </v-col>
 
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
@@ -484,9 +494,7 @@
         <v-dialog persistent v-model="dialog_corr" max-width="320">
             <v-card>
                 <div class="pa-3">
-                    <h4 class="text-center my-3">
-                       ETIQUETA: INVENTARIO
-                    </h4>
+                    <h4 class="text-center my-3">ETIQUETA: INVENTARIO</h4>
                     <v-divider></v-divider>
                     <h1 class="text-center my-3">
                         {{ corr_area }} - {{ corr_num }}
@@ -495,14 +503,17 @@
                     <v-divider></v-divider>
 
                     <div class="d-flex justify-center mt-3">
-                        <v-btn color="primary" dense @click="dialog_corr = !dialog_corr">
+                        <v-btn
+                            color="primary"
+                            dense
+                            @click="dialog_corr = !dialog_corr"
+                        >
                             Aceptar
                         </v-btn>
                     </div>
                 </div>
             </v-card>
         </v-dialog>
-
 
         <v-fab-transition>
             <v-btn
@@ -532,6 +543,7 @@ import axios from "axios";
 import { getBienByCodigo } from "@/Helpers/ConsultasHelper";
 
 import AreasAsignadasComponent from "@/Pages/Inventario/Components/AreasAsignadasComponent.vue";
+import RegistrosComponent from "@/Pages/Inventario/Components/RegistrosComponent.vue";
 import BusquedaAvanzadaComponent from "@/Pages/Inventario/Components/BusquedaAvanzadaComponent.vue";
 import SearchCodeComponente from "./Components/FormComponents/SearchCodeComponente.vue";
 import ScannerBarComponent from "./Components/ScannerBarComponent.vue";
@@ -548,6 +560,7 @@ export default {
         SimpleAutoCompleteInput,
         AlertComponent,
         SelectOficina,
+        RegistrosComponent,
     },
     props: {
         estados: Array,
@@ -589,7 +602,12 @@ export default {
         corr_num: "",
         corr_area: "",
         dialog_corr: false,
+        //areas_control
+        mis_areas_id: [],
     }),
+    created() {
+        this.mis_areas_id = this.mis_areas.map((area) => area.iduoper);
+    },
     methods: {
         setDataAlert(response) {
             this.msg_alert = response.mensaje;
@@ -732,6 +750,9 @@ export default {
         },
 
         "form_data.id_oficina": function (val) {
+            if (!this.mis_areas_id.includes(val)) {
+                this.form_data.id_oficina = null;
+            }
             this.areas_by_oficina = this.areas.filter(
                 (e) => e.id_oficina === val
             );
