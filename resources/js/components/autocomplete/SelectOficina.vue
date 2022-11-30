@@ -1,5 +1,6 @@
 <template>
-    <v-autocomplete
+    <div>
+        <v-autocomplete
         v-model="oficina_selected"
         clearable
         class="mt-0 pt-0"
@@ -50,6 +51,8 @@
             </v-list-item-content>
         </template>
     </v-autocomplete>
+    </div>
+  
 </template>
 <script>
 export default {

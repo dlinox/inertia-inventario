@@ -15,10 +15,13 @@ class OficinaController extends Controller
         if ($user != "") {
             $res = Oficina::join('grupo', 'grupo.id_oficina', 'oficina.iduoper')
                 ->where('grupo.id_usuario', $user)
-                ->orWhere('nombre', 'LIKE', '%' . $term . '%')
-                ->orWhere('codigo', 'LIKE', '%' . $term . '%')
-                ->orWhere('dependencia', 'LIKE', '%' . $term . '%')
-                ->orWhere('iduoper', 'LIKE', '%' . $term . '%')
+                ->where(function ($query) use ($term) {
+                    return $query
+                        ->orWhere('nombre', 'LIKE', '%' . $term . '%')
+                        ->orWhere('codigo', 'LIKE', '%' . $term . '%')
+                        ->orWhere('dependencia', 'LIKE', '%' . $term . '%')
+                        ->orWhere('iduoper', 'LIKE', '%' . $term . '%');
+                })
                 ->get();
         } else {
 

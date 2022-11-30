@@ -38,13 +38,14 @@
                             </template>
                             <template v-else>
                                 <v-chip
-                                    small
+                                
                                     class="ma-2"
                                     color="green"
                                     text-color="white"
                                 >
-                                    Nuevo
+                                   Nuevo
                                 </v-chip>
+
                             </template>
                         </td>
                         <td>{{ item.codigo }}</td>
@@ -77,6 +78,7 @@
                         size="64"
                     ></v-progress-circular>
                 </v-overlay>
+
                 <div class="pa-3">
                     <h4 class="text-center my-3">
                         Seguro de eliminar el registro?
@@ -175,12 +177,9 @@ export default {
             this.dialog_delete = false;
             this.loadin_delete = false;
         },
-        async getBienes(term = "", page = 1) {
+        async getBienes( page = 1) {
             let res = await axios.post(
                 "/inventario/get-bienes-usuario?page=" + page,
-                {
-                    term: term,
-                }
             );
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
@@ -189,31 +188,13 @@ export default {
         },
     },
     watch: {
-        async area_selected(val) {
-            if (!val) return;
-            this.tr_index = null;
-            this.loading_table = true;
-            let res = await this.getBienes(val);
-            this.bienes_result = res;
-            this.loading_table = false;
-        },
-        async area_search(val) {
-            //if (!val) return;
-            this.tr_index = null;
-            this.loading_table = true;
-            let res = await this.getBienes(
-                this.area_selected,
-                val,
-                this.mostrar_selected
-            );
-            this.bienes_result = res;
-            this.loading_table = false;
-        },
+
+  
         async page(val, old_val) {
             if (val == old_val) return;
-            this.tr_index = null;
+        
             this.loading_table = true;
-            let res = await this.getBienes(this.area_selected, val);
+            let res = await this.getBienes(val);
             this.bienes_result = res;
             this.loading_table = false;
         },
