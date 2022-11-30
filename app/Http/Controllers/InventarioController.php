@@ -581,7 +581,7 @@ class InventarioController extends Controller
                     ->orWhere('inventario.codigo', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
             })
-            ->paginate(100);
+            ->paginate(3000);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
