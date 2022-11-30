@@ -38,6 +38,8 @@ class Inventario extends Model
         'corr_area',
         'corr_num',
         'estado',
+        'estado_uso',
+        'num_ambiente',
     ];
 
     public function getDataByCode($codigo)
@@ -85,5 +87,4 @@ class Inventario extends Model
         //$res['oficina//'] = Area::where('id', $res->area_id)->first();
         return $res;
     }
-
 }

@@ -398,6 +398,29 @@
                             />
                         </v-col>
 
+                        <v-col cols="6" class="pb-1 pt-0">
+                            <v-combobox
+                                v-model="form_data.estado_uso"
+                                :items="estados_uso"
+                                label="Estado de uso"
+                                :disabled="disable_input"
+                                outlined
+                                dense
+                            ></v-combobox>
+
+                        </v-col>
+
+                        <v-col cols="6" class="pb-1 pt-0">
+                            <v-text-field
+                                class="mt-0 pt-0"
+                                dense
+                                label="N° Ambiente"
+                                outlined
+                                v-model="form_data.num_ambiente"
+                                :disabled="disable_input"
+                            ></v-text-field>
+                        </v-col>
+
                         <v-col cols="12" class="pb-1 pt-0">
                             <v-textarea
                                 :disabled="disable_input"
@@ -569,6 +592,7 @@ export default {
     },
     layout: Layout,
     data: () => ({
+        estados_uso: ["EN USO", "ALMACENADO", "EMPAQUETADO"],
         file_foto: false,
         form_data: {},
         form_valid: true,

@@ -54,6 +54,9 @@ class CreateInventarioTable extends Migration
             $table->unsignedBigInteger('id_estado')->nullable();
             $table->char('id_area', 15)->nullable();
 
+            $table->string('estado_uso', 50)->nullable();
+            $table->string('num_ambiente', 50)->nullable();
+
             $table->foreign('id_persona')->references('id')->on('persona');
             //$table->foreign('idpersona_otro')->references('id')->on('persona');
             $table->foreign('id_area')->references('iduoper')->on('oficina');

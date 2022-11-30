@@ -371,6 +371,8 @@ class InventarioController extends Controller
             'id_area' => $request->id_oficina,
             'id_usuario' => Auth::user()->id,
             'id_estado' => $request->id_estado,
+            'estado_uso' =>$request->estado_uso,
+            'num_ambiente' =>$request->num_ambiente,
         ]);
 
         if ($res) {
@@ -423,6 +425,8 @@ class InventarioController extends Controller
         }
         $data = [
 
+            'estado_uso' =>$request->estado_uso,
+            'num_ambiente' =>$request->num_ambiente,
             'medidas' => $request->medidas,
             'color' => $request->color,
             'id_persona' => $request->id_persona,
