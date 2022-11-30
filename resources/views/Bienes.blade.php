@@ -64,7 +64,7 @@
                 </td>
                 <td align="right">
                     <div style=" width:188px; margin-right:.5cm; ">
-                        <span>ID: 61.54.1-42262469-1</span>
+                        <span>ID: @foreach ($oficina as $o){{ $o->iduoper }}@endforeach @foreach ($responsable as $re) {{ $re->dni }}-{{ $re->idtipoper }} @endforeach</span>
                     </div>
                 </td>
             </tr>

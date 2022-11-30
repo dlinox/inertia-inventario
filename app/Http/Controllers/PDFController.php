@@ -58,7 +58,7 @@ class PDFController extends Controller
 //            $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = "'. $idArea. '";');
             $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $idArea .'";');
 //            $area = DB::select('SELECT * from  area WHERE area.id ='.$idArea.';');
-            $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno FROM persona WHERE persona.id =' . $idP);
+            $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $idP);
             $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
             $bienes = DB::select('SELECT * from inventario WHERE id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
             $ldate = date('Y-m-d');
