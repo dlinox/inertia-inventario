@@ -95,23 +95,23 @@
         </thead>
         <tbody>
         <tr v-for="(bien,index) in datos.bienes" :key="bien.id">
-            <td align="center" v-if="bien.tipo === '3'" style="border:  solid 1px black;"><span style="font-size: 8pt; stroke:#000000; font-weight:bold;">{{index+1}}</span></td>
+            <td align="center" v-if="bien.tipo === 'ACTIVO FIJO'" style="border:  solid 1px black;"><span style="font-size: 8pt; stroke:#000000; font-weight:bold;">{{index+1}}</span></td>
             <td align="center" v-else style="border: solid 1px black;"><span style="font-size: 8pt;"> {{index+1}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.codigo}}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.codigo}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.codigo}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.descripcion}}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.descripcion}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt; ">{{bien.descripcion}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.modelo}}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.modelo}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.modelo}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.marca}}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.marca}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;  ">{{bien.marca}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.nro_serie}}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.nro_serie}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.nro_serie}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.medidas}}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.medidas}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.medidas}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.color}}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.color}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.color}}</span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;">
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;">
                 <span v-if="bien.id_estado == 1" style="font-size: 8pt; font-weight: bold;">N</span> 
                 <span v-if="bien.id_estado == 2" style="font-size: 8pt; font-weight: bold;">R</span>
                 <span v-if="bien.id_estado == 3" style="font-size: 8pt; font-weight: bold;">B</span>
@@ -125,9 +125,9 @@
                 <span v-if="bien.id_estado == 2" style="font-size: 8pt;">M</span>
                 <span v-if="bien.id_estado == 1" style="font-size: 8pt;">Y</span>
             </td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;"></span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;"></span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
-            <td v-if="bien.tipo === '3'" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;">{{ bien.observaciones }}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;">{{ bien.observaciones }}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{ bien.observaciones }}</span></td>
         </tr>
 

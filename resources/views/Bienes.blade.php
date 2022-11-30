@@ -173,7 +173,7 @@
         </thead>
         <tbody>
         @foreach ($bienes as $key=>$bien)
-            @if ($bien->tipo === '3')
+            @if ($bien->tipo === 'ACTIVO FIJO')
                 <tr>
                     <td style="border: solid 1px black; width:20px; text-align:center;"><span style="font-size: 9pt;  font-weight: bold; ">{{$key+1}}</span></td>
                     <td style="border: solid 1px black; width:80px; text-align:center; "><span style="font-size: 8pt;  font-weight: bold;">{{$bien->codigo}}</span></td>
