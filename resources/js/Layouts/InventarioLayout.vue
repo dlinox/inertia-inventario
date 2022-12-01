@@ -25,14 +25,16 @@
                             :key="i"
                             @click="SelectMenu(item.text)"
                         >
+
                             <v-list-item-icon>
                                 <v-icon v-text="item.icon"></v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title
+                                 <v-list-item-title
                                     v-text="item.text"
                                 ></v-list-item-title>
                             </v-list-item-content>
+                
                         </v-list-item>
                     </v-list-item-group>
                 </v-list>
@@ -97,6 +99,7 @@ export default {
 
         items: [
             { text: "Perfil", icon: "mdi-account" },
+            { text: "Cargos", icon: "mdi-file-document", to:"url" },
             { text: "Salir", icon: "mdi-power" },
         ],
         selectedMenu: null,
@@ -145,7 +148,8 @@ export default {
         SelectMenu(menu) {
             if (menu == "Perfil") {
                 this.$inertia.get("/inventario/perfil");
-            } else if (menu == "Configuracion") {
+            } else if (menu == "Cargos") {
+                this.$inertia.get("/inventario/cargos")
             } else if (menu == "Salir") {
                 this.$inertia.post("/logout");
             }

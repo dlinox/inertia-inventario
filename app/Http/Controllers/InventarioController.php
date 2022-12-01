@@ -652,6 +652,13 @@ class InventarioController extends Controller
     }
 
 
+    public function viewCargosInventario(){
+
+        return Inertia::render('Inventario/Cargos/');
+
+    } 
+
+    
 
 
 

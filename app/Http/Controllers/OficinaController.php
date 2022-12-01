@@ -108,4 +108,15 @@ class OficinaController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+
+    public function getUOficinas(){
+        $idu = auth()->id();
+
+        $res = DB::select('SELECT distinct oficina.*, CONCAT(oficina.nombre," - ",oficina.dependencia) as nombres FROM oficina inner join inventario ON oficina.iduoper = inventario.id_area where iduoper IN (SELECT id_area FROM inventario ) AND inventario.id_usuario = '.$idu.';');
+                // $res = DB::select('SELECT * FROM oficina;');
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+
+    }
 }
