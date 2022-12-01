@@ -22,8 +22,8 @@
                 </td>
                 <td align="center">
                     <div style=" width:540px; margin-top:50px;">
-                        <div><span style="font-size:14pt;"> FORMATO DE FICHA DE LEVANTAMIENTO DE INFORMACIÓN </span></div>
-                        <span style="text-align:center; font-size:11pt;">INVENTARIO PATRIMONIAL 2022</span>
+                        <div><span style="font-size:14pt;"> INVENTARIO PATRIMONIAL 2022 </span></div>
+                        <span style="text-align:center; font-size:11pt;">FORMATO DE TOMA DE INVENTARIO DE BIENES MUEBLES Y EQUIPOS</span>
                     </div>
                 </td>
                 <td>
@@ -44,11 +44,11 @@
                         Dependencia
                     </div>
                 </td>
-                <td style=" width: 550px;" >
+                <td style=" width: 650px;" >
                     <div style="text-align: left"> <span>: {{datos.oficina.nombre}} - {{datos.oficina.dependencia}} </span> </div>
                 </td>
-                <td align="right" >
-                    <div style="  margin-right:0cm; ">
+                <td align="right">
+                    <div style=" width:188px; margin-right:.5cm; ">
                         <span>ID: {{datos.oficina.iduoper}}-{{datos.responsable.dni}}-1</span>
                     </div>
                 </td>
@@ -57,14 +57,13 @@
                 <td align="left">
                     <span>[DNI]Apellidos y Nombres</span>
                 </td>
-                <td style=" width: 300px; ">
+                <td style=" width: 100%">
                     <div style="text-align: left">
                             <span>: [ {{ datos.responsable.dni }} ] {{ datos.responsable.paterno }} {{ datos.responsable.materno }} {{ datos.responsable.nombres }} </span>
                     </div>
                 </td>
-                <td style="" align="right">
-                    <div>
-                        <span style="margin-right:0.5cm;">TIPO DE VERIFICACIÓN:</span><span style="margin-right:0.5cm;" > FÍSICA ( X ) </span> <span> DIGITAL ( &nbsp; ) </span>                         
+                <td>
+                    <div >
                     </div>
                 </td>
             </tr>
@@ -79,27 +78,19 @@
     </div>
     <div style="font-size:10pt; ">
     <table style="width: 100%; border-collapse: collapse; ">
-        <thead>
-        <tr>
-            <th rowspan="2" align="center" style="border: solid 1px black; background: #cdcdcd4D; stroke:#000000; ">
-                <div><span style="font-size: 9pt; font-weight:bold;">N° de</span> </div><div> <span style="font-size: 9pt; font-weight:bold;">Orden</span> </div></th>
-            <th colspan="11" style="border: solid 1px black; background: #cdcdcd4D;">
-                <span style="font-size: 9pt; font-weight:bold;">DESCRIPCION</span>
-                
-            </th>
-        </tr>
+        <thead >
         <tr align="center">
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;"> Código </span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Denominación</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Marca</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Modelo</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Tipo</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Color</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Serie</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Dimensiones</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Situación</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Est</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Observación</span> </th>
+            <th>Nro</th>
+            <th>Código</th>
+            <th>Descripción de Mueble ó Equipo</th>
+            <th>Modelo</th>
+            <th>Marca</th>
+            <th>Serie</th>
+            <th>Medida*</th>
+            <th>Color</th>
+            <th>Est**</th>
+            <th>Item</th>
+            <th>Observaciones</th>
         </tr>
         </thead>
         <tbody>
@@ -110,22 +101,16 @@
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.codigo}}</span></td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.descripcion}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt; ">{{bien.descripcion}}</span></td>
-            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.marca}}</span></td>
-            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;  ">{{bien.marca}}</span></td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.modelo}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.modelo}}</span></td>
-            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;"></span></td>
-            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;  "></span></td>
-            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.color}}</span></td>
-            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.color}}</span></td>
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.marca}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;  ">{{bien.marca}}</span></td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.nro_serie}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.nro_serie}}</span></td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.medidas}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.medidas}}</span></td>
-
-            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;" align="center"><span v-if="bien.estado_uso === 'EN USO'" style="font-weight: bold; font-size: 8pt;">U</span><span v-else style="font-weight: bold; font-size: 8pt;">D</span></td>
-            <td v-else style="border: solid 1px black;" align="center"><span v-if="bien.estado_uso === 'EN USO'" style="font-size: 8pt;">U</span><span v-else style="font-size: 8pt;">U</span></td>
-
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.color}}</span></td>
+            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.color}}</span></td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;" align="center">
                 <span v-if="bien.id_estado == 1" style="font-size: 8pt; font-weight: bold;">N</span> 
                 <span v-if="bien.id_estado == 2" style="font-size: 8pt; font-weight: bold;">R</span>
@@ -140,14 +125,15 @@
                 <span v-if="bien.id_estado == 2" style="font-size: 8pt;">M</span>
                 <span v-if="bien.id_estado == 1" style="font-size: 8pt;">Y</span>
             </td>
-
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;" align="center"><span style="font-weight: bold; font-size: 8pt;">{{bien.corr_num}}</span></td>
+            <td v-else style="border: solid 1px black;" align="center"><span style="font-size: 8pt;" >{{bien.corr_num}}</span></td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;">{{ bien.observaciones }}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{ bien.observaciones }}</span></td>
         </tr>
 
         </tbody>
          <tr>
-            <td  style="border: solid 1px black;" colspan="12">
+            <td  style="border: solid 1px black;" colspan="11">
             <div style="padding-top: 15px; padding-bottom: 25px;">
                 <div>
                     <span style="font-size: 9pt;">Inventariador(es):</span>
@@ -159,59 +145,30 @@
             </td>
         </tr>
         <tr>
-            <td colspan="12">
+            <td colspan="11">
                 <span style="font-size: 9pt;">Fecha y Hora: {{datos.lfecha}} {{datos.lhour}}</span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="12">
-                <div>
-                    <span style="font-size:9pt; letter-spacing: -0.1pt; ">(1) Uso (U). Desuso(D)</span>
-                </div>
-                <div>
-                    <span style="font-size:9pt; letter-spacing: -0.1pt; ">(2) El estado consignado en base a la siguiente escala: Bueno, Regular, Malo, Chatarra y RAEE. En caso de semovientes utilizar escala de acuerdo a su naturaleza</span>
-                </div>
             </td>
         </tr>
     </table>
     </div>
     <div
         style="
-        margin-top: 180px;
+        margin-top: 200px;
         position:relative;
-        height: 220px;
+        height: 160px;
         /* background-color: #46c66b; */
         color: black;
         text-align: center;">
         <table style="width: 100%">
             <table>
-
-                <td valign="top" colspan="4">
+                <td valign="top"><span style="font-size: 8pt; width:20px;">NOTA:</span> </td>
+                <td valign="top" colspan="3">
                     <div style="text-align:justify; font-size:8pt; width:100%; padding-top:5px;  letter-spacing: -0.06pt;">
-                       <span><ins style=" font-weight:bold;"> CONSIDERACIONES: </ins></span> 
-                    </div>
-                    <div style="text-align:justify; font-size:8pt; width:100%; padding-top:5px;  letter-spacing: -0.06pt;">
-                        <div >
-                            <div style="display:flex;">
-                                <div style="margin-right:7px;"><span>- </span></div>
-                                <div>
-                                    <span>El usuario declara haber mostrado todos los bienes muebles que se encuentran bajo su responsabilidad y no contar con más bienes muebles materia de inventario.</span>
-                                </div>
-                            </div>
-                            <div style="display:flex;">
-                                <div style="margin-right:7px;"><span>- </span></div>
-                                <div>
-                                    <span>El usuario es responsable de la permanencia y conservación de cada uno de los bienes muebles dscritos, recomendánse tomar las precausiones del caso para evitar sustracciones deteriodos, etc.</span>
-                                </div>
-                            </div>
-                            <div style="display:flex;">
-                                <div style="margin-right:7px;"><span>- </span></div>
-                                <div>
-                                    <span>Cualquier necesidad de traslado del bien mueble dentro o fuera del local de la Entidad u Organización de la Entidad, es previamente comunicado al encargado de la OCP.</span>
-                                </div>
-                            </div>
-                        </div>
-
+                        EL TRABAJADOR ES RESPONSABLE DIRECTO DE LAS EXISTENCIAS, PERMANENCIA, CONSERVACIÓN Y BUEN USO DE CADA UNO DE LOS BIENES DESCRITOS POR LO QUE SE RECOMIENDA TOMAR
+                        LAS PROVIDENCIASA DEL CASO PARA EVITAR PERDIDAS, SUSTRACCION, DETERIODO, ETC., EN CASO DE CUALQUIER MOVIMIENTO DENTRO O FUERA DE LA ENTIDAD DEBERA SER COMUNICADO AL
+                        ENCARGO DE CONTROL PATRIMONIAL, BAJO RESPONSABILIDAD.
+                        <span style="font-size:8pt; letter-spacing: -0.1pt; margin-left: 567px; margin-right:20px;">*Medida: Largo x Ancho x Altura </span>
+                        <span style="font-size:8pt; letter-spacing: -0.1pt;">**Estado:(N)Nuevo, (R)Regular, (M)Malo, (Y) Chatarra</span>
                     </div>
                 </td>
             </table>
