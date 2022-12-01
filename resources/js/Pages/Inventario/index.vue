@@ -122,31 +122,54 @@
 
                                     <v-divider class="my-3"> </v-divider>
 
-                                    <template v-if="is_edit">
-                                        <v-btn
-                                            color="red"
-                                            @click="editInventario(false)"
-                                        >
-                                            Cancelar
-                                        </v-btn>
+                                    <template
+                                        v-if="form_data.id_usuario != user.id"
+                                    >
+                                        <small> ID - [COREELATIVO]</small>
+                                        <h5>
+                                            <v-icon>mdi-circle-small</v-icon>
+                                            {{ form_data.id }} - [
+                                            {{ form_data.corr_area }} -
+                                            {{ form_data.corr_num }} ]
+                                        </h5>
+                                        <small>INVENTARIADO POR:</small>
+                                        <h5>
+                                            <v-icon class="mb-1" small left
+                                                >mdi-account-badge
+                                            </v-icon>
+                                            {{ form_data.nombres }}
+                                            {{ form_data.apellidos }}
+                                        </h5>
                                     </template>
 
                                     <template v-else>
-                                        <v-btn
-                                            color="secondary"
-                                            @click="editInventario(true)"
-                                        >
-                                            Editar
-                                        </v-btn>
+                                        <template v-if="is_edit">
+                                            <v-btn
+                                                color="red"
+                                                @click="editInventario(false)"
+                                            >
+                                                Cancelar
+                                            </v-btn>
+                                        </template>
 
-                                        <v-btn
-                                            color="dark"
-                                            @click="
-                                                dialog_delete = !dialog_delete
-                                            "
-                                        >
-                                            Eliminar
-                                        </v-btn>
+                                        <template v-else>
+                                            <v-btn
+                                                color="secondary"
+                                                @click="editInventario(true)"
+                                            >
+                                                Editar
+                                            </v-btn>
+
+                                            <v-btn
+                                                color="dark"
+                                                @click="
+                                                    dialog_delete =
+                                                        !dialog_delete
+                                                "
+                                            >
+                                                Eliminar
+                                            </v-btn>
+                                        </template>
                                     </template>
                                 </v-alert>
                             </template>
@@ -402,10 +425,11 @@
                             <v-combobox
                                 v-model="form_data.estado_uso"
                                 :items="estados_uso"
-                                label="Estado de uso"
+                                label="Situación"
                                 :disabled="disable_input"
                                 outlined
                                 dense
+                                :rules="nameRules"
                             ></v-combobox>
                         </v-col>
 
@@ -660,6 +684,7 @@ export default {
                 "/inventario/create-inventario",
                 this.form_data
             );
+            //console.log(res.data);
             if (res.data.estado && this.file_foto) {
                 await this.guardarFoto(res.data.id);
             }
@@ -669,7 +694,7 @@ export default {
             this.setDataAlert(res.data);
         },
         async updateInventario() {
-            console.log(this.form_data);
+            
             let res = await axios.post(
                 "/inventario/update-inventario",
                 this.form_data
@@ -757,14 +782,14 @@ export default {
     watch: {
         async data_emit(item) {
             if (!item) return;
-            console.log(item);
+          
 
             this.loadin_form = true;
             if (item.is_inventario) {
-                console.log('solo invetario');
+                console.log("solo invetario");
                 await this.getDataInventario(item);
             } else {
-                console.log('bien y invetario');
+                console.log("bien y invetario");
                 await this.getDataBien(item);
             }
             this.disable_input = item.registrado;

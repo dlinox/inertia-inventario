@@ -198,14 +198,8 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/get-inventario-by-id', [InventarioController::class, 'getInventarioByID'])
         ->name('get-inventario-by-id');
 
-
-
     Route::post('/getbienbycodigo', [InventarioController::class, 'getInventarioByCode'])
         ->name('getBien');
-
-
-
-
 
     Route::get('/search-personas/{term}', [InventarioController::class, 'searchPersonas'])
         ->name('search-personas');
@@ -261,6 +255,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/preview/{iArea}/{idP}', [ReportesController::class, 'preview'])
         ->name('upreview');
+
+    Route::get('/get-responsables/{area}', [InventarioController::class, 'getResponsablesByArea'])
+        ->name('get-responsables');
 });
 
 

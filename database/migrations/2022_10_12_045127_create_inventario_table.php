@@ -56,7 +56,7 @@ class CreateInventarioTable extends Migration
 
             $table->string('estado_uso', 50)->nullable();
             $table->string('num_ambiente', 50)->nullable();
-
+            $table->string('foto_ref', 250)->nullable();
             $table->foreign('id_persona')->references('id')->on('persona');
             //$table->foreign('idpersona_otro')->references('id')->on('persona');
             $table->foreign('id_area')->references('iduoper')->on('oficina');

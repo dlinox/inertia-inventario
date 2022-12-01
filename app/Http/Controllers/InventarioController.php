@@ -197,6 +197,9 @@ class InventarioController extends Controller
                     $temp = $query
                         ->where('bienk.id_area', $request->area)
                         ->where('bienk.registrado', 0);
+                } else if ($request->responsable) {
+                    $temp = $query->where('bienk.persona_dni', $request->responsable)
+                        ->where('bienk.id_area', $request->area);
                 } else {
                     $temp = $query
                         ->where('bienk.id_area', $request->area);
@@ -413,6 +416,7 @@ class InventarioController extends Controller
 
             $this->response['estado'] = true;
             $this->response['mensaje'] = 'Registrado con exito';
+            $this->response['id'] = $res->id;
             $this->response['corr_num'] = $corr_num;
             $this->response['corr_area'] = $corr_area;
 
@@ -502,7 +506,7 @@ class InventarioController extends Controller
         if ($request->file('foto')) {
             if ($request->id) {
                 $res = Inventario::find($request->id);
-                $path = Storage::disk('public')->put('Fotos/Referencia/' . $res->codigo, $request->file('foto'));
+                $path = Storage::disk('public')->put('Fotos/Referencia/' . $res->corr_area . "- " . $res->corr_num, $request->file('foto'));
 
                 $res->foto_ref = asset($path);
                 $res->save();
@@ -652,13 +656,30 @@ class InventarioController extends Controller
     }
 
 
-    public function viewCargosInventario(){
+    public function viewCargosInventario()
+    {
 
         return Inertia::render('Inventario/Cargos/');
+    }
 
-    } 
 
-    
+
+    public function getResponsablesByArea($area)
+    {
+        $res = DB::select(
+            "SELECT concat(dni,' - ', nombres,' ',paterno,' ',materno) as text , id, dni
+            from persona 
+            WHERE dni IN 
+                (SELECT persona_dni 
+                FROM bienk 
+                where id_area = '$area');"
+        );
+
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
 
 
 

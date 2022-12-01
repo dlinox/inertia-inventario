@@ -108,7 +108,7 @@
       </v-container>
     </template>
     <script>
-    import Layout from "@/Layouts/AdminLayout";
+    import Layout from "@/Layouts/InventarioLayout";
     import axios from 'axios';
     export default {
         metaInfo: { title: "Personas" },
