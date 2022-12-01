@@ -219,7 +219,7 @@ class InventarioController extends Controller
 
     public function getBienesUsuarios(Request $request)
     {
-        $res = Inventario::select('inventario.id', 'inventario.codigo',  'inventario.descripcion',  'oficina.nombre', 'oficina.dependencia', 'inventario.idbienk', 'inventario.corr_area','inventario.corr_num')
+        $res = Inventario::select('inventario.id', 'inventario.codigo',  'inventario.descripcion',  'oficina.nombre', 'oficina.dependencia', 'inventario.idbienk', 'inventario.corr_area', 'inventario.corr_num')
             ->leftjoin('oficina', 'oficina.iduoper', '=', 'inventario.id_area')
             ->where('inventario.id_usuario', Auth::user()->id)
             ->paginate(10);
@@ -327,14 +327,16 @@ class InventarioController extends Controller
                 $res = $this->bienK->getDataByCode($request->codigo);
             }
         } else {
-
-            if ($request->codigo) {
-                $res = $this->inventario->getDataByCode($request->codigo);
-            } elseif ($request->idbienk ==  null) {
+            if($request->id){
                 $res = $this->inventario->getDataById($request->id);
-            } else {
-                $res = $this->inventario->getDataByRegAnt($request->idreg_anterior);
             }
+            else if($request->idreg_anterior){
+                $res = $this->inventario->getDataByRegAnt($request->idreg_anterior);
+            }      
+            else{
+                $res = $this->inventario->getDataByCode($request->codigo);
+            }
+
         }
 
         $this->response['estado'] = true;
@@ -371,8 +373,8 @@ class InventarioController extends Controller
             'id_area' => $request->id_oficina,
             'id_usuario' => Auth::user()->id,
             'id_estado' => $request->id_estado,
-            'estado_uso' =>$request->estado_uso,
-            'num_ambiente' =>$request->num_ambiente,
+            'estado_uso' => $request->estado_uso,
+            'num_ambiente' => $request->num_ambiente,
         ]);
 
         if ($res) {
@@ -400,7 +402,6 @@ class InventarioController extends Controller
         $this->response['mensaje'] = 'Error';
         $this->response['estado'] = false;
         $this->response['mensaje'] = 'Error al registrar';
-        $this->response['codigo'] =  $request->id_area;
         return response()->json($this->response, 200);
     }
 
@@ -425,8 +426,8 @@ class InventarioController extends Controller
         }
         $data = [
 
-            'estado_uso' =>$request->estado_uso,
-            'num_ambiente' =>$request->num_ambiente,
+            'estado_uso' => $request->estado_uso,
+            'num_ambiente' => $request->num_ambiente,
             'medidas' => $request->medidas,
             'color' => $request->color,
             'id_persona' => $request->id_persona,
@@ -580,7 +581,7 @@ class InventarioController extends Controller
         //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
         $res = Inventario::select(
             'inventario.*',
- 
+
         )
             ->where($query_where)
             ->where(function ($query) use ($request) {
@@ -596,12 +597,12 @@ class InventarioController extends Controller
     }
 
 
-    
+
 
     public function getBienInv($id)
     {
-//        JOIN inventario.id_persona = persona.id'
-        $res = DB::select('SELECT inventario.*, users.nombres as unombre, users.apellidos as uapellido, oficina.nombre as onombre, oficina.dependencia as dependencia, persona.dni as dni from inventario left join users on users.id = inventario.id_usuario left join oficina on inventario.id_area = oficina.iduoper left join persona on inventario.id_persona = persona.id WHERE inventario.id = '.$id);
+        //        JOIN inventario.id_persona = persona.id'
+        $res = DB::select('SELECT inventario.*, users.nombres as unombre, users.apellidos as uapellido, oficina.nombre as onombre, oficina.dependencia as dependencia, persona.dni as dni from inventario left join users on users.id = inventario.id_usuario left join oficina on inventario.id_area = oficina.iduoper left join persona on inventario.id_persona = persona.id WHERE inventario.id = ' . $id);
 
         $this->response['datos'] = $res[0];
 
