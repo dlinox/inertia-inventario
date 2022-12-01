@@ -241,6 +241,19 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
         ->name('delete-inventario');
 
     Route::get('/getTeam/{id}', [AreasController::class, 'getTeam'] )->name('getTeam');
+
+    Route::get('/cargos', [InventarioController::class, 'viewCargosInventario'])
+    ->name('cargos-inventario');
+
+    Route::get('/getOficinas', [OficinaController::class, 'getUOficinas'])
+    ->name('get-uoficinas');
+    Route::get('/getPersonasByAreaInv/{id}', [PersonasController::class, 'getPersonasByAreaInv'])
+    ->name('get-upersonas');
+
+    Route::get('/preview/{iArea}/{idP}', [ReportesController::class, 'preview'])
+    ->name('upreview');
+
+
 });
 
 

@@ -236,6 +236,7 @@ export default {
         items: [
             { text: "Perfil", icon: "mdi-account" },
             { text: "Configuracion", icon: "mdi-cog" },
+            { text: "Cargos", icon: "mdi-account" },
             { text: "Salir", icon: "mdi-power" },
         ],
         selectedItem: 1,

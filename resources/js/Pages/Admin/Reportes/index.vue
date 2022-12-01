@@ -126,7 +126,7 @@
             <v-btn height="38" small class="btn" dark color="primary" @click="dialogGuardar">Imprimir</v-btn>
         </div>
         <div class="ml-2" v-if="registrado === 1">
-                <v-btn height="38" small class="btn" color="grey-100" @click="dialogBloq">Imprimir</v-btn>
+                <v-btn height="38" small class="btn" color="grey-100" @click="dialogBloq">Impreso</v-btn>
         </div>
 
         <!-- <div class="ml-2">
