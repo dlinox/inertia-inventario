@@ -134,11 +134,11 @@
                 <span v-if="bien.id_estado == 5" style="font-size: 8pt; font-weight: bold;">Y</span>
             </td>
             <td v-else style="border: solid 1px black;" align="center">
-                <span v-if="bien.id_estado == 5" style="font-size: 8pt;">N</span>
-                <span v-if="bien.id_estado == 4" style="font-size: 8pt;">R</span>
+                <span v-if="bien.id_estado == 1" style="font-size: 8pt;">N</span>
+                <span v-if="bien.id_estado == 2" style="font-size: 8pt;">R</span>
                 <span v-if="bien.id_estado == 3" style="font-size: 8pt;">B</span>
-                <span v-if="bien.id_estado == 2" style="font-size: 8pt;">M</span>
-                <span v-if="bien.id_estado == 1" style="font-size: 8pt;">Y</span>
+                <span v-if="bien.id_estado == 4" style="font-size: 8pt;">M</span>
+                <span v-if="bien.id_estado == 5" style="font-size: 8pt;">Y</span>
             </td>
 
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;">{{ bien.observaciones }}</span></td>
