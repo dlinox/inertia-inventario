@@ -407,7 +407,6 @@
                                 outlined
                                 dense
                             ></v-combobox>
-
                         </v-col>
 
                         <v-col cols="6" class="pb-1 pt-0">
@@ -563,8 +562,6 @@
 import Layout from "@/Layouts/InventarioLayout";
 import axios from "axios";
 
-import { getBienByCodigo } from "@/Helpers/ConsultasHelper";
-
 import AreasAsignadasComponent from "@/Pages/Inventario/Components/AreasAsignadasComponent.vue";
 import RegistrosComponent from "@/Pages/Inventario/Components/RegistrosComponent.vue";
 import BusquedaAvanzadaComponent from "@/Pages/Inventario/Components/BusquedaAvanzadaComponent.vue";
@@ -672,12 +669,13 @@ export default {
             this.setDataAlert(res.data);
         },
         async updateInventario() {
+            console.log(this.form_data);
             let res = await axios.post(
                 "/inventario/update-inventario",
                 this.form_data
             );
             if (res.data.estado && this.file_foto) {
-                let res_foto = await this.guardarFoto(res.data.id);
+                await this.guardarFoto(res.data.id);
             }
             this.setDataAlert(res.data);
         },
@@ -731,10 +729,23 @@ export default {
         },
 
         async getDataBien(item) {
-            let res = await getBienByCodigo(item);
-            this.form_data = res;
-            this.personas = [res.persona];
-            this.personas_otro = [res.persona_otro];
+            //si es no registrado
+            let res = await axios.post("/inventario/get-bien-by-id", item);
+
+            this.form_data = res.data.datos;
+            this.personas = [res.data.datos.persona];
+            this.personas_otro = [res.data.datos.persona_otro];
+        },
+
+        async getDataInventario(item) {
+            let res = await axios.post(
+                "/inventario/get-inventario-by-id",
+                item
+            );
+
+            this.form_data = res.data.datos;
+            this.personas = [res.data.datos.persona];
+            this.personas_otro = [res.data.datos.persona_otro];
         },
 
         editInventario(val) {
@@ -746,8 +757,16 @@ export default {
     watch: {
         async data_emit(item) {
             if (!item) return;
+            console.log(item);
+
             this.loadin_form = true;
-            await this.getDataBien(item);
+            if (item.is_inventario) {
+                console.log('solo invetario');
+                await this.getDataInventario(item);
+            } else {
+                console.log('bien y invetario');
+                await this.getDataBien(item);
+            }
             this.disable_input = item.registrado;
             this.loadin_form = false;
         },

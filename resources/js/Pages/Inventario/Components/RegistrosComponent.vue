@@ -16,7 +16,7 @@
             </v-toolbar>
 
             <div class="text-center">
-                <small>*Doble toque para selecionar</small>
+                <small>*Doble toque para seleccionar</small>
             </div>
 
             <v-card-text style="height: 90vh">
@@ -133,6 +133,7 @@ export default {
 
         async onSelectColumDobleClik(item) {
             item.registrado = true;
+            item.is_inventario = true;
             this.$emit("setData", item);
             this.dialog = false;
         },

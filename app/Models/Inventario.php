@@ -57,6 +57,9 @@ class Inventario extends Model
         return $res;
     }
 
+ 
+    
+
 
     public function getDataByRegAnt($idreg_anterior)
     {
@@ -73,7 +76,8 @@ class Inventario extends Model
         return $res;
     }
 
-    public function getDataById($id)
+
+    public function getDataByID($id)
     {
         $res = $this::select('inventario.*', 'iduoper as id_oficina', 'idreg_anterior')
             ->leftjoin('oficina', 'inventario.id_area', '=', 'iduoper')
@@ -87,4 +91,21 @@ class Inventario extends Model
         //$res['oficina//'] = Area::where('id', $res->area_id)->first();
         return $res;
     }
+
+    public function getDataByIDBienk($id_bienk)
+    {
+        
+        $res = $this::select('inventario.*', 'iduoper as id_oficina', 'idreg_anterior')
+            ->leftjoin('oficina', 'inventario.id_area', '=', 'iduoper')
+            ->where('inventario.idbienk', $id_bienk)
+            ->first();
+
+        $res['persona'] = Persona::where('id', $res->id_persona)->first();
+        $res['persona_otro'] = Persona::where('id', $res->idpersona_otro)->first();
+        $res['id_persona']  = $res->id_persona;
+        $res['idpersona_otro']  = $res->idpersona_otro;
+        //$res['oficina//'] = Area::where('id', $res->area_id)->first();
+        return $res;
+    }
+
 }

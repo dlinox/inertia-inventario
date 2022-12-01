@@ -43,27 +43,40 @@ class Bienk extends Model
 
     public function searchDataByCode($codigo)
     {
-        $res = $this::select('codigo', 'descripcion', 'registrado', 'idreg_anterior')
+        $res = $this::select('id', 'codigo', 'descripcion', 'registrado', 'idreg_anterior')
             ->where('codigo', 'LIKE', $codigo . '%')
             ->get();
         return $res;
     }
 
-
-
     public function getDataByCode($codigo)
     {
-        $res = $this::select('bienk.*', 'oficina.iduoper as id_oficina')
-            ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area')
+
+        $res = Bienk::select('bienk.*', 'oficina.iduoper as id_oficina')
+            ->leftjoin('oficina', 'oficina.iduoper', '=', 'bienk.id_area')
             ->where('bienk.codigo', $codigo)
             ->first();
 
         $res['persona'] = Persona::where('dni', $res->persona_dni)->first();
-        if($res['persona']){
+        if ($res['persona']) {
             $res['id_persona']  = $res['persona']->id;
         }
 
         //$res['oficina//'] = Area::where('id', $res->area_id)->first();
+        return $res;
+    }
+
+    public function getDataByID($id)
+    {
+        $res = Bienk::select('bienk.*', 'oficina.iduoper as id_oficina')
+            ->leftjoin('oficina', 'oficina.iduoper', '=', 'bienk.id_area')
+            ->where('bienk.id', $id)
+            ->first();
+
+        $res['persona'] = Persona::where('dni', $res->persona_dni)->first();
+        if ($res['persona']) {
+            $res['id_persona']  = $res['persona']->id;
+        }
         return $res;
     }
 
@@ -75,7 +88,7 @@ class Bienk extends Model
             ->first();
 
         $res['persona'] = Persona::where('dni', $res->persona_dni)->first();
-        if($res['persona']){
+        if ($res['persona']) {
             $res['id_persona']  = $res['persona']->id;
         }
 

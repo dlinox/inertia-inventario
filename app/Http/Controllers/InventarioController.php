@@ -185,7 +185,7 @@ class InventarioController extends Controller
     public function getBienes(Request $request)
     {
 
-        $res = BienK::select('bienk.codigo',  'bienk.descripcion', 'bienk.registrado', 'bienk.idreg_anterior')
+        $res = BienK::select('bienk.id', 'bienk.codigo',  'bienk.descripcion', 'bienk.registrado', 'bienk.idreg_anterior')
             ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area') //iduoper
             ->where(function ($query) use ($request) {
 
@@ -319,30 +319,50 @@ class InventarioController extends Controller
     }
 
     public function getBienByCodigo(Request $request)
-    {
-        if (!$request->registrado) {
-            if ($request->codigo == "") {
-                $res = $this->bienK->getDataByRegAnt($request->idreg_anterior);
-            } else {
-                $res = $this->bienK->getDataByCode($request->codigo);
-            }
-        } else {
-            if($request->id){
-                $res = $this->inventario->getDataById($request->id);
-            }
-            else if($request->idreg_anterior){
-                $res = $this->inventario->getDataByRegAnt($request->idreg_anterior);
-            }      
-            else{
-                $res = $this->inventario->getDataByCode($request->codigo);
-            }
+    { //datos para llenar el formulario  solo por codigo
 
+        if (!$request->registrado) {
+            $res = $this->bienK->getDataByCode($request->codigo);
+        } else {
+            $res = $this->inventario->getDataByCode($request->codigo);
         }
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+
+    public function getBienByID(Request $request)
+    { //datos para llenar el formulario solo por id
+
+        if (!$request->registrado) {
+            $res = $this->bienK->getDataByID($request->id);
+        } else {
+            $res = $this->inventario->getDataByIDBienk($request->id);
+        }
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function getInventarioByID(Request $request)
+    {
+
+        if ($request->registrado) {
+            $res = $this->inventario->getDataByID($request->id);
+        } else {
+            $this->response['estado'] = true;
+            $this->response['mensaje'] = 'Ocurrio un error';
+            return response()->json($this->response, 200);
+        }
+
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
 
     public function createInventario(Request $request)
     {
@@ -438,7 +458,7 @@ class InventarioController extends Controller
             'observaciones' => $request->observaciones,
         ];
 
-        $res = Inventario::where('codigo', $request->codigo)
+        $res = Inventario::where('id', $request->id)
             ->update($data);
 
         if ($res) {

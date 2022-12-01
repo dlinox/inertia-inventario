@@ -64,14 +64,12 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(UsuarioController::class)->name('usuarios.')->prefix('usuarios')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/formulario/{id?}', 'getFormulario')->name('formulario');
-        
+
         Route::get('/getUsuariosAll', 'getUsuariosAll')->name('getUsuariosAll');
         Route::post('/guardar', 'saveUsuario')->name('guardar');
 
         Route::post('/get-usuarios', 'getUsuarios')->name('get-usuarios');
         Route::post('/asignar-area', 'asignarArea')->name('asignar-area');
-
-
     });
 
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
@@ -80,7 +78,6 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::delete('/eliminarbienadmin/{id}', 'eliminarBienAdmin')->name('eliminarBienAdmin');
         Route::post('/get-bienes-all', 'getBienesInv')->name('get-bienes-all');
         Route::get('/getBien/{id}', 'getBienInv')->name('getBienInv');
-        
     });
 
     Route::controller(PersonasController::class)->name('personas.')->prefix('personas')->group(function () {
@@ -105,7 +102,6 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/oficinas-grupo', 'getOficinasByGrupo')->name('oficinas-grupo');
         Route::get('/areas-grupo/{id}', 'getAreasOficinaByGrupo')->name('areas-grupo');
         Route::get('/usuarios-areas-grupo/{id}', 'getUsuariosByAreas')->name('usuarios-area-grupo');
-
     });
 
 
@@ -131,7 +127,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getallOficinasDependencia', 'getallOficinasDependencia')->name('getOficinasD');
 
 
-        
+
         Route::get('/getOficinasByAreas/{id}', 'getOficinasByAreas')->name('getOficinasByAreas');
     });
 
@@ -196,8 +192,20 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/get-bien-by-codigo', [InventarioController::class, 'getBienByCodigo'])
         ->name('get-bien-by-codigo');
 
+    Route::post('/get-bien-by-id', [InventarioController::class, 'getBienByID'])
+        ->name('get-bien-by-id');
+
+    Route::post('/get-inventario-by-id', [InventarioController::class, 'getInventarioByID'])
+        ->name('get-inventario-by-id');
+
+
+
     Route::post('/getbienbycodigo', [InventarioController::class, 'getInventarioByCode'])
         ->name('getBien');
+
+
+
+
 
     Route::get('/search-personas/{term}', [InventarioController::class, 'searchPersonas'])
         ->name('search-personas');
@@ -240,7 +248,7 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/delete-inventario', [InventarioController::class, 'deleteInventario'])
         ->name('delete-inventario');
 
-    Route::get('/getTeam/{id}', [AreasController::class, 'getTeam'] )->name('getTeam');
+    Route::get('/getTeam/{id}', [AreasController::class, 'getTeam'])->name('getTeam');
 });
 
 
@@ -270,14 +278,6 @@ Route::middleware(['auth'])->name('facilitador.')->prefix('facilitador')->group(
         Route::post('/get-bienes-all', 'getBienesAll')->name('get-bienes-all');
         Route::post('/get-bienes-area', 'getBienesAllbyArea')->name('get-bienes-area');
     });
-
-
-
-
-
-
-
-
 });
 
 
