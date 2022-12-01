@@ -694,7 +694,7 @@ export default {
             this.setDataAlert(res.data);
         },
         async updateInventario() {
-            console.log(this.form_data);
+            
             let res = await axios.post(
                 "/inventario/update-inventario",
                 this.form_data
@@ -782,7 +782,7 @@ export default {
     watch: {
         async data_emit(item) {
             if (!item) return;
-            console.log(item);
+          
 
             this.loadin_form = true;
             if (item.is_inventario) {
