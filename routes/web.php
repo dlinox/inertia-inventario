@@ -248,24 +248,19 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/delete-inventario', [InventarioController::class, 'deleteInventario'])
         ->name('delete-inventario');
 
-<<<<<<< HEAD
     Route::get('/getTeam/{id}', [AreasController::class, 'getTeam'])->name('getTeam');
-=======
-    Route::get('/getTeam/{id}', [AreasController::class, 'getTeam'] )->name('getTeam');
+    Route::get('/getTeam/{id}', [AreasController::class, 'getTeam'])->name('getTeam');
 
     Route::get('/cargos', [InventarioController::class, 'viewCargosInventario'])
-    ->name('cargos-inventario');
+        ->name('cargos-inventario');
 
     Route::get('/getOficinas', [OficinaController::class, 'getUOficinas'])
-    ->name('get-uoficinas');
+        ->name('get-uoficinas');
     Route::get('/getPersonasByAreaInv/{id}', [PersonasController::class, 'getPersonasByAreaInv'])
-    ->name('get-upersonas');
+        ->name('get-upersonas');
 
     Route::get('/preview/{iArea}/{idP}', [ReportesController::class, 'preview'])
-    ->name('upreview');
-
-
->>>>>>> 25a46b304fc4128318a028c32c6748af7d58af78
+        ->name('upreview');
 });
 
 
