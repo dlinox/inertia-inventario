@@ -49,7 +49,7 @@
                 </td>
                 <td align="right">
                     <div style=" width:188px; margin-right:.5cm; ">
-                        <span>ID: {{datos.oficina.iduoper}}-{{datos.responsable.dni}}-{{datos.responsable.idtipoper}}-1</span>
+                        <span>ID: {{datos.oficina.iduoper}}-{{datos.responsable.dni}}-1</span>
                     </div>
                 </td>
             </tr>
