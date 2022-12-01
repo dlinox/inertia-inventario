@@ -16,7 +16,7 @@ class EstadoSeeder extends Seeder
     {
         DB::table('estado')->insert([
             'nombre' => 'Nuevo',
-            'codigo' => 'N',
+            'codigo' => 'B',
         ]);
         DB::table('estado')->insert([
             'nombre' => 'Regular',
@@ -35,6 +35,10 @@ class EstadoSeeder extends Seeder
         DB::table('estado')->insert([
             'nombre' => 'Chatarra',
             'codigo' => 'Y',
+        ]);
+        DB::table('estado')->insert([
+            'nombre' => 'RAEE',
+            'codigo' => 'RAEE',//CAMBIAR TIPO
         ]);
     }
 }

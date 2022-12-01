@@ -14,7 +14,7 @@
                 <v-toolbar-title> Areas Asignadas</v-toolbar-title>
 
                 <v-spacer></v-spacer>
-                <!-- <v-icon>mdi-account-group</v-icon> -->
+                <!-- <v-icon>mdi-account-group</v-icon> 
                 <div>
                     <v-menu offset-y>
                         <template v-slot:activator="{ attrs, on }">
@@ -33,12 +33,10 @@
                         <v-list dense>
                             <v-subheader>Equipo </v-subheader>
                             <v-list-item-group color="primary">
-                                <!-- <pre>{{team}}</pre> -->
+                               
 
                                 <v-list-item v-for="it in team" :key="it.id">
-                                    <!-- <v-list-item-icon  style="margin-right: -10px;" >
-                                <v-icon color="primary" size="1.1rem">mdi-acount</v-icon>
-                            </v-list-item-icon> -->
+                          >
                                     <v-list-item-content>
                                         <span
                                             style="
@@ -53,7 +51,7 @@
                             </v-list-item-group>
                         </v-list>
                     </v-menu>
-                </div>
+                </div>-->
             </v-toolbar>
 
             <v-card-text style="height: 90vh">
@@ -63,7 +61,7 @@
                     item-text="nombre"
                     item-value="iduoper"
                     label="Seleccione un Area"
-                    class="my-4"
+                    class="mt-4"
                     outlined
                     dense
                 >
@@ -81,6 +79,23 @@
                                 {{ data.item.nombre }}
                             </v-list-item-subtitle>
                         </v-list-item-content>
+                    </template>
+                </v-autocomplete>
+
+                <v-autocomplete
+                    v-model="responsable"
+                    clearable
+                    dense
+                    label="Responsable"
+                    outlined
+                    :items="responsables"
+                    item-value="dni"
+                    item-text="text"
+                >
+                    <template v-slot:no-data>
+                        <small class="px-3 text-center"
+                            >Sin datos (Seleccione un area)</small
+                        >
                     </template>
                 </v-autocomplete>
 
@@ -207,6 +222,9 @@ export default {
         total_result: 0,
         pages: 1,
         team: [],
+        //reposnable
+        responsable: null,
+        responsables: [],
     }),
     methods: {
         onSelectColum(item, index) {
@@ -221,9 +239,16 @@ export default {
             this.resetAll();
         },
 
-        async getBienes(area, term = "", mostrar = "Todos", page = 1) {
+        async getBienes(
+            area,
+            responsable = null,
+            term = "",
+            mostrar = "Todos",
+            page = 1
+        ) {
             let res = await axios.post("/inventario/get-bienes?page=" + page, {
                 area: area,
+                responsable: responsable,
                 mostrar: mostrar,
                 term: term,
             });
@@ -233,6 +258,11 @@ export default {
             this.pages = res.data.datos.last_page;
 
             return res.data.datos.data;
+        },
+
+        async getResonsables(area) {
+            let res = await axios.get("/inventario/get-responsables/" + area);
+            return res.data.datos;
         },
 
         async getTeam() {
@@ -250,9 +280,27 @@ export default {
             this.resetAll();
         },
 
+        personasFilter(item, queryText, itemText) {
+            const nombres = item.nombres.toLowerCase();
+            //const paterno = item.paterno.toLowerCase();
+            //const materno = item.materno.toLowerCase();
+            const dni = item.dni.toLowerCase();
+
+            const searchText = queryText.toLowerCase();
+
+            return (
+                nombres.indexOf(searchText) > -1 ||
+                //paterno.indexOf(searchText) > -1 ||
+                //materno.indexOf(searchText) > -1 ||
+                dni.indexOf(searchText) > -1
+            );
+        },
+
         resetAll() {
             this.bienes_result = [];
             this.area_selected = null;
+            this.responsable = null;
+            this.responsables = [];
             this.page = 1;
             this.total_result = 0;
             this.pages = 1;
@@ -267,18 +315,35 @@ export default {
             this.tr_index = null;
             this.loading_table = true;
             let res = await this.getBienes(val);
-            // this.getTeam();
+
+            this.responsables = await this.getResonsables(val);
+
+            this.bienes_result = res;
+            this.loading_table = false;
+        },
+
+        async responsable(val) {
+            this.tr_index = null;
+            this.loading_table = true;
+            let res = await this.getBienes(
+                this.area_selected,
+                val,
+                this.area_search,
+                this.mostrar_selected,
+            );
             this.bienes_result = res;
             this.loading_table = false;
         },
 
         async area_search(val) {
+            //term
             //if (!val) return;
 
             this.tr_index = null;
             this.loading_table = true;
             let res = await this.getBienes(
                 this.area_selected,
+                this.responsable,
                 val,
                 this.mostrar_selected
             );
@@ -294,6 +359,7 @@ export default {
 
             let res = await this.getBienes(
                 this.area_selected,
+                this.responsable,
                 this.area_search,
                 this.mostrar_selected,
                 val
@@ -308,6 +374,7 @@ export default {
             this.loading_table = true;
             let res = await this.getBienes(
                 this.area_selected,
+                this.responsable,
                 this.area_search,
                 val
             );

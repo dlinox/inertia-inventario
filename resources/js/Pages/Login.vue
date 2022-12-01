@@ -4,8 +4,8 @@
             <div class="container-logo">
                 <img
                     width="200"
-                    class="mx-auto"
-                    src="/images/logomin.png"
+                    class="mx-auto pa-3"
+                    src="/images/logo_unap_tiny.png"
                     alt=""
                 />
             </div>
@@ -16,7 +16,7 @@
                     height="150px"
                     src="/images/unap.jpg"
                 >
-                    <v-card-title>Sistema de inventario</v-card-title>
+                    <v-card-title>Inventario UNA-PUNO 2022</v-card-title>
                     <v-card-subtitle class="">
                         <strong> INGRESAR AL SISTEMA</strong>
                     </v-card-subtitle>
