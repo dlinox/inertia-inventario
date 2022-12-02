@@ -181,7 +181,7 @@
             <tr>
                 <th rowspan="2" align="center" style="border: solid 1px black; background: #cdcdcd4D; stroke:#000000; ">
                     <div><span style="font-size: 9pt; font-weight:bold;">N° de</span> </div><div> <span style="font-size: 9pt; font-weight:bold;">Orden</span> </div></th>
-                <th colspan="11" style="border: solid 1px black; background: #cdcdcd4D;">
+                <th colspan="12" style="border: solid 1px black; background: #cdcdcd4D;">
                     <span style="font-size: 9pt; font-weight:bold;">DESCRIPCION</span>                    
                 </th>
             </tr>
@@ -194,8 +194,9 @@
                 <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Color</span> </th>
                 <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Serie</span> </th>
                 <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Dimensiones</span> </th>
-                <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Situación</span> </th>
+                <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Sit</span> </th>
                 <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Est</span> </th>
+                <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Item</span> </th>
                 <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Observación</span> </th>
             </tr>
         </thead>
@@ -241,6 +242,7 @@
                         Y
                         @endif
                     </span></td>
+                    <td style="border: solid 1px black; width:40px;"><span style="font-size: 8pt;  font-weight: bold;">{{$bien->corr_area}} - {{$bien->corr_num}}</span></td>
                     <td style="border: solid 1px black; width:150px;"><span style="font-size: 8pt;  font-weight: bold;">{{$bien->observaciones}}</span></td>
                 </tr>
             @else
@@ -284,6 +286,7 @@
                         Y
                         @endif
                     </span></td>
+                    <td style="border: solid 1px black; width:40px;"><span style="font-size: 8pt;">{{$bien->corr_area}} - {{$bien->corr_num}}</span></td>
                     <td style="border: solid 1px black; width:150px;"><span style="font-size: 8pt;">{{$bien->observaciones}}</span></td>
                 </tr>
 
@@ -293,7 +296,7 @@
         </tbody>
 
         <tr>
-            <td  style="border: solid 1px black;" colspan="12">
+            <td  style="border: solid 1px black;" colspan="13">
             <div style="padding-top: 15px; padding-bottom: 25px;">
                 <div>
                     <span style="font-size: 9pt;"">Inventariador(es):</span>
@@ -306,12 +309,12 @@
         </tr>
 
         <tr>
-            <td colspan="12">
+            <td colspan="13">
                 <span>Fecha y Hora:</span><span> {{ $ldate }} {{$lhour}} </span>
             </td>
         </tr>
         <tr>
-            <td colspan="12">
+            <td colspan="13">
                 <div>
                     <span style="font-size:9pt; letter-spacing: -0.1pt; ">(1) Uso (U). Desuso(D)</span>
                 </div>
