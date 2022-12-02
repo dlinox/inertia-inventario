@@ -206,7 +206,7 @@
                 <tr>
                     <td style="border: solid 1px black; width:20px; text-align:center;"><span style="font-size: 9pt;  font-weight: bold; ">{{$key+1}}</span></td>
                     <td style="border: solid 1px black; width:80px; text-align:center; "><span style="font-size: 8pt;  font-weight: bold;">{{$bien->codigo}}</span></td>
-                    <td style="border: solid 1px black; width:280px;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->descripcion}}</span></td>
+                    <td style="border: solid 1px black; width:260px;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->descripcion}}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->marca }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->modelo }}</span></td>
                     <td style="border: solid 1px black;" align="center" ><span style="font-size: 8pt;  font-weight: bold;">
@@ -250,7 +250,7 @@
                 <tr>
                     <td style="border: solid 1px black; width:20px; text-align:center;"><span style="font-size: 9pt; ">{{$key+1}}</span></td>
                     <td style="border: solid 1px black; width:80px; text-align:center; "><span style="font-size: 8pt;">{{$bien->codigo}}</span></td>
-                    <td style="border: solid 1px black; width:280px;"><span style="font-size: 8pt;">{{ $bien->descripcion}}</span></td>
+                    <td style="border: solid 1px black; width:260px;"><span style="font-size: 8pt;">{{ $bien->descripcion}}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->marca }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->modelo }}</span></td>
                     <td style="border: solid 1px black;" align="center"><span style="font-size: 8pt;">
