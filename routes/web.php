@@ -168,6 +168,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     });
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
     Route::get('/pdfBienes/{idP}/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
+    Route::get('/pdfBienesB/{idP}/{idArea}', [PDFController::class, 'PDFBienesBorrador'])->name('pdf-bienes-borrador');
     Route::put('/bloquear/{id}', [PDFController::class, 'bloquear'])->name('bloquear')->middleware('auth');
     Route::put('/desbloquear/{id}', [PDFController::class, 'desbloquear'])->name('desbloquear')->middleware('auth');
 

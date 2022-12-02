@@ -86,9 +86,14 @@ class ReportesController extends Controller
 
     public function preview($idArea, $idP)
     {
+        $responsable2 = null;
 //        $oficina = DB::select('SELECT oficina.id, oficina.codigo, oficina.nombre FROM oficina WHERE oficina.id IN (SELECT area.id_oficina FROM area WHERE area.id =' . $idArea . ')');
         $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $idArea .'";');
         $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $idP);
+        $r2 = DB::select('SELECT * FROM persona WHERE ID IN ( SELECT idpersona_otro from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
+        if($r2 != null){
+            $responsable2 = $r2[0];
+        }
         $datos['bienes'] = DB::select('SELECT * from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ';');
         $datos['lfecha'] = date('Y-m-d');
         $datos['lhour'] = date('H:i:s');
@@ -96,6 +101,7 @@ class ReportesController extends Controller
         $datos['oficina'] = $oficina[0];
        // $datos['area'] = $area[0];  
         $datos['responsable'] = $responsable[0];
+        $datos['responsable2'] = $responsable2;
         //        $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = '.$idArea.';');
         return Inertia::render('Admin/Reportes/Preview/',  ['datos' => $datos]);
     }

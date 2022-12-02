@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,13 @@
         }
     </style>
 </head>
+
+@if ($responsable2 === null)
 <body style="margin: 3.25cm 0cm 3.5cm 0cm; font-family: 'Ubuntu', sans-serif; " >
+@else    
+<body style="margin: 3.75cm 0cm 3.5cm 0cm; font-family: 'Ubuntu', sans-serif; " >
+@endif
+
     <header style="position: fixed;
         display:flex;
         top: -40;
@@ -85,7 +91,19 @@
                     </div>
                 </td>
             </tr>
-
+            @if ($responsable2 !== null)
+            <tr>
+                <td>
+                </td>
+                <td style="" >
+                    <div style="text-align: left">
+                           <span>: [{{ $responsable2->dni }}] {{ $responsable2->paterno }} {{ $responsable2->materno }} {{$responsable2->nombres}} </span>
+                    </div>
+                </td>
+                <td colspan="2" align="right" style=" margin-right:1cm;" >
+                </td>
+            </tr>
+            @endif
         </table>
         <div>
         </div>
@@ -164,8 +182,7 @@
                 <th rowspan="2" align="center" style="border: solid 1px black; background: #cdcdcd4D; stroke:#000000; ">
                     <div><span style="font-size: 9pt; font-weight:bold;">N° de</span> </div><div> <span style="font-size: 9pt; font-weight:bold;">Orden</span> </div></th>
                 <th colspan="11" style="border: solid 1px black; background: #cdcdcd4D;">
-                    <span style="font-size: 9pt; font-weight:bold;">DESCRIPCION</span>
-                    
+                    <span style="font-size: 9pt; font-weight:bold;">DESCRIPCION</span>                    
                 </th>
             </tr>
             <tr align="center">
@@ -191,7 +208,16 @@
                     <td style="border: solid 1px black; width:280px;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->descripcion}}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->marca }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->modelo }}</span></td>
-                    <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;"></span></td>
+                    <td style="border: solid 1px black;" align="center" ><span style="font-size: 8pt;  font-weight: bold;">
+                        @if ($bien->tipo === 'ACTIVO FIJO')
+                        AF
+                        @elseif ($bien->tipo === 'NO DEPRECIABLE')
+                        ND
+                        @elseif ($bien->tipo === 'OTROS')
+                        AU
+                        @else
+                        @endif
+                    </span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->color }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->nro_serie }}</span></td>
                     <td style="border: solid 1px black;width:100px;"><span style="font-size: 8pt;  font-weight: bold;">{{ $bien->medidas }}</span></td>
@@ -225,7 +251,16 @@
                     <td style="border: solid 1px black; width:280px;"><span style="font-size: 8pt;">{{ $bien->descripcion}}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->marca }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->modelo }}</span></td>
-                    <td style="border: solid 1px black;"><span style="font-size: 8pt;"></span></td>
+                    <td style="border: solid 1px black;" align="center"><span style="font-size: 8pt;">
+                        @if ($bien->tipo === 'ACTIVO FIJO')
+                        AF
+                        @elseif ($bien->tipo === 'NO DEPRECIABLE')
+                        ND
+                        @elseif ($bien->tipo === 'OTROS')
+                        AU
+                        @else
+                        @endif
+                    </span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->color }}</span></td>
                     <td style="border: solid 1px black;"><span style="font-size: 8pt;">{{ $bien->nro_serie }}</span></td>
                     <td style="border: solid 1px black;width:100px;"><span style="font-size: 8pt;">{{ $bien->medidas }}</span></td>
@@ -282,6 +317,9 @@
                 </div>
                 <div>
                     <span style="font-size:9pt; letter-spacing: -0.1pt; ">(2) El estado consignado en base a la siguiente escala: Bueno, Regular, Malo, Chatarra y RAEE. En caso de semovientes utilizar escala de acuerdo a su naturaleza</span>
+                </div>
+                <div>
+                    <span style="font-size:9pt; letter-spacing: -0.1pt; ">(3) Activos Fijos (AF). Bienes no depresiables(ND). Bienes auxiliares(AU)</span>
                 </div>
             </td>
         </tr>

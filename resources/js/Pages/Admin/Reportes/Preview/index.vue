@@ -5,7 +5,7 @@
         top: 0;
         left: -10;
         rigth: 0;
-        height: 150px;
+        height: 165px;
         /* background:pink; */
         width:100%;
         /* background: pink; */
@@ -68,6 +68,18 @@
                     </div>
                 </td>
             </tr>
+            <tr v-if="datos.responsable2 !== null">
+                <td align="left">
+                </td>
+                <td style=" width: 300px; ">
+                    <div style="text-align: left">
+                            <span>: [ {{ datos.responsable2.dni }} ] {{ datos.responsable2.paterno }} {{ datos.responsable2.materno }} {{ datos.responsable2.nombres }} </span>
+                    </div>
+                </td>
+                <td style="" align="right">
+  
+                </td>
+            </tr>
 
            </table>
         </div>
@@ -114,8 +126,18 @@
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;  ">{{bien.marca}}</span></td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.modelo}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.modelo}}</span></td>
-            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;"></span></td>
-            <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;  "></span></td>
+
+            <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;" align="center">
+                <span v-if="bien.tipo === 'ACTIVO FIJO'" style="font-size: 8pt; font-weight: bold;">AF</span>
+                <span v-if="bien.tipo === 'NO DEPRECIABLE'" style="font-size: 8pt; font-weight: bold;">ND</span>
+                <span v-if="bien.tipo === 'OTROS'" style="font-size: 8pt; font-weight: bold;">AU</span>
+            </td>
+
+            <td v-else style="border: solid 1px black;" align="center">
+                <span v-if="bien.tipo === 'ACTIVO FIJO'" style="font-size: 8pt;">AF</span>
+                <span v-if="bien.tipo === 'NO DEPRECIABLE'" style="font-size: 8pt;">ND</span>
+                <span v-if="bien.tipo === 'OTROS'" style="font-size: 8pt;">AU</span>
+            </td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.color}}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.color}}</span></td>
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-size: 8pt; font-weight: bold;">{{bien.nro_serie}}</span></td>
@@ -170,6 +192,9 @@
                 </div>
                 <div>
                     <span style="font-size:9pt; letter-spacing: -0.1pt; ">(2) El estado consignado en base a la siguiente escala: Bueno, Regular, Malo, Chatarra y RAEE. En caso de semovientes utilizar escala de acuerdo a su naturaleza</span>
+                </div>
+                <div>
+                    <span style="font-size:9pt; letter-spacing: -0.1pt; ">(3) Activos Fijos (AF). Bienes no depresiables(ND). Bienes auxiliares(AU)</span>
                 </div>
             </td>
         </tr>

@@ -122,6 +122,10 @@
         </div>
     </div>
     <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
+        <div class="ml-2">
+            <v-btn height="38" small class="btn" outlined dark color="primary" @click="generarPDFBorrador">Borrador</v-btn>
+        </div>
+
         <div class="ml-2" v-if="registrado === 0">
             <v-btn height="38" small class="btn" dark color="primary" @click="dialogGuardar">Imprimir</v-btn>
         </div>
@@ -129,9 +133,7 @@
                 <v-btn height="38" small class="btn" color="grey-100" @click="dialogBloq">Impreso</v-btn>
         </div>
 
-        <!-- <div class="ml-2">
-            <v-btn height="38" small class="btn" dark color="primary" @click="PrintPdf">Print PDF</v-btn>
-        </div> -->
+
         <!-- <div class=" ml-2" small>
             <v-btn height="38" class="btn" dark color="primary" @click="Guardar" >Guardar PDF</v-btn>
         </div> -->
@@ -249,6 +251,7 @@ export default {
         registrado:0,
         opcion:1,
         dialogBloqueado:false,
+        borrador:null,
       }
     },
     created() {
@@ -419,6 +422,10 @@ export default {
             this.mensaje = "Se bloquearan todos los bienes de este documento";
             this.dialog = true;
         },
+        dialogBorrador(){
+            this.mensaje = "Se ha impreso un cargo de bienes Borrador";
+            this.dialog = true;
+        },
         generarPDF(){
             this.dialog = false;
             let res = axios.get("/admin/pdfBienes/"+this.perE+"/"+this.areE)
@@ -433,9 +440,24 @@ export default {
             this.snackbar = true
             this.getDocumentos()
             this.areE = null;
-            this.ofiE = null;
             this.perE = null;
-            },
+        },
+
+        generarPDFBorrador() {
+            let res = axios.get("/admin/pdfBienesB/"+this.perE+"/"+this.areE)
+            .then(response => {
+                 console.log(response);
+                 this.PDF=response.data.datos;
+                 this.url = response.data.datos.url;
+                 this.PrintPdf(this.url);
+             });
+            // console.log("URDL: ",this.url); 
+            // this.PrintPdf(this.url);    
+            this.text = "Documento Borrador Generado"
+            this.snackbar = true
+            this.areE = null;
+            this.perE = null;
+        },
 
         async Guardar() {
             this.PDF['id_persona'] = this.perE;
