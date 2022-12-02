@@ -16,7 +16,7 @@
         }
     </style>
 </head>
-<body style="margin: 3.25cm 0cm 3cm 0cm; font-family: 'Ubuntu', sans-serif; " >
+<body style="margin: 3.25cm 0cm 3.5cm 0cm; font-family: 'Ubuntu', sans-serif; " >
     <header style="position: fixed;
         display:flex;
         top: -40;
