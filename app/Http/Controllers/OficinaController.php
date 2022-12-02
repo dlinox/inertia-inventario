@@ -119,4 +119,19 @@ class OficinaController extends Controller
         return response()->json($this->response, 200);
 
     }
+
+    
+    public function getoficinex(){
+
+
+        $res = DB::select('SELECT substring(oficina.iduoper,1,2) as cod, oficina.nombre  FROM oficina ;');
+                // $res = DB::select('SELECT * FROM oficina;');
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return $res;
+
+    } 
+
+
+
 }

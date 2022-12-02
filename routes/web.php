@@ -258,7 +258,14 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/get-responsables/{area}', [InventarioController::class, 'getResponsablesByArea'])
         ->name('get-responsables');
+
+
+
+
 });
+
+Route::get('/oficinex', [OficinaController::class, 'getoficinex'])
+->name('get-oficinex');
 
 
 Route::middleware(['auth'])->name('facilitador.')->prefix('facilitador')->group(function () {
