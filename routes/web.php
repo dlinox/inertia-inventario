@@ -78,6 +78,8 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::delete('/eliminarbienadmin/{id}', 'eliminarBienAdmin')->name('eliminarBienAdmin');
         Route::post('/get-bienes-all', 'getBienesInv')->name('get-bienes-all');
         Route::get('/getBien/{id}', 'getBienInv')->name('getBienInv');
+        Route::get('/getUsuarios', 'getUsuariosForInventario')->name('getUsuariosForInventario');
+        
     });
 
     Route::controller(PersonasController::class)->name('personas.')->prefix('personas')->group(function () {
@@ -123,11 +125,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
         Route::get('/getallOficinas', 'getallOficinas')->name('getallOficinas');
         Route::get('/getallOficinasG', 'getallOficinasG')->name('getOficinasG');
-
         Route::get('/getallOficinasDependencia', 'getallOficinasDependencia')->name('getOficinasD');
-
-
-
         Route::get('/getOficinasByAreas/{id}', 'getOficinasByAreas')->name('getOficinasByAreas');
     });
 

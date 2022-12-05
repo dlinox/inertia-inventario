@@ -653,16 +653,18 @@ class InventarioController extends Controller
         $query_where = [];
         if ($request->oficina) array_push($query_where, [DB::raw('substr(id_area, 1, 2)'), '=', $request->oficina]);
         if ($request->dependencia) array_push($query_where, [DB::raw('substr(id_area, 4, 2)'), '=', $request->dependencia]);
+        if ($request->usuario) array_push($query_where, [DB::raw('id_usuario'), '=', $request->usuario]);
+        //if ($request->fecha) array_push($query_where, [DB::raw('date(created_at)'), '=', $request->fecha]);
         //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
         $res = Inventario::select(
-            'inventario.*',
-
+            'inventario.*', DB::raw('date(created_at) as date'), DB::raw('time(created_at) as hora'),
         )
             ->where($query_where)
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('inventario.codigo', 'LIKE', '%' . $request->term . '%')
-                    ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
+                    ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%')
+                    ->orderBy('id', 'DESC');
             })
             ->paginate(3000);
 
@@ -670,9 +672,6 @@ class InventarioController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
-
-
-
 
     public function getBienInv($id)
     {
@@ -748,4 +747,15 @@ class InventarioController extends Controller
     //     $this->response['datos'] = $res;
     //     return response()->json($this->response, 200);
     // }
+
+    public function getUsuariosForInventario()
+    {
+        $res = User::where('rol',2)->get();
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+
 }
