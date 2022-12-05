@@ -97,7 +97,6 @@
                 <div><span style="font-size: 9pt; font-weight:bold;">N° de</span> </div><div> <span style="font-size: 9pt; font-weight:bold;">Orden</span> </div></th>
             <th colspan="12" style="border: solid 1px black; background: #cdcdcd4D;">
                 <span style="font-size: 9pt; font-weight:bold;">DESCRIPCION</span>
-                
             </th>
         </tr>
         <tr align="center">
@@ -147,7 +146,7 @@
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{bien.medidas}}</span></td>
 
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;" align="center"><span v-if="bien.estado_uso === 'EN USO'" style="font-weight: bold; font-size: 8pt;">U</span><span v-else style="font-weight: bold; font-size: 8pt;">D</span></td>
-            <td v-else style="border: solid 1px black;" align="center"><span v-if="bien.estado_uso === 'EN USO'" style="font-size: 8pt;">U</span><span v-else style="font-size: 8pt;">U</span></td>
+            <td v-else style="border: solid 1px black;" align="center"><span v-if="bien.estado_uso === 'EN USO'" style="font-size: 8pt;">U</span><span v-else style="font-size: 8pt;">D</span></td>
 
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;" align="center">
                 <span v-if="bien.id_estado == 1" style="font-size: 8pt; font-weight: bold;">N</span> 

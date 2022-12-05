@@ -393,7 +393,7 @@ export default {
         searchdocuments:'',
         headersdocuments: [
           { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"220px", class:'grey lighten-1' },
-          { text: 'Responsable', align: 'center', filterable: false, width:"130px", value: 'dni', class:'grey lighten-1',  },
+          { text: 'Responsable', align: 'center', filterable: true, width:"130px", value: 'dni', class:'grey lighten-1',  },
           { text: 'Area', align: 'start', filterable: true, value: 'nombre', width:"300px", minWidth:'250px', class:'grey lighten-1' },
           { text: ' ', align: 'right', value:'acciones', maxWidth:'50px', class:'grey lighten-1'  },
         ],
