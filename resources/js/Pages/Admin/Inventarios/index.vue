@@ -165,6 +165,7 @@ export default {
         bienes:[],
         ofi:null,
         dep:null,
+        usu:null,
         searchbienes:"",
             buscarBien: "",
         headBienes: [
@@ -178,16 +179,16 @@ export default {
 
     }),
     methods: {
-        // async getBienes(){ 
-        //     let res = await axios.get("/admin/inventario/getBiens");
-        //     this.bienes = res.data.datos;
-        //     return res.data.datos.data;
-        // },
+        async getBienes(){ 
+            let res = await axios.get("/admin/inventario/getUsuarios");
+            this.bienes = res.data.datos;
+            return res.data.datos.data;
+        },
 
         async getBienes(term = "", page = 1) {
                 let res = await axios.post(
                     "/admin/inventario/get-bienes-all?page=" + page,
-                    { term: term, oficina:this.ofi, dependencia: this.dep }
+                    { term: term, oficina:this.ofi, dependencia: this.dep, usuario: this.usu }
                 );
                 this.bienes = res.data.datos.data;
             },
@@ -218,6 +219,9 @@ export default {
             this.getBienes()
         },
 
+        async usu(){
+            this.getBienes()
+        },
         async searchbienes(val) {
             if(val === null){
                 this.buscarBien = "zzz";
