@@ -552,10 +552,9 @@ export default {
 
         editInventario(val) {
 
-            console.log(this.form_data);
+            //console.log(this.form_data);
             if (this.form_data.idbienk == null) {
                 this.disable_input_new = val;
-                console.log('aqio');
             }
 
             this.is_edit = val;
@@ -569,10 +568,10 @@ export default {
             this.resetForm();
             this.loadin_form = true;
             if (item.is_inventario) {
-                console.log("solo invetario");
+                console.log("solo inventario");
                 await this.getDataInventario(item);
             } else {
-                console.log("bien y invetario");
+                console.log("bien y inventario");
                 await this.getDataBien(item);
             }
             this.disable_input = item.registrado;

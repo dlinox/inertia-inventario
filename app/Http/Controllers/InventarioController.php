@@ -387,7 +387,7 @@ class InventarioController extends Controller
             'idreg_anterior' => $request->idreg_anterior,
             'cod_ubicacion' => $request->cod_ubicacion,
             'cuenta' => $request->cuenta,
-            'codigo' => $request->codigo,
+            'codigo' =>  trim($request->codigo),
             'codigo_anterior' => $request->codigo_anterior,
             'descripcion' => $request->descripcion,
 
@@ -477,7 +477,7 @@ class InventarioController extends Controller
 
         if ($request->idbienk === null) {
             $data = [
-                'codigo' => $request->codigo,
+                'codigo' =>  trim($request->codigo),
                 'descripcion' => $request->descripcion,
                 'modelo' => $request->modelo,
                 'marca' => $request->marca,
