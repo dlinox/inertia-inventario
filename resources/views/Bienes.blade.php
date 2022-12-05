@@ -138,7 +138,7 @@
         </table>
         <table style="width: 100%">
             <tr>
-                <td align="center">
+                {{-- <td align="center">
                     <div style=" margin-top: 50px; padding: 0 30px; margin-left:20px; ">
                         <div style="text-align: center; padding-top: 5px; width:280px; border-top: solid 0.5px black;">
                             <span style="font-size:10pt;">JEFE INMEDIATO SUPERIOR</span>
@@ -147,10 +147,10 @@
                             <span style="font-size:10pt;">DNI:</span>
                         </dir>
                     </div>
-                </td>
+                </td> --}}
 
                 <td align="center">
-                    <div style=" margin-top: 50px; padding: 0 0px;">
+                    <div style=" margin-top: 50px; padding: 0 30px; margin-left:100px;">
                         <div style="text-align: center; padding-top: 5px; width:280px; border-top: solid 0.5px black;">
                             <span style="font-size:10pt;">RESPONSABLE DE LOS BIENES</span>
                         </div>
@@ -162,7 +162,7 @@
 
                 <td align="center">
                     <div style=" margin-top: 50px; padding: 0 0px;">
-                        <div style="text-align: center; width:280px; padding-top: 5px; border-top: solid 0.5px black;">
+                        <div style="text-align: center; width:300px; padding-top: 5px; border-top: solid 0.5px black;">
                             <span style="font-size:10pt;">INVENTARIADOR(ES)</span>
                         </div>
                         <dir style="margin-top:0px; text-align:left; margin-left:5px;  ">
