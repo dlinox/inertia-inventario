@@ -23,6 +23,16 @@
         </v-col>
         <v-col sx="12" sm="12" md="4" lg="4" style="" class="p-0" >
             <v-text-field
+                v-model="usu"
+                label="Usuario"
+                hide-details
+                outlined
+                clearable
+                dense
+            ></v-text-field>
+        </v-col>
+        <v-col sx="12" sm="12" md="4" lg="4" style="" class="p-0" >
+            <v-text-field
             v-model="searchbienes"
             append-icon="mdi-magnify"
             outlined
@@ -40,9 +50,15 @@
             :itemsPerPage="10"
             :mobile-breakpoint="10"
             >
+            <template v-slot:item.corr_num="{ item }">
+                <div>
+                    <span>{{item.corr_area }} - {{ item.corr_num }} </span>
+                </div>
+            </template> 
             <template v-slot:item.acciones="{ item }" >
                 <div>
                 <v-menu offset-y>
+
                         <template
                             v-slot:activator="{
                                 attrs,
@@ -155,7 +171,7 @@ export default {
           { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"120px", class:'pl-4 pr-0 grey lighten-1' },
           { text: 'Nombre', align: 'start', filterable: true, value: 'descripcion',width:"60px", class:'pl-4 pr-0 grey lighten-1' },
           { text: 'Oficina', align: 'center', filterable: true, value: 'id_area', width:"70px", class:'pl-0 pr-0 grey lighten-1' },
-          { text: 'Etiqueta', align: 'center', filterable: false, sortable: true, width:"70px", value: 'corr_num', class:'pl-0 pr-0 grey lighten-1',},
+          { text: 'Etiqueta', align: 'center', filterable: false, sortable: true, width:"130px", value: 'corr_num', class:'pl-0 pr-0 grey lighten-1',},
           { align: 'right', value:'acciones', sortable: false, maxWidth:'30px', class:' pl-0 pr-0 grey lighten-1'},
         ],
         dialogDetalle: false,
