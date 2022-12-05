@@ -70,10 +70,10 @@ class PersonasController extends Controller
 
         //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
         $res = Persona::select(
-            'persona.*',
-            'tipo_persona.nombre as tipo_nombre'
+            'persona.*'
+            //'tipo_persona.nombre as tipo_nombre'
         )
-            ->leftjoin('tipo_persona', 'tipo_persona.id', '=', 'persona.id_tipo_persona')
+           // ->leftjoin('tipo_persona', 'tipo_persona.id', '=', 'persona.id_tipo_persona')
             ->where($query_where)
             ->where(function ($query) use ($request) {
                 return $query
