@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
-    
+
     <style>
         html {
             overflow-y: auto !important;
@@ -40,7 +40,11 @@
         }
     </style>
     <script src="{{ mix('/js/app.js') }}" defer></script>
-    <script>window.screen.lockOrientation('portrait');</script>
+    <script>
+        screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+
+        screen.orientation.lock("portrait")
+    </script>
     @laravelPWA
 </head>
 
