@@ -300,7 +300,6 @@ class InventarioController extends Controller
     public function updatePassword(Request $request)
     {
 
-
         $validate = $request->validate([
             'password' => ['required'],
         ]);
@@ -370,12 +369,25 @@ class InventarioController extends Controller
     public function createInventario(Request $request)
     {
 
+        if ($request->codigo) {
+
+            $codigo_existe = Inventario::where('codigo', $request->codigo)->first();
+
+            if ($codigo_existe) {
+                $this->response['estado'] = false;
+                $this->response['mensaje'] = 'El codigo ya existe';
+                return response()->json($this->response, 200);
+            }
+        }
+
+
+
         $res = Inventario::create([
             'tipo' => $request->tipo,
             'idreg_anterior' => $request->idreg_anterior,
             'cod_ubicacion' => $request->cod_ubicacion,
             'cuenta' => $request->cuenta,
-            'codigo' => $request->codigo,
+            'codigo' =>  trim($request->codigo),
             'codigo_anterior' => $request->codigo_anterior,
             'descripcion' => $request->descripcion,
 
@@ -448,19 +460,58 @@ class InventarioController extends Controller
             $this->response['mensaje'] = 'No puede editar registros de otro usuario';
             return response()->json($this->response, 200);
         }
-        $data = [
 
-            'estado_uso' => $request->estado_uso,
-            'num_ambiente' => $request->num_ambiente,
-            'medidas' => $request->medidas,
-            'color' => $request->color,
-            'id_persona' => $request->id_persona,
-            'idpersona_otro' => $request->idpersona_otro,
-            'id_area' => $request->id_oficina,
-            //'id_usuario' => Auth::user()->id,
-            'id_estado' => $request->id_estado,
-            'observaciones' => $request->observaciones,
-        ];
+        if (trim($request->codigo)) {
+
+            $codigo_existe = Inventario::where('codigo', trim($request->codigo))
+                ->where('id', '!=',  $request->id)
+                ->first();
+
+            if ($codigo_existe) {
+                $this->response['estado'] = false;
+                $this->response['mensaje'] = 'El codigo ya existe';
+                return response()->json($this->response, 200);
+            }
+        }
+
+
+        if ($request->idbienk === null) {
+            $data = [
+                'codigo' =>  trim($request->codigo),
+                'descripcion' => $request->descripcion,
+                'modelo' => $request->modelo,
+                'marca' => $request->marca,
+                'nro_serie' => $request->nro_serie,
+
+                'estado_uso' => $request->estado_uso,
+                'num_ambiente' => $request->num_ambiente,
+                'medidas' => $request->medidas,
+                'color' => $request->color,
+                'id_persona' => $request->id_persona,
+                'idpersona_otro' => $request->idpersona_otro,
+                'id_area' => $request->id_oficina,
+                //'id_usuario' => Auth::user()->id,
+                'id_estado' => $request->id_estado,
+                'observaciones' => $request->observaciones,
+            ];
+        } else {
+            $data = [
+
+                'estado_uso' => $request->estado_uso,
+                'num_ambiente' => $request->num_ambiente,
+                'medidas' => $request->medidas,
+                'color' => $request->color,
+                'id_persona' => $request->id_persona,
+                'idpersona_otro' => $request->idpersona_otro,
+                'id_area' => $request->id_oficina,
+                //'id_usuario' => Auth::user()->id,
+                'id_estado' => $request->id_estado,
+                'observaciones' => $request->observaciones,
+            ];
+        }
+
+
+
 
         $res = Inventario::where('id', $request->id)
             ->update($data);

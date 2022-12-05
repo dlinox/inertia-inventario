@@ -1,17 +1,8 @@
 <template>
     <div class="my-3">
-        <v-card
-            :loading="loadin_form"
-            :disabled="loadin_form"
-            class="mx-auto bg-transparent"
-            max-width="850"
-            tile
-        >
+        <v-card :loading="loadin_form" :disabled="loadin_form" class="mx-auto bg-transparent" max-width="850" tile>
             <v-overlay absolute :value="loadin_form">
-                <v-progress-circular
-                    indeterminate
-                    size="64"
-                ></v-progress-circular>
+                <v-progress-circular indeterminate size="64"></v-progress-circular>
             </v-overlay>
 
             <v-container>
@@ -20,39 +11,17 @@
                         <strong> REGISTRO DE INVENTARIOS</strong>
                     </v-col>
 
-                    <v-col
-                        cols="12"
-                        sm="auto"
-                        class="py-2 py-md-3 d-flex py-2 py-md-3"
-                    >
-                        <RegistrosComponent
-                            v-if="!is_new"
-                            @setData="data_emit = $event"
-                        />
+                    <v-col cols="12" sm="auto" class="py-2 py-md-3 d-flex py-2 py-md-3">
+                        <RegistrosComponent v-if="!is_new" @setData="data_emit = $event" />
                     </v-col>
 
-                    <v-col
-                        cols="12"
-                        sm="auto"
-                        class="d-flex ml-auto py-2 py-md-3"
-                    >
-                        <AreasAsignadasComponent
-                            v-if="!is_new"
-                            @setData="data_emit = $event"
-                            :areas="mis_areas"
-                        />
+                    <v-col cols="12" sm="auto" class="d-flex ml-auto py-2 py-md-3">
+                        <AreasAsignadasComponent v-if="!is_new" @setData="data_emit = $event" :areas="mis_areas" />
                     </v-col>
 
                     <template v-if="is_new">
                         <v-col cols="12 my-2">
-                            <v-btn
-                                class="order-sm-4"
-                                dark
-                                outlined
-                                block
-                                color="red"
-                                @click="is_new = false"
-                            >
+                            <v-btn class="order-sm-4" dark outlined block color="red" @click="is_new = false">
                                 <v-icon left> mdi-close </v-icon>
                                 Cancelar
                             </v-btn>
@@ -61,29 +30,14 @@
 
                     <template v-else>
                         <v-col cols="12 my-2">
-                            <div
-                                class="d-flex flex-wrap align-items-center justify-space-between"
-                            >
-                                <ScannerBarComponent
-                                    @setData="data_emit = $event"
-                                />
+                            <div class="d-flex flex-wrap align-items-center justify-space-between">
+                                <ScannerBarComponent @setData="data_emit = $event" />
 
-                                <SearchCodeComponente
-                                    class="order-last order-sm-2"
-                                    @setData="data_emit = $event"
-                                />
+                                <SearchCodeComponente class="order-last order-sm-2" @setData="data_emit = $event" />
 
-                                <BusquedaAvanzadaComponent
-                                    @setData="data_emit = $event"
-                                />
+                                <BusquedaAvanzadaComponent @setData="data_emit = $event" />
 
-                                <v-btn
-                                    class="order-sm-4"
-                                    dark
-                                    outlined
-                                    color="primary"
-                                    @click="is_new = true"
-                                >
+                                <v-btn class="order-sm-4" dark outlined color="primary" @click="is_new = true">
                                     <v-icon>mdi-plus</v-icon>
                                 </v-btn>
                             </div>
@@ -94,25 +48,16 @@
                 <v-form ref="form" v-model="form_valid" lazy-validation>
                     <v-row class="" align="center">
                         <v-col cols="12" class="pb-4 pt-0">
-                            <template
-                                v-if="data_emit.registrado && !form_data.estado"
-                            >
-                                <v-alert
-                                    border="left"
-                                    color="blue-grey lighten-3"
-                                >
+                            <template v-if="data_emit.registrado && !form_data.estado">
+                                <v-alert border="left" color="blue-grey lighten-3">
                                     Elemento bloqueado, no se puede hacer
                                     modificaiones.
                                 </v-alert>
                             </template>
 
                             <template v-else>
-                                <v-alert
-                                    v-if="data_emit.registrado"
-                                    type="warning"
-                                    border="left"
-                                    color="blue-grey lighten-3"
-                                >
+                                <v-alert v-if="data_emit.registrado" type="warning" border="left"
+                                    color="blue-grey lighten-3">
                                     <small>
                                         <b>
                                             El elemento ya se encuentra
@@ -122,9 +67,7 @@
 
                                     <v-divider class="my-3"> </v-divider>
 
-                                    <template
-                                        v-if="form_data.id_usuario != user.id"
-                                    >
+                                    <template v-if="form_data.id_usuario != user.id">
                                         <small> ID - [COREELATIVO]</small>
                                         <h5>
                                             <v-icon>mdi-circle-small</v-icon>
@@ -134,8 +77,7 @@
                                         </h5>
                                         <small>INVENTARIADO POR:</small>
                                         <h5>
-                                            <v-icon class="mb-1" small left
-                                                >mdi-account-badge
+                                            <v-icon class="mb-1" small left>mdi-account-badge
                                             </v-icon>
                                             {{ form_data.nombres }}
                                             {{ form_data.apellidos }}
@@ -144,30 +86,25 @@
 
                                     <template v-else>
                                         <template v-if="is_edit">
-                                            <v-btn
-                                                color="red"
-                                                @click="editInventario(false)"
-                                            >
+                                            <v-btn small color="red" @click="editInventario(false)">
                                                 Cancelar
                                             </v-btn>
                                         </template>
 
                                         <template v-else>
-                                            <v-btn
-                                                color="secondary"
-                                                @click="editInventario(true)"
-                                            >
+                                            <v-btn small color="secondary" @click="editInventario(true)">
                                                 Editar
                                             </v-btn>
 
-                                            <v-btn
-                                                color="dark"
-                                                @click="
-                                                    dialog_delete =
-                                                        !dialog_delete
-                                                "
-                                            >
+                                            <v-btn small color="dark" @click="
+                                                dialog_delete =
+                                                !dialog_delete
+                                            ">
                                                 Eliminar
+                                            </v-btn>
+
+                                            <v-btn small color="dark" outlined @click="resetAll()">
+                                                Cancelar
                                             </v-btn>
                                         </template>
                                     </template>
@@ -176,119 +113,54 @@
                         </v-col>
 
                         <v-col cols="12" sm="4" md="4" class="pb-1 pt-0">
-                            <v-text-field
-                                class="mt-0 pt-0"
-                                dense
-                                label="Codigo"
-                                outlined
-                                v-model="form_data.codigo"
-                                :disabled="!is_new"
-                            ></v-text-field>
+                            <v-text-field class="mt-0 pt-0" dense label="Codigo" outlined v-model="form_data.codigo"
+                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="8" md="8" class="pb-1 pt-0">
-                            <v-text-field
-                                class="mt-0 pt-0"
-                                dense
-                                label="Descripción"
-                                outlined
-                                v-model="form_data.descripcion"
-                                :rules="nameRules"
-                                :disabled="!is_new"
-                                required
-                            ></v-text-field>
+                            <v-text-field class="mt-0 pt-0" dense label="Descripción" outlined
+                                v-model="form_data.descripcion" :rules="nameRules" :disabled="(is_new || disable_input_new) ? false : true"
+                                required></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
-                            <v-text-field
-                                class="mt-0 pt-0"
-                                dense
-                                label="Marca"
-                                outlined
-                                v-model="form_data.marca"
-                                :disabled="!is_new"
-                            ></v-text-field>
+                            <v-text-field class="mt-0 pt-0" dense label="Marca" outlined v-model="form_data.marca"
+                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
-                            <v-text-field
-                                class="mt-0 pt-0"
-                                dense
-                                label="Modelo"
-                                outlined
-                                v-model="form_data.modelo"
-                                :disabled="!is_new"
-                            ></v-text-field>
+                            <v-text-field class="mt-0 pt-0" dense label="Modelo" outlined v-model="form_data.modelo"
+                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
-                            <v-text-field
-                                class="mt-0 pt-0"
-                                dense
-                                label="Serie"
-                                outlined
-                                v-model="form_data.nro_serie"
-                                :disabled="!is_new"
-                            ></v-text-field>
+                            <v-text-field class="mt-0 pt-0" dense label="Serie" outlined v-model="form_data.nro_serie"
+                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
                         </v-col>
 
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
-                            <v-text-field
-                                class="mt-0 pt-0"
-                                dense
-                                label="Color"
-                                outlined
-                                v-model="form_data.color"
-                                :disabled="disable_input"
-                            ></v-text-field>
+                            <v-text-field class="mt-0 pt-0" dense label="Color" outlined v-model="form_data.color"
+                                :disabled="disable_input"></v-text-field>
                         </v-col>
 
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
-                            <v-text-field
-                                class="mt-0 pt-0"
-                                dense
-                                label="Medidas"
-                                outlined
-                                persistent-hint
-                                hint="Largo x Ancho x Alto"
-                                v-model="form_data.medidas"
-                                :disabled="disable_input"
-                            ></v-text-field>
+                            <v-text-field class="mt-0 pt-0" dense label="Medidas" outlined persistent-hint
+                                hint="Largo x Ancho x Alto" v-model="form_data.medidas"
+                                :disabled="disable_input"></v-text-field>
                         </v-col>
 
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
-                            <SimpleAutoCompleteInput
-                                v-model="form_data.id_estado"
-                                :items="estados"
-                                label="Estado"
-                                item_text="nombre"
-                                item_value="id"
-                                :rules="nameRules"
-                                :disabled="disable_input"
-                            />
+                            <SimpleAutoCompleteInput v-model="form_data.id_estado" :items="estados" label="Estado"
+                                item_text="nombre" item_value="id" :rules="nameRules" :disabled="disable_input" />
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0 d-flex">
-                            <v-autocomplete
-                                v-model="form_data.id_persona"
-                                clearable
-                                class="mt-0 pt-0"
-                                dense
-                                label="Responsable"
-                                outlined
-                                :items="personas"
-                                :filter="personasFilter"
-                                item-value="id"
-                                :search-input.sync="personas_search"
-                                :loading="loading_search_persona"
-                                :rules="nameRules"
-                                required
-                                :disabled="disable_input"
-                            >
+                            <v-autocomplete v-model="form_data.id_persona" clearable class="mt-0 pt-0" dense
+                                label="Responsable" outlined :items="personas" :filter="personasFilter" item-value="id"
+                                :search-input.sync="personas_search" :loading="loading_search_persona"
+                                :rules="nameRules" required :disabled="disable_input">
                                 <template v-slot:no-data>
                                     <v-list-item>
                                         <v-list-item-title>
-                                            <template
-                                                v-if="
-                                                    personas_search?.length > 2
-                                                "
-                                            >
+                                            <template v-if="
+                                                personas_search?.length > 2
+                                            ">
                                                 Datos no encontrados para
                                                 <strong>
                                                     {{ personas_search }}
@@ -308,9 +180,7 @@
 
                                 <template v-slot:item="data">
                                     <v-list-item-content>
-                                        <v-list-item-title
-                                            v-html="data.item.dni"
-                                        >
+                                        <v-list-item-title v-html="data.item.dni">
                                         </v-list-item-title>
                                         <v-list-item-subtitle>
                                             {{ data.item.nombres }}
@@ -321,55 +191,30 @@
                                 </template>
                             </v-autocomplete>
 
-                            <template
-                                v-if="
-                                    !show_persona_otro &&
-                                    !form_data.idpersona_otro
-                                "
-                            >
-                                <v-btn
-                                    :disabled="disable_input"
-                                    class="ml-2"
-                                    dark
-                                    color="primary"
-                                    @click="
-                                        show_persona_otro = !show_persona_otro
-                                    "
-                                >
+                            <template v-if="
+                                !show_persona_otro &&
+                                !form_data.idpersona_otro
+                            ">
+                                <v-btn :disabled="disable_input" class="ml-2" dark color="primary" @click="
+                                    show_persona_otro = !show_persona_otro
+                                ">
                                     <v-icon>mdi-account-plus</v-icon>
                                 </v-btn>
                             </template>
                         </v-col>
 
-                        <v-col
-                            v-if="show_persona_otro || form_data.idpersona_otro"
-                            cols="12"
-                            class="pb-1 pt-0 d-flex"
-                        >
-                            <v-autocomplete
-                                v-model="form_data.idpersona_otro"
-                                clearable
-                                class="mt-0 pt-0"
-                                dense
-                                label="2° Responsable"
-                                outlined
-                                :items="personas_otro"
-                                :filter="personasFilter"
-                                item-value="id"
-                                :search-input.sync="personas_search_otro"
-                                :loading="loading_search_persona_otro"
-                                :rules="nameRules"
-                                required
-                                :disabled="disable_input"
-                            >
+                        <v-col v-if="show_persona_otro || form_data.idpersona_otro" cols="12" class="pb-1 pt-0 d-flex">
+                            <v-autocomplete v-model="form_data.idpersona_otro" clearable class="mt-0 pt-0" dense
+                                label="2° Responsable" outlined :items="personas_otro" :filter="personasFilter"
+                                item-value="id" :search-input.sync="personas_search_otro"
+                                :loading="loading_search_persona_otro" :rules="nameRules" required
+                                :disabled="disable_input">
                                 <template v-slot:no-data>
                                     <v-list-item>
                                         <v-list-item-title>
-                                            <template
-                                                v-if="
-                                                    personas_search?.length > 2
-                                                "
-                                            >
+                                            <template v-if="
+                                                personas_search?.length > 2
+                                            ">
                                                 Datos no encontrados para
                                                 <strong>
                                                     {{ personas_search }}
@@ -388,9 +233,7 @@
                                 </template>
                                 <template v-slot:item="data">
                                     <v-list-item-content>
-                                        <v-list-item-title
-                                            v-html="data.item.dni"
-                                        >
+                                        <v-list-item-title v-html="data.item.dni">
                                         </v-list-item-title>
                                         <v-list-item-subtitle>
                                             {{ data.item.nombres }}
@@ -401,95 +244,43 @@
                                 </template>
                             </v-autocomplete>
 
-                            <v-btn
-                                class="ml-2"
-                                dark
-                                color="red"
-                                @click="show_persona_otro = !show_persona_otro"
-                                :disabled="disable_input"
-                            >
+                            <v-btn class="ml-2" dark color="red" @click="show_persona_otro = !show_persona_otro"
+                                :disabled="disable_input">
                                 <v-icon dark>mdi-account-minus</v-icon>
                             </v-btn>
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
-                            <SelectOficina
-                                :disabled="disable_input"
-                                :user="user.id"
-                                v-model="form_data.id_oficina"
-                                :rules="nameRules"
-                            />
+                            <SelectOficina :disabled="disable_input" :user="user.id" v-model="form_data.id_oficina"
+                                :rules="nameRules" />
                         </v-col>
 
                         <v-col cols="6" class="pb-1 pt-0">
-                            <v-combobox
-                                v-model="form_data.estado_uso"
-                                :items="estados_uso"
-                                label="Situación"
-                                :disabled="disable_input"
-                                outlined
-                                dense
-                                :rules="nameRules"
-                            ></v-combobox>
+                            <v-combobox v-model="form_data.estado_uso" :items="estados_uso" label="Situación"
+                                :disabled="disable_input" outlined dense :rules="nameRules"></v-combobox>
                         </v-col>
 
                         <v-col cols="6" class="pb-1 pt-0">
-                            <v-text-field
-                                class="mt-0 pt-0"
-                                dense
-                                label="N° Ambiente"
-                                outlined
-                                v-model="form_data.num_ambiente"
-                                :disabled="disable_input"
-                            ></v-text-field>
+                            <v-text-field class="mt-0 pt-0" dense label="N° Ambiente" outlined
+                                v-model="form_data.num_ambiente" :disabled="disable_input"></v-text-field>
                         </v-col>
 
                         <v-col cols="12" class="pb-1 pt-0">
-                            <v-textarea
-                                :disabled="disable_input"
-                                class="mt-0 pt-0"
-                                label="Observación"
-                                dense
-                                outlined
-                                rows="2"
-                                v-model="form_data.observaciones"
-                            ></v-textarea>
+                            <v-textarea :disabled="disable_input" class="mt-0 pt-0" label="Observación" dense outlined
+                                rows="2" v-model="form_data.observaciones"></v-textarea>
                         </v-col>
 
                         <v-col v-if="file_foto" cols="12" class="pb-1 pt-0">
-                            <v-file-input
-                                label="Foto referencial"
-                                accept="image/png, image/jpeg, image/bmp"
-                                v-model="foto_ref"
-                                :disabled="disable_input"
-                                dense
-                                outlined
-                                counter
-                                show-size
-                            ></v-file-input>
+                            <v-file-input label="Foto referencial" accept="image/png, image/jpeg, image/bmp"
+                                v-model="foto_ref" :disabled="disable_input" dense outlined counter
+                                show-size></v-file-input>
                         </v-col>
 
-                        <v-col
-                            v-if="form_data.foto_ref"
-                            cols="12"
-                            class="pb-1 pt-0"
-                        >
-                            <v-img
-                                :src="form_data.foto_ref"
-                                height="250"
-                                contain
-                                class="grey darken-4"
-                            ></v-img
-                        ></v-col>
+                        <v-col v-if="form_data.foto_ref" cols="12" class="pb-1 pt-0">
+                            <v-img :src="form_data.foto_ref" height="250" contain class="grey darken-4"></v-img></v-col>
 
                         <v-col cols="12" class="pb-3 pt-0">
-                            <v-btn
-                                :disabled="disable_input"
-                                block
-                                class="mr-2"
-                                color="primary"
-                                @click="Guardar"
-                            >
+                            <v-btn :disabled="disable_input" block class="mr-2" color="primary" @click="Guardar">
                                 <v-icon left>mdi-content-save-check</v-icon>
                                 Guardar
                             </v-btn>
@@ -509,33 +300,19 @@
                     <v-divider></v-divider>
 
                     <div class="d-flex justify-center mt-3">
-                        <v-btn
-                            color="red darken-1"
-                            text
-                            dense
-                            @click="dialog_delete = false"
-                        >
+                        <v-btn color="red darken-1" text dense @click="dialog_delete = false">
                             Cancelar
                         </v-btn>
 
-                        <v-btn
-                            color="green"
-                            text
-                            dense
-                            @click="deleteInventario()"
-                        >
+                        <v-btn color="green" text dense @click="deleteInventario()">
                             Aceptar
                         </v-btn>
                     </div>
                 </div>
             </v-card>
         </v-dialog>
-        <AlertComponent
-            :show_alert="show_alert"
-            :msg_alert="msg_alert"
-            :type_alert="type_alert"
-            @setAlert="show_alert = $event"
-        />
+        <AlertComponent :show_alert="show_alert" :msg_alert="msg_alert" :type_alert="type_alert"
+            @setAlert="show_alert = $event" />
 
         <v-dialog persistent v-model="dialog_corr" max-width="320">
             <v-card>
@@ -549,11 +326,7 @@
                     <v-divider></v-divider>
 
                     <div class="d-flex justify-center mt-3">
-                        <v-btn
-                            color="primary"
-                            dense
-                            @click="dialog_corr = !dialog_corr"
-                        >
+                        <v-btn color="primary" dense @click="dialog_corr = !dialog_corr">
                             Aceptar
                         </v-btn>
                     </div>
@@ -562,15 +335,7 @@
         </v-dialog>
 
         <v-fab-transition>
-            <v-btn
-                small
-                dark
-                absolute
-                top
-                left
-                fab
-                @click="file_foto = !file_foto"
-            >
+            <v-btn small dark absolute top left fab @click="file_foto = !file_foto">
                 <template v-if="file_foto">
                     <v-icon small>mdi-camera</v-icon>
                 </template>
@@ -619,6 +384,7 @@ export default {
         form_valid: true,
         loadin_form: false,
         disable_input: false,
+        disable_input_new: false,
 
         areas_by_oficina: [],
         personas: [],
@@ -674,7 +440,7 @@ export default {
                 } else {
                     await this.createInventario();
                 }
-                this.resetAll();
+                
                 this.loadin_form = false;
             }
         },
@@ -689,18 +455,24 @@ export default {
                 await this.guardarFoto(res.data.id);
             }
 
-            this.shwModalCorrelativo(res.data);
+            if (res.data.estado){
+                this.shwModalCorrelativo(res.data);
+                this.resetAll();
+            }
 
             this.setDataAlert(res.data);
         },
         async updateInventario() {
-            
+
             let res = await axios.post(
                 "/inventario/update-inventario",
                 this.form_data
             );
             if (res.data.estado && this.file_foto) {
                 await this.guardarFoto(res.data.id);
+            }
+            if (res.data.estado){
+                this.resetAll();
             }
             this.setDataAlert(res.data);
         },
@@ -746,11 +518,16 @@ export default {
         },
 
         resetAll() {
+            this.resetForm();
+            this.data_emit = false;
+        },
+        resetForm() {
             this.form_data = {};
             this.$refs.form.reset();
             this.is_edit = false;
-            this.data_emit = false;
             this.foto_ref = null;
+            this.disable_input_new = false;
+            this.disable_input = false;
         },
 
         async getDataBien(item) {
@@ -774,6 +551,12 @@ export default {
         },
 
         editInventario(val) {
+
+            //console.log(this.form_data);
+            if (this.form_data.idbienk == null) {
+                this.disable_input_new = val;
+            }
+
             this.is_edit = val;
             this.disable_input = !val;
         },
@@ -782,14 +565,13 @@ export default {
     watch: {
         async data_emit(item) {
             if (!item) return;
-          
-
+            this.resetForm();
             this.loadin_form = true;
             if (item.is_inventario) {
-                console.log("solo invetario");
+                console.log("solo inventario");
                 await this.getDataInventario(item);
             } else {
-                console.log("bien y invetario");
+                console.log("bien y inventario");
                 await this.getDataBien(item);
             }
             this.disable_input = item.registrado;
