@@ -95,7 +95,7 @@
         <tr>
             <th rowspan="2" align="center" style="border: solid 1px black; background: #cdcdcd4D; stroke:#000000; ">
                 <div><span style="font-size: 9pt; font-weight:bold;">N° de</span> </div><div> <span style="font-size: 9pt; font-weight:bold;">Orden</span> </div></th>
-            <th colspan="11" style="border: solid 1px black; background: #cdcdcd4D;">
+            <th colspan="12" style="border: solid 1px black; background: #cdcdcd4D;">
                 <span style="font-size: 9pt; font-weight:bold;">DESCRIPCION</span>
                 
             </th>
@@ -109,8 +109,9 @@
             <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Color</span> </th>
             <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Serie</span> </th>
             <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Dimensiones</span> </th>
-            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Situación</span> </th>
+            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Sit</span> </th>
             <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Est</span> </th>
+            <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Item</span> </th>
             <th style="border: solid 1px black; background: #cdcdcd4D;"> <span style="font-size: 9pt; font-weight:bold;">Observación</span> </th>
         </tr>
         </thead>
@@ -162,6 +163,8 @@
                 <span v-if="bien.id_estado == 4" style="font-size: 8pt;">M</span>
                 <span v-if="bien.id_estado == 5" style="font-size: 8pt;">Y</span>
             </td>
+            <td align="center" v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;">{{ bien.corr_area }} - {{ bien.corr_num }} </span></td>
+            <td align="center" v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{ bien.corr_area }} - {{ bien.corr_num }}</span></td>
 
             <td v-if="bien.tipo === 'ACTIVO FIJO'" style="border: solid 1px black;"><span style="font-weight: bold; font-size: 8pt;">{{ bien.observaciones }}</span></td>
             <td v-else style="border: solid 1px black;"><span style="font-size: 8pt;">{{ bien.observaciones }}</span></td>
@@ -169,7 +172,7 @@
 
         </tbody>
          <tr>
-            <td  style="border: solid 1px black;" colspan="12">
+            <td  style="border: solid 1px black;" colspan="13">
             <div style="padding-top: 15px; padding-bottom: 25px;">
                 <div>
                     <span style="font-size: 9pt;">Inventariador(es):</span>
@@ -181,12 +184,12 @@
             </td>
         </tr>
         <tr>
-            <td colspan="12">
+            <td colspan="13">
                 <span style="font-size: 9pt;">Fecha y Hora: {{datos.lfecha}} {{datos.lhour}}</span>
             </td>
         </tr>
         <tr>
-            <td colspan="12">
+            <td colspan="13">
                 <div>
                     <span style="font-size:9pt; letter-spacing: -0.1pt; ">(1) Uso (U). Desuso(D)</span>
                 </div>

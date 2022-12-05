@@ -14,6 +14,9 @@
             font-weight: 400;
             font-family: 'Ubuntu', sans-serif;
         }
+        .page-break {
+	        page-break-after: always;
+	    }
     </style>
 </head>
 
@@ -170,6 +173,7 @@
 
             </tr>
         </table>
+        <span></span>
     </footer>
 
     {{-- <div style="height: 10px">
@@ -299,7 +303,7 @@
             <td  style="border: solid 1px black;" colspan="13">
             <div style="padding-top: 15px; padding-bottom: 25px;">
                 <div>
-                    <span style="font-size: 9pt;"">Inventariador(es):</span>
+                    <span style="font-size: 9pt;">Inventariador(es):</span>
                 </div>
                 <div>
                     @foreach ($inventaristas as $a)<div style="font-size: 9pt;">{{ $a->nombres }} {{ $a->apellidos }} </div> @endforeach
@@ -332,14 +336,17 @@
     <div style="">
 
 
-	<script type="text/php">
-        if ( isset($pdf) ) {
-            $pdf->page_script('
-                $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-                $pdf->text(775, 20, "Pág $PAGE_NUM / $PAGE_COUNT", $font, 10);
-            ');
-        }
+
+        <script type="text/php">
+            if ( isset($pdf) ) {
+                $pdf->page_script('
+                    $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+                    $pdf->text(760, 25, "Pág $PAGE_NUM de $PAGE_COUNT", $font, 10);
+                ');
+            }
+
     	</script>
+    
 </body>
 
 </html>
