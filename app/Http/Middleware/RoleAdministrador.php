@@ -23,6 +23,8 @@ class RoleAdministrador
             return $next($request);
         } elseif (auth()->user()->getRoleNames()[0] == 'Inventario') {
             return Redirect::route('inventario.index');
+        } elseif (auth()->user()->getRoleNames()[0] == 'Facilitador') {
+            return Redirect::route('facilitador.index');
         }
         //return redirect(RouteServiceProvider::HOME);
     }

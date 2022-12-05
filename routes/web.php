@@ -8,6 +8,7 @@ use App\Http\Controllers\AreasController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\FacilitadorController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OficinaController;
@@ -267,11 +268,21 @@ Route::get('/oficinex', [OficinaController::class, 'getoficinex'])
 ->name('get-oficinex');
 
 
-Route::middleware(['auth'])->name('facilitador.')->prefix('facilitador')->group(function () {
+Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('facilitador')->group(function () {
+
+    
+    Route::get('/', [FacilitadorController::class, 'index'])
+        ->name('index');
+
 
     Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
         Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
     });
+
+    Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
+        Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
+    });
+
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
         Route::get('/', 'indexFacilitador')->name('inventario-facilitador');
     });

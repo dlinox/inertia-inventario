@@ -24,5 +24,10 @@ class RoleInventariador
         } elseif (auth()->user()->getRoleNames()[0] == 'Inventario') {
             return $next($request);
         }
+
+        elseif (auth()->user()->getRoleNames()[0] == 'Facilitador') {
+            return Redirect::route('facilitador.index');
+        }
+        
     }
 }

@@ -28,6 +28,8 @@ class RedirectIfAuthenticated
                     return Redirect::route('admin.index');
                 } elseif (Auth::user()->getRoleNames()[0] == 'Inventario') {
                     return Redirect::route('inventario.index');
+                } elseif (Auth::user()->getRoleNames()[0] == 'Facilitador') {
+                    return Redirect::route('facilitador.index');
                 }
                 //return redirect(RouteServiceProvider::HOME);
             }
