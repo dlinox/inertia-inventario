@@ -21,7 +21,7 @@
                     dense
                 ></v-text-field>
             </v-col>
-            <v-col sx="6" xs="6" sm="6" md="4" lg="4" style="" class="p-0" >
+            <v-col sx="12" sm="12"  md="4" lg="4" style="" class="p-0" >
                 <v-autocomplete              
                     v-model="user"
                     clearable
