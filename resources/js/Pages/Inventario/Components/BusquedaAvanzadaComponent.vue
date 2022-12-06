@@ -65,7 +65,7 @@
                             <thead class="grey lighten-3">
                                 <tr>
                                     <th class="text-left">Estado</th>
-                                    <th class="text-left">Reg. Anterior</th>
+                                    <th class="text-left">Cod. Ubicaión</th>
                                     <th class="text-left">Codigo</th>
                                     <th class="text-left">Descripcion</th>
                                 </tr>
@@ -95,7 +95,7 @@
                                         </v-list-item-avatar>
                                     </td>
                                     <td>
-                                        {{ item.idreg_anterior }}
+                                        {{ item.cod_ubicacion }}
                                     </td>
                                     <td>{{ item.codigo }}</td>
                                     <td>{{ item.descripcion }}</td>

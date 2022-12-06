@@ -185,7 +185,7 @@ class InventarioController extends Controller
     public function getBienes(Request $request)
     {
 
-        $res = BienK::select('bienk.id', 'bienk.codigo',  'bienk.descripcion', 'bienk.registrado', 'bienk.idreg_anterior')
+        $res = BienK::select('bienk.id', 'bienk.codigo',  'bienk.descripcion', 'bienk.registrado', 'bienk.idreg_anterior', 'bienk.cod_ubicacion')
             ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area') //iduoper
             ->where(function ($query) use ($request) {
 
