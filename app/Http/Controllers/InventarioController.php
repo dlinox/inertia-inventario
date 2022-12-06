@@ -654,11 +654,14 @@ class InventarioController extends Controller
         if ($request->oficina) array_push($query_where, [DB::raw('substr(id_area, 1, 2)'), '=', $request->oficina]);
         if ($request->dependencia) array_push($query_where, [DB::raw('substr(id_area, 4, 2)'), '=', $request->dependencia]);
         if ($request->usuario) array_push($query_where, [DB::raw('id_usuario'), '=', $request->usuario]);
-        //if ($request->fecha) array_push($query_where, [DB::raw('date(created_at)'), '=', $request->fecha]);
+        if ($request->fecha) array_push($query_where, [DB::raw('date(created_at)'), '=', $request->fecha]);
         //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
         $res = Inventario::select(
-            'inventario.*', DB::raw('date(created_at) as date'), DB::raw('time(created_at) as hora'),
+            'inventario.*','oficina.dependencia as dependencia','oficina.nombre as oficina','users.nombres as unombre', 'users.apellidos as uapellidos','persona.dni as pdni','persona.nombres as pnombre','persona.paterno','persona.materno'
         )
+            ->join('oficina', 'inventario.id_area', '=', 'oficina.iduoper')
+            ->join('users', 'inventario.id_usuario', '=', 'users.id')
+            ->join('persona', 'inventario.id_persona', '=', 'persona.id')
             ->where($query_where)
             ->where(function ($query) use ($request) {
                 return $query
@@ -666,7 +669,7 @@ class InventarioController extends Controller
                     ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%')
                     ->orderBy('id', 'DESC');
             })
-            ->paginate(3000);
+            ->paginate(300);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
