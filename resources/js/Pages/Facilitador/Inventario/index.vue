@@ -59,7 +59,7 @@
 
         </v-row>
 
-    <card>
+    <v-card>
         <v-card-title class="pa-0 py-3 pb-5">
       
             <v-spacer></v-spacer>   
@@ -203,7 +203,7 @@
             </template>
 
         </v-data-table>
-    </card>
+    </v-card>
 
                 <v-dialog 
                     max-width="450"
