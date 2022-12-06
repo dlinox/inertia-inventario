@@ -672,9 +672,9 @@ class InventarioController extends Controller
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('inventario.codigo', 'LIKE', '%' . $request->term . '%')
-                    ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%')
-                    ->orderBy('id', 'DESC');
-            })
+                    ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
+                    
+            })->orderBy('inventario.id', 'DESC')
             ->paginate(300);
 
         $this->response['estado'] = true;
