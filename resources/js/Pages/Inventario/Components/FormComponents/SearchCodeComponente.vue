@@ -4,10 +4,7 @@
         v-model="codigo_search"
         clearable
         dense
-        :label="
-            'Buscar Codigo' +
-            (codigos_res.length > 1 ? ' - ' + codigos_res.length : '')
-        "
+        label="Buscar Codigo"
         outlined
         :items="codigos_res"
         item-text="codigo"
@@ -67,7 +64,7 @@ export default {
         async codigos_search(val) {
             if (!val) return;
             if (val == this.codigo_search) return;
-            if (val.length < 3 && val.length > 12) return;
+            if (val.length < 3) return;
             this.codigos_search_loading = true;
             let res = await axios.get("/autocomplete/bienes/" + val);
             this.codigos_res = res.data.datos;
