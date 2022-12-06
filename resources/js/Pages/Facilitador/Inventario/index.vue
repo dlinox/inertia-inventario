@@ -127,7 +127,7 @@
             :headers="headBienes"
             :items="bienes"
             :search="searchbienes"
-            :itemsPerPage="10"
+            :itemsPerPage="8"
             :mobile-breakpoint="10"
             >
             <template v-slot:item.corr_num="{ item }">
@@ -180,15 +180,6 @@
                                 </v-list-item-icon>
                                 <v-list-item-content>
                                     <span style="margin-left: 10px;" >Ver</span>
-                                </v-list-item-content>
-                            </v-list-item>
-
-                            <v-list-item @click="eliminar(item)">
-                                <v-list-item-icon  style="margin-right: -10px;" >
-                                    <v-icon color="primary" size="1.1rem">mdi-delete</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <span style="margin-left: 10px;" >Eliminar</span>
                                 </v-list-item-content>
                             </v-list-item>
                             </v-list-item-group>
@@ -269,7 +260,7 @@
     </v-container>
 </template>
 <script>
-import Layout from "@/Layouts/AdminLayout";
+import Layout from "@/Layouts/FacilitadorLayout";
 export default {
     metaInfo: { title: "Dashboard" },
     layout: Layout,
@@ -299,32 +290,19 @@ export default {
     }),
     methods: {
         async getUsuarios(){
-            let res = await axios.get("/admin/inventario/getUsuarios");
+            let res = await axios.get("/facilitador/inventario/getUsuarios");
             this.usuarios = res.data.datos;
             return res.data.datos.data;
         },
 
         async getBienes(term = "", page = 1) {
             let res = await axios.post(
-                "/admin/inventario/get-bienes-all?page=" + page,
+                "/facilitador/inventario/get-bienes-all?page=" + page,
                 { term: term, oficina:this.ofi, dependencia: this.dep, usuario: this.user, fecha: this.date }
             );
             this.bienes = res.data.datos.data;
         },
 
-        async eliminar(item){
-            await axios.delete(`/admin/inventario/eliminarbienadmin/${item.id}`)
-            .then(response => {
-                this.text = "Documento eliminado"
-                this.snackbar = true
-                this.getBienes()
-            }, error => {
-                if (error.response.status === 401) {
-                    this.dialogError = true;
-                    return error;
-                }
-            });
-        },
         customFilter(item, queryText, itemText) {
             const nombres = item.nombres.toLowerCase();
             const apellidos = item.apellidos.toLowerCase();

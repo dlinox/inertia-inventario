@@ -1,13 +1,14 @@
 <template>
     <div>
-       facilitador
+       <Inventario/>
     </div>
 </template>
 
 <script>
 import Layout from "@/Layouts/FacilitadorLayout";
+import Inventario from './Inventario/'
 export default {
-    components:{},
+    components:{Inventario},
     metaInfo: { title: "Dashboard - facilitador" },
     layout: Layout,
     data: () => ({

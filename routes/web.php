@@ -274,7 +274,6 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
     Route::get('/', [FacilitadorController::class, 'index'])
         ->name('index');
 
-
     Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
         Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
     });
@@ -285,25 +284,17 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
 
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
         Route::get('/', 'indexFacilitador')->name('inventario-facilitador');
+        Route::post('/get-bienes-all', 'getBienesInv')->name('get-bienes-all');
+        Route::get('/getUsuarios', 'getUsuariosForInventario')->name('getUsuariosForInventario');
     });
 
-    Route::controller(OficinaController::class)->name('oficina.')->prefix('oficina')->group(function () {
-        Route::get('/get-oficinas', 'getOficinasFacilitador')->name('get-oficinas');
+    Route::controller(GrupoController::class)->name('inventario.')->prefix('inventario')->group(function () {
+
+
+        Route::get('/get-grupo', 'getGrupoInv')->name('get-grupo-inv');
     });
 
-    Route::controller(AreasController::class)->name('area.')->prefix('area')->group(function () {
-        Route::get('/get-areas', 'getAreas')->name('get-areas');
-        Route::get('/get-areas-oficina/{id}', 'getAreasByOficinaFacilitador')->name('getAreasByOficinaFacilitador');
-    });
 
-    Route::controller(PersonasController::class)->name('persona.')->prefix('persona')->group(function () {
-        Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
-    });
-
-    Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
-        Route::post('/get-bienes-all', 'getBienesAll')->name('get-bienes-all');
-        Route::post('/get-bienes-area', 'getBienesAllbyArea')->name('get-bienes-area');
-    });
 });
 
 

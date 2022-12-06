@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Grupo;
+use App\Models\Oficina;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -133,5 +134,16 @@ class GrupoController extends Controller
     public function indexFacilitador()
     {
         return Inertia::render('Facilitador/Grupo/');
+    }
+
+    public function getGrupoInv(){
+
+        $oficinas = DB::select('SELECT users.id,users.nombres, users.apellidos, SUBSTRING(grupo.id_oficina, 1,2) AS dependencia
+        FROM grupo
+        JOIN users ON  grupo.id_usuario = users.id
+        GROUP by users.id ,  SUBSTRING(grupo.id_oficina, 1,2);');
+
+        $this->response['datos'] = $oficinas;
+        return response()->json($this->response, 200);
     }
 }
