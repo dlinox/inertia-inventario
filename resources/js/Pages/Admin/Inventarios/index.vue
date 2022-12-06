@@ -1,7 +1,7 @@
 <template>
 
     <v-container>
-        <pre>{{ bienes }}</pre>
+        <!-- <pre>{{ bienes }}</pre> -->
         <v-row class="inputs" style="margin-bottom: -30px;;">
             <v-col sx="12" sm="12" md="4" lg="4" style="mb-0 pt-0" class="p-0" >
                 <v-text-field
