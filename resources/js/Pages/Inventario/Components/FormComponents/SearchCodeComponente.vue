@@ -38,6 +38,18 @@
                 </v-list-item-title>
             </v-list-item>
         </template>
+
+        <!-- <template v-slot:append-outer>
+          <v-slide-x-reverse-transition
+            mode="out-in"
+          >
+            <v-icon
+              :color="isEditing ? 'success' : 'info'"
+              @click="isEditing = !isEditing"
+              v-text="isEditing ? 'mdi-check-outline' : 'mdi-circle-edit-outline'"
+            ></v-icon>
+          </v-slide-x-reverse-transition>
+        </template>-->
     </v-autocomplete>
 </template>
 <script>
@@ -47,6 +59,7 @@ export default {
         codigos_res: [],
         codigos_search: "",
         codigos_search_loading: false,
+        isEditing: false
     }),
     watch: {
         async codigo_search(val) {

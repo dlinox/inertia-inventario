@@ -1,13 +1,7 @@
 <template>
     <v-dialog v-model="dialog" fullscreen scrollable>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                class="mx-sm-2 order-sm-3"
-                dark
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-            >
+            <v-btn class="mx-sm-2 order-sm-3" dark color="primary" v-bind="attrs" v-on="on">
                 <v-icon>mdi-magnify-expand</v-icon>
             </v-btn>
         </template>
@@ -25,38 +19,31 @@
                 <v-row class="mt-3">
                     <v-col cols="12" class="pb-1 pt-0">
 
-                        <SelectOficina   v-model="oficina_selected"/>
+                        <SelectOficina v-model="oficina_selected" />
                     </v-col>
                 </v-row>
 
-                <v-card :loading="loading_table">
+                <v-card :loading="loading_table" :disabled="!oficina_selected">
                     <v-overlay absolute :value="loading_table">
-                        <v-progress-circular
-                            indeterminate
-                            size="64"
-                        ></v-progress-circular>
+                        <v-progress-circular indeterminate size="64"></v-progress-circular>
                     </v-overlay>
                     <v-card-title>
                         <v-row>
-                            <v-col cols="12" sm="5" class="pb-1">
-                                <v-combobox
-                                    v-model="mostrar_selected"
-                                    :items="items_combobox"
-                                    label="Mostrar"
-                                    outlined
-                                    hide-details
-                                    dense
-                                ></v-combobox>
+                            <v-col cols="6" sm="7" class="pb-1">
+                                <v-combobox v-model="mostrar_selected" :items="items_combobox" label="Mostrar" outlined
+                                    hide-details dense></v-combobox>
                             </v-col>
-                            <v-col cols="12" sm="7" class="pb-1">
-                                <v-text-field
-                                    v-model="area_search"
-                                    append-icon="mdi-magnify"
-                                    label="Buscar"
-                                    hide-details
-                                    outlined
-                                    dense
-                                ></v-text-field>
+
+                            <v-col cols="6" sm="5" class="pb-1">
+                                <v-text-field v-model="corr_search" min="1" label="Stiker 2019" dense outlined
+                                    hide-details :prefix="
+                                    oficina_selected ? oficina_selected.split('.')[0] + ' - ' : ''"
+                                    type="number"></v-text-field>
+                            </v-col>
+
+                            <v-col cols="12" class="pb-1">
+                                <v-text-field v-model="area_search" append-icon="mdi-magnify" label="Buscar"
+                                    hide-details outlined dense></v-text-field>
                             </v-col>
                         </v-row>
                     </v-card-title>
@@ -65,42 +52,32 @@
                             <thead class="grey lighten-3">
                                 <tr>
                                     <th class="text-left">Estado</th>
-                                    <th class="text-left">Cod. Ubicaión</th>
+                                    <th class="text-left">Stiker 2019</th>
                                     <th class="text-left">Codigo</th>
                                     <th class="text-left">Descripcion</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr
-                                    v-for="(item, index) in bienes_result"
-                                    :key="index"
-                                    :class="[
-                                        index == tr_index ? 'tr-selected' : '',
-                                    ]"
-                                    @click="onSelectColum(item, index)"
-                                    @dblclick="onSelectColumDobleClik(item)"
-                                >
+                                <tr v-for="(item, index) in bienes_result" :key="index" :class="[
+                                    index == tr_index ? 'tr-selected' : '',
+                                ]" @click="onSelectColum(item, index)" @dblclick="onSelectColumDobleClik(item)">
                                     <td>
-                                        <v-list-item-avatar
-                                            size="20"
-                                            :color="
-                                                item.registrado
-                                                    ? 'green'
-                                                    : 'grey'
-                                            "
-                                        >
+                                        <v-list-item-avatar size="20" :color="
+                                            item.registrado
+                                                ? 'green'
+                                                : 'grey'
+                                        ">
                                             <v-icon small dark>
                                                 mdi-checkbox-marked-circle
                                             </v-icon>
                                         </v-list-item-avatar>
                                     </td>
                                     <td>
-                                        {{ item.cod_ubicacion }}
+                                        <small>{{ item.cod_ubicacion | correlativo }}</small>
                                     </td>
                                     <td>{{ item.codigo }}</td>
                                     <td>{{ item.descripcion }}</td>
-                                  
-                                  
+
                                 </tr>
                             </tbody>
                         </template>
@@ -108,12 +85,7 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-pagination
-                            v-model="page"
-                            class=""
-                            :total-visible="5"
-                            :length="pages"
-                        ></v-pagination>
+                        <v-pagination v-model="page" class="" :total-visible="5" :length="pages"></v-pagination>
                         <v-spacer></v-spacer>
                     </v-card-actions>
                 </v-card>
@@ -146,6 +118,7 @@ export default {
         bienes_result: [],
         mostrar_selected: "Todos",
         area_search: "",
+        corr_search: null,
         page: 1,
         total_result: 0,
         pages: 1,
@@ -155,6 +128,14 @@ export default {
         area_selected: null,
         areas_by_oficna: [],
     }),
+    filters: {
+        correlativo: function (value) {
+            if (!value) return '-'
+            let corr_area = value.split(/[-.]+/);
+            //value = value.toString()
+            return corr_area[0] + ' - ' + corr_area.slice(-1);
+        }
+    },
     methods: {
         async Editar(id) {
             let res = await axios.get("/inventario/get-inventario/" + id);
@@ -174,17 +155,22 @@ export default {
             this.$emit("setData", this.tr_item);
             this.dialog = false;
         },
-        async getBienes(area, term = "", mostrar = "Todos", page = 1) {
-            let res = await axios.post("/inventario/get-bienes?page=" + page, {
-                area: area,
-                mostrar: mostrar,
-                term: term,
+
+        async getBienes() {
+            let res = await axios.post("/inventario/get-bienes?page=" + this.page, {
+                area: this.oficina_selected,
+                mostrar: this.mostrar_selected,
+                correlativo: this.corr_search,
+                term: this.area_search,
             });
+
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
             this.pages = res.data.datos.last_page;
+
             return res.data.datos.data;
         },
+      
         customFilterOficina(item, queryText, itemText) {
             const nombre = item.nombre.toLowerCase();
             const codigo = item.codigo.toLowerCase();
@@ -202,7 +188,7 @@ export default {
             this.page = 1;
             this.total_result = 0;
             this.pages = 1;
-            this.mostrar_selected= "Todos";
+            this.mostrar_selected = "Todos";
         },
     },
     watch: {
@@ -211,7 +197,18 @@ export default {
                 return;
             this.tr_index = null;
             this.loading_table = true;
-            let res = await this.getBienes(val);
+            let res = await this.getBienes();
+            this.bienes_result = res;
+            this.loading_table = false;
+        },
+
+        async corr_search(val) {//correlativo
+            //if (!val) return;
+            //if (val < 1) return;
+
+            this.tr_index = null;
+            this.loading_table = true;
+            let res = await this.getBienes();
             this.bienes_result = res;
             this.loading_table = false;
         },
@@ -226,8 +223,8 @@ export default {
         async oficina_selected(val) {
             this.tr_index = null;
             this.loading_table = true;
-           
-            let res = await this.getBienes(val);
+
+            let res = await this.getBienes();
             this.bienes_result = res;
             this.loading_table = false;
         },
@@ -235,7 +232,7 @@ export default {
             //if (!val) return;
             this.tr_index = null;
             this.loading_table = true;
-            let res = await this.getBienes(this.area_selected, val, this.mostrar_selected);
+            let res = await this.getBienes();
             this.bienes_result = res;
             this.loading_table = false;
         },
@@ -244,14 +241,14 @@ export default {
                 return;
             this.tr_index = null;
             this.loading_table = true;
-            let res = await this.getBienes(this.area_selected, this.area_search, this.mostrar_selected, val);
+            let res = await this.getBienes();
             this.bienes_result = res;
             this.loading_table = false;
         },
         async mostrar_selected(val) {
             this.tr_index = null;
             this.loading_table = true;
-            let res = await this.getBienes(this.area_selected, this.area_search, val);
+            let res = await this.getBienes();
             this.bienes_result = res;
             this.loading_table = false;
         },
