@@ -185,24 +185,31 @@ class InventarioController extends Controller
     public function getBienes(Request $request)
     {
 
-        $res = BienK::select('bienk.id', 'bienk.codigo',  'bienk.descripcion', 'bienk.registrado', 'bienk.idreg_anterior', 'bienk.cod_ubicacion')
+        $res = BienK::select(
+            'bienk.id',
+            'bienk.codigo',
+            'bienk.descripcion',
+            'bienk.registrado',
+            'bienk.idreg_anterior',
+            'bienk.cod_ubicacion'
+        )
             ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area') //iduoper
             ->where(function ($query) use ($request) {
 
+                $temp = $query
+                    ->where('bienk.id_area', $request->area);
+
                 if ($request->mostrar == 'Registrados') {
-                    $temp = $query
-                        ->where('bienk.id_area', $request->area)
-                        ->where('bienk.registrado', 1);
-                } else if ($request->mostrar == 'Sin registrar') {
-                    $temp = $query
-                        ->where('bienk.id_area', $request->area)
-                        ->where('bienk.registrado', 0);
-                } else if ($request->responsable) {
-                    $temp = $query->where('bienk.persona_dni', $request->responsable)
-                        ->where('bienk.id_area', $request->area);
-                } else {
-                    $temp = $query
-                        ->where('bienk.id_area', $request->area);
+                    $temp->where('bienk.registrado', 1);
+                }
+                if ($request->mostrar == 'Sin registrar') {
+                    $temp->where('bienk.registrado', 0);
+                }
+                if ($request->responsable) {
+                    $temp->where('bienk.persona_dni', $request->responsable);
+                }
+                if ($request->correlativo) {
+                    $temp->where(DB::raw("SUBSTRING_INDEX(bienk.cod_ubicacion,'-',-1)"),  'LIKE', '%' . $request->correlativo . '%');
                 }
 
                 return $temp;
@@ -662,8 +669,10 @@ class InventarioController extends Controller
             'oficina.nombre as oficina',
             'users.nombres as unombre',
             'users.apellidos as uapellidos',
-            'persona.dni as pdni','persona.nombres as pnombre',
-            'persona.paterno','persona.materno'
+            'persona.dni as pdni',
+            'persona.nombres as pnombre',
+            'persona.paterno',
+            'persona.materno'
         )
             ->join('oficina', 'inventario.id_area', '=', 'oficina.iduoper')
             ->join('users', 'inventario.id_usuario', '=', 'users.id')
@@ -673,7 +682,6 @@ class InventarioController extends Controller
                 return $query
                     ->orWhere('inventario.codigo', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
-                    
             })->orderBy('inventario.id', 'DESC')
             ->paginate(300);
 
@@ -759,12 +767,10 @@ class InventarioController extends Controller
 
     public function getUsuariosForInventario()
     {
-        $res = User::where('rol',2)->get();
+        $res = User::where('rol', 2)->get();
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
-
-
 }

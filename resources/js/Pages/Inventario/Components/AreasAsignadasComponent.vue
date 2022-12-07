@@ -55,21 +55,13 @@
             </v-toolbar>
 
             <v-card-text style="height: 90vh">
-                <v-autocomplete
-                    v-model="area_selected"
-                    :items="areas"
-                    item-text="nombre"
-                    item-value="iduoper"
-                    label="Seleccione un Area"
-                    class="mt-4"
-                    outlined
-                    dense
-                >
+                
+                <v-autocomplete v-model="area_selected" :items="areas" item-text="nombre" item-value="iduoper"
+                    label="Seleccione un Area" class="mt-4" outlined dense>
                     <template v-slot:selection="data">
                         <small>
                             <strong>{{ data.item.dependencia }}</strong>
-                            {{ data.item.nombre }}</small
-                        >
+                            {{ data.item.nombre }}</small>
                     </template>
                     <template v-slot:item="data">
                         <v-list-item-content>
@@ -82,52 +74,35 @@
                     </template>
                 </v-autocomplete>
 
-                <v-autocomplete
-                    v-model="responsable"
-                    clearable
-                    dense
-                    label="Responsable"
-                    outlined
-                    :items="responsables"
-                    item-value="dni"
-                    item-text="text"
-                >
+                <v-autocomplete v-model="responsable" clearable dense label="Responsable" outlined :items="responsables"
+                    item-value="dni" item-text="text">
                     <template v-slot:no-data>
-                        <small class="px-3 text-center"
-                            >Sin datos (Seleccione un area)</small
-                        >
+                        <small class="px-3 text-center">Sin datos (Seleccione un area)</small>
                     </template>
                 </v-autocomplete>
 
+
                 <v-card :loading="loading_table">
                     <v-overlay absolute :value="loading_table">
-                        <v-progress-circular
-                            indeterminate
-                            size="64"
-                        ></v-progress-circular>
+                        <v-progress-circular indeterminate size="64"></v-progress-circular>
                     </v-overlay>
                     <v-card-title>
                         <v-row>
-                            <v-col cols="12" sm="5" class="pb-1">
-                                <v-combobox
-                                    v-model="mostrar_selected"
-                                    :items="items_combobox"
-                                    label="Mostrar"
-                                    outlined
-                                    hide-details
-                                    dense
-                                ></v-combobox>
+                            <v-col cols="6" sm="7" class="pb-1">
+                                <v-combobox v-model="mostrar_selected" :items="items_combobox" label="Mostrar" outlined
+                                    hide-details dense></v-combobox>
                             </v-col>
-                            <v-col cols="12" sm="7" class="pb-1">
-                                <v-text-field
-                                    v-model="area_search"
-                                    append-icon="mdi-magnify"
-                                    label="Buscar"
-                                    hide-details
-                                    outlined
-                                    dense
-                                ></v-text-field>
+                            <v-col cols="6" sm="5" class="pb-1">
+                                <v-text-field v-model="corr_search" min="1" label="Stiker 2019" dense outlined
+                                    hide-details :prefix="
+                                    area_selected ? area_selected.split('.')[0] + ' - ' : ''" 
+                                    type="number"></v-text-field>
                             </v-col>
+                            <v-col cols="12" class="pb-1">
+                                <v-text-field v-model="area_search" append-icon="mdi-magnify" label="Buscar"
+                                    hide-details outlined dense></v-text-field>
+                            </v-col>
+
                         </v-row>
                     </v-card-title>
                     <v-simple-table>
@@ -135,40 +110,33 @@
                             <thead class="grey lighten-3">
                                 <tr>
                                     <th class="text-left">Estado</th>
-                                    <th class="text-left">Cod. Ubicaión</th>
+                                    <th class="text-left">Stiker 2019</th>
                                     <th class="text-left">Codigo</th>
                                     <th class="text-left">Descripcion</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr
-                                    v-for="(item, index) in bienes_result"
-                                    :key="index"
-                                    :class="[
-                                        index == tr_index ? 'tr-selected' : '',
-                                    ]"
-                                    @click="onSelectColum(item, index)"
-                                    @dblclick="onSelectColumDobleClik(item)"
-                                >
+                                <tr v-for="(item, index) in bienes_result" :key="index" :class="[
+                                    index == tr_index ? 'tr-selected' : '',
+                                ]" @click="onSelectColum(item, index)" @dblclick="onSelectColumDobleClik(item)">
                                     <td>
-                                        <v-list-item-avatar
-                                            size="20"
-                                            :color="
-                                                item.registrado
-                                                    ? 'green'
-                                                    : 'grey'
-                                            "
-                                        >
+                                        <v-list-item-avatar size="20" :color="
+                                            item.registrado
+                                                ? 'green'
+                                                : 'grey'
+                                        ">
                                             <v-icon small dark>
                                                 mdi-checkbox-marked-circle
                                             </v-icon>
                                         </v-list-item-avatar>
                                     </td>
                                     <td>
-                                        {{ item.cod_ubicacion }}
+                                        <small>{{ item.cod_ubicacion | correlativo }}</small>
                                     </td>
                                     <td>{{ item.codigo }}</td>
-                                    <td>{{ item.descripcion }}</td>
+                                    <td>
+                                        <small> {{ item.descripcion }} </small>
+                                    </td>
                                 </tr>
                             </tbody>
                         </template>
@@ -176,12 +144,7 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-pagination
-                            v-model="page"
-                            class=""
-                            :length="pages"
-                            :total-visible="5"
-                        ></v-pagination>
+                        <v-pagination v-model="page" class="" :length="pages" :total-visible="5"></v-pagination>
                         <v-spacer></v-spacer>
                     </v-card-actions>
                 </v-card>
@@ -212,6 +175,7 @@ export default {
 
         dialog: false,
         area_selected: null,
+        corr_search: null,
         search: "",
 
         bienes_result: [],
@@ -226,6 +190,14 @@ export default {
         responsable: null,
         responsables: [],
     }),
+    filters: {
+        correlativo: function (value) {
+            if (!value) return '-'
+            let corr_area = value.split(/[-.]+/);
+            //value = value.toString()
+            return corr_area[0] + ' - ' + corr_area.slice(-1);
+        }
+    },
     methods: {
         onSelectColum(item, index) {
             this.tr_index = index;
@@ -239,18 +211,13 @@ export default {
             this.resetAll();
         },
 
-        async getBienes(
-            area,
-            responsable = null,
-            term = "",
-            mostrar = "Todos",
-            page = 1
-        ) {
-            let res = await axios.post("/inventario/get-bienes?page=" + page, {
-                area: area,
-                responsable: responsable,
-                mostrar: mostrar,
-                term: term,
+        async getBienes() {
+            let res = await axios.post("/inventario/get-bienes?page=" + this.page, {
+                area: this.area_selected,
+                responsable: this.responsable,
+                mostrar: this.mostrar_selected,
+                correlativo: this.corr_search,
+                term: this.area_search,
             });
 
             this.page = res.data.datos.current_page;
@@ -299,6 +266,8 @@ export default {
         resetAll() {
             this.bienes_result = [];
             this.area_selected = null;
+            this.area_search = "";
+            this.corr_search = null;
             this.responsable = null;
             this.responsables = [];
             this.page = 1;
@@ -314,7 +283,7 @@ export default {
 
             this.tr_index = null;
             this.loading_table = true;
-            let res = await this.getBienes(val);
+            let res = await this.getBienes();
 
             this.responsables = await this.getResonsables(val);
 
@@ -330,6 +299,7 @@ export default {
                 val,
                 this.area_search,
                 this.mostrar_selected,
+                this.corr_search
             );
             this.bienes_result = res;
             this.loading_table = false;
@@ -345,8 +315,20 @@ export default {
                 this.area_selected,
                 this.responsable,
                 val,
-                this.mostrar_selected
+                this.mostrar_selected,
+                this.corr_search
             );
+            this.bienes_result = res;
+            this.loading_table = false;
+        },
+
+        async corr_search(val) {//correlativo
+            //if (!val) return;
+            //if (val < 1) return;
+
+            this.tr_index = null;
+            this.loading_table = true;
+            let res = await this.getBienes();
             this.bienes_result = res;
             this.loading_table = false;
         },
@@ -357,13 +339,7 @@ export default {
             this.tr_index = null;
             this.loading_table = true;
 
-            let res = await this.getBienes(
-                this.area_selected,
-                this.responsable,
-                this.area_search,
-                this.mostrar_selected,
-                val
-            );
+            let res = await this.getBienes();
             this.bienes_result = res;
 
             this.loading_table = false;
@@ -372,12 +348,7 @@ export default {
         async mostrar_selected(val) {
             this.tr_index = null;
             this.loading_table = true;
-            let res = await this.getBienes(
-                this.area_selected,
-                this.responsable,
-                this.area_search,
-                val
-            );
+            let res = await this.getBienes();
             this.bienes_result = res;
             this.loading_table = false;
         },
