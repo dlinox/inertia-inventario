@@ -1,5 +1,7 @@
 <template>
+
     <v-container>
+        <!-- <pre>{{ bienes }}</pre> -->
         <v-row class="inputs" style="margin-bottom: -30px;;">
             <v-col sx="12" sm="12" md="4" lg="4" style="mb-0 pt-0" class="p-0" >
                 <v-text-field
@@ -18,7 +20,7 @@
                     hide-details
                     outlined
                     clearable
-                    dense
+                    dense 
                 ></v-text-field>
             </v-col>
             <v-col sx="6" xs="6" sm="6" md="4" lg="4" style="" class="p-0" >
@@ -139,7 +141,7 @@
                 <div>
                     <div>
                         <span>{{item.created_at.substring(0, 10)}}</span>
-                    </div>   
+                    </div>
                     <span>{{item.created_at.substring(11, 19)}}</span>
                 </div>
             </template>  
