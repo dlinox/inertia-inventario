@@ -435,7 +435,7 @@ export default {
         console.log(res.data.g_actual.registros);
         this.grafico1.registrados = res.data.g_actual.registros;
         this.grafico1.anterior = res.data.g_antes.registros;
-        this.grafico1.valor = (res.data.g_actual.registros/res.data.g_antes.registros).toFixed(2);
+        this.grafico1.valor = ((res.data.g_actual.registros/res.data.g_antes.registros)*100).toFixed(2);
         this.grafico3.nroactual = res.data.g_hoy.registros;
         this.grafico4.nroactual = res.data.g_ayer.registros;
     },

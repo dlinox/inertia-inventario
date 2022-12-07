@@ -675,7 +675,7 @@ class InventarioController extends Controller
                     ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
                     
             })->orderBy('inventario.id', 'DESC')
-            ->paginate(300);
+            ->paginate(100000);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
