@@ -180,6 +180,7 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/guardar-lote', [InventarioController::class, 'guardarLote'])
         ->name('guardar-lote');
 
+
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
 
@@ -188,6 +189,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/lotes', [InventarioController::class, 'viewLotesInventario'])
         ->name('lotes');
+
+    Route::get('/lotes-nuevo', [InventarioController::class, 'viewLotesInventarioNuevo'])
+        ->name('lotes-nuevo');
 
     Route::post('/update-password', [InventarioController::class, 'updatePassword'])
         ->name('update-password');
@@ -231,7 +235,7 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/get-bienes-by-correlativo', [InventarioController::class, 'getBienesByCorrelativo'])
         ->name('get-bienes-by-correlativo');
 
-        
+
 
 
     Route::post('/get-bienes-usuario', [InventarioController::class, 'getBienesUsuarios'])

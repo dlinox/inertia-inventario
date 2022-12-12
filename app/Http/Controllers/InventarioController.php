@@ -820,6 +820,11 @@ class InventarioController extends Controller
         ]);
     }
 
+    public function viewLotesInventarioNuevo()
+    {
+        
+    }
+
     public function guardarLote(Request $request)
     {
         try {
