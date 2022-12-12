@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\InventarioExports;
 use Inertia\Inertia;
 
 class InventarioController extends Controller
@@ -929,5 +931,10 @@ class InventarioController extends Controller
 
             return $correlativo;
         }
+    }
+
+    public function export() {
+        $date = date('d-m-Y');
+        return Excel::download(new InventarioExports, 'inventario'.$date.'.xlsx');
     }
 }

@@ -1,6 +1,7 @@
 <template>
     <div class="pa-3"> 
       <v-card>
+      <pre>{{datos}}</pre>
       <v-simple-table style="width: 100%;">
         <thead>
           <tr>
