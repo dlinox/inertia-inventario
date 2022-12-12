@@ -95,6 +95,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getPersonasInv', 'getPersonasInv')->name('getPersonasInv');
         Route::get('/getPersonasByAreaInv/{id}', 'getPersonasByAreaInv')->name('getPersonasByAreaInv');
         Route::get('/getPersonasByAreaInvNoR/{id}', 'getPersonasByAreaInvNoR')->name('getPersonasByAreaInvNoR');
+        Route::get('/getPersonasForAdicionales/{id}', 'getPersonasForAdicionales')->name('getPersonasForAdicionales');
         Route::post('/savePersonasImport', 'savePersonasImport')->name('savePersonasImport');
     });
 
@@ -166,7 +167,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/excel/{a}/{p}', [UsersExports::class, 'export']);
     });
     Route::post('/generarCargos', [PDFController::class, 'genCargos'])->name('genCargos')->middleware('auth');
-    Route::get('/pdfBienes/{idP}/{idArea}', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
+    Route::post('/pdfBienes', [PDFController::class, 'PDFBienes'])->name('pdf-bienes');
     Route::get('/pdfBienesB/{idP}/{idArea}', [PDFController::class, 'PDFBienesBorrador'])->name('pdf-bienes-borrador');
     Route::put('/bloquear/{id}', [PDFController::class, 'bloquear'])->name('bloquear')->middleware('auth');
     Route::put('/desbloquear/{id}', [PDFController::class, 'desbloquear'])->name('desbloquear')->middleware('auth');
@@ -267,12 +268,17 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 Route::get('/oficinex', [OficinaController::class, 'getoficinex'])
 ->name('get-oficinex');
 
-
 Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('facilitador')->group(function () {
 
     
     Route::get('/', [FacilitadorController::class, 'index'])
         ->name('index');
+
+    Route::get('/bienes-sin-codigo', [FacilitadorController::class, 'bienesSinCodigo'])
+    ->name('bienes-sin-codigo');
+    
+    Route::get('/reporte', [FacilitadorController::class, 'Reportex']);   
+    Route::get('/reporte-dia/{fecha}', [FacilitadorController::class, 'Reportedia']);
 
     Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
         Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
@@ -285,7 +291,10 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
         Route::get('/', 'indexFacilitador')->name('inventario-facilitador');
         Route::post('/get-bienes-all', 'getBienesInv')->name('get-bienes-all');
+        Route::post('/get-bienes-all-blank', 'getBienesInvBlank')->name('get-bienes-all-blank');
         Route::get('/getUsuarios', 'getUsuariosForInventario')->name('getUsuariosForInventario');
+        
+
     });
 
     Route::controller(GrupoController::class)->name('inventario.')->prefix('inventario')->group(function () {

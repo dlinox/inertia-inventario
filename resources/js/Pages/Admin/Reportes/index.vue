@@ -22,10 +22,10 @@
     </div>
     <v-row style="background: white; margin-bottom:-25px;" >
         <v-col md="9" lg="9">
-            <h3>Cargo de bienes </h3>
+            <h3>Cargo de bienes - {{ opcion }} </h3>
         </v-col>
         <v-col md="3" lg="3" class="right" style="text-align: right;">
-            <div><span @click="opcionTodos" :class="{ selec: opcion === 0 }" style="cursor:pointer" >Todos</span> | <span @click="opcionNoR" :class="{ selec: opcion===1 }" style="cursor:pointer">No registrados</span></div>
+            <div><span  :class="{ selec: opcion === 0 }" style="cursor:pointer" >Todos</span> | <span  :class="{ selec: opcion===1 }" style="cursor:pointer">No registrados</span></div>
         </v-col>
     </v-row>
     <v-row class="inputs" style="background: white">
@@ -114,8 +114,20 @@
                 </template>
             </v-autocomplete>
         </v-col>
+
+        <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class="p-0" >
+            <v-autocomplete   
+                v-model="opcion"
+                :items="opciones"
+                label="Tipo"
+                outlined
+                item-value="value"
+                item-text="name"
+                dense
+            ></v-autocomplete>
+        </v-col>
     </v-row>
-    <!-- {{ registrado }} -->
+     {{ registrado }} 
     <div style=" overflow-y:hidden; width:100%; margin-top:30px; height:425px;" class="contenedorIframe" >
         <div  v-if="areE !== null && perE !== null"  class="by-preview" style="transform:scale(1);">
             <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;  border:solid 0.5px #cdcdf4;"> </iframe>
@@ -130,7 +142,8 @@
             <v-btn height="38" small class="btn" dark color="primary" @click="dialogGuardar">Imprimir</v-btn>
         </div>
         <div class="ml-2" v-if="registrado === 1">
-                <v-btn height="38" small class="btn" color="grey-100" @click="dialogBloq">Impreso</v-btn>
+            <v-btn v-if="opcion !== 2" height="38" small class="btn" color="grey-100" @click="dialogBloq">Impreso</v-btn>
+            <v-btn v-if="opcion === 2" height="38" small class="btn" dark color="primary" @click="dialogGuardar">Imprimir</v-btn>
         </div>
 
 
@@ -249,15 +262,23 @@ export default {
         data: [],
         mensaje:'',
         registrado:0,
-        opcion:1,
+        opcion:null,
         dialogBloqueado:false,
         borrador:null,
+        doc:null,
+        opciones:[
+            {value:0,name:"Todos"},
+            {value:1,name:"Registrados"},
+            {value:2,name:"Adicionales"}
+        ]
+
       }
     },
     created() {
         this.getPersonas()
         this.getOficinas()
         this.getDocumentos()
+        this.opcion = 0
     },
 
     watch:{
@@ -270,52 +291,38 @@ export default {
             this.preview = '/admin/reportes/preview/'+this.areE+'/'+this.perE+'#toolbar=0';
             this.Registrado(this.areE, this.perE)
         },
+        opcion: function(){
+            if (this.opcion === 0 || this.opcion === 2){
+                if(this. areE !== null && this.perE === null ) {
+                    this.perE = null;
+                    this.getPersonas();
+                }
+                else {
+                    if(this.areE !== null && this.perE !== null) {
+                        this.perE = null;
+                        this.getPersonas();
+                    }
+                }
+            }
+            if (this.opcion === 1){
+                if(this. areE !== null && this.perE === null ) {
+                    this.perE = null;
+                    this.getPersonas();
+                }
+                else {
+                    if(this.areE !== null && this.perE !== null) {
+                        this.perE = null;
+                        this.getPersonas();
+                    }
+                }
+            }
+
+        }
 
 
     },
 
     methods: {
-        opcionNoR(){
-            this.opcion = 1;
-            if(this.areE === null && this.perE !== null) {
-                 this.areE === null;
-                 this.getOficinas();
-            }else {
-                if(this. areE !== null && this.perE === null ) {
-                    this.perE = null;
-                    this.getPersonas();
-                }
-                else {
-                    if(this.areE !== null && this.perE !== null) {
-                        this.perE = null;
-                        this.areE = null;
-                        this.getPersonas();
-                    }
-
-                }
-            }
-        },
-        opcionTodos(){
-            this.opcion = 0;
-            if(this.areE === null && this.perE !== null) {
-                this.getAreas();
-                this.areE === null;
-            }else {
-                if(this. areE !== null && this.perE === null ) {
-                    this.perE = null;
-                    this.getPersonas();
-                }
-                else {
-                    if(this.areE !== null && this.perE !== null) {
-                        this.perE = null;
-                        this.areE = null;
-                        this.getPersonas();
-                        this.getAreas();
-                    }
-
-                }
-            }
-        },
         customFilter(item, queryText, itemText) {
             const nombres = item.nombres.toLowerCase();
             const iduoper = item.iduoper.toLowerCase();
@@ -326,15 +333,6 @@ export default {
              );
         },
 
-        customFilterAreas(item, queryText, itemText) {
-            const nombre = item.nombre.toLowerCase();
-            const codigo = item.codigo.toLowerCase();
-            const searchText = queryText.toLowerCase();
-            return (
-                nombre.indexOf(searchText) > -1 ||
-                codigo.indexOf(searchText) > -1
-             );
-        },
         customFilterPersona(item, queryText, itemText) {
             const nombres = item.nombres.toLowerCase();
             const dni = item.dni.toLowerCase();
@@ -367,7 +365,7 @@ export default {
             }
             else {
                 if( this.areE !== null ){
-                    if (this.opcion === 0){
+                    if (this.opcion === 0 ){
                         let res = await axios.get("/admin/personas/getPersonasByAreaInv/"+this.areE);
                         console.log(res.data);
                         this.personas = res.data.datos;
@@ -378,6 +376,14 @@ export default {
                             console.log(res.data);
                             this.personas = res.data.datos;
                             return res.data.datos.data;
+                        }
+                        else{
+                            if (this.opcion === 2 ){
+                                let res = await axios.get("/admin/personas/getPersonasForAdicionales/"+this.areE);
+                                console.log(res.data);
+                                this.personas = res.data.datos;
+                                return res.data.datos.data;
+                            }
                         }
                     }
                 }
@@ -426,9 +432,15 @@ export default {
             this.mensaje = "Se ha impreso un cargo de bienes Borrador";
             this.dialog = true;
         },
-        generarPDF(){
+
+         generarPDF(){
+            this.doc = {
+                area:this.areE,
+                persona:this.perE,
+                opcion:this.opcion
+            }
             this.dialog = false;
-            let res = axios.get("/admin/pdfBienes/"+this.perE+"/"+this.areE)
+            let res = axios.post("/admin/pdfBienes",this.doc)
             .then(response => {
                  console.log(response);
                  this.PDF=response.data.datos;

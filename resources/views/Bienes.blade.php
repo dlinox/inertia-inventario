@@ -73,7 +73,7 @@
                 </td>
                 <td align="right" width="220px">
                     <div style="  margin-right:1cm;">
-                        <span>ID: @foreach ($oficina as $o){{ $o->iduoper }}@endforeach @foreach ($responsable as $re) {{ $re->dni }}-1 @endforeach</span>
+                        <span>ID: @foreach ($oficina as $o){{ $o->iduoper }}@endforeach @foreach ($responsable as $re) {{ $re->dni }}-{{$num_doc}} @endforeach</span>
                     </div>
                 </td>
             </tr>

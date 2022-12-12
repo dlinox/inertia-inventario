@@ -95,7 +95,7 @@ export default {
         email: "",
         password: "",
         valid: true,
-
+        
         show_mensaje: false,
         type_mensaje: "success",
         mensaje: "",
@@ -121,7 +121,6 @@ export default {
                     this.show_mensaje = true;
                     this.mensaje = res.data.mensaje;
                     this.loading_btn = false;
-
                     //console.log(res);
                     this.$inertia.get("/");
                 } catch (error) {

@@ -773,4 +773,38 @@ class InventarioController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+
+    public function getBienesInvBlank(Request $request)
+    {
+        $query_where = [];
+        if ($request->usuario) array_push($query_where, [DB::raw('id_usuario'), '=', $request->usuario]);
+        if ($request->fecha) array_push($query_where, [DB::raw('date(inventario.created_at)'), '=', $request->fecha]);
+        //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
+        $res = Inventario::select(
+            'inventario.*',
+            'oficina.dependencia as dependencia',
+            'oficina.nombre as oficina',
+            'users.nombres as unombre',
+            'users.apellidos as uapellidos',
+            'persona.dni as pdni',
+            'persona.nombres as pnombre',
+            'persona.paterno',
+            'persona.materno'
+        )
+            ->join('oficina', 'inventario.id_area', '=', 'oficina.iduoper')
+            ->join('users', 'inventario.id_usuario', '=', 'users.id')
+            ->join('persona', 'inventario.id_persona', '=', 'persona.id')
+            ->where($query_where)
+            ->where('inventario.codigo','=','')
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
+            })->orderBy('inventario.id', 'DESC')
+            ->paginate(1000);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
 }
