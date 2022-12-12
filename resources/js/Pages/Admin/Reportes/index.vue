@@ -22,7 +22,7 @@
     </div>
     <v-row style="background: white; margin-bottom:-25px;" >
         <v-col md="9" lg="9">
-            <h3>Cargo de bienes - {{ opcion }} </h3>
+            <h3>Cargo de bienes </h3>
         </v-col>
         <v-col md="3" lg="3" class="right" style="text-align: right;">
             <div><span  :class="{ selec: opcion === 0 }" style="cursor:pointer" >Todos</span> | <span  :class="{ selec: opcion===1 }" style="cursor:pointer">No registrados</span></div>
@@ -127,7 +127,7 @@
             ></v-autocomplete>
         </v-col>
     </v-row>
-     {{ registrado }} 
+     <!-- {{ registrado }}  -->
     <div style=" overflow-y:hidden; width:100%; margin-top:30px; height:425px;" class="contenedorIframe" >
         <div  v-if="areE !== null && perE !== null"  class="by-preview" style="transform:scale(1);">
             <iframe :src="preview" scrolling="yes" frameborder="0" style=" padding-top:-30px;  border:solid 0.5px #cdcdf4;"> </iframe>
