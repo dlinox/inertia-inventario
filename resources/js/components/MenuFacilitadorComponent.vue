@@ -102,7 +102,7 @@ export default {
             {
                 title: "Bienes sin codigo",
                 icon: "mdi-clipboard-check",
-                ruta: "/facilitador/inventario"
+                ruta: "/facilitador/bienes-sin-codigo"
             },
 
             

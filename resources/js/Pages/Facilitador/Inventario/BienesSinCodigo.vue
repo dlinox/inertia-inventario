@@ -1,8 +1,8 @@
 <template>
     <v-container>
         <v-card class="mt-3">
-        <v-row class="inputs pl-3 pr-3"  style="margin-bottom: -30px;;">
-            <v-col sx="12" sm="12" md="4" lg="4" style="mb-0 pt-0" class="p-0" >
+        <v-row class="inputs pl-3 pr-3"  style="margin-bottom: 0px;;">
+            <!-- <v-col sx="12" sm="12" md="4" lg="4" style="mb-0 pt-0" class="p-0" >
                 <v-text-field
                     v-model="ofi"
                     label="Dependencia"
@@ -21,8 +21,8 @@
                     clearable
                     dense
                 ></v-text-field>
-            </v-col>
-            <v-col sx="12" sm="12"  md="4" lg="4" style="" class="p-0" >
+            </v-col> -->
+            <!-- <v-col sx="12" sm="12"  md="4" lg="4" style="" class="p-0" >
                 <v-autocomplete              
                     v-model="user"
                     clearable
@@ -56,13 +56,46 @@
                         </v-list-item-content>
                     </template>
                 </v-autocomplete>
-            </v-col>
+            </v-col> -->
 
         </v-row>
 
-    <v-card>
-        <v-card-title class="pa-0 py-3 pb-5">
-      
+    <v-card class="mt-5">
+        <v-card-title class="pa-0 py-3 pb-5 pl-3">
+            <v-autocomplete              
+                    v-model="user"
+                    clearable
+                    dense
+                    label="Usuarios"
+                    outlined
+                    :items="usuarios"
+                    :filter="customFilter"
+                    item-value="id"
+                    item-text="nombres"
+                    :search-input.sync="usuarios_search"
+                    required
+                    style="background:height: 38px; "
+                >
+                    <template v-slot:no-data>
+                        <v-list-item>
+                            <v-list-item-title>
+                                <template>
+                                    No hay registros en el inventario
+                                </template>
+                            </v-list-item-title>
+                        </v-list-item>
+                    </template>
+
+                    <template v-slot:item="data">
+                        <v-list-item-content>
+                            <v-list-item-title v-html="data.item.iduoper">
+                            </v-list-item-title>
+                            <v-list-item-subtitle>
+                                {{ data.item.nombres }}
+                            </v-list-item-subtitle>
+                        </v-list-item-content>
+                    </template>
+                </v-autocomplete>
             <v-spacer></v-spacer>   
 
             <div style="display: flex; justify-content:flex-end; align-items:center;">
@@ -288,7 +321,7 @@ export default {
           { text: 'Oficina', align: 'center', filterable: true, value: 'id_area', width:"70px", class:'pl-0 pr-0 grey lighten-1' },
           { text: 'Oficina', align: 'center', filterable: true, value: 'dependencia', width:"120px", class:'pl-0 pr-0 grey lighten-1' },
           { text: 'Etiqueta', align: 'center', filterable: false, sortable: true, width:"130px", value: 'corr_num', class:'pl-0 pr-0 grey lighten-1',},
-          { text: 'Fecha', align: 'center', filterable: false, sortable: true, width:"120px", value: 'fecha', class:'pl-0 pr-0 grey lighten-1',},
+          { text: 'Fecha', align: 'center', filterable: false, sortable: true, width:"10px", value: 'fecha', class:'pl-0 pr-0 grey lighten-1',},
           { align: 'right', value:'acciones', sortable: false, maxWidth:'30px', class:' pl-0 pr-0 grey lighten-1'},
         ],
         dialogDetalle: false,

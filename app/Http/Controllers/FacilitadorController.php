@@ -17,6 +17,11 @@ class FacilitadorController extends Controller
         return Inertia::render('Facilitador/Inventario/BienesSinCodigo');
     }
 
+    public function Reportex(){
+        return Inertia::render('Facilitador/Reporte/');
+
+    }
+
     public function Reportedia($fecha){
         $datos = [];
         $res = DB::select('SELECT users.equipo as equipo, users.nombres, users.apellidos, dependencia, count(inventario.id) as reg

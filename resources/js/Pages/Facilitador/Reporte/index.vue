@@ -124,7 +124,7 @@ export default {
 
     },    
     created() {
-      this.fecha = this.getFecha(-10)
+      this.fecha = this.getFecha(-5)
       this.getDatos()
     },
 
