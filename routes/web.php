@@ -80,7 +80,6 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::post('/get-bienes-all', 'getBienesInv')->name('get-bienes-all');
         Route::get('/getBien/{id}', 'getBienInv')->name('getBienInv');
         Route::get('/getUsuarios', 'getUsuariosForInventario')->name('getUsuariosForInventario');
-        
     });
 
     Route::controller(PersonasController::class)->name('personas.')->prefix('personas')->group(function () {
@@ -184,6 +183,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
         ->name('perfil');
 
+    Route::get('/lotes', [InventarioController::class, 'viewLotesInventario'])
+        ->name('lotes');
+
     Route::post('/update-password', [InventarioController::class, 'updatePassword'])
         ->name('update-password');
 
@@ -259,18 +261,14 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::get('/get-responsables/{area}', [InventarioController::class, 'getResponsablesByArea'])
         ->name('get-responsables');
-
-
-
-
 });
 
 Route::get('/oficinex', [OficinaController::class, 'getoficinex'])
-->name('get-oficinex');
+    ->name('get-oficinex');
 
 Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('facilitador')->group(function () {
 
-    
+
     Route::get('/', [FacilitadorController::class, 'index'])
         ->name('index');
 
@@ -302,8 +300,6 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
 
         Route::get('/get-grupo', 'getGrupoInv')->name('get-grupo-inv');
     });
-
-
 });
 
 

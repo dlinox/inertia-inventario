@@ -710,8 +710,6 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
-
-
     public function eliminarBienAdmin($id)
     {
         $bien = Inventario::find($id);
@@ -748,22 +746,6 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
-
-
-    // public function getBienesAllbyOfice(Request $request)
-    // {
-    //     $res = Inventario::select('*')
-    //         ->Join("area", "inventario.id_area","=","area.id")
-    //         ->where(function ($query) use ($request) {
-    //             return $query
-    //                 ->orWhere('codigo', 'LIKE', '%' . $request->term . '%')
-    //                 ->orWhere('descripcion', 'LIKE', '%' . $request->term . '%');
-    //         })->paginate(7);
-
-    //     $this->response['estado'] = true;
-    //     $this->response['datos'] = $res;
-    //     return response()->json($this->response, 200);
-    // }
 
     public function getUsuariosForInventario()
     {
@@ -807,4 +789,26 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
+    public function viewLotesInventario(){
+
+        $current_user =  Auth::user();
+
+        $mis_areas = Oficina::select('oficina.*', 'grupo.id_oficina')
+            ->join('grupo', 'grupo.id_oficina', '=', 'oficina.iduoper')
+            ->where('grupo.id_usuario', $current_user->id)
+            //->where('id_oficina', $id)
+            ->get();
+
+        $estados = Estado::all();
+        $oficinas = Oficina::all();
+        $areas = Area::all();
+
+        return Inertia::render('Inventario/RegistroLote', [
+            'areas' => $areas,
+            'estados' => $estados,
+            'oficinas' => $oficinas,
+            'mis_areas' => $mis_areas
+        ]);
+
+    }
 }
