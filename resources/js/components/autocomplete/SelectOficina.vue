@@ -43,7 +43,8 @@
 
         <template v-slot:item="data">
             <v-list-item-content>
-                <v-list-item-title v-html="data.item.dependencia">
+                <v-list-item-title>
+                    {{data.item.iduoper}} | {{data.item.dependencia}}
                 </v-list-item-title>
                 <v-list-item-subtitle>
                     {{ data.item.nombre }}
@@ -75,11 +76,15 @@ export default {
 
     methods: {
         customFilterOficina(item, queryText, itemText) {
+            console.log(item);
+
+            const iduoper = item.iduoper;
             const nombre = item.nombre.toLowerCase();
             const dependencia = item.dependencia.toLowerCase();
             const searchText = queryText.toLowerCase();
             return (
                 nombre.indexOf(searchText) > -1 ||
+                iduoper.indexOf(searchText) > -1 ||
                 dependencia.indexOf(searchText) > -1
             );
         },
