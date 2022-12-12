@@ -177,6 +177,10 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
 Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario')->group(function () {
 
+    //agreagado 11-12-2022. 11:18pm - para registro en lotes
+    Route::post('/guardar-lote', [InventarioController::class, 'guardarLote'])
+        ->name('guardar-lote');
+
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
 
@@ -224,6 +228,12 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/get-bienes', [InventarioController::class, 'getBienes'])
         ->name('get-bienes');
+
+    Route::post('/get-bienes-by-correlativo', [InventarioController::class, 'getBienesByCorrelativo'])
+        ->name('get-bienes-by-correlativo');
+
+        
+
 
     Route::post('/get-bienes-usuario', [InventarioController::class, 'getBienesUsuarios'])
         ->name('get-bienes-usuario');

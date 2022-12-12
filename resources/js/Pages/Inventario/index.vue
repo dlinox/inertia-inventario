@@ -11,11 +11,15 @@
                         <strong> REGISTRO DE INVENTARIOS</strong>
                     </v-col>
 
-                    <v-col cols="12" sm="auto" class="py-2 py-md-3 d-flex py-2 py-md-3">
+                    <v-col cols="12" sm="4" class="pr-sm-0 pr-sm-2 py-2 py-md-3 d-flex py-2 py-md-3">
                         <RegistrosComponent v-if="!is_new" @setData="data_emit = $event" />
                     </v-col>
 
-                    <v-col cols="12" sm="auto" class="d-flex ml-auto py-2 py-md-3">
+                    <v-col cols="12" sm="4" class="px-sm-0 px-sm-1 py-2 py-md-3 d-flex py-2 py-md-3">
+                            <BuscarPorCorrAnt v-if="!is_new" @setData="data_emit = $event" />
+                    </v-col>
+
+                    <v-col cols="12" sm="4" class="pl-sm-0 pl-sm-2 d-flex ml-auto py-2 py-md-3">
                         <AreasAsignadasComponent v-if="!is_new" @setData="data_emit = $event" :areas="mis_areas" />
                     </v-col>
 
@@ -359,18 +363,20 @@ import ScannerBarComponent from "./Components/ScannerBarComponent.vue";
 import SimpleAutoCompleteInput from "./Components/FormComponents/SimpleAutoCompleteInput.vue";
 import AlertComponent from "./Components/AlertComponent.vue";
 import SelectOficina from "../../components/autocomplete/SelectOficina.vue";
+import BuscarPorCorrAnt from "./Components/BuscarPorCorrAnt.vue";
 
 export default {
     components: {
-        AreasAsignadasComponent,
-        BusquedaAvanzadaComponent,
-        SearchCodeComponente,
-        ScannerBarComponent,
-        SimpleAutoCompleteInput,
-        AlertComponent,
-        SelectOficina,
-        RegistrosComponent,
-    },
+    AreasAsignadasComponent,
+    BusquedaAvanzadaComponent,
+    SearchCodeComponente,
+    ScannerBarComponent,
+    SimpleAutoCompleteInput,
+    AlertComponent,
+    SelectOficina,
+    RegistrosComponent,
+    BuscarPorCorrAnt
+},
     props: {
         estados: Array,
         mis_areas: Array,

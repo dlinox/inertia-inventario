@@ -205,7 +205,7 @@
                                 <v-col cols="12" class="pb-3 pt-0">
                                     <v-alert icon="mdi-alert" prominent text type="info">
                                         <b>¡Importante!, </b> Al realizar un registro por lote asegúrese que no se hagan
-                                        más registros en su misma área.
+                                        más registros simultáneamente en su misma área.
 
                                     </v-alert>
                                 </v-col>
@@ -222,22 +222,77 @@
             </v-row>
 
         </v-container>
+
+        <v-dialog persistent v-model="dialog_corr" max-width="420">
+            <v-card>
+                <div class="pa-3">
+                    <h4 class="text-center my-3">ETIQUETAS: INVENTARIO</h4>
+                    <v-divider></v-divider>
+
+                    <v-list two-line>
+                        <v-list-item two-line v-for="(item, index) in list_corr" :key="index">
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    <small> Cod.: <strong>{{ item.codigo }}</strong></small>
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+
+                                    <v-tooltip top color="primary">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <span v-bind="attrs" v-on="on">
+                                                <v-icon small>mdi-information</v-icon>
+                                            </span>
+                                        </template>
+                                        <span>
+                                            <small> Oficina-Responsable-Correlativo</small>
+                                        </span>
+                                    </v-tooltip>
+                                    <small>{{ item.cod_ubicacion }}</small>
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+
+                            <v-list-item-action>
+                                <v-btn small tile color="primary">
+                                    <strong>{{ item.correlativo }}</strong>
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-list>
+
+
+                    <v-divider></v-divider>
+
+                    <div class="d-flex justify-center mt-3">
+                        <v-btn color="primary" dense @click="dialog_corr = !dialog_corr">
+                            Aceptar
+                        </v-btn>
+                    </div>
+                </div>
+            </v-card>
+        </v-dialog>
+
+        <AlertComponent :show_alert="show_alert" :msg_alert="msg_alert" :type_alert="type_alert"
+            @setAlert="show_alert = $event" />
+
     </v-card>
 </template>
 
 <script>
 import Layout from "@/Layouts/InventarioLayout";
+import axios from "axios";
 import SelectOficina from "../../components/autocomplete/SelectOficina.vue";
+import AlertComponent from "./Components/AlertComponent.vue";
 import AreasAsignadasLotesComponent from "./Components/AreasAsignadasLotes.Component.vue";
 import SimpleAutoCompleteInput from "./Components/FormComponents/SimpleAutoCompleteInput.vue";
 
 
 export default {
     components: {
-        AreasAsignadasLotesComponent,
-        SimpleAutoCompleteInput,
-        SelectOficina
-    },
+    AreasAsignadasLotesComponent,
+    SimpleAutoCompleteInput,
+    SelectOficina,
+    AlertComponent
+},
     props: {
         estados: Array,
         mis_areas: Array,
@@ -283,6 +338,8 @@ export default {
         dialog_corr: false,
         //areas_control
         mis_areas_id: [],
+
+        list_corr: [],
     }),
     created() {
         this.mis_areas_id = this.mis_areas.map((area) => area.iduoper);
@@ -303,80 +360,32 @@ export default {
             this.type_alert = response.estado ? "success" : "red";
             this.show_alert = true;
         },
-        async guardarFoto(id) {
-            const formData = new FormData();
-            formData.append("foto", this.foto_ref);
-            formData.append("id", id);
-            let res = await axios.post("/inventario/save-foto", formData);
-        },
 
         async Guardar() {
             if (this.$refs.form.validate()) {
                 this.loadin_form = true;
 
                 this.form_data.bienes = this.data_emit;
+                let res = await axios.post('/inventario/guardar-lote', this.form_data);
 
-                console.log(this.form_data);
-                // if (this.data_emit.registrado && this.is_edit) {
-                //     await this.updateInventario();
-                // } else {
-                //     await this.createInventario();
-                // }
+                if (res.data.estado) {
+                    this.shwModalCorrelativo(res.data);
+                    this.resetAll();
+                }
+
+                this.setDataAlert(res.data);
 
                 this.loadin_form = false;
             }
         },
 
-        async createInventario() {
-            let res = await axios.post(
-                "/inventario/create-inventario",
-                this.form_data
-            );
-            //console.log(res.data);
-            if (res.data.estado && this.file_foto) {
-                await this.guardarFoto(res.data.id);
-            }
-
-            if (res.data.estado) {
-                this.shwModalCorrelativo(res.data);
-                this.resetAll();
-            }
-
-            this.setDataAlert(res.data);
-        },
-        async updateInventario() {
-
-            let res = await axios.post(
-                "/inventario/update-inventario",
-                this.form_data
-            );
-            if (res.data.estado && this.file_foto) {
-                await this.guardarFoto(res.data.id);
-            }
-            if (res.data.estado) {
-                this.resetAll();
-            }
-            this.setDataAlert(res.data);
-        },
 
         shwModalCorrelativo(data) {
-            this.corr_num = data.corr_num;
-            this.corr_area = data.corr_area;
+
+            this.list_corr = data.correlativos;
             this.dialog_corr = true;
         },
 
-        async deleteInventario() {
-            this.loadin_form = true;
-            let res = await axios.post(
-                "/inventario/delete-inventario",
-                this.form_data
-            );
-
-            this.setDataAlert(res.data);
-            this.resetAll();
-            this.dialog_delete = false;
-            this.loadin_form = false;
-        },
 
         async BuscarPersonas(term) {
             let res = await axios.get("/inventario/search-personas/" + term);
@@ -384,7 +393,7 @@ export default {
         },
 
         personasFilter(item, queryText, itemText) {
-            
+
             const nombres = item.nombres.toLowerCase();
             const paterno = item.paterno?.toLowerCase();
             const materno = item.materno?.toLowerCase();

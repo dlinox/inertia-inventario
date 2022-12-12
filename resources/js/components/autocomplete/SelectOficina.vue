@@ -76,8 +76,6 @@ export default {
 
     methods: {
         customFilterOficina(item, queryText, itemText) {
-            console.log(item);
-
             const iduoper = item.iduoper;
             const nombre = item.nombre.toLowerCase();
             const dependencia = item.dependencia.toLowerCase();
