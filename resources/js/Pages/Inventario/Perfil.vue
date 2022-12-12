@@ -79,7 +79,7 @@
                 </v-col>
             </v-row>
         </v-card>
-       <TablaBienesRegistrados /> 
+   <!--    <TablaBienesRegistrados /> -->
 
         <!--
         <v-card tile>

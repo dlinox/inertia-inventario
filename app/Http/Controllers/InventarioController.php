@@ -22,10 +22,13 @@ class InventarioController extends Controller
     protected $bienK;
     protected $inventario;
 
+    protected $correlativos;
+
     public function __construct()
     {
         $this->bienK = new Bienk;
         $this->inventario = new Inventario;
+        $this->correlativos = [];
     }
 
     public function index()
@@ -214,6 +217,32 @@ class InventarioController extends Controller
 
                 return $temp;
             })
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('bienk.codigo', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('bienk.idreg_anterior', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('bienk.descripcion', 'LIKE', '%' . $request->term . '%');
+            })->paginate(10);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        $this->response['mensaje'] =   $request->area;
+        return response()->json($this->response, 200);
+    }
+
+    public function getBienesByCorrelativo(Request $request)
+    {
+        $res = BienK::select(
+            'bienk.id',
+            'bienk.codigo',
+            'bienk.descripcion',
+            'bienk.registrado',
+            'bienk.idreg_anterior',
+            'bienk.cod_ubicacion'
+        )
+            ->join('oficina', 'oficina.iduoper', '=', 'bienk.id_area') //iduoper
+            ->where(DB::raw("SUBSTRING_INDEX(bienk.cod_ubicacion,'.',1)"),  $request->corr_area)
+            ->where(DB::raw("SUBSTRING_INDEX(bienk.cod_ubicacion,'-',-1)"),  'LIKE', $request->corr_num . '%')
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('bienk.codigo', 'LIKE', '%' . $request->term . '%')
@@ -625,10 +654,6 @@ class InventarioController extends Controller
     // ->leftJoin('products as p', 'c.id', 'p.product_type')
     // ->groupBy('c.id')
 
-
-
-
-
     public function getBienesAllbyArea(Request $request)
     {
 
@@ -772,7 +797,8 @@ class InventarioController extends Controller
         return response()->json($this->response, 200);
     }
 
-    public function viewLotesInventario(){
+    public function viewLotesInventario()
+    {
 
         $current_user =  Auth::user();
 
@@ -792,6 +818,99 @@ class InventarioController extends Controller
             'oficinas' => $oficinas,
             'mis_areas' => $mis_areas
         ]);
+    }
 
+    public function guardarLote(Request $request)
+    {
+        try {
+            $trans = DB::transaction(function () use ($request) {
+
+                $datos = (object)[
+                    'color' => $request->color,
+                    'estado_uso' => $request->estado_uso,
+                    'id_estado' => $request->id_estado,
+                    'id_area' => $request->id_oficina,
+                    'id_persona' => $request->id_persona,
+                    'idpersona_otro' => $request->idpersona_otro,
+                    'medidas' => $request->medidas,
+                    'num_ambiente' => $request->num_ambiente,
+                    'observaciones' => $request->observaciones,
+                ];
+
+                foreach ($request->bienes as $item) {
+                    //$correlativos push correlativo
+                    $correlativo =  $this->getAndCreteInventario($item, $datos);
+                    array_push($this->correlativos, $correlativo);
+                }
+            });
+
+            $this->response['mensaje'] = 'Exito';
+            $this->response['estado'] = true;
+            $this->response['datos'] = $trans;
+            $this->response['correlativos'] = $this->correlativos;
+            return response()->json($this->response, 200);
+        } catch (\Throwable $th) {
+            $this->response['mensaje'] = 'Ocurrió un error, vuelva a intentarlo';
+            $this->response['estado'] = false;
+            return response()->json($this->response, 200);
+        }
+    }
+
+    public function getAndCreteInventario($item, $datos)
+    {
+
+        $bienk = $this->bienK->getDataByID($item['id']);
+
+        $res = Inventario::create([
+            'tipo' => $bienk->tipo,
+            'idreg_anterior' => $bienk->idreg_anterior,
+            'cod_ubicacion' => $bienk->cod_ubicacion,
+            'cuenta' => $bienk->cuenta,
+            'codigo' =>  trim($bienk->codigo),
+            'codigo_anterior' => $bienk->codigo_anterior,
+            'descripcion' => $bienk->descripcion,
+            'anio_adq' => $bienk->anio_adq,
+            'modelo' => $bienk->modelo,
+            'marca' => $bienk->marca,
+            //********************* */
+            'medidas' => $datos->medidas,
+            'color' => $datos->color,
+            'id_persona' => $datos->id_persona,
+            'idpersona_otro' => $datos->idpersona_otro,
+            'id_area' => $datos->id_area,
+            'id_estado' => $datos->id_estado,
+            'estado_uso' => $datos->estado_uso,
+            'num_ambiente' => $datos->num_ambiente,
+            'observaciones' => $datos->observaciones,
+            /********************** */
+            'nro_serie' => $bienk->nro_serie,
+            'val_libros' => $bienk->val_libros,
+            'dep_acum2019' => $bienk->dep_acum2019,
+            'idbienk' => $bienk->id,
+            'id_usuario' => Auth::user()->id,
+        ]);
+
+        if ($res) {
+
+            $corr_area =  explode('.', $res->id_area)[0];
+
+            $corr_num = $this->AsignarCorrelativo($res);
+
+            $res->corr_area =  $corr_area;
+            $res->corr_num = $corr_num;
+            $res->save();
+
+            if ($res->idbienk) {
+                Bienk::select('registrado')->where('id', $res->idbienk)->update(['registrado' => 1]);
+            }
+
+            $correlativo = (object)[
+                'codigo' => $res->codigo,
+                'cod_ubicacion' => $res->cod_ubicacion,
+                'correlativo' => $res->corr_area . '-' . $res->corr_num,
+            ];
+
+            return $correlativo;
+        }
     }
 }
