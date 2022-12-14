@@ -7,6 +7,7 @@ use App\Models\AreaPersona;
 use App\Models\Document;
 use App\Models\Bienk;
 use App\Models\Documento;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -46,30 +47,98 @@ class PDFController extends Controller
         return response()->json($this->response, 200);
     }
 
-    public function PDFBienes($idP,$idArea){
+    public function PDFBienes(Request $doc){
 
-        $registrado = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = "'.$idArea.'"  AND estado = 0 ;');
-
+        $registrado = DB::select('SELECT * from area_persona where id_persona = '.$doc->persona.' and id_area = "'.$doc->area.'"  AND estado = 0;');
+        
         if($registrado != null){
-            $this->response['mensaje'] = 'ITEM YA REGISTRADO';
-            return response()->json($this->response, 200);
+            $num_doc = $registrado[0]->num + 1;
+//            $num_doc = $registrado[0]->num + 1;
+            if ($doc->opcion == 0){
+                $this->response['mensaje'] = 'ITEM YA REGISTRADO';
+                return response()->json($this->response, 200);
+            }
+            else {                
+//                $num_doc = $registrado[0]->num + 1;
+                $bienes = DB::select('SELECT * from inventario WHERE estado = 1 AND id_area = "'.$doc->area.'" AND id_persona = ' . $doc->persona. ';');
+                $this->response['bienes'] = $bienes;
+                $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $doc->area .'";');
+    //            $area = DB::select('SELECT * from  area WHERE area.id ='.$idArea.';');
+                $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $doc->persona);
+                $r2 = DB::select('SELECT * FROM persona WHERE ID IN ( SELECT idpersona_otro from inventario WHERE id_area = "' . $doc->area . '" and id_persona = ' . $doc->persona . ');');
+                if($r2 != null){
+                    $responsable2 = $r2[0];
+                }else {
+                    $responsable2 = null;
+                }
+                $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $doc->area . '" and id_persona = ' . $doc->persona . ');');
+                $ldate = date('Y-m-d');
+                $lhour = date('H:i:s');
+                $pdf = PDF::loadView('Bienes', compact('bienes','oficina','inventaristas','responsable','responsable2','ldate','lhour','num_doc'));
+        //        $pdf->output(['/public','F']);
+                $pdf->setPaper('a4','landscape');
+                if (AreaPersona::max('id') > 0 ){
+                    $nro = AreaPersona::max('id')+1;
+                }else {
+                    $nro = 1;
+                }
+
+                if ($nro < 10) {
+                    $codigo = 'CBI-'.date('d').date('m').date('Y').'-000000'.$nro;
+                }
+                if ($nro > 9 && $nro < 100) {
+                    $codigo = 'CBI-'.date('d').date('m').date('Y').'-00000'.$nro;
+                }
+                if ($nro > 99 && $nro < 1000) {
+                    $codigo = 'CBI-'.date('d').date('m').date('Y').'-0000'.$nro;
+                }
+                if ($nro > 999 && $nro < 10000) {
+                    $codigo = 'CBI-'.date('d').date('m').date('Y').'-000'.$nro;
+                }
+                if ($nro > 9999 && $nro < 100000) {
+                    $codigo = 'CBI-'.date('d').date('m').date('Y').'-00'.$nro;
+                }
+                if ($nro > 99999 && $nro < 1000000) {
+                    $codigo = 'CBI-'.date('d').date('m').date('Y').'-0'.$nro;
+                }
+
+                $output = $pdf->output();
+                file_put_contents(public_path().'/documents/cargos/'.$codigo.'.pdf', $output);
+
+                $docs['codigo'] = $codigo;
+                $docs['id_area'] = $doc->area;
+                $docs['id_persona'] = $doc->persona;
+                $docs['url'] = '/documents/cargos/'.$codigo.'.pdf';
+                $docs['tipo'] = 3;
+                $docs['estado'] = 0;
+                $docs['num'] = $num_doc;
+                $docs['fecha'] = $ldate;
+                $docs['id_usuario'] = Auth::id();
+                AreaPersona::create($docs);
+
+                $this->bloquearBienes( $doc->area, $doc->persona);
+                $this->response['mensaje'] = 'PDF';
+                $this->response['estado'] = true;
+                $this->response['datos'] = $docs;
+                return response()->json($this->response, 200);
+                    return response()->json($this->response, 200);
+                }
         }
         else{
-//            $res = DB::select('SELECT * from area_persona where id_persona = '.$idP.' and id_area = "'. $idArea. '";');
-            $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $idArea .'";');
-//            $area = DB::select('SELECT * from  area WHERE area.id ='.$idArea.';');
-            $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $idP);
-            $r2 = DB::select('SELECT * FROM persona WHERE ID IN ( SELECT idpersona_otro from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
+            $num_doc = 1;
+            $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $doc->area .'";');
+            $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $doc->persona);
+            $r2 = DB::select('SELECT * FROM persona WHERE ID IN ( SELECT idpersona_otro from inventario WHERE id_area = "' . $doc->area . '" and id_persona = ' . $doc->persona . ');');
             if($r2 != null){
                 $responsable2 = $r2[0];
             }else {
                 $responsable2 = null;
             }
-            $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
-            $bienes = DB::select('SELECT * from inventario WHERE id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
+            $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $doc->area . '" and id_persona = ' . $doc->persona . ');');
+            $bienes = DB::select('SELECT * from inventario WHERE id_area = "'. $doc->area .'" AND id_persona = ' . $doc->persona . ';');
             $ldate = date('Y-m-d');
             $lhour = date('H:i:s');
-            $pdf = PDF::loadView('Bienes', compact('bienes','oficina','inventaristas','responsable','responsable2','ldate','lhour'));
+            $pdf = PDF::loadView('Bienes', compact('bienes','oficina','inventaristas','responsable','responsable2','ldate','lhour', 'num_doc'));
     //        $pdf->output(['/public','F']);
             $pdf->setPaper('a4','landscape');
             if (AreaPersona::max('id') > 0 ){
@@ -100,17 +169,18 @@ class PDFController extends Controller
             $output = $pdf->output();
             file_put_contents(public_path().'/documents/cargos/'.$codigo.'.pdf', $output);
 
-            $doc['codigo'] = $codigo;
-            $doc['id_area'] = $idArea;
-            $doc['id_persona'] = $idP;
-            $doc['url'] = '/documents/cargos/'.$codigo.'.pdf';
-            $doc['tipo'] = 1;
-            $doc['estado'] = 0;
-            $doc['fecha'] = $ldate;
-            $doc['id_usuario'] = Auth::id();
-            AreaPersona::create($doc);
+            $docs['codigo'] = $codigo;
+            $docs['id_area'] = $doc->area;
+            $docs['id_persona'] = $doc->persona;
+            $docs['url'] = '/documents/cargos/'.$codigo.'.pdf';
+            $docs['tipo'] = 1;
+            $docs['num'] = $num_doc;
+            $docs['estado'] = 0;
+            $docs['fecha'] = $ldate;
+            $docs['id_usuario'] = Auth::id();
+            AreaPersona::create($docs);
 
-            $this->bloquearBienes( $idArea, $idP);
+            $this->bloquearBienes( $doc->area, $doc->persona);
             $this->response['mensaje'] = 'PDF';
             $this->response['estado'] = true;
             $this->response['datos'] = $doc;
@@ -154,7 +224,7 @@ class PDFController extends Controller
         }
 
         $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
-        $bienes = DB::select('SELECT * from inventario WHERE id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
+        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
         $ldate = date('Y-m-d');
         $lhour = date('H:i:s');
         

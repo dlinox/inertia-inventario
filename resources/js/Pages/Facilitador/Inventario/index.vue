@@ -1,6 +1,8 @@
 <template>
+    
     <v-container>
-        <v-row class="inputs" style="margin-bottom: -30px;;">
+        <v-card>
+        <v-row class="inputs pl-3 pr-3"  style="margin-bottom: -30px;;">
             <v-col sx="12" sm="12" md="4" lg="4" style="mb-0 pt-0" class="p-0" >
                 <v-text-field
                     v-model="ofi"
@@ -59,69 +61,74 @@
 
         </v-row>
 
-    <v-card>
+
         <v-card-title class="pa-0 py-3 pb-5">
-      
-            <v-spacer></v-spacer>   
-
-            <div style="display: flex; justify-content:flex-end; align-items:center;">
-
-            <div style=" margin-right:20px; height: 38px;">
-
-                <v-menu
-                    ref="menu"
-                    v-model="menu"
-                    offset-y
-                    min-width="auto"
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
+            <v-row class="pl-3 pr-3">
+            <v-col cols="12" sm="12"  md="4" lg="4">
+                <div style=" width:100%;">
+                    <v-btn class="success" block @click="genExcel" >Exportar excel</v-btn>
+                </div> 
+            </v-col>   
+     
+            <v-col class="pb-1 pt-0" cols="12" sm="12"   md="4" lg="4" style="background: yellow;">
+                    <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        offset-y
+                        min-width="auto"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            class="mt-0 pt-0"
+                            v-model="date"
+                            label="Fecha"
+                            append-icon="mdi-calendar"
+                            readonly
+                            outlined
+                            clearable
+                            dense
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                        </template>
+                        <v-date-picker
                         v-model="date"
-                        label="Fecha"
-                        append-icon="mdi-calendar"
-                        readonly
+                        no-title
+                        scrollable
+                        >
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="menu = false"
+                        >
+                            Cancel
+                        </v-btn>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(date)"
+                        >
+                            OK
+                        </v-btn>
+                        </v-date-picker>
+                    </v-menu>
+            </v-col> 
+            <v-col cols="12" sm="12"  md="4" lg="4">
+                <div style=" height: 38px; margin-right: 0px;">
+                        <v-text-field
+                        v-model="searchbienes"
+                        append-icon="mdi-magnify"
                         outlined
-                        clearable
+                        label="Buscar"
                         dense
-                        v-bind="attrs"
-                        v-on="on"
-                    ></v-text-field>
-                    </template>
-                    <v-date-picker
-                    v-model="date"
-                    no-title
-                    scrollable
-                    >
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        text
-                        color="primary"
-                        @click="menu = false"
-                    >
-                        Cancel
-                    </v-btn>
-                    <v-btn
-                        text
-                        color="primary"
-                        @click="$refs.menu.save(date)"
-                    >
-                        OK
-                    </v-btn>
-                    </v-date-picker>
-                </v-menu>
-            </div>
-            <div style=" height: 38px; margin-right: 0px;">
-                <v-text-field
-                v-model="searchbienes"
-                append-icon="mdi-magnify"
-                outlined
-                label="Buscar"
-                dense
-                hide-details
-                >
-                </v-text-field>
-            </div>
-        </div>
+                        hide-details
+                        >
+                        </v-text-field>
+                </div>
+            </v-col>  
+            </v-row>
+        
         </v-card-title>
         <v-data-table
             :headers="headBienes"
@@ -319,7 +326,11 @@ export default {
         cerrarDetalle(){
             this.datosDetalle = null;
             this.dialogDetalle = false;
-        }
+        },
+        genExcel(){
+            window.location.href = "../inventario/export/";
+        },
+
 
         
     },
@@ -365,6 +376,7 @@ export default {
             // this.bienes = res;
         },
     },
+
 
     created() {
         this.getBienes();

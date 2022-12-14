@@ -94,6 +94,19 @@ export default {
                 icon: "mdi-clipboard-check",
                 ruta: "/facilitador/inventario"
             },
+            {
+                title: "Reporte diario",
+                icon: "mdi-chart-line",
+                ruta: "/facilitador/reporte"
+            },
+            {
+                title: "Bienes sin codigo",
+                icon: "mdi-clipboard-check",
+                ruta: "/facilitador/bienes-sin-codigo"
+            },
+
+            
+
             // {
             //     title: "Administrador",
             //     icon: "mdi-cog",
