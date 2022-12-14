@@ -4,7 +4,6 @@
             <v-overlay absolute :value="loadin_form">
                 <v-progress-circular indeterminate size="64"></v-progress-circular>
             </v-overlay>
-
             <v-container>
                 <v-row class="" align="center" no-gutters>
                     <v-col cols="12" class="py-2 py-md-3">
@@ -118,7 +117,7 @@
 
                         <v-col cols="12" sm="4" md="4" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Codigo" outlined v-model="form_data.codigo"
-                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
+                                :disabled="(is_new || disable_input_new ) ? false : true"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="8" md="8" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Descripción" outlined
@@ -127,15 +126,15 @@
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Marca" outlined v-model="form_data.marca"
-                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
+                                :disabled="(is_new || disable_input_new ) || is_other? false : true"></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Modelo" outlined v-model="form_data.modelo"
-                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
+                                :disabled="(is_new || disable_input_new) || is_other ? false : true"></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Serie" outlined v-model="form_data.nro_serie"
-                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
+                                :disabled="(is_new || disable_input_new) || is_other ? false : true"></v-text-field>
                         </v-col>
 
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
@@ -391,6 +390,7 @@ export default {
         loadin_form: false,
         disable_input: false,
         disable_input_new: false,
+        is_other: false,
 
         areas_by_oficina: [],
         personas: [],
@@ -528,6 +528,7 @@ export default {
             this.data_emit = false;
         },
         resetForm() {
+            this.is_other = false;
             this.form_data = {};
             this.$refs.form.reset();
             this.is_edit = false;
@@ -539,6 +540,14 @@ export default {
         async getDataBien(item) {
             //si es no registrado
             let res = await axios.post("/inventario/get-bien-by-id", item);
+
+            this.is_other = 
+                res.data.datos.tipo == 'ACTIVO FIJO' || 
+                res.data.datos.tipo == 'NO DEPRECIABLE' ||
+                res.data.datos.estado == false ||
+                this.disable_input_new == false ||
+                (this.data_emit.registrado  && res.data.datos.id_usuario != this.user.id )
+                ? false : true;
 
             this.form_data = res.data.datos;
             this.personas = [res.data.datos.persona];
@@ -557,12 +566,16 @@ export default {
         },
 
         editInventario(val) {
+  
 
-            //console.log(this.form_data);
             if (this.form_data.idbienk == null) {
                 this.disable_input_new = val;
+               
             }
-
+            if(this.form_data.tipo != 'ACTIVO FIJO' && this.form_data.tipo != 'NO DEPRECIABLE'){
+                this.is_other = val;
+            }
+           
             this.is_edit = val;
             this.disable_input = !val;
         },
@@ -575,6 +588,8 @@ export default {
             this.loadin_form = true;
             if (item.is_inventario) {
                 console.log("solo inventario");
+         
+              
                 await this.getDataInventario(item);
             } else {
                 console.log("bien y inventario");

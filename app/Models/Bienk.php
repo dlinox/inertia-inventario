@@ -43,7 +43,7 @@ class Bienk extends Model
 
     public function searchDataByCode($codigo)
     {
-        $res = $this::select('id', 'codigo', 'descripcion', 'registrado', 'idreg_anterior')
+        $res = $this::select('id', 'tipo', 'codigo', 'descripcion', 'registrado', 'idreg_anterior')
             ->where('codigo', 'LIKE', $codigo . '%')
             ->get();
         return $res;
