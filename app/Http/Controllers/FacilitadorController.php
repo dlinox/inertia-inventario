@@ -31,15 +31,8 @@ class FacilitadorController extends Controller
         WHERE date(inventario.created_at) = "'.$fecha.'"
         AND inventario.id_usuario 
         IN (SELECT users.id FROM users WHERE equipo IN (SELECT distinct equipo FROM users))
-        GROUP BY oficina.dependencia, users.id;');
+        GROUP BY oficina.dependencia, users.id order by equipo;');
 
-        $rest = DB::select('SELECT users.equipo as equipo, users.nombres, users.apellidos, dependencia, count(inventario.id) as reg
-        from inventario
-        JOIN oficina ON oficina.iduoper = inventario.id_area 
-        JOIN users ON users.id = inventario.id_usuario 
-        WHERE inventario.id_usuario 
-        IN (SELECT users.id FROM users WHERE equipo IN (SELECT distinct equipo FROM users))
-        GROUP BY oficina.dependencia, users.id order by equipo;' );
         $deps = [];        
         $i=0;
         $total = 0;
