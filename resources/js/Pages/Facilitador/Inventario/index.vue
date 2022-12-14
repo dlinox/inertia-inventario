@@ -61,7 +61,6 @@
 
         </v-row>
 
-
         <v-card-title class="pa-0 py-3 pb-5">
             <v-row class="pl-3 pr-3">
             <v-col cols="12" sm="12"  md="4" lg="4">
