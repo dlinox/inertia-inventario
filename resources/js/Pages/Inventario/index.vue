@@ -10,12 +10,13 @@
                         <strong> REGISTRO DE INVENTARIOS</strong>
                     </v-col>
 
+
                     <v-col cols="12" sm="4" class="pr-sm-0 pr-sm-2 py-2 py-md-3 d-flex py-2 py-md-3">
                         <RegistrosComponent v-if="!is_new" @setData="data_emit = $event" />
                     </v-col>
 
                     <v-col cols="12" sm="4" class="px-sm-0 px-sm-1 py-2 py-md-3 d-flex py-2 py-md-3">
-                            <BuscarPorCorrAnt v-if="!is_new" @setData="data_emit = $event" />
+                        <BuscarPorCorrAnt v-if="!is_new" @setData="data_emit = $event" />
                     </v-col>
 
                     <v-col cols="12" sm="4" class="pl-sm-0 pl-sm-2 d-flex ml-auto py-2 py-md-3">
@@ -47,6 +48,7 @@
                         </v-col>
                     </template>
                 </v-row>
+
 
                 <v-form ref="form" v-model="form_valid" lazy-validation>
                     <v-row class="" align="center">
@@ -117,16 +119,16 @@
 
                         <v-col cols="12" sm="4" md="4" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Codigo" outlined v-model="form_data.codigo"
-                                :disabled="(is_new || disable_input_new ) ? false : true"></v-text-field>
+                                :disabled="(is_new || disable_input_new) ? false : true"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="8" md="8" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Descripción" outlined
-                                v-model="form_data.descripcion" :rules="nameRules" :disabled="(is_new || disable_input_new) ? false : true"
-                                required></v-text-field>
+                                v-model="form_data.descripcion" :rules="nameRules"
+                                :disabled="(is_new || disable_input_new) ? false : true" required></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Marca" outlined v-model="form_data.marca"
-                                :disabled="(is_new || disable_input_new ) || is_other? false : true"></v-text-field>
+                                :disabled="(is_new || disable_input_new) || is_other ? false : true"></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" md="6" class="pb-1 pt-0">
                             <v-text-field class="mt-0 pt-0" dense label="Modelo" outlined v-model="form_data.modelo"
@@ -366,16 +368,16 @@ import BuscarPorCorrAnt from "./Components/BuscarPorCorrAnt.vue";
 
 export default {
     components: {
-    AreasAsignadasComponent,
-    BusquedaAvanzadaComponent,
-    SearchCodeComponente,
-    ScannerBarComponent,
-    SimpleAutoCompleteInput,
-    AlertComponent,
-    SelectOficina,
-    RegistrosComponent,
-    BuscarPorCorrAnt
-},
+        AreasAsignadasComponent,
+        BusquedaAvanzadaComponent,
+        SearchCodeComponente,
+        ScannerBarComponent,
+        SimpleAutoCompleteInput,
+        AlertComponent,
+        SelectOficina,
+        RegistrosComponent,
+        BuscarPorCorrAnt
+    },
     props: {
         estados: Array,
         mis_areas: Array,
@@ -446,7 +448,7 @@ export default {
                 } else {
                     await this.createInventario();
                 }
-                
+
                 this.loadin_form = false;
             }
         },
@@ -461,7 +463,7 @@ export default {
                 await this.guardarFoto(res.data.id);
             }
 
-            if (res.data.estado){
+            if (res.data.estado) {
                 this.shwModalCorrelativo(res.data);
                 this.resetAll();
             }
@@ -477,7 +479,7 @@ export default {
             if (res.data.estado && this.file_foto) {
                 await this.guardarFoto(res.data.id);
             }
-            if (res.data.estado){
+            if (res.data.estado) {
                 this.resetAll();
             }
             this.setDataAlert(res.data);
@@ -541,13 +543,17 @@ export default {
             //si es no registrado
             let res = await axios.post("/inventario/get-bien-by-id", item);
 
-            this.is_other = 
-                res.data.datos.tipo == 'ACTIVO FIJO' || 
-                res.data.datos.tipo == 'NO DEPRECIABLE' ||
-                res.data.datos.estado == false ||
-                this.disable_input_new == false ||
-                (this.data_emit.registrado  && res.data.datos.id_usuario != this.user.id )
-                ? false : true;
+            this.is_other =
+                (res.data.datos.tipo == 'ACTIVO FIJO' || res.data.datos.tipo == 'NO DEPRECIABLE')
+                    && res.data.datos.registrado == 0
+                    ? false : true;
+
+            if (res.data.datos.id_usuario) {
+                console.log('Registrado por otro');
+                this.is_other = res.data.datos.id_usuario != this.user.id ?  false :  true;
+                
+            }
+         
 
             this.form_data = res.data.datos;
             this.personas = [res.data.datos.persona];
@@ -566,16 +572,16 @@ export default {
         },
 
         editInventario(val) {
-  
+
 
             if (this.form_data.idbienk == null) {
                 this.disable_input_new = val;
-               
+
             }
-            if(this.form_data.tipo != 'ACTIVO FIJO' && this.form_data.tipo != 'NO DEPRECIABLE'){
+            if (this.form_data.tipo != 'ACTIVO FIJO' && this.form_data.tipo != 'NO DEPRECIABLE') {
                 this.is_other = val;
             }
-           
+
             this.is_edit = val;
             this.disable_input = !val;
         },
@@ -588,8 +594,8 @@ export default {
             this.loadin_form = true;
             if (item.is_inventario) {
                 console.log("solo inventario");
-         
-              
+
+
                 await this.getDataInventario(item);
             } else {
                 console.log("bien y inventario");
