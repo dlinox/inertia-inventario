@@ -69,7 +69,7 @@
                 </div> 
             </v-col>   
      
-            <v-col class="pb-1 pt-0" cols="12" sm="12"   md="4" lg="4" style="background: yellow;">
+            <v-col class="mb-5" cols="12" sm="12"   md="4" lg="4" style="height: 38px;">
                     <v-menu
                         ref="menu"
                         v-model="menu"
@@ -77,7 +77,7 @@
                         min-width="auto"
                     >
                         <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
+                        <v-text-field 
                             class="mt-0 pt-0"
                             v-model="date"
                             label="Fecha"
@@ -113,7 +113,7 @@
                         </v-date-picker>
                     </v-menu>
             </v-col> 
-            <v-col cols="12" sm="12"  md="4" lg="4">
+            <v-col class="" cols="12" sm="12"  md="4" lg="4">
                 <div style=" height: 38px; margin-right: 0px;">
                         <v-text-field
                         v-model="searchbienes"
