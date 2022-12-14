@@ -125,9 +125,9 @@ export default {
 
     },    
     created() {
-      this.fecha = this.getFecha(-5)
+      this.fecha = this.getFecha(0)
       this.getDatos()
-    },
+    }, 
 
     watch:{
       fecha: function(){
