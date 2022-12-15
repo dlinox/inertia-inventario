@@ -12,6 +12,10 @@ class FacilitadorController extends Controller
     {
         return Inertia::render('Facilitador/Dashboard');
     }
+    public function viewGlobal()
+    {
+        return Inertia::render('Facilitador/Reporte/global');
+    }
 
     public function bienesSinCodigo(){
         return Inertia::render('Facilitador/Inventario/BienesSinCodigo');
@@ -71,6 +75,79 @@ class FacilitadorController extends Controller
         return response()->json($this->response, 200);
     }
 
+    public function ReporteGlobaldia($fecha){
+        $datos = [];
+        $res = DB::select('SELECT users.equipo as equipo, users.id as uid, users.nombres, users.apellidos, dependencia, count(inventario.id) as reg
+        from inventario
+        LEFT JOIN oficina ON oficina.iduoper = inventario.id_area 
+        JOIN users ON users.id = inventario.id_usuario 
+        WHERE date(inventario.created_at) <= "'.$fecha.'" 
+        AND inventario.id_usuario 
+        IN (SELECT users.id FROM users WHERE equipo IN (SELECT distinct equipo FROM users))
+        GROUP BY oficina.dependencia, users.id order by equipo;');
+
+        $deps = [];        
+        $usuarios = [];
+        $i=0;
+        $total = 0;
+        $temp = 0;
+
+        foreach ($res as $item) { 
+            
+            $e = $this->existe($item, $datos);
+            $data[$i] = $this->existe($item, $datos);
+            $total = $total + $item->reg;
+    
+            if ( $e == true ){
+                if($i != 0){
+                    $temp = $temp + $item->reg; 
+                    $datos[$i-1]['reg'] = $datos[$i-1]['reg'] + $item->reg;                                    
+                    $datos[$i-1]['usuarios']['dos'] = $item->apellidos." ".$item->nombres;
+                    $datos[$i-1]['usuarios']['dosR'] =  $item->reg;
+                    $us['id'] = $item->uid; 
+                    $us['nombre'] = $item->apellidos." ".$item->nombres;
+
+                    $ite = $this->compararU($us, $usuarios);
+
+                    if( $ite != 999999) {    
+                        $usuarios[$ite]['regis'] = $usuarios[$ite]['regis'] + $item->reg;    
+                        $datos[$i-1]['users'] = $usuarios;                   
+                    } else {
+                        $us['regis'] = $item->reg;
+                        array_push($usuarios, $us);
+                        $datos[$i-1]['users'] = $usuarios;                    
+                    }
+                    
+                    if($this->comparar($item->dependencia, $deps) == false) {
+                        array_push($deps,$item->dependencia);
+                        $datos[$i-1]['dependencia'] = $deps;                    
+                    }
+                }
+
+            }else{
+                $temp += $item->reg;
+                $deps = [];
+                $usuarios = [];
+                $datos[$i]['equipo'] = $item->equipo;            
+                $datos[$i]['reg'] = $item->reg;
+                $datos[$i]['usuarios']['uno'] = $item->nombres." ".$item->apellidos;
+                $datos[$i]['usuarios']['unoR'] = $item->reg;
+                array_push($deps,$item->dependencia);
+                $user['id'] = $item->uid;
+                $user['nombre'] = $item->apellidos." ".$item->nombres;
+                $user['regis'] = $item->reg;
+                array_push($usuarios, $user);
+                $datos[$i]['users'] = $usuarios;
+                $datos[$i]['dependencia'] = $deps;
+                $i++;
+            }            
+         } 
+        $this->response['datos'] = $datos;
+        $this->response['total'] = $total;
+        return response()->json($this->response, 200);
+    }
+ 
+
     private function existe($item, $data){
         $existe = false;
         foreach ($data as $it) {
@@ -87,6 +164,17 @@ class FacilitadorController extends Controller
         for($l=0; $l<=$tm; $l++){
             if( $data[$l] == $item){
                 $est = true;
+            }
+        }
+        return $est;
+    }
+
+    private function compararU($item, $data){
+        $est=999999;
+        $tm = $this->sz($data);
+        for($l=0; $l<=$tm; $l++){
+            if( $data[$l]['id'] == $item['id']){
+                $est = $l;
             }
         }
         return $est;

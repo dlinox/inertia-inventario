@@ -95,9 +95,21 @@ export default {
                 ruta: "/facilitador/inventario"
             },
             {
-                title: "Reporte diario",
+                title: "Reporte de Avance",
                 icon: "mdi-chart-line",
-                ruta: "/facilitador/reporte"
+                ruta: null,
+                sub_menu:[
+                       {
+                        title: "Diario",
+                        icon: "mdi-cast-audio",
+                        ruta: "/facilitador/reporte"
+                    },
+                    {
+                        title: "Acumulado",
+                        icon: "mdi-fencing",
+                        ruta: "/reporte/global"
+                    },
+                ]   
             },
             {
                 title: "Bienes sin codigo",

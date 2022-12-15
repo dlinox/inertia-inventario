@@ -67,7 +67,7 @@
                 <div>{{ item.usuarios.uno }} </div>
                 <div>{{ item.usuarios.dos }} </div>
               </td>
-              <td align="center">
+              <td align="center" >
                 <div>{{ item.usuarios.unoR }} </div>
                 <div>{{ item.usuarios.dosR }} </div>
               </td>
@@ -98,7 +98,7 @@ export default {
     }),
     methods: {
       async getDatos() {
-          let res = await axios.get("/facilitador/reporte-dia/"+this.fecha);
+          let res = await axios.get("/reporte-dia/"+this.fecha);
           this.datos = res.data.datos;
           this.total = res.data.total;
           return res.data.datos.data;
@@ -126,7 +126,7 @@ export default {
     },    
     created() {
       this.fecha = this.getFecha(0)
-      this.getDatos()
+      this.getDatos() 
     }, 
 
     watch:{

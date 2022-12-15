@@ -61,7 +61,8 @@
         </v-row>
 
     <v-card class="mt-5">
-        <v-card-title class="pa-0 py-3 pb-5 pl-3">
+        <v-card-title class="pa-0 py-3 pb-5 pl-3" >
+            
             <v-autocomplete              
                     v-model="user"
                     clearable
@@ -313,15 +314,15 @@ export default {
         date:"",
         datosDetalle:null,
         headBienes: [
-          { text: 'Cod', align: 'start', filterable: true, value: 'codigo', width:"20px", class:'pl-4 pr-0 grey lighten-1' },
           { text: 'Nombre', align: 'start', filterable: true, value: 'descripcion',width:"60px", class:'pl-4 pr-0 grey lighten-1' },
+          { text: 'Aula', align: 'start', filterable: true, value: 'num_ambiente', width:"70px", class:'pl-4 pr-0 grey lighten-1' },
           { text: 'Marca', align: 'start', filterable: true, value: 'marca',width:"100px", class:'pl-4 pr-0 grey lighten-1' },
           { text: 'Serie', align: 'start', filterable: true, value: 'nro_serie',width:"120px", class:'pl-4 pr-0 grey lighten-1' },
           { text: 'Modelo', align: 'start', filterable: true, value: 'modelo',width:"120px", class:'pl-4 pr-0 grey lighten-1' },
           { text: 'Oficina', align: 'center', filterable: true, value: 'id_area', width:"70px", class:'pl-0 pr-0 grey lighten-1' },
           { text: 'Oficina', align: 'center', filterable: true, value: 'dependencia', width:"120px", class:'pl-0 pr-0 grey lighten-1' },
           { text: 'Etiqueta', align: 'center', filterable: false, sortable: true, width:"130px", value: 'corr_num', class:'pl-0 pr-0 grey lighten-1',},
-          { text: 'Fecha', align: 'center', filterable: false, sortable: true, width:"10px", value: 'fecha', class:'pl-0 pr-0 grey lighten-1',},
+          { text: 'Fecha', align: 'center', filterable: false, sortable: true, width:"120px", value: 'fecha', class:'pl-0 pr-0 grey lighten-1',},
           { align: 'right', value:'acciones', sortable: false, maxWidth:'30px', class:' pl-0 pr-0 grey lighten-1'},
         ],
         dialogDetalle: false,

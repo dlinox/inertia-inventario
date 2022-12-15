@@ -62,6 +62,12 @@ Route::post('/login', [LoginController::class, 'UserLogin'])
 Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/reporte-dia/{fecha}', [FacilitadorController::class, 'Reportedia']);
+    Route::get('/reporte-global-dia/{fecha}', [FacilitadorController::class, 'ReporteGlobaldia']);   
+    Route::get('/reporte/global', [FacilitadorController::class, 'viewGlobal'])->name('index');
+});
+
 Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])
         ->name('index');
@@ -293,8 +299,7 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
     Route::get('/bienes-sin-codigo', [FacilitadorController::class, 'bienesSinCodigo'])
     ->name('bienes-sin-codigo');
     
-    Route::get('/reporte', [FacilitadorController::class, 'Reportex']);   
-    Route::get('/reporte-dia/{fecha}', [FacilitadorController::class, 'Reportedia']);
+    Route::get('/reporte', [FacilitadorController::class, 'Reportex']);    
 
     Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
         Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
@@ -323,6 +328,8 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
 
 
 Route::middleware('auth')->name('get-data.')->prefix('get-data')->group(function () {
+
+
 
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
         Route::get('/{term}/{user?}', 'getOficinas')->name('term');
