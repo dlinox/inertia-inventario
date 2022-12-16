@@ -8,7 +8,8 @@
 
                 <v-container>
                     <h3 class="text-center">
-                        {{ user.nombres }} {{ user.apellidos }}
+                        prueba
+                        {{ user.nombres }} {{ user.apellidos }} 
                     </h3>
 
                     <v-divider> </v-divider>
