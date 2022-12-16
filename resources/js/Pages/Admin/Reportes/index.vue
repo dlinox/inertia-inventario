@@ -278,7 +278,7 @@ export default {
         this.getPersonas()
         this.getOficinas()
         this.getDocumentos()
-        this.opcion = 0
+        this.opcion = 1
     },
 
     watch:{

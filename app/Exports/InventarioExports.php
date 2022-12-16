@@ -19,7 +19,7 @@ class InventarioExports implements FromView
     {
         $res = Inventario::select('inventario.id', 'tipo', 'idreg_anterior', 'cod_ubicacion', 'cuenta', 'codigo', 'descripcion', 'modelo', 'marca', 'medidas', 'color', 'observaciones', 'idbienk', 'corr_area', 'corr_num', 'estado_uso', 'num_ambiente', 'persona.dni AS responsable')
          ->join('persona','inventario.id_persona', '=', 'persona.id')->get();
-        return view('exports.inventario', [
+        return view('exports.Inventario', [
             'res' => $res,
         ]);
     }

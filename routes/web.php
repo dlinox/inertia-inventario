@@ -44,7 +44,7 @@ Route::get('/offline', [LoginController::class, 'offlineView'])
 //     return (new tableExports)->download('areas.xlsx');
 // });
 
-Route::get('inventario/export/', [InventarioController::class, 'export']);
+Route::get('inventario/export', [InventarioController::class, 'export']);
 
 
 //Route::get('/export/{a},{p}', [DocumentsController::class, 'export']);
