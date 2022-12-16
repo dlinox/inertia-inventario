@@ -62,7 +62,7 @@
 
     <v-card class="mt-5">
         <v-card-title class="pa-0 py-3 pb-5 pl-3" >
-            
+
             <v-autocomplete              
                     v-model="user"
                     clearable
@@ -288,8 +288,7 @@
                     </v-btn>
                     </v-card-actions>
                 </v-card>
-
-
+                
                 </v-dialog>
 
         </v-card>

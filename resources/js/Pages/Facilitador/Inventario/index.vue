@@ -115,15 +115,15 @@
             </v-col> 
             <v-col class="" cols="12" sm="12"  md="4" lg="4">
                 <div style=" height: 38px; margin-right: 0px;">
-                        <v-text-field
-                        v-model="searchbienes"
-                        append-icon="mdi-magnify"
-                        outlined
-                        label="Buscar"
-                        dense
-                        hide-details
-                        >
-                        </v-text-field>
+                    <v-text-field
+                    v-model="searchbienes"
+                    append-icon="mdi-magnify"
+                    outlined
+                    label="Buscar"
+                    dense
+                    hide-details
+                    >
+                    </v-text-field>
                 </div>
             </v-col>  
             </v-row>
@@ -211,56 +211,56 @@
         </v-data-table>
     </v-card>
 
-                <v-dialog 
-                    max-width="450"
-                    v-model="dialogDetalle">
-                    <v-card>
-                    <v-card-title class="text-h5 primary">
-                        <span style="color: white;">Detalles </span>
-                    </v-card-title>
+    <v-dialog 
+        max-width="450"
+        v-model="dialogDetalle">
+        <v-card>
+        <v-card-title class="text-h5 primary">
+            <span style="color: white;">Detalles </span>
+        </v-card-title>
 
-                    <v-card-text>
-                        <!-- <verDetalleBien :item="item"/> -->
-                        <div class="d-flex mt-3" v-if="datosDetalle !== null"  style="width:100%; background-color: #fff; align-items: center; justify-content:center;">
-                            <div>
-                                <div class="" style="font-weight: bold;">Codigo: </div>
-                                <div><span>{{datosDetalle.codigo}}</span></div> 
-                                <div class="">Oficina:</div>
-                                <div> <span style="font-weight: bold;">{{datosDetalle.oficina}}</span></div>
-                                <div class="">Dependencia: </div>
-                                <div style="width: 200px;"><span>{{datosDetalle.dependencia}}</span></div>
-                                <div class="" style="font-weight: bold;">Nombre: </div>
-                                <div><span>{{datosDetalle.descripcion}}</span></div>
-                            </div>
-                            <div>
-                                <div class="" style="font-weight: bold;">Responsable: </div>
-                                <div><span>DNI: {{datosDetalle.pdni}}</span></div>
-                                <div><span>{{datosDetalle.pnombre}} {{datosDetalle.paterno}} {{datosDetalle.materno}}</span></div>
-                                <div class="" style="font-weight: bold;">Inventariador:</div>
-                                <div> <span>{{datosDetalle.unombre}} {{ datosDetalle.uapellidos}}</span></div>
-                                <div class="">-</div>
-                                <div> <span></span></div>
-                            </div>
-
-
-                        </div>  
-                    </v-card-text>
-
-                    <v-divider></v-divider>
-
-                    <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="primary"
-                        @click="cerrarDetalle()"
-                    >
-                        Ok
-                    </v-btn>
-                    </v-card-actions>
-                </v-card>
+        <v-card-text>
+            <!-- <verDetalleBien :item="item"/> -->
+            <div class="d-flex mt-3" v-if="datosDetalle !== null"  style="width:100%; background-color: #fff; align-items: center; justify-content:center;">
+                <div>
+                    <div class="" style="font-weight: bold;">Codigo: </div>
+                    <div><span>{{datosDetalle.codigo}}</span></div> 
+                    <div class="">Oficina:</div>
+                    <div> <span style="font-weight: bold;">{{datosDetalle.oficina}}</span></div>
+                    <div class="">Dependencia: </div>
+                    <div style="width: 200px;"><span>{{datosDetalle.dependencia}}</span></div>
+                    <div class="" style="font-weight: bold;">Nombre: </div>
+                    <div><span>{{datosDetalle.descripcion}}</span></div>
+                </div>
+                <div>
+                    <div class="" style="font-weight: bold;">Responsable: </div>
+                    <div><span>DNI: {{datosDetalle.pdni}}</span></div>
+                    <div><span>{{datosDetalle.pnombre}} {{datosDetalle.paterno}} {{datosDetalle.materno}}</span></div>
+                    <div class="" style="font-weight: bold;">Inventariador:</div>
+                    <div> <span>{{datosDetalle.unombre}} {{ datosDetalle.uapellidos}}</span></div>
+                    <div class="">-</div>
+                    <div> <span></span></div>
+                </div>
 
 
-                </v-dialog>
+            </div>  
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+            color="primary"
+            @click="cerrarDetalle()"
+        >
+            Ok
+        </v-btn>
+        </v-card-actions>
+    </v-card>
+
+
+    </v-dialog>
 
 
     </v-container>

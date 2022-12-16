@@ -445,8 +445,12 @@ export default {
                  console.log(response);
                  this.PDF=response.data.datos;
 //                 this.url = this.PDF.url+"#toolbar=0";
-                   this.PrintPdf(this.PDF.url);
-                   this.url = this.PDF.url;
+                //    this.PrintPdf(this.PDF.url);
+                //    this.url = this.PDF.url;
+                //    console.log(response);
+                 this.PDF=response.data.datos;
+                 this.url = response.data.datos.url;
+                 this.PrintPdf(this.url);
              });
             this.text = "Documento Guardado"
             this.snackbar = true
