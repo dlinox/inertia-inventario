@@ -36,7 +36,7 @@
                         color="primary"
                         @click="
                             () => {
-                                this.$inertia.get('/admin/usuarios/formulario');
+                                this.$inertia.get('/admin/personas/formulario');
                             }
                         "
                     >
@@ -392,6 +392,7 @@ export default {
             });
         },
         descargarExcel() {
+            
             const data = this.list_usuarios;
             const filename = "personas";
             const exportType = exportFromJSON.types.xls;

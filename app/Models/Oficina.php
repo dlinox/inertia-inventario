@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Oficina extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'oficina';
 
     protected $fillable = [
+        'iduoper',
         'nombre',
-        'codigo',
+        'dependencia',
     ];
 }

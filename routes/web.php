@@ -64,7 +64,7 @@ Route::post('/logout', [LoginController::class, 'logout'])
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/reporte-dia/{fecha}', [FacilitadorController::class, 'Reportedia']);
-    Route::get('/reporte-global-dia/{fecha}', [FacilitadorController::class, 'ReporteGlobaldia']);   
+    Route::get('/reporte-global-dia/{fecha}', [FacilitadorController::class, 'ReporteGlobaldia']);
     Route::get('/reporte/global', [FacilitadorController::class, 'viewGlobal'])->name('index');
 });
 
@@ -134,11 +134,14 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
 
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
+
         Route::get('/getallOficinas', 'getallOficinas')->name('getallOficinas');
         Route::get('/getallOficinasG', 'getallOficinasG')->name('getOficinasG');
         Route::get('/getallOficinasDependencia', 'getallOficinasDependencia')->name('getOficinasD');
         Route::get('/getOficinasByAreas/{id}', 'getOficinasByAreas')->name('getOficinasByAreas');
     });
+
+    Route::resource('oficinas', OficinaController::class);
 
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -246,15 +249,11 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/get-bienes-by-correlativo', [InventarioController::class, 'getBienesByCorrelativo'])
         ->name('get-bienes-by-correlativo');
 
-
-
-
     Route::post('/get-bienes-usuario', [InventarioController::class, 'getBienesUsuarios'])
         ->name('get-bienes-usuario');
 
     Route::post('/guardar-inventario', [InventarioController::class, 'saveInventario'])
         ->name('guardar-inventario');
-
 
     Route::post('/create-inventario', [InventarioController::class, 'createInventario'])
         ->name(' create-inventario');
@@ -264,7 +263,6 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/save-foto', [InventarioController::class, 'saveFoto'])
         ->name('save-foto');
-
 
     Route::post('/delete-inventario', [InventarioController::class, 'deleteInventario'])
         ->name('delete-inventario');
@@ -297,9 +295,9 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
         ->name('index');
 
     Route::get('/bienes-sin-codigo', [FacilitadorController::class, 'bienesSinCodigo'])
-    ->name('bienes-sin-codigo');
-    
-    Route::get('/reporte', [FacilitadorController::class, 'Reportex']);    
+        ->name('bienes-sin-codigo');
+
+    Route::get('/reporte', [FacilitadorController::class, 'Reportex']);
 
     Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
         Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
@@ -314,8 +312,6 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
         Route::post('/get-bienes-all', 'getBienesInv')->name('get-bienes-all');
         Route::post('/get-bienes-all-blank', 'getBienesInvBlank')->name('get-bienes-all-blank');
         Route::get('/getUsuarios', 'getUsuariosForInventario')->name('getUsuariosForInventario');
-        
-
     });
 
     Route::controller(GrupoController::class)->name('inventario.')->prefix('inventario')->group(function () {
@@ -326,10 +322,7 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
 });
 
 
-
 Route::middleware('auth')->name('get-data.')->prefix('get-data')->group(function () {
-
-
 
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
         Route::get('/{term}/{user?}', 'getOficinas')->name('term');

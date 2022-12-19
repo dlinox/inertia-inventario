@@ -6,9 +6,31 @@ use App\Models\Oficina;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class OficinaController extends Controller
 {
+    public function index()
+    {
+        return Inertia::render('Admin/Oficina/index');
+    }
+
+    public function store(Request $request)
+    {
+
+        $usuario = Oficina::create([
+            'iduoper' => $request->iduoper,
+            'nombre' => $request->nombre,
+            'dependencia' => $request->dependencia,
+        ]);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $usuario;
+
+        return response()->json($this->response, 200);
+
+    }
+
     public function getOficinas($term, $user = "")
     {
 
@@ -109,29 +131,26 @@ class OficinaController extends Controller
         return response()->json($this->response, 200);
     }
 
-    public function getUOficinas(){
+    public function getUOficinas()
+    {
         $idu = auth()->id();
 
-        $res = DB::select('SELECT distinct oficina.*, CONCAT(oficina.nombre," - ",oficina.dependencia) as nombres FROM oficina inner join inventario ON oficina.iduoper = inventario.id_area where iduoper IN (SELECT id_area FROM inventario ) AND inventario.id_usuario = '.$idu.';');
-                // $res = DB::select('SELECT * FROM oficina;');
+        $res = DB::select('SELECT distinct oficina.*, CONCAT(oficina.nombre," - ",oficina.dependencia) as nombres FROM oficina inner join inventario ON oficina.iduoper = inventario.id_area where iduoper IN (SELECT id_area FROM inventario ) AND inventario.id_usuario = ' . $idu . ';');
+        // $res = DB::select('SELECT * FROM oficina;');
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
-
     }
 
-    
-    public function getoficinex(){
+
+    public function getoficinex()
+    {
 
 
         $res = DB::select('SELECT substring(oficina.iduoper,1,2) as cod, oficina.nombre  FROM oficina ;');
-                // $res = DB::select('SELECT * FROM oficina;');
+        // $res = DB::select('SELECT * FROM oficina;');
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return $res;
-
-    } 
-
-
-
+    }
 }
