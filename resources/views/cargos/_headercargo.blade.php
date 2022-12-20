@@ -1,43 +1,34 @@
-<html><head>
-    <script>
-    function subst() {
-      var vars={};
-      var x=document.location.search.substring(1).split('&');
-      for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
-      var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
-      for(var i in x) {
-        var y = document.getElementsByClassName(x[i]);
-        for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
-      }
-    }
-    </script></head><body style="border:0; margin: 0;" onload="subst()">
-    <table style="border-bottom: 1px solid black; width: 100%">
-      <tr>
-        <td class="section"></td>
-        <td style="text-align:right">
-          Page <span class="page"></span> of <span class="topage"></span>
-        </td>
-      </tr>
-    </table>
-    </body></html>
-
-
-
-
-
-
-
-
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cargo en PDF</title>
+    <script>
+    function subst() {
+        var vars = {};
+        var query_strings_from_url = document.location.search.substring(1).split('&');
+        for (var query_string in query_strings_from_url) {
+            if (query_strings_from_url.hasOwnProperty(query_string)) {
+                var temp_var = query_strings_from_url[query_string].split('=', 2);
+                vars[temp_var[0]] = decodeURI(temp_var[1]);
+            }
+        }
+        var css_selector_classes = ['page', 'topage'];
+        for (var css_class in css_selector_classes) {
+            if (css_selector_classes.hasOwnProperty(css_class)) {
+                var element = document.getElementsByClassName(css_selector_classes[css_class]);
+                for (var j = 0; j < element.length; ++j) {
+                    element[j].textContent = vars[css_selector_classes[css_class]];
+                }
+            }
+        }
+    }
+    </script>
 </head>
 
-<body style="border:0; margin: 0; font-family: 'Helvetica'; letter-spacing:0.05rem; margin-left:5px"  >
+<body style="border:0; margin: 0; font-family: 'Helvetica'; letter-spacing:0.05rem; margin-left:5px" onload="subst()" >
     <table>
         <tr style="">
             <td valgin="top">
@@ -54,12 +45,12 @@
             </td>
             <td>
                 <div style="width: 270px;">
-                    <span></span>
+                    Page <span class="page"></span> de <span class="topage"></span>
                 </div>
             </td>
         </tr>
     </table>
-    <div style="height: 10px; widht:100%;">
+    <div style="height: 10px; width:100%;">
         <span></span>
 </div>
     <table style="width:100%; margin-right:10px;">
@@ -111,4 +102,5 @@
         </tr>
         @endif
     </table>
-</body></html> --}}
+</body>
+</html>

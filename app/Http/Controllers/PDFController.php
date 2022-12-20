@@ -164,7 +164,6 @@ class PDFController extends Controller
         $pdf->setOption('no-stop-slow-scripts', true); 
 
         $pdf->setOptions([
-            'header-right'=>'[page] de [topage]',
             'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),
             'footer-html'=>view('cargos._footercargo'),
             'margin-bottom'=>'4cm',

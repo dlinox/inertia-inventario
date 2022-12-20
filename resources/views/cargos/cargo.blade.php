@@ -1,5 +1,4 @@
 @extends('cargos.layout')
-@section('dependencia','OFICINA 1')
 @section('content')
 <div style="margin-left: 0px; margin-right:0px; font-size:11pt; font-family: Helvetica; letter-spacing: 0.07rem;">
     <table style="width: 100%; border-collapse: collapse;">
@@ -12,7 +11,7 @@
                         <span style="font-size: 11pt; font-weight:bold;">DESCRIPCION</span>                    
                     </div>
                 </th>
-            </tr>
+            </tr>       
             <tr align="center">
                 <th style="border: solid 1px black; background: #cdcdcd4D; height:22px;"> <div style=""> <span style="font-size: 11pt; font-weight:bold;"> Código </span> </div> </th>
                 <th style="border: solid 1px black; background: #cdcdcd4D;"> <div style=""> <span style="font-size: 11pt; font-weight:bold;">Denominación</span></div> </th>
