@@ -353,6 +353,7 @@
 </template>
 
 <script>
+
 import Layout from "@/Layouts/InventarioLayout";
 import axios from "axios";
 
@@ -550,10 +551,10 @@ export default {
 
             if (res.data.datos.id_usuario) {
                 console.log('Registrado por otro');
-                this.is_other = res.data.datos.id_usuario != this.user.id ?  false :  true;
-                
+                this.is_other = res.data.datos.id_usuario != this.user.id ? false : true;
+
             }
-         
+
 
             this.form_data = res.data.datos;
             this.personas = [res.data.datos.persona];

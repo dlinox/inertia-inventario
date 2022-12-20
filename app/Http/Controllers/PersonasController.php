@@ -131,7 +131,7 @@ class PersonasController extends Controller
                 'paterno' => $request->paterno,
                 'materno' => $request->materno,
                 'dni' => $request->dni,
-                'id_tipo_persona' => $request->id_tipo_persona,
+                'idtipoper' => $request->id_tipo_persona,
             ]);
 
             $this->response['mensaje'] = 'Persona creada con exito';
@@ -143,7 +143,7 @@ class PersonasController extends Controller
             $usuario->paterno = $request->paterno;
             $usuario->materno = $request->materno;
             $usuario->dni = $request->dni;
-            $usuario->id_tipo_persona = $request->id_tipo_persona;
+            $usuario->idtipoper = $request->id_tipo_persona;
             $usuario->save();
 
             $this->response['mensaje'] = 'Persona editada con exito';

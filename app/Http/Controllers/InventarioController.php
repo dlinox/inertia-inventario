@@ -261,7 +261,7 @@ class InventarioController extends Controller
 
     public function getBienesUsuarios(Request $request)
     {
-        $res = Inventario::select('inventario.id', 'inventario.codigo','inventario.tipo',  'inventario.descripcion',  'oficina.nombre', 'oficina.dependencia', 'inventario.idbienk', 'inventario.corr_area', 'inventario.corr_num')
+        $res = Inventario::select('inventario.id', 'inventario.codigo', 'inventario.tipo',  'inventario.descripcion',  'oficina.nombre', 'oficina.dependencia', 'inventario.idbienk', 'inventario.corr_area', 'inventario.corr_num')
             ->leftjoin('oficina', 'oficina.iduoper', '=', 'inventario.id_area')
             ->where('inventario.id_usuario', Auth::user()->id)
             ->paginate(10);
@@ -805,7 +805,7 @@ class InventarioController extends Controller
             ->join('users', 'inventario.id_usuario', '=', 'users.id')
             ->join('persona', 'inventario.id_persona', '=', 'persona.id')
             ->where($query_where)
-            ->where('inventario.codigo','=','')
+            ->where('inventario.codigo', '=', '')
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
@@ -842,7 +842,25 @@ class InventarioController extends Controller
 
     public function viewLotesInventarioNuevo()
     {
-        
+
+        $current_user =  Auth::user();
+
+        $mis_areas = Oficina::select('oficina.*', 'grupo.id_oficina')
+            ->join('grupo', 'grupo.id_oficina', '=', 'oficina.iduoper')
+            ->where('grupo.id_usuario', $current_user->id)
+            //->where('id_oficina', $id)
+            ->get();
+
+        $estados = Estado::all();
+        $oficinas = Oficina::all();
+        $areas = Area::all();
+
+        return Inertia::render('Inventario/RegistroLoteNuevo', [
+            'areas' => $areas,
+            'estados' => $estados,
+            'oficinas' => $oficinas,
+            'mis_areas' => $mis_areas
+        ]);
     }
 
     public function guardarLote(Request $request)
@@ -880,6 +898,91 @@ class InventarioController extends Controller
             return response()->json($this->response, 200);
         }
     }
+
+    public function guardarLoteNuevos(Request $request)
+    {
+        try {
+            $trans = DB::transaction(function () use ($request) {
+
+                $datos = (object)[
+                    'descripcion' => $request->descripcion,
+                    'modelo' => $request->modelo,
+                    'color' => $request->color,
+                    'marca' => $request->marca,
+                    'estado_uso' => $request->estado_uso,
+                    'id_estado' => $request->id_estado,
+                    'id_area' => $request->id_oficina,
+                    'id_persona' => $request->id_persona,
+                    'idpersona_otro' => $request->idpersona_otro,
+                    'medidas' => $request->medidas,
+                    'num_ambiente' => $request->num_ambiente,
+                    'observaciones' => $request->observaciones,
+                ];
+
+                foreach ($request->cant as $item) {
+                    //$correlativos push correlativo
+                    $datos->codigo = $item['codigo'];
+                    $datos->nro_serie = $item['nro_serie'];
+                    $correlativo =  $this->nuevoInventario($datos);
+                    array_push($this->correlativos, $correlativo);
+                }
+            });
+
+            $this->response['mensaje'] = 'Exito';
+            $this->response['estado'] = true;
+            $this->response['correlativos'] = $this->correlativos;
+            return response()->json($this->response, 200);
+        } catch (\Throwable $th) {
+            $this->response['mensaje'] = 'Ocurrió un error, vuelva a intentarlo';
+            $this->response['estado'] = false;
+            return response()->json($this->response, 200);
+        }
+    }
+
+    private function nuevoInventario($data)
+    {
+
+        $res = Inventario::create([
+            'codigo' =>  trim($data->codigo),
+            'descripcion' => trim($data->descripcion),
+            'modelo' => $data->modelo,
+            'marca' => $data->marca,
+            'medidas' => $data->medidas,
+            'nro_serie' => $data->nro_serie,
+            'color' => $data->color,
+            'observaciones' => $data->observaciones,
+            'id_persona' => $data->id_persona,
+            'idpersona_otro' => $data->idpersona_otro,
+            'id_area' => $data->id_area,
+            'id_usuario' => Auth::user()->id,
+            'id_estado' => $data->id_estado,
+            'estado_uso' => $data->estado_uso,
+            'num_ambiente' => $data->num_ambiente,
+        ]);
+
+        if ($res) {
+
+            $corr_area =  explode('.', $res->id_area)[0];
+
+            $corr_num = $this->AsignarCorrelativo($res);
+
+            $res->corr_area =  $corr_area;
+            $res->corr_num = $corr_num;
+            $res->save();
+
+            $correlativo = (object)[
+                'codigo' => $res->codigo,
+                'serie' => $res->nro_serie,
+                'correlativo' => $res->corr_area . ' - ' . $res->corr_num,
+            ];
+
+            return $correlativo;
+        }
+    }
+
+
+
+    //create-inventario-lote
 
     public function getAndCreteInventario($item, $datos)
     {
@@ -939,8 +1042,9 @@ class InventarioController extends Controller
         }
     }
 
-    public function export() {
+    public function export()
+    {
         $date = date('d-m-Y');
-        return Excel::download(new InventarioExports, 'inventario'.$date.'.xlsx');
+        return Excel::download(new InventarioExports, 'inventario' . $date . '.xlsx');
     }
 }
