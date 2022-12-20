@@ -194,6 +194,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::post('/guardar-lote', [InventarioController::class, 'guardarLote'])
         ->name('guardar-lote');
 
+    Route::post('/guardar-lote-nuevos', [InventarioController::class, 'guardarLoteNuevos'])
+        ->name('guardar-lote-nuevos');
+
 
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');

@@ -1,6 +1,6 @@
 <template>
     <v-app class="app-wrapper">
-        <v-app-bar color="white">
+        <v-app-bar color="white" app>
             <v-spacer />
 
             <v-menu offset-y>
