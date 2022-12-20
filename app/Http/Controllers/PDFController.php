@@ -5,6 +5,8 @@ use App\Models\AreaPersona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\Snappy\Facades\SnappyPdf;
+
 use PDF;
 class PDFController extends Controller
 {
@@ -138,8 +140,8 @@ class PDFController extends Controller
         $res = Inventario::find($bienes->id);
         $res->estado = $estado;
         $res->save();
-        $this->response['datos'] = $res;
-        return response()->json($this->response, 200);
+        // $this->response['datos'] = $res;
+        // return response()->json($this->response, 200);
     }
 
     public function PDFBienesBorrador($idP,$idArea){
@@ -156,15 +158,25 @@ class PDFController extends Controller
         $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
         $ldate = date('Y-m-d');
         $lhour = date('H:i:s');
-        
-        $pdf = PDF::loadView('Bienes', compact('bienes','oficina','inventaristas','responsable','responsable2','ldate','lhour','num_doc'));
-        $pdf->setPaper('a4','landscape');
+
+        $pdf = SnappyPdf::loadView('cargos.cargo', compact('bienes','oficina','inventaristas','ldate','lhour',));
+        $pdf->setOption('enable-javascript', true);
+        $pdf->setOption('no-stop-slow-scripts', true); 
+
+        $pdf->setOptions([
+            'header-right'=>'[page] de [topage]',
+            'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),
+            'footer-html'=>view('cargos._footercargo'),
+            'margin-bottom'=>'4cm',
+            'margin-left'=>'0.5cm',
+            'margin-right'=>'0.5cm',
+            'margin-top'=>'3.5cm',
+            'encoding'=>'UTF-8',
+            'orientation'=>'landscape',
+            'page-size'=>'a4'
+        ]);
+
         $pdf->output();
-        $canvas = $pdf->getDomPDF()->getCanvas();
-        $height = $canvas->get_height();
-        $width = $canvas->get_width();
-        $canvas->page_text($width/3.3, $height/1.8, 'BORRADOR', null,70, array(255,0,0),2,2,-30);
-        $canvas->set_opacity(.2,"Multiply");
 
         $codigo = $this->getCodigo('CBB');
 
@@ -184,8 +196,7 @@ class PDFController extends Controller
         $this->response['mensaje'] = 'PDF';
         $this->response['estado'] = true;
         $this->response['datos'] = $doc;
-        return response()->json($this->response, 200);
-        
+        return response()->json($this->response, 200);        
     }
 
     private function getCodigo($name){
@@ -198,6 +209,34 @@ class PDFController extends Controller
         if ($nro > 9999 && $nro < 100000) { $codigo = $name.'-'.date('d').date('m').date('Y').'-00'.$nro; }
         if ($nro > 99999 && $nro < 1000000) { $codigo = $name.'-'.date('d').date('m').date('Y').'-0'.$nro; }
         return $codigo;
+    }
+
+
+    public function reportSnappy(){
+        $data = Inventario::limit(100)->get(); 
+        $pdf = SnappyPdf::loadView('cargos.cargo',compact('data'));
+        return $pdf->setOptions([
+            'header-html'=> view('cargos._headercargo'),
+            'footer-html'=> view('cargos._footercargo'),
+            'margin-bottom'=>'1cm',
+            'margin-top'=>'1cm',
+            'encoding'=>'UTF-8',    
+            'orientation'=>'landscape',
+            'page-size'=>'a4'
+        ])->inline('report.pdf');
+    }
+
+    public function inventarioFisico(){
+        $pdf = SnappyPdf::loadView('inventarioFisico.inventariofisico');
+        return $pdf->setOptions([
+            'header-html'=> view('inventarioFisico._header'),
+            'footer-html'=> view('inventarioFisico._footer'),
+            'margin-bottom'=>'1cm',
+            'margin-top'=>'2cm',
+            'encoding'=>'UTF-8',    
+            'orientation'=>'landscape',
+            'page-size'=>'a4'
+        ])->inline('report.pdf');
     }
 
 }

@@ -36,6 +36,9 @@ Route::get('/offline', function () {
     return view('vendor/laravelpwa/offline');
 });
 
+Route::get('/report', [PDFController::class, 'reportSnappy']);
+Route::get('/inventario-fisico', [PDFController::class, 'inventarioFisico']);
+
 /*
 Route::get('/offline', [LoginController::class, 'offlineView'])
     ->name('offline');*/
