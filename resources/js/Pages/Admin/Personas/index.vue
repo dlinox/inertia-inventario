@@ -13,33 +13,19 @@
             </div>
             <div class="page-search">
                 <v-toolbar outlined color="grey lighten-5" elevation="0">
-                    <v-text-field
-                        v-model="usuario_search"
-                        append-icon="mdi-magnify"
-                        label="Buscar"
-                        hide-details
-                        outlined
-                        dense
-                    ></v-text-field>
+                    <v-text-field v-model="usuario_search" append-icon="mdi-magnify" label="Buscar" hide-details
+                        outlined dense></v-text-field>
                 </v-toolbar>
             </div>
         </div>
         <div class="content-wrapper">
-            <v-navigation-drawer
-                absolute
-                v-model="drawer"
-                color="grey lighten-5"
-            >
+            <v-navigation-drawer absolute v-model="drawer" color="grey lighten-5">
                 <v-container>
-                    <v-btn
-                        block
-                        color="primary"
-                        @click="
-                            () => {
-                                this.$inertia.get('/admin/personas/formulario');
-                            }
-                        "
-                    >
+                    <v-btn block color="primary" @click="
+                        () => {
+                            this.$inertia.get('/admin/personas/formulario');
+                        }
+                    ">
                         <v-icon left>mdi-plus</v-icon>
                         Nuevo
                     </v-btn>
@@ -49,16 +35,8 @@
                             Filtar por Tipo
                         </h5>
 
-                        <v-autocomplete
-                            v-model="tipo"
-                            :items="tipos"
-                            item-text="name"
-                            item-value="id"
-                            label="Tipo"
-                            outlined
-                            dense
-                            clearable
-                        ></v-autocomplete>
+                        <v-autocomplete v-model="tipo" :items="tipos" item-text="name" item-value="id" label="Tipo"
+                            outlined dense clearable></v-autocomplete>
                     </div>
                 </v-container>
             </v-navigation-drawer>
@@ -66,46 +44,29 @@
                 <v-container>
                     <v-card :loading="loading_table">
                         <v-overlay absolute :value="loading_table">
-                            <v-progress-circular
-                                indeterminate
-                                size="64"
-                            ></v-progress-circular>
+                            <v-progress-circular indeterminate size="64"></v-progress-circular>
                         </v-overlay>
                         <v-simple-table>
                             <template v-slot:default>
                                 <thead class="grey lighten-1">
                                     <tr>
+                                        <th class="text-left">ID</th>
                                         <th class="text-left">Nombres</th>
                                         <th class="text-left">A. Paterno</th>
                                         <th class="text-left">A. Materno</th>
                                         <th class="text-left">DNI</th>
                                         <th class="text-left">Tipo</th>
-                                        <th
-                                            class="text-left d-flex"
-                                            style="width: 60px"
-                                        >
-                                            <v-icon
-                                                class="mr-1"
-                                                color="primary"
-                                                style="cursor: pointer"
-                                                @click="dialogImpExp = true"
-                                                >mdi-arrow-up-bold-box-outline</v-icon
-                                            >
-                                            <v-icon
-                                                class="ml-1"
-                                                color="primary"
-                                                style="cursor: pointer"
-                                                @click="descargarExcel()"
-                                                >mdi-arrow-down-bold-box-outline</v-icon
-                                            >
+                                        <th class="text-left d-flex" style="width: 60px">
+                                            <v-icon class="mr-1" color="primary" style="cursor: pointer"
+                                                @click="dialogImpExp = true">mdi-arrow-up-bold-box-outline</v-icon>
+                                            <v-icon class="ml-1" color="primary" style="cursor: pointer"
+                                                @click="descargarExcel()">mdi-arrow-down-bold-box-outline</v-icon>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr
-                                        v-for="(item, index) in list_usuarios"
-                                        :key="index"
-                                    >
+                                    <tr v-for="(item, index) in list_usuarios" :key="index">
+                                        <td>{{ item.id }}</td>
                                         <td>{{ item.nombres }}</td>
                                         <td>{{ item.paterno }}</td>
                                         <td>
@@ -122,13 +83,8 @@
 
                                         <td>
 
-                                            <v-btn
-                                                icon
-                                                text
-                                                color="primary"
-                                                class=""
-                                                @click="getFormularioUsuario(item.id)"
-                                            >
+                                            <v-btn icon text color="primary" class=""
+                                                @click="getFormularioUsuario(item.id)">
                                                 <v-icon>
                                                     mdi-plus-circle
                                                 </v-icon>
@@ -139,23 +95,13 @@
                             </template>
                         </v-simple-table>
 
-                        <v-pagination
-                            v-model="page"
-                            class=""
-                            :length="pages"
-                            :total-visible="5"
-                        ></v-pagination>
+                        <v-pagination v-model="page" class="" :length="pages" :total-visible="5"></v-pagination>
                     </v-card>
                 </v-container>
             </div>
         </div>
 
-        <v-dialog
-            transition="dialog-top-transition"
-            max-width="500"
-            persistent
-            v-model="dialog_asignar"
-        >
+        <v-dialog transition="dialog-top-transition" max-width="500" persistent v-model="dialog_asignar">
             <v-card>
                 <v-card-title primary-title>
                     Asignar Area - {{ user_asignar.nombres }}
@@ -164,30 +110,13 @@
                 <v-card-text class="mt-3">
                     <SelectOficina v-model="oficina_asig"></SelectOficina>
 
-                    <v-autocomplete
-                        v-model="area_asig"
-                        :items="areas_asig"
-                        item-text="nombre"
-                        item-value="id"
-                        label="Seleccione un Area"
-                        outlined
-                        dense
-                        multiple
-                    ></v-autocomplete>
+                    <v-autocomplete v-model="area_asig" :items="areas_asig" item-text="nombre" item-value="id"
+                        label="Seleccione un Area" outlined dense multiple></v-autocomplete>
 
-                    <v-btn
-                        class="mr-3"
-                        text
-                        color="red"
-                        @click="dialog_asignar = false"
-                    >
+                    <v-btn class="mr-3" text color="red" @click="dialog_asignar = false">
                         cancelar
                     </v-btn>
-                    <v-btn
-                        :disabled="!area_asig.length > 0"
-                        color="success"
-                        @click="guardarAsingar"
-                    >
+                    <v-btn :disabled="!area_asig.length > 0" color="success" @click="guardarAsingar">
                         Asignar
                     </v-btn>
                 </v-card-text>
@@ -200,20 +129,12 @@
                     <span class="text-h6">Importar Personas </span>
                 </v-card-title>
                 <v-card-text>
-                    <v-file-input
-                        id="archivoExcel"
-                        type="file"
-                        label="File input"
-                        @change="subirExcel()"
-                        append-icon=""
-                    ></v-file-input>
+                    <v-file-input id="archivoExcel" type="file" label="File input" @change="subirExcel()"
+                        append-icon=""></v-file-input>
                     <v-simple-table v-if="personasImp.length > 0">
                         <template v-slot:default>
                             <tbody>
-                                <tr
-                                    v-for="(item, index) in personasImp"
-                                    :key="index"
-                                >
+                                <tr v-for="(item, index) in personasImp" :key="index">
                                     <td>{{ item[0] }}</td>
                                     <td>{{ item[1] }}</td>
                                     <td>{{ item[2] }}</td>
@@ -225,21 +146,10 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn
-                        color="primary darken-1"
-                        primary
-                        @click="dialogImpExp = false"
-                        NoCaps
-                        outlined
-                    >
+                    <v-btn color="primary darken-1" primary @click="dialogImpExp = false" NoCaps outlined>
                         Cancelar
                     </v-btn>
-                    <v-btn
-                        color="primary darken-1"
-                        primary
-                        @click="guardarImportados"
-                        NoCaps
-                    >
+                    <v-btn color="primary darken-1" primary @click="guardarImportados" NoCaps>
                         Guardar
                     </v-btn>
                 </v-card-actions>
@@ -315,7 +225,7 @@ export default {
                 this.absolute = true;
                 return false;
             },
-            set: function (newValue) {},
+            set: function (newValue) { },
         },
     },
     methods: {
@@ -392,7 +302,7 @@ export default {
             });
         },
         descargarExcel() {
-            
+
             const data = this.list_usuarios;
             const filename = "personas";
             const exportType = exportFromJSON.types.xls;
@@ -466,11 +376,13 @@ export default {
     display: flex;
     justify-content: space-between;
 }
+
 .page-details {
     width: 256px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
+
 .page-search {
     width: calc(100% - 256px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -502,6 +414,7 @@ export default {
     .page-details {
         width: 200px;
     }
+
     .page-search {
         width: calc(100% - 200px);
     }
@@ -511,6 +424,7 @@ export default {
     .page-details {
         width: 180px;
     }
+
     .page-search {
         width: calc(100% - 180px);
     }
