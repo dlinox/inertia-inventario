@@ -155,7 +155,7 @@ class PDFController extends Controller
         else { $responsable2 = null; }
 
         $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
-        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
+        $bienes = DB::select('SELECT * from inventario limit 5000');// WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
         $ldate = date('Y-m-d');
         $lhour = date('H:i:s');
 
