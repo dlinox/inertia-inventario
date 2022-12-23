@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inventario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -188,7 +189,12 @@ class FacilitadorController extends Controller
         return $cont;
     }
 
-
+    public function getBienesAll(){
+        $res = Inventario::select('inventario.id', 'tipo', 'idreg_anterior', 'cod_ubicacion', 'cuenta', 'codigo', 'descripcion', 'modelo', 'marca', 'medidas', 'color', 'observaciones', 'idbienk', 'corr_area', 'corr_num', 'estado_uso', 'num_ambiente', 'persona.dni AS responsable')
+        ->join('persona','inventario.id_persona', '=', 'persona.id')->get();
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
     
 
 }

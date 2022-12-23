@@ -28,24 +28,25 @@
     </script>
 </head>
 
-<body style="border:0; margin: 0; font-family: 'Helvetica'; letter-spacing:0.05rem; margin-left:5px" onload="subst()" >
+<body style="border:0; font-family: sans-serif; margin-left:5px" onload="subst()" >
     <table>
-        <tr style="">
+        <tr>
             <td valgin="top">
                 <div style="width:370px; text-align:left;">
-                    <div><span style="font-size:16pt; stroke:#000000;">Universidad Nacional del Altiplano</span></div>
-                    <span style="font-size:12pt;">Comisión de Inventario Activos Fijos 2022</span>
+                    <div><span style="font-size:17pt; stroke:#000000;">Universidad Nacional del Altiplano</span></div>
+                    <span style="font-size:13pt;">Comisión de Inventario Activos Fijos 2022</span>
                 </div>
             </td>
             <td align="center">
                 <div style=" width:690px; margin-top:50px;" style="font-weight:bold;">
-                    <div><span style="font-size:16pt;"> FORMATO DE FICHA DE LEVANTAMIENTO DE INFORMACIÓN </span></div>
+                    <div><span style="font-size:17pt;"> FORMATO DE FICHA DE LEVANTAMIENTO DE INFORMACIÓN </span></div>
                     <span style="text-align:center; font-size:14pt;">INVENTARIO PATRIMONIAL 2022</span>
                 </div>
             </td>
-            <td>
+            <td align="right" valgin="top">
                 <div style="width: 270px;">
-                    Page <span class="page"></span> de <span class="topage"></span>
+                    <div><span style="font-size:13pt;">Pag. </span><span class="page" style="font-size:13pt;"></span> de <span class="topage" style="font-size:13pt;"></span></div>
+                    <span style="font-size:12pt;">&nbsp;</span>
                 </div>
             </td>
         </tr>
@@ -55,7 +56,7 @@
 </div>
     <table style="width:100%; margin-right:10px;">
         <tr>
-            <td style="width: 220px;">
+            <td style="width: 320px;">
                 <div style="">
                     <span style="text-align:center; font-size:14pt;">Dependencia</span>                        
                 </div>
@@ -63,8 +64,8 @@
             <td colspan="2" width="540px" style=" white-space: nowrap; text-overflow: ellipsis; max-width: 550px;">               
                 <div style="text-align: left; overflow:hidden;">:<span style="font-size:14pt;"> @foreach ($oficina as $o){{ $o->nombre }} - {{ $o->dependencia }}  @endforeach </span> </div>
             </td>
-            <td align="right" width="250px" style="">
-                <div style="margin-right:7px;">
+            <td align="right" width="260px" style="">
+                <div style="">
                     <span style="text-align:center; font-size:14pt;">ID: @foreach ($oficina as $o){{ $o->iduoper }}@endforeach @foreach ($responsable as $re) {{ $re->dni }}-{{$num_doc}} @endforeach</span>
                 </div>
             </td>
@@ -75,15 +76,15 @@
                     <span style="text-align:center; font-size:14pt;">[DNI]Apellidos y Nombres</span>
                 </div>
             </td>
-            <td style="width:680px;">
+            <td style="width:570px; white-space: nowrap; text-overflow: ellipsis; max-width: 560px;">
                 <div style="text-align: left">
-                    <span style="text-align:center; font-size:14pt;">
+                    <span style="text-align:center; font-size:14pt; overflow:hidden;">
                         @foreach ($responsable as $re)<span>: [{{ $re->dni }}] {{ $re->paterno }} {{ $re->materno }} {{$re->nombres}} </span> @endforeach
                     </span>
                 </div>
             </td>
-            <td colspan="2" align="right" style="margin-right:5px;">
-                <div style="margin-right:7px;">
+            <td colspan="2" align="right" style="">
+                <div style="">
                     <span style="margin-right:0.20cm; font-size:13.5pt;">TIPO DE VERIFICACIÓN:</span><span style="font-size:13.5pt; margin-right:0.20cm;" > FÍSICA ( X ) </span> <span style="font-size:13.5pt;" > DIGITAL ( &nbsp; ) </span>                         
                 </div>
             </td>

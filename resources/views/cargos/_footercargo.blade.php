@@ -7,18 +7,18 @@
     <title>Cargo en PDF</title>
 </head>
 <body>
-    <div class="container" style=" margin-bottom:-20px; ont-size:10pt; font-family: Helvetica; letter-spacing: 0.06rem; ">
+    <div class="container" style=" margin-bottom:-20px; font-family: Helvetica; letter-spacing: 0.06rem; ">
         <table style="width: 100%">
             <tr>
                 <td valign="top">
                     <div>
-                        <span style="font-size:11pt; letter-spacing: 0.06rem;">- El usuario declara haber mostrado todos los bienes muebles que se encuentran bajo su responsabilidad y no contar con más bienes muebles materia de inventario.</span>
+                        <span style="font-size:11pt; letter-spacing: 0.05rem;">- El usuario declara haber mostrado todos los bienes muebles que se encuentran bajo su responsabilidad y no contar con más bienes muebles materia de inventario.</span>
                     </div>
                     <div>
-                        <span style="font-size:11pt; letter-spacing: 0.06rem;">- El usuario es responsable de la permanencia y conservación de cada uno de los bienes muebles dscritos, recomendánse tomar las precausiones del caso para evitar sustracciones deteriodos, etc.</span>
+                        <span style="font-size:11pt; letter-spacing: 0.05rem;">- El usuario es responsable de la permanencia y conservación de cada uno de los bienes muebles dscritos, recomendánse tomar las precausiones del caso para evitar sustracciones deteriodos, etc.</span>
                     </div>
                     <div>
-                        <span style="font-size:11pt; letter-spacing: 0.06rem;">- Cualquier necesidad de traslado del bien mueble dentro o fuera del local de la Entidad u Organización de la Entidad, es previamente comunicado al encargado de la OCP.</span>
+                        <span style="font-size:11pt; letter-spacing: 0.05rem;">- Cualquier necesidad de traslado del bien mueble dentro o fuera del local de la Entidad u Organización de la Entidad, es previamente comunicado al encargado de la OCP.</span>
                     </div>
                 </td>
             </tr>   
@@ -37,7 +37,7 @@
                 </td> --}}
 
                 <td align="center">
-                    <div style=" margin-top: 65px; padding: 0 10px; margin-left:70px;">
+                    <div style=" margin-top: 65px; padding: 0 10px; margin-left:0px;">
                         <div style="text-align: center; padding-top: 5px; width:330px; border-top: solid 1px black;">
                             <span style="font-size:13pt;">RESPONSABLE DE LOS BIENES</span>
                         </div>

@@ -24,8 +24,17 @@
         <v-col md="9" lg="9">
             <h3>Cargo de bienes </h3>
         </v-col>
-        <v-col md="3" lg="3" class="right" style="text-align: right;">
-            <div><span  :class="{ selec: opcion === 0 }" style="cursor:pointer" >Todos</span> | <span  :class="{ selec: opcion===1 }" style="cursor:pointer">No registrados</span></div>
+        <v-col md="3" lg="3" class="right" style="text-align: right; margin-bottom:-20px;">
+            <v-autocomplete   
+                v-model="opcion"
+                :items="opciones"
+                label="Tipo"
+                outlined
+                item-value="value"
+                item-text="name"
+                dense
+            ></v-autocomplete>
+
         </v-col>
     </v-row>
     <v-row class="inputs" style="background: white">
@@ -116,16 +125,48 @@
         </v-col>
 
         <v-col sx="12" sm="12" md="4" lg="4" style="margin-bottom:-40px;" class="p-0" >
-            <v-autocomplete   
-                v-model="opcion"
-                :items="opciones"
-                label="Tipo"
-                outlined
-                item-value="value"
-                item-text="name"
+            <v-autocomplete
+                v-model="perE2"
+                clearable
+                class="mt-0 pt-0"
                 dense
-            ></v-autocomplete>
+                label="2DO Responsable"
+                outlined
+                :items="personas2"
+                :filter="customFilterPersona2"
+                item-value="id"
+                item-text="nombres"
+                :search-input.sync="personas_search2"
+                required
+            >
+                <template v-slot:no-data>
+                    <v-list-item>
+                        <v-list-item-title>
+                            <template v-if="oficinas_search?.length > 0">
+                                Datos no encontrados para
+                                <strong>
+                                    {{ oficinas_search }}
+                                </strong>
+                            </template>
+                            <template v-else>
+                                No hay registros en el inventario
+                            </template>
+                        </v-list-item-title>
+                    </v-list-item>
+                </template>
+
+                <template v-slot:item="data">
+                    <v-list-item-content>
+                        <v-list-item-title v-html="data.item.dni">
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            {{ data.item.nombres }} {{ data.item.paterno }} {{ data.item.materno }}
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                </template>
+            </v-autocomplete>
         </v-col>
+
     </v-row>
      <!-- {{ registrado }}  -->
     <div style=" overflow-y:hidden; width:100%; margin-top:30px; height:425px;" class="contenedorIframe" >
@@ -134,6 +175,9 @@
         </div>
     </div>
     <v-col style="display: flex; justify-content:flex-end;" sx="12" sm="12" md="12" lg="12" >
+        <div class="ml-2">
+            <v-btn height="38" small class="btn" outlined dark color="primary" @click="generarPDFCubiculos">Imp Cubiculo</v-btn>
+        </div>
         <div class="ml-2">
             <v-btn height="38" small class="btn" outlined dark color="primary" @click="generarPDFBorrador">Borrador</v-btn>
         </div>
@@ -246,11 +290,13 @@ export default {
         areas: [],
         oficinas: [],
         personas:[],
+        personas2:[],
         documentos:[],
         docSeleccionado: null,
         areEO:null,
         areE:null,
         perE:null,
+        perE2:null,
         ofiE:null,
         snackbar: false,
         text: '',
@@ -259,6 +305,7 @@ export default {
         oficinas_search: "",
         areas_search: "",
         personas_search: "",
+        personas_search2: "",
         data: [],
         mensaje:'',
         registrado:0,
@@ -279,6 +326,7 @@ export default {
         this.getOficinas()
         this.getDocumentos()
         this.opcion = 1
+        this.getPersonas2()
     },
 
     watch:{
@@ -342,6 +390,16 @@ export default {
                 dni.indexOf(searchText) > -1
              );
         },
+        customFilterPersona2(item, queryText, itemText) {
+            const nombres = item.nombres.toLowerCase();
+            const dni = item.dni.toLowerCase();
+            const searchText = queryText.toLowerCase();
+            return (
+                nombres.indexOf(searchText) > -1 ||
+                dni.indexOf(searchText) > -1
+             );
+        },
+
 
         async getOficinas() {
             let res = await axios.get("/admin/oficinas/getallOficinas");
@@ -353,6 +411,11 @@ export default {
         async getDocumentos() {
             let res = await axios.get("/admin/reportes/getDocuments");
             this.documentos = res.data.datos;
+            return res.data.datos.data;
+        },
+        async getPersonas2() {
+            let res = await axios.get("/admin/reportes/getPersonas2");
+            this.personas2 = res.data.datos;
             return res.data.datos.data;
         },
 
@@ -473,6 +536,27 @@ export default {
             this.snackbar = true
             this.areE = null;
             this.perE = null;
+        },
+
+        generarPDFCubiculos() {
+            this.doc = {
+                area:this.areE,
+                persona:this.perE,
+                persona2:this.perE2,
+            }
+            let res = axios.post("/admin/pdfCubiculos",this.doc)
+            .then(response => {
+                 console.log(response);
+                 this.PDF=response.data.datos;
+                 this.url = response.data.datos.url;
+                 this.PrintPdf(this.url);
+                 this.text = "Documentos Generados"
+                 this.snackbar = true
+             });
+
+            // this.areE = null;
+            // this.perE = null;
+            // this.perE2 = null; 
         },
 
         async Guardar() {

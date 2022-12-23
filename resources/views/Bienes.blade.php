@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CARGO </title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
         *{
             margin:0cm 0cm;
             padding: 0cm 0cm;
@@ -20,7 +25,7 @@
 @else    
 <body style="margin: 3.75cm 0cm 3.5cm 0cm; font-family: 'Ubuntu', sans-serif; " >
 @endif
-    <div class="container">
+
     <header style="position: fixed;
         display:flex;
         top: -40;
@@ -330,15 +335,20 @@
     </table>
     </div>
 
+    <div style="">
+
+
+
         <script type="text/php">
             if ( isset($pdf) ) {
                 $pdf->page_script('
                     $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-                    $pdf->text(360, 125, "Pág $PAGE_NUM de $PAGE_COUNT", $font, 40);
+                    $pdf->text(760, 25, "Pág $PAGE_NUM de $PAGE_COUNT", $font, 10);
                 ');
             }
+
     	</script>
-    </div>
+    
 </body>
 
 </html>

@@ -6,25 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cargo en PDF</title>
     <style>
-        .note{
-            background-color: orange;
-            border: 2px dashed orangered;
-            padding: 20px; 
-        }
-        .page-break {
-            page-break-after: always
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+        *{
+            font-size: 11pt;
+            font-weight: 400;
+            font-family: sans-serif;
         }
 
         thead {
-            display: table-header-group;
+            display: table-header-group; 
         }
-        tfoot {
-            display: table-row-group;
+        tbody {
+            display: table-header-group; 
         }
-        tr {
-            page-break-inside: avoid;
+        tr { 
+            page-break-inside: avoid; 
         }
-
     </style>
 </head>
 <body>
