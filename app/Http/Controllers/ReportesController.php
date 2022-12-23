@@ -20,6 +20,14 @@ class ReportesController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+        
+    public function getPersonas2(){
+        $res = DB::select('SELECT * FROM persona WHERE id IN (SELECT distinct idpersona_otro FROM inventario);');
+        $this->response['mensaje'] = 'Exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
 
     public function getDocumentsActivos()
     {
@@ -81,9 +89,6 @@ class ReportesController extends Controller
     {
         return Inertia::render('Admin/Reportes/Reportes/index.vue');
     }
-
-    
-
     public function preview($idArea, $idP)
     {
         $responsable2 = null;

@@ -65,7 +65,15 @@
             <v-row class="pl-3 pr-3">
             <v-col cols="12" sm="12"  md="4" lg="4">
                 <div style=" width:100%;">
-                    <v-btn class="success" block @click="genExcel" >Exportar excel</v-btn>
+                    <!-- <v-btn class="success" block @click="genExcel" >Exportar excel</v-btn> -->
+                    <v-btn
+                        class="success" block 
+                        @click="getExportarExcel" 
+                        :loading="loading"
+                        :disabled="loading"
+                        color="secondary"
+                        >Exportar excel
+                    </v-btn>
                 </div> 
             </v-col>   
      
@@ -210,6 +218,47 @@
 
         </v-data-table>
     </v-card>
+    
+    <v-dialog
+        v-model="dialog"
+        persistent
+        min-width="800"
+        >
+            <v-card>
+            <v-card-title class="text-h6 white--text primary lighten-1">
+                <span>EXCEL</span>
+                <v-spacer></v-spacer>
+                <v-btn
+                >Descargar</v-btn>
+            </v-card-title>
+            <v-card-text>
+
+                <v-btn
+                    class="ma-2"
+>
+                    Accept Terms
+                </v-btn>
+
+            </v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn  
+                color="danger darken-1"
+                outlined
+                text
+                @click="dialog = false"
+            >
+                Cancelar
+            </v-btn>
+            <v-btn
+                color="primary lighten-1"
+            >
+                Continuar
+            </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
 
     <v-dialog 
         max-width="450"
@@ -267,6 +316,7 @@
 </template>
 <script>
 import Layout from "@/Layouts/FacilitadorLayout";
+import exportFromJSON from "export-from-json";
 export default {
     metaInfo: { title: "Dashboard" },
     layout: Layout,
@@ -282,6 +332,12 @@ export default {
         searchbienes:"",
         buscarBien: "",
         date:"",
+        dialog:false,
+        loader: null,
+        loading: false,
+
+        bienesExport:[],
+        
         datosDetalle:null,
         headBienes: [
           { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"120px", class:'pl-4 pr-0 grey lighten-1' },
@@ -326,11 +382,25 @@ export default {
             this.datosDetalle = null;
             this.dialogDetalle = false;
         },
-        genExcel(){
-            window.location.href = "../inventario/export/";
+         
+        descargarExcel() {
+            const data = this.bienesExport;
+            const filename = "Inventario"+"12-22";
+            const exportType = exportFromJSON.types.xls;
+            exportFromJSON({ data, filename, exportType });
         },
 
-
+        async getExportarExcel(){
+            this.loading = true;
+            let res = await axios.get("/facilitador/allbienes")
+            .then(res => {
+                if (res.status === 200) {
+                    this.loading = false
+                }
+                this.bienesExport = res.data.datos;
+                this.descargarExcel();
+            });
+        },
         
     },
 
@@ -374,6 +444,7 @@ export default {
             }
             // this.bienes = res;
         },
+
     },
 
 
