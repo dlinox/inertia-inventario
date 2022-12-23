@@ -51,7 +51,6 @@ class PDFController extends Controller
             else {                
 
                 $bienes = DB::select('SELECT * from inventario WHERE estado = 1 AND id_area = "'.$doc->area.'" AND id_persona = ' . $doc->persona. ';');
-                $this->response['bienes'] = $bienes;
                 $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $doc->area .'";');
                 $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $doc->persona);
                 $r2 = DB::select('SELECT * FROM persona WHERE ID IN ( SELECT idpersona_otro from inventario WHERE id_area = "' . $doc->area . '" and id_persona = ' . $doc->persona . ');');
@@ -122,7 +121,7 @@ class PDFController extends Controller
             $this->bloquearBienes( $doc->area, $doc->persona);
             $this->response['mensaje'] = 'PDF';
             $this->response['estado'] = true;
-            $this->response['datos'] = $doc;
+            $this->response['datos'] = $docs;
             return response()->json($this->response, 200);
             
         }
@@ -155,7 +154,7 @@ class PDFController extends Controller
         else { $responsable2 = null; }
 
         $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
-        $bienes = DB::select('SELECT * from inventario limit 5000');// WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
+        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ';');
         $ldate = date('Y-m-d');
         $lhour = date('H:i:s');
 
@@ -166,10 +165,10 @@ class PDFController extends Controller
         $pdf->setOptions([
             'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),
             'footer-html'=>view('cargos._footercargo'),
-            'margin-bottom'=>'4cm',
+            'margin-bottom'=>'4.1cm',
             'margin-left'=>'0.5cm',
             'margin-right'=>'0.5cm',
-            'margin-top'=>'3.5cm',
+            'margin-top'=>'3.6cm',
             'encoding'=>'UTF-8',
             'orientation'=>'landscape',
             'page-size'=>'a4'
@@ -196,6 +195,114 @@ class PDFController extends Controller
         $this->response['estado'] = true;
         $this->response['datos'] = $doc;
         return response()->json($this->response, 200);        
+    }
+
+    public function pdfCubiculosIMP(Request $response){
+        $area = $response->area;
+        $persona = $response->persona;
+        $this->PDFcubiculos($persona,$area);
+        $this->PDFcubiculosR($response->persona,$response->persona2,$response->area);
+        $this->PDFcubiculos($response->persona2,$area);
+    }
+
+    private function PDFcubiculos($idP,$idArea){
+
+        $num_doc = 1;
+        $data = [ 'title' => 'Borrador'];
+        $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $idArea .'";');
+        $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $idP);
+        $r2 = DB::select('SELECT * FROM persona WHERE ID IN ( SELECT idpersona_otro from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
+
+        $responsable2 = null;
+
+        $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona != ' . $idP . ');');
+        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ' AND idpersona_otro IS null'.';');
+        $ldate = date('Y-m-d');
+        $lhour = date('H:i:s');
+
+        $pdf = SnappyPdf::loadView('cargos.cargo', compact('bienes','oficina','inventaristas','ldate','lhour',));
+        $pdf->setOption('enable-javascript', true);
+        $pdf->setOption('no-stop-slow-scripts', true); 
+
+        $pdf->setOptions([
+            'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),
+            'footer-html'=>view('cargos._footercargo'),
+            'margin-bottom'=>'4.1cm',
+            'margin-left'=>'0.5cm',
+            'margin-right'=>'0.5cm',
+            'margin-top'=>'3.6cm',
+            'encoding'=>'UTF-8',
+            'orientation'=>'landscape',
+            'page-size'=>'a4'
+        ]);
+
+        $pdf->output();
+
+        $codigo = $this->getCodigo('CBB');
+
+        $output = $pdf->output();
+        file_put_contents(public_path().'/documents/borradores/'.$codigo.'.pdf', $output);
+
+        $doc['codigo'] = $codigo;
+        $doc['id_area'] = $idArea;
+        $doc['id_persona'] = $idP;
+        $doc['url'] = '/documents/borradores/'.$codigo.'.pdf';
+        $doc['tipo'] = 2;
+        $doc['estado'] = 1;
+        $doc['fecha'] = $ldate;
+        $doc['id_usuario'] = Auth::id();
+        AreaPersona::create($doc);
+        
+    }
+
+    public function PDFcubiculosR($idP,$idP2,$idArea){
+
+        $num_doc = 1;
+        $data = [ 'title' => 'Borrador'];
+        $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $idArea .'";');
+        $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $idP);
+        $r2 = DB::select('SELECT * FROM persona WHERE ID IN ( SELECT idpersona_otro from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
+        if($r2 != null){ $responsable2 = $r2[0]; }
+        else { $responsable2 = null; }
+
+        $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
+        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ' AND idpersona_otro ='.$idP2.';');
+        $ldate = date('Y-m-d');
+        $lhour = date('H:i:s');
+
+        $pdf = SnappyPdf::loadView('cargos.cargo', compact('bienes','oficina','inventaristas','ldate','lhour',));
+        $pdf->setOption('enable-javascript', true);
+        $pdf->setOption('no-stop-slow-scripts', true); 
+
+        $pdf->setOptions([
+            'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),
+            'footer-html'=>view('cargos._footercargo'),
+            'margin-bottom'=>'4.1cm',
+            'margin-left'=>'0.5cm',
+            'margin-right'=>'0.5cm',
+            'margin-top'=>'3.6cm',
+            'encoding'=>'UTF-8',
+            'orientation'=>'landscape',
+            'page-size'=>'a4'
+        ]);
+
+        $pdf->output();
+
+        $codigo = $this->getCodigo('CBB');
+
+        $output = $pdf->output();
+        file_put_contents(public_path().'/documents/borradores/'.$codigo.'.pdf', $output);
+
+        $doc['codigo'] = $codigo;
+        $doc['id_area'] = $idArea;
+        $doc['id_persona'] = $idP;
+        $doc['url'] = '/documents/borradores/'.$codigo.'.pdf';
+        $doc['tipo'] = 2;
+        $doc['estado'] = 1;
+        $doc['fecha'] = $ldate;
+        $doc['id_usuario'] = Auth::id();
+        AreaPersona::create($doc);
+        
     }
 
     private function getCodigo($name){
