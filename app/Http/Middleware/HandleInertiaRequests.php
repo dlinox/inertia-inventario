@@ -36,7 +36,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        
+
         return array_merge(parent::share($request), [
             'auth' => function () use ($request) {
                 return [
@@ -46,7 +46,7 @@ class HandleInertiaRequests extends Middleware
                         'nombres' => $request->user()->nombres,
                         'apellidos' => $request->user()->apellidos,
                         'oficina' => $request->user()->oficina,
-                        'estado_password' => $request->user()->estado_password == 0 ? false: true,
+                        'estado_password' => $request->user()->estado_password == 0 ? false : true,
                         'rol' => $request->user()->getRoleNames()[0],
                         //'menu' => $this->getUserMenu($request->user())
                     ] : null,
