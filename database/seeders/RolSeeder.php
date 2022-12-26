@@ -16,8 +16,8 @@ class RolSeeder extends Seeder
      */
     public function run()
     {
-         $admin = Role::create(['name' => 'Administrador']);
-         $inve = Role::create(['name' => 'Inventario']);
+        $admin = Role::create(['name' => 'Administrador']);
+        $inve = Role::create(['name' => 'Inventario']);
 
         Permission::create(['name' => 'admin.dashboard', 'detail' => 'Ver Dashboard'])->syncRoles([$admin, $inve]);
         Permission::create(['name' => 'admin.usuarios.index', 'detail' => 'Ver Lista de usuarios'])->syncRoles([$admin, $inve]);
@@ -43,7 +43,5 @@ class RolSeeder extends Seeder
         Permission::create(['name' => 'admin.bienes.store', 'detail' => 'Registro de bienes'])->syncRoles([$admin, $inve]);
         Permission::create(['name' => 'admin.bienes.edit', 'detail' => 'Modificar un bien'])->syncRoles([$admin, $inve]);
         Permission::create(['name' => 'admin.bienes.destroy', 'detail' => 'Eliminar bienes'])->syncRoles([$admin, $inve]);
-
-
     }
 }
