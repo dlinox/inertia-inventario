@@ -16,6 +16,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\FPDFController;
 use App\Mail\PruebaMail;
 use App\Models\AreaPersona;
 use Illuminate\Support\Facades\Mail;
@@ -74,6 +75,8 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])
         ->name('index');
+
+    Route::get('/cargosFPDF', [FPDFController::class, 'cargoFPDF']);
 
     Route::controller(UsuarioController::class)->name('usuarios.')->prefix('usuarios')->group(function () {
         Route::get('/', 'index')->name('index');

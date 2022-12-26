@@ -6,12 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cargo en PDF</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
-        *{
-            font-size: 11pt;
-            font-weight: 400;
-            font-family: sans-serif;
-        }
 
         thead {
             display: table-header-group; 
