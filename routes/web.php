@@ -151,7 +151,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/getPersonas2','getPersonas2')->name('personas2');
+        Route::get('/getPersonas2', 'getPersonas2')->name('personas2');
         Route::get('/generador', 'generador')->name('generador');
         Route::get('/explorador', 'explorador')->name('explorador');
         Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
@@ -204,9 +204,12 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/guardar-lote-nuevos', [InventarioController::class, 'guardarLoteNuevos'])
         ->name('guardar-lote-nuevos');
-        
+
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
+
+    Route::get('/conciliacion', [InventarioController::class, 'viewConciliacionInventario'])
+        ->name('conciliacion');
 
     Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
         ->name('perfil');
