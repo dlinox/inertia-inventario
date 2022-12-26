@@ -211,6 +211,9 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/conciliacion', [InventarioController::class, 'viewConciliacionInventario'])
         ->name('conciliacion');
 
+    Route::get('/get-bienes-conciliacion/{dependencia}/{tipo?}', [InventarioController::class, 'getBienesConciliacion'])
+        ->name('get-bienes-conciliacion');
+
     Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
         ->name('perfil');
 
