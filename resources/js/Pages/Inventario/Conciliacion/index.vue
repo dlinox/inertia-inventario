@@ -15,9 +15,9 @@
   </v-tabs>
 
   <v-tabs-items v-model="tab">
-      <v-tab-item>
+      <v-tab-item >
        {{ text }}
-       </v-tab-item>
+       </v-tab-item> 
   </v-tabs-items>
 </v-container>
 </template>
