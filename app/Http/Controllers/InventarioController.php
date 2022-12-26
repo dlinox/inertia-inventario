@@ -1047,4 +1047,10 @@ class InventarioController extends Controller
         $date = date('d-m-Y');
         return Excel::download(new InventarioExports, 'inventario' . $date . '.xlsx');
     }
+
+    public function viewConciliacionInventario()
+    {
+
+        return Inertia::render('Inventario/Conciliacion');
+    }
 }

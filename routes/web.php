@@ -16,6 +16,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\FPDFController;
 use App\Mail\PruebaMail;
 use App\Models\AreaPersona;
 use Illuminate\Support\Facades\Mail;
@@ -74,6 +75,8 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])
         ->name('index');
+
+    Route::get('/cargosFPDF', [FPDFController::class, 'cargoFPDF']);
 
     Route::controller(UsuarioController::class)->name('usuarios.')->prefix('usuarios')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -148,7 +151,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::controller(ReportesController::class)->name('reportes.')->prefix('reportes')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/getPersonas2','getPersonas2')->name('personas2');
+        Route::get('/getPersonas2', 'getPersonas2')->name('personas2');
         Route::get('/generador', 'generador')->name('generador');
         Route::get('/explorador', 'explorador')->name('explorador');
         Route::get('/getDocuments', 'getDocuments')->name('getDocuments');
@@ -201,9 +204,12 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
 
     Route::post('/guardar-lote-nuevos', [InventarioController::class, 'guardarLoteNuevos'])
         ->name('guardar-lote-nuevos');
-        
+
     Route::get('/', [InventarioController::class, 'viewRegistroInventario'])
         ->name('index');
+
+    Route::get('/conciliacion', [InventarioController::class, 'viewConciliacionInventario'])
+        ->name('conciliacion');
 
     Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
         ->name('perfil');
