@@ -3,14 +3,17 @@
 
     <v-card class="mt-3">
       <v-toolbar color="primary" dark flat>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Conciliacion</v-toolbar-title>
+        <v-toolbar-title>
+         <small> {{ dependencia_select.dependencia }}</small>
+
+        </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
         <v-menu transition="slide-y-transition" bottom>
           <template v-slot:activator="{ on, attrs }">
+
             <v-btn class="purple" color="secondary" dark v-bind="attrs" v-on="on">
               Dependencia
             </v-btn>
@@ -37,14 +40,22 @@
       <v-tabs-items v-model="tab">
         <v-tab-item>
 
+
           <v-card-title>
-            {{ dependencia_select }}
+
+            <v-btn tile color="success" class="me-2 mb-2" :disabled="!dependencia_select.id"
+              :href="'/inventario/excel-conciliacion/' + dependencia_select.id + '/ACTIVO FIJO'" link download>
+              <v-icon left>
+                mdi-microsoft-excel
+              </v-icon>
+              Excel
+            </v-btn>
             <v-spacer></v-spacer>
             <v-text-field dense outlined v-model="search_af" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
           </v-card-title>
 
-       
+
 
           <v-data-table item-key="index" :loading="loading_af" loading-text="Cargando... Espere Por Favor"
             :headers="headers" :items="bienes_af" :search="search_af">
@@ -60,7 +71,16 @@
         <v-tab-item>
 
           <v-card-title>
-            {{ dependencia_select }}
+
+            <v-btn tile color="success" class="me-2 mb-2" :disabled="!dependencia_select.id"
+              :href="'/inventario/excel-conciliacion/' + dependencia_select.id + '/NO DEPRECIABLE'" link download>
+              <v-icon left>
+                mdi-microsoft-excel
+              </v-icon>
+              Excel
+            </v-btn>
+
+            
             <v-spacer></v-spacer>
             <v-text-field dense outlined v-model="search_nd" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
@@ -87,7 +107,8 @@
 </template>
 <script>
 import Layout from "@/Layouts/InventarioLayout";
-import DataTableComponent from "../Components/DataTableComponent.vue";
+
+import { Link } from '@inertiajs/inertia-vue'
 export default {
   metaInfo: { title: "Conciliación" },
   layout: Layout,
@@ -95,13 +116,13 @@ export default {
     dependencias: Array,
   },
   components: {
-    DataTableComponent,
+    Link,
   },
   data() {
     return {
       tab: null,
       items: [
-        'Bienes AF', 'Bienes NP', 'Sobrantes'
+        'Bienes AF', 'Bienes NP', //'Sobrantes'
       ],
       search_af: '',
       search_nd: '',
@@ -131,30 +152,29 @@ export default {
       bienes_nd: [],
       bienes_sobrantes: [],
 
-      dependencia_select: 'Dependencia',
+      dependencia_select: {
+        id: false,
+        dependencia: 'Seleccione una dependencia'
+      },
     }
   },
-  created() {
-  },
 
-  watch: {
-  },
 
   methods: {
     async GetDataBienk(dependencia) {
 
-      this.dependencia_select = dependencia.dependencia;
+      this.dependencia_select = dependencia;
 
       this.bienes_af = [];
       this.bienes_nd = [];
 
       this.loading_af = true;
+      this.loading_nf = true;
 
       let res_af = await axios.get('/inventario/get-bienes-conciliacion/' + dependencia.id + '/ACTIVO FIJO');
       this.bienes_af = res_af.data.datos;
       this.loading_af = false;
 
-      this.loading_nf = true;
       let res_nd = await axios.get('/inventario/get-bienes-conciliacion/' + dependencia.id + '/NO DEPRECIABLE');
       this.bienes_nd = res_nd.data.datos;
       this.loading_nf = false;

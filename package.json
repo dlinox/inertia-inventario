@@ -30,8 +30,8 @@
         "vue-barcode-reader": "^0.0.3",
         "vue-json-excel": "^0.3.0",
         "vue-meta": "^2.4.0",
+        "vue-observe-visibility": "^1.0.0",
         "vue-xlsx": "^0.2.1",
-        "vuetify": "^2.6.7",
-        "xlsx": "^0.18.5"
+        "vuetify": "^2.6.7"
     }
 }
