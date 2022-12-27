@@ -100,6 +100,7 @@ export default {
         items: [
             { text: "Perfil", icon: "mdi-account" },
             { text: "Cargos", icon: "mdi-file-document", to:"url" },
+            { text: "Conciliar", icon: "mdi-file-document", to:"url" },
             { text: "Salir", icon: "mdi-power" },
         ],
         selectedMenu: null,
@@ -150,6 +151,8 @@ export default {
                 this.$inertia.get("/inventario/perfil");
             } else if (menu == "Cargos") {
                 this.$inertia.get("/inventario/cargos")
+            } else if (menu == "Conciliar") {
+                this.$inertia.get("/inventario/conciliacion")
             } else if (menu == "Salir") {
                 this.$inertia.post("/logout");
             }
