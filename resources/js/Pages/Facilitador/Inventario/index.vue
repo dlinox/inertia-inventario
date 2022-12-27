@@ -340,12 +340,12 @@ export default {
         
         datosDetalle:null,
         headBienes: [
-          { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"120px", class:'pl-4 pr-0 grey lighten-1' },
-          { text: 'Nombre', align: 'start', filterable: true, value: 'descripcion',width:"60px", class:'pl-4 pr-0 grey lighten-1' },
-          { text: 'Oficina', align: 'center', filterable: true, value: 'id_area', width:"70px", class:'pl-0 pr-0 grey lighten-1' },
-          { text: 'Etiqueta', align: 'center', filterable: false, sortable: true, width:"130px", value: 'corr_num', class:'pl-0 pr-0 grey lighten-1',},
-          { text: 'Fecha', align: 'center', filterable: false, sortable: true, width:"130px", value: 'fecha', class:'pl-0 pr-0 grey lighten-1',},
-          { align: 'right', value:'acciones', sortable: false, maxWidth:'30px', class:' pl-0 pr-0 grey lighten-1'},
+            { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"120px", class:'pl-4 pr-0 grey lighten-1' },
+            { text: 'Nombre', align: 'start', filterable: true, value: 'descripcion',width:"60px", class:'pl-4 pr-0 grey lighten-1' },
+            { text: 'Oficina', align: 'center', filterable: true, value: 'id_area', width:"70px", class:'pl-0 pr-0 grey lighten-1' },
+            { text: 'Etiqueta', align: 'center', filterable: false, sortable: true, width:"130px", value: 'corr_num', class:'pl-0 pr-0 grey lighten-1',},
+            { text: 'Fecha', align: 'center', filterable: false, sortable: true, width:"130px", value: 'fecha', class:'pl-0 pr-0 grey lighten-1',},
+            { align: 'right', value:'acciones', sortable: false, maxWidth:'30px', class:' pl-0 pr-0 grey lighten-1'},
         ],
         dialogDetalle: false,
 

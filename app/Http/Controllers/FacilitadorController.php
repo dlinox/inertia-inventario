@@ -147,7 +147,68 @@ class FacilitadorController extends Controller
         $this->response['total'] = $total;
         return response()->json($this->response, 200);
     }
+    
+    //CONCILIACION
+    public function getDependencias(){
+        $res = DB::select('SELECT distinct substring(inventario.id_area,1,2) as iduoper,oficina.dependencia 
+        FROM inventario
+        JOIN oficina ON inventario.id_area = oficina.iduoper;');
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+
+    }
+
+    public function ConciliacionFac(){
+        return Inertia::render('Facilitador/Conciliacion/Conciliacion');   
+    }
+
+    public function getBienesAF($page, $dependencia)
+    {
+        $limit = 30;
+        $ofs = ($page-1)*$limit;
+        $res = DB::select('SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM bienk 
+        JOIN oficina ON oficina.iduoper = bienk.id_area
+        LEFT JOIN persona ON persona.dni = bienk.persona_dni
+        WHERE bienk.tipo="ACTIVO FIJO"
+        AND cod_ubicacion LIKE "'.$dependencia.'%"
+        AND (bienk.codigo NOT IN (SELECT inventario.codigo FROM inventario WHERE codigo IS not NULL)) LIMIT 30 OFFSET '.$ofs);
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
  
+    public function getBienesND($page, $dependencia)
+    {
+        $limit = 30;
+        $ofs = ($page-1)*$limit;
+        $res = DB::select('SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM bienk 
+        JOIN oficina ON oficina.iduoper = bienk.id_area
+        LEFT JOIN persona ON persona.dni = bienk.persona_dni
+        WHERE bienk.tipo="NO DEPRECIABLE"
+        AND cod_ubicacion LIKE "'.$dependencia.'%"
+        AND (bienk.codigo NOT IN (SELECT inventario.codigo FROM inventario WHERE codigo IS not NULL)) LIMIT 30 OFFSET '.$ofs);
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+    public function getBienesSobrantes($page, $dependencia)
+    {
+        $limit = 30;
+        $ofs = ($page-1)*$limit;
+        $res = DB::select('SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM inventario 
+        JOIN oficina ON oficina.iduoper = inventario.id_area
+        LEFT JOIN persona ON persona.id = inventario.id_persona
+        WHERE inventario.codigo is null
+        AND inventario.codigo_anterior IS NULL
+        AND SUBSTRING(inventario.corr_area,1,2) = "'.$dependencia.'" 
+        LIMIT 30 OFFSET '.$ofs);
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
 
     private function existe($item, $data){
         $existe = false;

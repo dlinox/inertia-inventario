@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <v-list dense>
             <v-list-item-group
                 v-model="active_menu"
@@ -92,7 +91,19 @@ export default {
             {
                 title: "Inventario",
                 icon: "mdi-clipboard-check",
-                ruta: "/facilitador/inventario"
+                ruta: null,
+                sub_menu:[
+                       {
+                        title: "Registros",
+                        icon: "mdi-cast-audio",
+                        ruta: "/facilitador/inventario"
+                    },
+                    {
+                        title: "Reg. sin codigo",
+                        icon: "mdi-fencing",
+                        ruta: "/facilitador/bienes-sin-codigo"
+                    },
+                ]   
             },
             {
                 title: "Reporte de Avance",
@@ -112,9 +123,9 @@ export default {
                 ]   
             },
             {
-                title: "Bienes sin codigo",
+                title: "Conciliación",
                 icon: "mdi-clipboard-check",
-                ruta: "/facilitador/bienes-sin-codigo"
+                ruta: "/facilitador/conciliacion"
             },
 
             

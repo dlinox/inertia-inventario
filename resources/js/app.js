@@ -9,7 +9,7 @@ import {
     InertiaProgress
 } from '@inertiajs/progress'
 import vuetify from './plugin/vuetify';
-//import VueObserveVisibility from 'vue-observe-visibility'
+import VueObserveVisibility from 'vue-observe-visibility'
 
 import '@mdi/font/css/materialdesignicons.css';
 
@@ -19,7 +19,7 @@ InertiaProgress.init({
 })
 Vue.use(plugin)
 Vue.use(VueMeta)
-//Vue.use(VueObserveVisibility)
+Vue.use(VueObserveVisibility)
 
 const el = document.getElementById('app')
 

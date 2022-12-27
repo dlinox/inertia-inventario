@@ -334,6 +334,12 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
         Route::post('/get-bienes-all-blank', 'getBienesInvBlank')->name('get-bienes-all-blank');
         Route::get('/getUsuarios', 'getUsuariosForInventario')->name('getUsuariosForInventario');
     });
+    
+    Route::get('/conciliacion', [FacilitadorController::class, 'ConciliacionFac']);
+    Route::get('/getDependencias', [FacilitadorController::class, 'getDependencias']);
+    Route::get('/getBienesAF/{page}/{dependencia}', [FacilitadorController::class, 'getBienesAF']);
+    Route::get('/getBienesND/{page}/{dependencia}', [FacilitadorController::class, 'getBienesND']);
+    Route::get('/getBienesSobrantes/{page}/{dependencia}', [FacilitadorController::class, 'getBienesSobrantes']);
 
     Route::controller(GrupoController::class)->name('inventario.')->prefix('inventario')->group(function () {
 
