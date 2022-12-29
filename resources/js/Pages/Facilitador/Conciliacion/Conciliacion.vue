@@ -284,7 +284,7 @@
                 dependencia.indexOf(searchText) > -1 ||
                 iduoper.indexOf(searchText) > -1
              );
-        },
+          },
 
           
 

@@ -1,6 +1,7 @@
 <template>
     
     <v-container>
+        
         <v-card>
         <v-row class="inputs pl-3 pr-3"  style="margin-bottom: -30px;;">
             <v-col sx="12" sm="12" md="4" lg="4" style="mb-0 pt-0" class="p-0" >
@@ -217,7 +218,7 @@
             </template>
 
         </v-data-table>
-    </v-card>
+        </v-card>
     
     <v-dialog
         v-model="dialog"

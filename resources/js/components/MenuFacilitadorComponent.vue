@@ -127,6 +127,23 @@ export default {
                 icon: "mdi-clipboard-check",
                 ruta: "/facilitador/conciliacion"
             },
+            {
+                title: "Mantenimiento",
+                icon: "mdi-wrench",
+                ruta: null,
+                sub_menu:[
+                       {
+                        title: "Oficinas",
+                        icon: "mdi-cast-audio",
+                        ruta: "/facilitador/oficina"   
+                    },
+                    {
+                        title: "Personas",
+                        icon: "mdi-fencing",
+                        ruta: "/facilitador/persona"
+                    },
+                ]   
+            },
 
             
 

@@ -118,7 +118,7 @@ export default {
         form: {
             id: null,
             nombres: "",
-            aperno: "",
+            paterno: "",
             materno: "",
             dni: "",
             id_tipo_persona: "",

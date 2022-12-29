@@ -13,5 +13,6 @@ class Grupo extends Model
         'id_area',
         'id_usuario',
         'id_oficina',
+        
     ];
 }

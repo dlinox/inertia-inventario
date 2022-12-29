@@ -122,32 +122,58 @@ class PersonasController extends Controller
         return Inertia::render('Admin/Personas/Formulario', $props);
     }
 
+    public function getFormulario2($id = "")
+    {
+
+        $props['is_nuevo'] = true;
+
+        if ($id !=  "") {
+
+
+            $usuario = Persona::find($id);
+
+            if (!$usuario) {
+                $props['error'] =  true;
+            } else {
+                $props['data'] = $usuario;
+                $props['is_nuevo'] = false;
+            }
+        }
+
+        return Inertia::render('Facilitador/Mantenimiento/Formulario', $props);
+    }
+
     public function savePersona(Request $request)
     {
-        if (!$request->id) {
+        $p = null;
+        $p = DB::select('SELECT * FROM persona WHERE dni = '.$request->dni.';');  
+        if($p == null) {
+            if (!$request->id) {
 
-            $usuario = Persona::create([
-                'nombres' => $request->nombres,
-                'paterno' => $request->paterno,
-                'materno' => $request->materno,
-                'dni' => $request->dni,
-                'idtipoper' => $request->id_tipo_persona,
-            ]);
+                $usuario = Persona::create([
+                    'nombres' => $request->nombres,
+                    'paterno' => $request->paterno,
+                    'materno' => $request->materno,
+                    'dni' => $request->dni,
+                    'idtipoper' => $request->id_tipo_persona,
+                ]);
 
-            $this->response['mensaje'] = 'Persona creada con exito';
-        } else {
+                $this->response['mensaje'] = 'Persona creada con exito';
+            } else {
 
-            $usuario = Persona::find($request->id);
+                $usuario = Persona::find($request->id);
 
-            $usuario->nombres = $request->nombres;
-            $usuario->paterno = $request->paterno;
-            $usuario->materno = $request->materno;
-            $usuario->dni = $request->dni;
-            $usuario->idtipoper = $request->id_tipo_persona;
-            $usuario->save();
+                $usuario->nombres = $request->nombres;
+                $usuario->paterno = $request->paterno;
+                $usuario->materno = $request->materno;
+                $usuario->dni = $request->dni;
+                $usuario->idtipoper = $request->id_tipo_persona;
+                $usuario->save();
 
-            $this->response['mensaje'] = 'Persona editada con exito';
+                $this->response['mensaje'] = 'Persona editada con exito';
+            }
         }
+
 
 
         $this->response['estado'] = true;

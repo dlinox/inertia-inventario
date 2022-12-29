@@ -140,7 +140,6 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
 
     Route::controller(OficinaController::class)->name('oficinas.')->prefix('oficinas')->group(function () {
-
         Route::get('/getallOficinas', 'getallOficinas')->name('getallOficinas');
         Route::get('/getallOficinasG', 'getallOficinasG')->name('getOficinasG');
         Route::get('/getallOficinasDependencia', 'getallOficinasDependencia')->name('getOficinasD');
@@ -315,7 +314,6 @@ Route::get('/oficinex', [OficinaController::class, 'getoficinex'])
 
 Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('facilitador')->group(function () {
 
-
     Route::get('/', [FacilitadorController::class, 'index'])
         ->name('index');
     Route::get('/bienes-sin-codigo', [FacilitadorController::class, 'bienesSinCodigo'])
@@ -328,8 +326,14 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
         Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
     });
 
-    Route::controller(GrupoController::class)->name('grupo.')->prefix('grupo')->group(function () {
-        Route::get('/', 'indexFacilitador')->name('grupos-facilitador');
+    Route::controller(FacilitadorController::class)->name('oficina.')->prefix('oficina')->group(function () {
+        Route::get('/', 'viewOficinas')->name('oficinas-facilitador');
+        Route::post('/', 'guardarOficina')->name('oficinas-facilitador-save');
+        Route::post('/get-ofi-all', 'getOFicinasF')->name('get-ofi-fa');
+    });
+
+    Route::controller(FacilitadorController::class)->name('persona.')->prefix('persona')->group(function () {
+        Route::get('/', 'viewPersonas')->name('personas-facilitador');
     });
 
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {
@@ -337,6 +341,12 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
         Route::post('/get-bienes-all', 'getBienesInv')->name('get-bienes-all');
         Route::post('/get-bienes-all-blank', 'getBienesInvBlank')->name('get-bienes-all-blank');
         Route::get('/getUsuarios', 'getUsuariosForInventario')->name('getUsuariosForInventario');
+    });
+
+    Route::controller(PersonasController::class)->name('personas.')->prefix('personas')->group(function () {
+        Route::post('/get-personas', 'getAllPersonas')->name('get-personas');
+        Route::get('/formulario/{id?}', 'getFormulario2')->name('formulario');
+        Route::post('/guardar', 'savePersona')->name('guardar');
     });
     
     Route::get('/conciliacion', [FacilitadorController::class, 'ConciliacionFac']);
@@ -346,8 +356,6 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
     Route::get('/getBienesSobrantes/{page}/{dependencia}', [FacilitadorController::class, 'getBienesSobrantes']);
 
     Route::controller(GrupoController::class)->name('inventario.')->prefix('inventario')->group(function () {
-
-
         Route::get('/get-grupo', 'getGrupoInv')->name('get-grupo-inv');
     });
 });

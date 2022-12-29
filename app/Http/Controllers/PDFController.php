@@ -39,8 +39,7 @@ class PDFController extends Controller
     }
 
     public function PDFBienes(Request $doc){
-        $registrado = DB::select('SELECT * from area_persona where id_persona = '.$doc->persona.' and id_area = "'.$doc->area.'"  AND estado = 0;');
-        
+        $registrado = DB::select('SELECT * from area_persona where id_persona = '.$doc->persona.' and id_area = "'.$doc->area.'"  AND estado = 0;');        
         if($registrado != null){
             $num_doc = $registrado[0]->num + 1;
 
@@ -60,12 +59,26 @@ class PDFController extends Controller
                 $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $doc->area . '" and id_persona = ' . $doc->persona . ');');
                 $ldate = date('Y-m-d');
                 $lhour = date('H:i:s');
-                $pdf = PDF::loadView('Bienes', compact('bienes','oficina','inventaristas','responsable','responsable2','ldate','lhour','num_doc'));
-                $pdf->setPaper('a4','landscape');
-                $pdf->output();
-                $codigo = $this->getCodigo('CBI');
 
+                $pdf = SnappyPdf::loadView('cargos.cargo', compact('bienes','oficina','inventaristas','ldate','lhour',));
+                $pdf->setOption('enable-javascript', true);
+                $pdf->setOption('no-stop-slow-scripts', true); 
+        
+                $pdf->setOptions([
+                    'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),
+                    'footer-html'=>view('cargos._footercargo'),
+                    'margin-bottom'=>'4.1cm',
+                    'margin-left'=>'0.5cm',
+                    'margin-right'=>'0.5cm',
+                    'margin-top'=>'3.6cm',
+                    'encoding'=>'UTF-8',
+                    'orientation'=>'landscape',
+                    'page-size'=>'a4'
+                ]);
+        
+                $pdf->output();
                 $output = $pdf->output();
+                $codigo = $this->getCodigo('CBI');
                 file_put_contents(public_path().'/documents/cargos/'.$codigo.'.pdf', $output);
 
                 $docs['codigo'] = $codigo;
@@ -99,9 +112,25 @@ class PDFController extends Controller
             $bienes = DB::select('SELECT * from inventario WHERE id_area = "'. $doc->area .'" AND id_persona = ' . $doc->persona . ';');
             $ldate = date('Y-m-d');
             $lhour = date('H:i:s');
-            $pdf = PDF::loadView('Bienes', compact('bienes','oficina','inventaristas','responsable','responsable2','ldate','lhour', 'num_doc'));
-            $pdf->setPaper('a4','landscape');
+
+            $pdf = SnappyPdf::loadView('cargos.cargo', compact('bienes','oficina','inventaristas','ldate','lhour',));
+            $pdf->setOption('enable-javascript', true);
+            $pdf->setOption('no-stop-slow-scripts', true); 
+            
+            $pdf->setOptions([
+                'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),
+                'footer-html'=>view('cargos._footercargo'),
+                'margin-bottom'=>'4.1cm',
+                'margin-left'=>'0.5cm',
+                'margin-right'=>'0.5cm',
+                'margin-top'=>'3.6cm',
+                'encoding'=>'UTF-8',
+                'orientation'=>'landscape',
+                'page-size'=>'a4'
+            ]);
+    
             $pdf->output();
+            $output = $pdf->output();
             $codigo = $this->getCodigo('CBI');
 
             $output = $pdf->output();

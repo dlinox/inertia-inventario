@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grupo;
 use App\Models\Inventario;
+use App\Models\Oficina;
+use Database\Seeders\UsuariosDemo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-
+use Illuminate\Support\Str;
 class FacilitadorController extends Controller
 {
     public function index()
@@ -256,6 +259,63 @@ class FacilitadorController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+
+
+   //Mantenimiento de oficinas y Personas
+    public function viewOficinas(){
+        return Inertia::render('Facilitador/Mantenimiento/Oficinas');   
+    }
+
+    public function guardarOficina(Request $request ){
+        $oficina = new Oficina();
+        $oficina->iduoper = $request->input('iduoper');
+        $oficina->nombre = $request->input('nombre');
+        $oficina->dependencia = $request->input('dependencia');
+        $oficina->save();
+        //$this->asignarGrupo($request->input('iduoper'));
+
+        $dep = Str::substr($oficina->iduoper,0,2);
+        $usuarios = DB::select('SELECT DISTINCT id_usuario FROM grupo 
+        WHERE SUBSTRING(id_oficina,1,2) = '.$dep.';');        
     
+        foreach ($usuarios as $us){
+            $this->asignarGrupo($oficina->iduoper, $us->id_usuario);   
+        }
+
+    }
+
+    private function asignarGrupo($iduoper, $id_usuario){
+        $grupo = new Grupo();
+        $grupo->id_oficina = $iduoper;
+        $grupo->id_usuario = $id_usuario;
+        $grupo->save();
+    
+    }
+
+    public function getOFicinasF(Request $request)
+    {
+        $query_where = [];
+        if ($request->dependencia) array_push($query_where, [DB::raw('substr(iduoper, 1, 2)'), '=', $request->dependencia]);
+        //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
+        $res = Oficina::select(
+            'oficina.*',
+         )
+            ->where($query_where)
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('oficina.iduoper', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('oficina.dependencia', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('oficina.nombre', 'LIKE', '%' . $request->term . '%');
+            })->orderBy('oficina.iduoper', 'ASC')
+            ->paginate(10);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function viewPersonas(){
+        return Inertia::render('Facilitador/Mantenimiento/Personas');   
+    }
 
 }
