@@ -196,7 +196,7 @@ class PDFController extends Controller
             'footer-html'=>view('cargos._footercargo'),
             'margin-bottom'=>'4.1cm',
             'margin-left'=>'0.5cm',
-            'margin-right'=>'0.5cm',
+            'margin-right'=>'0.5cm',  
             'margin-top'=>'3.6cm',
             'encoding'=>'UTF-8',
             'orientation'=>'landscape',
