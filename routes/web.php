@@ -211,8 +211,13 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/conciliacion', [InventarioController::class, 'viewConciliacionInventario'])
         ->name('conciliacion');
 
+<<<<<<< HEAD
+    Route::get('/getDependenciasTEMP', [InventarioController::class, 'getDependenciasTEMP'])
+    ->name('getDependenciasTEMP');
+=======
     Route::get('excel-conciliacion/{dependencia}/{tipo?}', [InventarioController::class, 'downloadExcelConciliacion'])
         ->name('excel-conciliacion');
+>>>>>>> e415b6bb53c34bc178e2cbd78158f9f2b70e4322
 
     Route::get('/conciliacion/bienesAF/{page}', [InventarioController::class, 'getBienesAF'])
         ->name('conciliacón-bienesAF');
@@ -335,6 +340,12 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
         Route::post('/get-bienes-all-blank', 'getBienesInvBlank')->name('get-bienes-all-blank');
         Route::get('/getUsuarios', 'getUsuariosForInventario')->name('getUsuariosForInventario');
     });
+    
+    Route::get('/conciliacion', [FacilitadorController::class, 'ConciliacionFac']);
+    Route::get('/getDependencias', [FacilitadorController::class, 'getDependencias']);
+    Route::get('/getBienesAF/{page}/{dependencia}', [FacilitadorController::class, 'getBienesAF']);
+    Route::get('/getBienesND/{page}/{dependencia}', [FacilitadorController::class, 'getBienesND']);
+    Route::get('/getBienesSobrantes/{page}/{dependencia}', [FacilitadorController::class, 'getBienesSobrantes']);
 
     Route::controller(GrupoController::class)->name('inventario.')->prefix('inventario')->group(function () {
 

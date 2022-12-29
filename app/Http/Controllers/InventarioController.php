@@ -1052,22 +1052,18 @@ class InventarioController extends Controller
     //Conciliación
     public function viewConciliacionInventario()
     {
+<<<<<<< HEAD
+        return Inertia::render('Inventario/Conciliacion');
+        $user = (Auth::user()->equipo);
+=======
 
         $user = Auth::user()->equipo;
+>>>>>>> e415b6bb53c34bc178e2cbd78158f9f2b70e4322
 
         $dependencias = DB::select("SELECT distinct substring(grupo.id_oficina,1,2) as id, oficina.dependencia  FROM grupo 
         JOIN users ON grupo.id_usuario = users.id
         JOIN oficina on oficina.iduoper = grupo.id_oficina
-        WHERE users.equipo IN ( $user)");
-
-        /**
-         * SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM bienk 
-        JOIN oficina ON oficina.iduoper = bienk.id_area
-        LEFT JOIN persona ON persona.dni = bienk.persona_dni
-        WHERE bienk.tipo='ACTIVO FIJO'  
-        AND cod_ubicacion LIKE '44%' 
-        AND (bienk.codigo NOT IN (SELECT inventario.codigo FROM inventario WHERE codigo IS not NULL))
-         */
+        WHERE users.equipo IN ($user)");
 
         return Inertia::render(
             'Inventario/Conciliacion',
@@ -1076,6 +1072,18 @@ class InventarioController extends Controller
             ]
         );
     }
+
+    public function getDependenciasTEMP(){
+        $user = (Auth::user()->equipo);
+        $dependencias = DB::select("SELECT distinct substring(grupo.id_oficina,1,2) as id, oficina.dependencia  FROM grupo 
+        JOIN users ON grupo.id_usuario = users.id
+        JOIN oficina on oficina.iduoper = grupo.id_oficina
+        WHERE users.equipo IN ($user)");
+        
+        $this->response['datos'] = $dependencias;
+        return response()->json($this->response, 200);
+
+    } 
     public function getBienesConciliacion($dependencia, $tipo = "")
     {
 
