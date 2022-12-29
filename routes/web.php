@@ -211,13 +211,8 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/conciliacion', [InventarioController::class, 'viewConciliacionInventario'])
         ->name('conciliacion');
 
-<<<<<<< HEAD
-    Route::get('/getDependenciasTEMP', [InventarioController::class, 'getDependenciasTEMP'])
-    ->name('getDependenciasTEMP');
-=======
     Route::get('excel-conciliacion/{dependencia}/{tipo?}', [InventarioController::class, 'downloadExcelConciliacion'])
         ->name('excel-conciliacion');
->>>>>>> e415b6bb53c34bc178e2cbd78158f9f2b70e4322
 
     Route::get('/conciliacion/bienesAF/{page}', [InventarioController::class, 'getBienesAF'])
         ->name('conciliacón-bienesAF');

@@ -6,15 +6,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cargo en PDF</title>
     <style>
+        table tr td:first-child::after {
+            content: "";
+            display: inline-block;
+            vertical-align: top;
+            min-height: 20px;
+            max-height: 30px;
+        }
 
         thead {
             display: table-header-group; 
         }
         tbody {
-            display: table-header-group; 
+            display: table-body-group; 
         }
-        tr { 
-            page-break-inside: avoid; 
+        td {
+            min-height: 30px;
+            margin-bottom: 0;
+        }
+        tr{ 
+            page-break-inside: avoid;
+            margin-bottom: -1px !important;
         }
     </style>
 </head>

@@ -30,14 +30,18 @@
                 <th style="border: solid 1px black; background: #cdcdcd4D;"> <div style=""> <span style="font-size: 11pt; font-weight:bold;">Observación</span></div> </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="salto">
         @foreach ($bienes as $key=>$bien)
             @if ($bien->tipo === 'ACTIVO FIJO')
-                <tr>
-                    <div style="overflow:hidden; padding:none;">
-                    <td style="border: solid 1px black; width:10px; text-align:center;"><div style=""><span style="font-size: 9pt;  font-weight: bold; ">{{$key+1}}</span></div></td>
-                    <td style="border: solid 1px black; width:75px; text-align:center;"><div><span style="font-size: 9pt;  font-weight: bold;">{{$bien->codigo}}</span></div></td>
-                    <td style="border: solid 1px black; width:200px;"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->descripcion}}</span></div></td>
+                <tr class="salto">  
+                    <div style="display:block; background:pink; min-weight:36px;">
+                    <td valign="center" style="border: solid 1px black; width:10px; text-align:center;"><div style=""><span style="font-size: 9pt;  font-weight: bold; ">{{$key+1}}</span></div></td>
+                    <td style="border: solid 1px black; width:60px; text-align:center;"><div><span style="font-size: 9pt;  font-weight: bold;">{{$bien->codigo}}</span></div></td>
+                    <td style="border: solid 1px black; min-height: 30px; width:220px;">
+                        <div style="max-height: 30px; overflow:hidden; font-size: 9pt;  font-weight: bold; margin-top:-3px;">
+                            {{$bien->descripcion}}
+                        </div>
+                    </td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->marca }}</span></div></td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->modelo }}</span></div></td>
                     <td style="border: solid 1px black; width:30px;" align="center" >
@@ -56,7 +60,7 @@
                     </td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->color }}</span></div></td>
                     <td style="border: solid 1px black; width:80px;"><div style="width:80px; overflow:hidden;"><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->nro_serie }}</span></div></td>
-                    <td style="border: solid 1px black; width:76px;" align="center"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->medidas }}</span></div></td>
+                    <td style="border: solid 1px black; width:70px;" align="center"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->medidas }}</span></div></td>
                     <td style="border: solid 1px black; width:15px;" align="center">
                         <div>
                             <span style="font-size: 9pt; font-weight:bold;">
@@ -90,19 +94,19 @@
                             <span style="font-size: 9pt;  font-weight: bold;">{{$bien->corr_area}} - {{$bien->corr_num}}</span>
                         </div>    
                     </td>
-                    <td style="border: solid 1px black; width:150px;">
-                        <div>
-                            <span style="font-size: 9pt;  font-weight: bold;">{{$bien->observaciones}}</span>
+                    <td style="border: solid 1px black; width:190px;">
+                        <div style="max-height: 30px; overflow:hidden; font-size: 9pt;  font-weight: bold; margin-top:-5px;">
+                            {{$bien->observaciones}}
                         </div>
                     </td>
                 </div>
             </tr>
             @else
-            <tr style="height: 30px !important;">
+            <tr>
                 <div style="overflow:auto;">
-                    <td style="border: solid 1px black; width:10px; text-align:center;"><div><span style="font-size: 9pt; ">{{$key+1}}</span></div></td>
-                    <td style="border: solid 1px black; width:75px; text-align:center; "><div><span style="font-size: 9pt;">{{$bien->codigo}}</span></div></td>
-                    <td style="border: solid 1px black; width:200px;"><div><span style="font-size: 9pt;">{{ $bien->descripcion}}</span></div></td>
+                    <td valign="center" style="border: solid 1px black; width:10px; text-align:center;"><div><span style="font-size: 9pt; ">{{$key+1}}</span></div></td>
+                    <td style="border: solid 1px black; width:60px; text-align:center; "><div><span style="font-size: 9pt;">{{$bien->codigo}}</span></div></td>
+                    <td style="border: solid 1px black; width:220px;"><div style="max-height: 30px; overflow-y:hidden; font-size: 9pt; margin-top:8;">{{$bien->descripcion}}</></div></td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->marca }}</span></div></td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->modelo }}</span></div></td>
                     <td style="border: solid 1px black; width:30px;" align="center"><div><span style="font-size: 9pt;">
@@ -115,9 +119,9 @@
                         @else
                         @endif
                     </span></div></td>
-                    <td style="border: solid 1px black; width:80px;"><div>x<span style="font-size: 9pt;">{{ $bien->color }}</span><</div></td>
+                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->color }}</span></div></td>
                     <td style="border: solid 1px black; width:76px;"><div style="width:80px; overflow:hidden;"><span style="font-size: 9pt;">{{ $bien->nro_serie }}</span></div></td>
-                    <td style="border: solid 1px black; width:80px;" align="center"><div><span style="font-size: 9pt;">{{ $bien->medidas }}</span></div></td>
+                    <td style="border: solid 1px black; width:70px;" align="center"><div><span style="font-size: 9pt;">{{ $bien->medidas }}</span></div></td>
                     <td style="border: solid 1px black; width:15px;" align="center"><div><span style="font-size: 9pt;">
                             @if ($bien->estado_uso === 'EN USO')
                             U
@@ -145,12 +149,14 @@
                         </div>
                     </td>
                     <td style="border: solid 1px black; width:60px;" align="center"><div></div><span style="font-size: 9pt;">{{$bien->corr_area}} - {{$bien->corr_num}}</span></div></td>
-                    <td style="border: solid 1px black; width:150px;"><div><span style="font-size: 9pt;">{{$bien->observaciones}}</span></div></td>
+                    <td style="border: solid 1px black; width:190px;"><div style="max-height: 30px; overflow-y:hidden; font-size: 9pt; margin-top:-8; ">{{$bien->observaciones}}</></div></td>
                 </div>    
             </tr>
+            <tr style="height: 0px;"></tr>
 
         @endif
         @endforeach
+
         </tbody>
         <tr>
             <td  style="border: solid 1px black;" colspan="13">

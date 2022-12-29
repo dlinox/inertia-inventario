@@ -71,12 +71,8 @@ export default {
 
         items: [
             { text: "Perfil", icon: "mdi-account" },
-<<<<<<< HEAD
             { text: "Cargos", icon: "mdi-file-document", to:"url" },
             { text: "Conciliar", icon: "mdi-file-document", to:"url" },
-=======
-            { text: "Cargos", icon: "mdi-file-document", to: "url" },
->>>>>>> e415b6bb53c34bc178e2cbd78158f9f2b70e4322
             { text: "Salir", icon: "mdi-power" },
         ],
         selectedMenu: null,
