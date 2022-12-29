@@ -1052,13 +1052,8 @@ class InventarioController extends Controller
     //Conciliación
     public function viewConciliacionInventario()
     {
-<<<<<<< HEAD
-        return Inertia::render('Inventario/Conciliacion');
-        $user = (Auth::user()->equipo);
-=======
 
         $user = Auth::user()->equipo;
->>>>>>> e415b6bb53c34bc178e2cbd78158f9f2b70e4322
 
         $dependencias = DB::select("SELECT distinct substring(grupo.id_oficina,1,2) as id, oficina.dependencia  FROM grupo 
         JOIN users ON grupo.id_usuario = users.id
