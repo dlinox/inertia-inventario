@@ -197,7 +197,7 @@ class PDFController extends Controller
             'margin-bottom'=>'4.1cm',
             'margin-left'=>'0.5cm',
             'margin-right'=>'0.5cm',  
-            'margin-top'=>'3.6cm',
+            'margin-top'=>'4.0cm',
             'encoding'=>'UTF-8',
             'orientation'=>'landscape',
             'page-size'=>'a4' 

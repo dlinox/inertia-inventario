@@ -35,8 +35,7 @@ return [
 
     'pdf' => [
         'enabled' => true,
-//        'binary'  => base_path('vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf'),
-        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64'),
+        'binary'  => base_path('vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf'),
         //       'binary'  => base_path('vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf'),
         //       'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"',
         //'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"',
@@ -48,8 +47,7 @@ return [
 
     'image' => [
         'enabled' => true,
-        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
-//        'binary'  => base_path('vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltoimage'),
+        'binary'  => base_path('vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltoimage'),
         //'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"',
         'options' => [
             'encoding'      => 'UTF-8'
