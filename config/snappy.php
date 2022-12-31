@@ -48,7 +48,7 @@ return [
 //        'binary' => env('WKHTML_IMG_BINARY','/usr/local/bin/wkhtmltoimage'),
         'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
         'options' => [
-            'encoding' => 'UTF-8'
+            'encoding' => 'UTF-8' 
         ],
         'env' => [],
     ],
