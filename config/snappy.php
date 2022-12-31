@@ -35,8 +35,8 @@ return [
 
     'pdf' => [
         'enabled' => true,
-        'binary' => env('WKHTML_PDF_BINARY','/usr/local/bin/wkhtmltopdf'),
- //       'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64'),
+//        'binary' => env('WKHTML_PDF_BINARY','/usr/local/bin/wkhtmltopdf'),
+        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64'),
         'options' => [
             'encoding' => 'UTF-8'
         ],
@@ -45,8 +45,8 @@ return [
 
     'image' => [
         'enabled' => true,
-        'binary' => env('WKHTML_IMG_BINARY','/usr/local/bin/wkhtmltoimage'),
-//        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
+//        'binary' => env('WKHTML_IMG_BINARY','/usr/local/bin/wkhtmltoimage'),
+        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
         'options' => [
             'encoding' => 'UTF-8'
         ],
