@@ -36,7 +36,7 @@ return [
     'pdf' => [
         'enabled' => true,
 #        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64'),
-        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64'),
+        'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"',
         'options' => [
             'encoding' => 'UTF-8'
         ],
@@ -47,6 +47,7 @@ return [
         'enabled' => true,
 #        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
         'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
+#        'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmlto.exe"',
         'options' => [
             'encoding' => 'UTF-8' 
         ],
