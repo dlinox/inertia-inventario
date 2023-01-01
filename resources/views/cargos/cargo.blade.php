@@ -1,6 +1,6 @@
 @extends('cargos.layout')
 @section('content')
-<div style="margin-left: 0px; margin-right:0px; font-size:11pt; font-family: sans-serif; letter-spacing: 0.07rem;">
+<div style="margin-left: 0px; margin-right:0px; font-size:11pt; font-family: sans-serif;">
     <table style="width: 100%; height:100%; border-collapse: collapse; "  cellspacing="0">
         <thead style="background-color: #f3f3f3;">
             <tr style="border-collapse: collapse; background:white;">
