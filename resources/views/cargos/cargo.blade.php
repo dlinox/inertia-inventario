@@ -103,10 +103,10 @@
             </tr>
             @else
             <tr>
-                <div style="overflow:auto;">
+                <div style="">
                     <td valign="center" style="border: solid 1px black; width:10px; text-align:center;"><span style="font-size: 9pt; ">{{$key+1}}</span></td>
                     <td style="border: solid 1px black; width:60px; text-align:center; "><div><span style="font-size: 9pt;">{{$bien->codigo}}</span></div></td>
-                    <td style="border: solid 1px black; width:220px;"><div style="max-height: 30px; overflow-y:hidden; font-size: 9pt; margin-top:8;">{{$bien->descripcion}}</></div></td>
+                    <td style="border: solid 1px black; width:220px;"><div style="max-height: 30px; overflow:hidden; font-size: 9pt; margin-top:8;">{{$bien->descripcion}}</></div></td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->marca }}</span></div></td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->modelo }}</span></div></td>
                     <td style="border: solid 1px black; width:30px;" align="center"><div><span style="font-size: 9pt;">
