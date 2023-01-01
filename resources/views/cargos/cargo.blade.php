@@ -149,7 +149,7 @@
                         </div>
                     </td>
                     <td style="border: solid 1px black; width:60px;" align="center"><div></div><span style="font-size: 9pt;">{{$bien->corr_area}} - {{$bien->corr_num}}</span></div></td>
-                    <td style="border: solid 1px black; width:190px;"><div style="max-height: 30px; overflow-y:hidden; font-size: 9pt; margin-top:-8; ">{{$bien->observaciones}}</></div></td>
+                    <td style="border: solid 1px black; width:190px;"><div style="max-height: 30px; overflow-y:hidden; font-size: 9pt; margin-top:-8; ">{{$bien->observaciones}}</div></td>
                 </div>    
             </tr>
             <tr style="height: 0px;"></tr>
@@ -162,10 +162,10 @@
             <td  style="border: solid 1px black;" colspan="13">
             <div style="padding-top: 15px; padding-bottom: 25px;">
                 <div>
-                    <span style="font-size: 9pt;">Inventariador(es):</span>
+                    <span style="font-size: 10pt;">Inventariador(es):</span>
                 </div>
                 <div>
-                    @foreach ($inventaristas as $a)<div style="font-size: 9pt;">{{ $a->nombres }} {{ $a->apellidos }} </div> @endforeach
+                    @foreach ($inventaristas as $a)<div style="font-size: 10pt;">{{ $a->nombres }} {{ $a->apellidos }} </div> @endforeach
                 </div>
             </div>
             </td>
@@ -173,19 +173,19 @@
 
         <tr>
             <td colspan="13">
-                <span>Fecha y Hora:</span><span> {{ $ldate }} {{$lhour}} </span>
+                <span style="font-size:10pt;">Fecha y Hora:</span><span> {{ $ldate }} {{$lhour}} </span>
             </td>
         </tr>
         <tr>
             <td colspan="13">
                 <div>
-                    <span style="font-size:9pt; ">(1) Uso (U). Desuso (D).</span>
+                    <span style="font-size:10pt;">(1) Uso (U). Desuso (D).</span>
                 </div>
                 <div>
-                    <span style="font-size:9pt; ">(2) El estado consignado en base a la siguiente escala: Bueno, Regular, Malo, Chatarra y RAEE. En caso de semovientes utilizar escala de acuerdo a su naturaleza</span>
+                    <span style="font-size:10t; ">(2) El estado consignado en base a la siguiente escala: Bueno, Regular, Malo, Chatarra y RAEE. En caso de semovientes utilizar escala de acuerdo a su naturaleza</span>
                 </div>
                 <div>
-                    <span style="font-size:9pt; ">(3) Activos Fijos (AF). Bienes no depresiables(ND). Bienes auxiliares(AU)</span>
+                    <span style="font-size:10pt; ">(3) Activos Fijos (AF). Bienes no depresiables(ND). Bienes auxiliares(AU)</span>
                 </div>
             </td>
         </tr>
