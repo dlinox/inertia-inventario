@@ -56,7 +56,7 @@
 </div>
     <table style="width:100%; margin-right:10px;">
         <tr>
-            <td style="width: 320px;">
+            <td style="width: 300px;">
                 <div style="">
                     <span style="text-align:center; font-size:14pt;">Dependencia</span>                        
                 </div>

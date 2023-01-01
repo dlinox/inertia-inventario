@@ -94,8 +94,8 @@
                             <span style="font-size: 9pt;  font-weight: bold;">{{$bien->corr_area}} - {{$bien->corr_num}}</span>
                         </div>    
                     </td>
-                    <td style="border: solid 1px black; width:190px;">
-                        <div style="max-height: 30px; overflow:hidden; font-size: 9pt;  font-weight: bold; margin-top:-5px;">
+                    <td style="border: solid 1px black; width:200px;">
+                        <div style="max-height: 30px; overflow:hidden; font-size: 9pt; width:198px;  font-weight: bold; margin-top:-5px;">
                             {{$bien->observaciones}}
                         </div>
                     </td>
@@ -149,7 +149,7 @@
                         </div>
                     </td>
                     <td style="border: solid 1px black; width:60px;" align="center"><div></div><span style="font-size: 9pt;">{{$bien->corr_area}} - {{$bien->corr_num}}</span></div></td>
-                    <td style="border: solid 1px black; width:190px;"><div style="max-height: 30px; overflow-y:hidden; font-size: 9pt; margin-top:-8; ">{{$bien->observaciones}}</div></td>
+                    <td style="border: solid 1px black; width:200px;"><div style="max-height: 30px; overflow:hidden; font-size: 9pt; width:198px; margin-top:-8; ">{{$bien->observaciones}}</div></td>
                 </div>    
             </tr>
             <tr style="height: 0px;"></tr>
