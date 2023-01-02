@@ -28,6 +28,8 @@
         else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
         else if (document.msExitFullscreen) { document.msExitFullscreen(); }
         }
+
+        lock('portrait');
     </script>
     <style>
         html {
