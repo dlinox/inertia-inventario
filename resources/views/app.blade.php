@@ -29,7 +29,6 @@
         else if (document.msExitFullscreen) { document.msExitFullscreen(); }
         }
 
-        lock(portrait);
     </script>
     <style>
         html {
@@ -68,18 +67,7 @@
     @laravelPWA
 </head>
 
-<body>    
-    <h1>LOCK LANDSCAPE</h1>
-    <input type="button" value="Landscape" onclick="lock('landscape')"/>
-    <input type="button" value="Landscape Primary" onclick="lock('landscape-primary')"/>
-    <input type="button" value="Landscape Secondary" onclick="lock('landscape-secondary')"/>
-    
-    <h1>UNLOCK</h1>
-    <input type="button" value="Unlock" onclick="unlock()"/>
-    <h1>LOCK PORTRAIT</h1>
-    <input type="button" value="Portrait" onclick="lock('portrait')"/>
-    <input type="button" value="Portrait Primary" onclick="lock('portrait-primary')"/>
-    <input type="button" value="Portrait Secondary" onclick="lock('portrait-secondary')"/>
+<body>
     @inertia
 </body>
 

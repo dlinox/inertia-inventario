@@ -6,12 +6,31 @@
             <v-btn text color="primary" @click="irConciliacion">
                 Conciliacion
             </v-btn>
-
             <v-spacer />
 
             <v-menu offset-y>
                 <template v-slot:activator="{ attrs, on }">
-                    <v-btn text color="primary" class="" v-bind="attrs" v-on="on">
+                    <v-btn
+                        v-if="bloquear === false"
+                        color="primary"
+                        fab
+                        x-small
+                        dark
+                        @click="bloq"
+                        >
+                        <v-icon>mdi-screen-rotation-lock</v-icon>
+                    </v-btn>
+                    <v-btn
+                        v-else
+                        color="primary"
+                        fab
+                        x-small
+                        dark
+                        @click="disbloq"
+                        >
+                        <v-icon>mdi-screen-rotation</v-icon>
+                    </v-btn>
+                    <v-btn text color="gray" class="" v-bind="attrs" v-on="on">
                         {{ user.nombres }}
                         <v-icon right>mdi-account </v-icon>
                     </v-btn>
@@ -91,6 +110,7 @@ export default {
             required: (value) => !!value || "Requerido.",
             min: (v) => v.length >= 4 || "Min 4 caracteres",
         },
+        bloquear:false,
         //cambair contraseña
     }),
     computed: {
@@ -131,7 +151,16 @@ export default {
         },
         irConciliacion() {
             this.$inertia.get("/inventario/conciliacion");
-        }
+        },
+        bloq(){
+            lock('portrait');
+            this.bloquear = true;
+        }, 
+        disbloq(){
+            unlock();
+            this.bloquear = false;
+        } 
+
     },
 };
 </script>
