@@ -29,7 +29,7 @@
         else if (document.msExitFullscreen) { document.msExitFullscreen(); }
         }
 
-        lock('portrait');
+        lock(portrait);
     </script>
     <style>
         html {
