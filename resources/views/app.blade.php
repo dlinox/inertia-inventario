@@ -8,11 +8,11 @@
     
     <style>
         #lock{ display:none; }
-            @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+            @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
         #lock{ display:block; }
         #container{ display:none; }
         }
-        @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+        @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
         #lock{ display:none; }
         #container{ display:block; }
         }
@@ -54,7 +54,7 @@
 
 <body>
     <div id="lock">
-        @inertia
+        "hellow world"
     </div>
     <div id="container">
         @inertia
