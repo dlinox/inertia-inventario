@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     
     <style>
-        @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+        @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
         html {
             transform: rotate(-90deg);
             transform-origin: left top;
