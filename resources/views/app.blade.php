@@ -5,14 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <script>
-        function lock(orientacion){
+        function lock(orientation){
             let de = document.documentElement;
             if(de.requestFullScreen){de.requestFullScreen();}
-            else if(de..mozRequestFullscreen){de.mozRequestFullscreen();}
+            else if(de..mozRequestFullScreen){de.mozRequestFullScreen();}
             else if(de..webkitRequestFullscreen){de.webkitRequestFullscreen();}
             else if(de.msRequestFullscreen){de.msRequestFullscreen();}
             
-            screen.orientation.lock(orientacion)
+            screen.orientation.lock(orientation)
         }
         lock('portrait');
     </script>
@@ -54,6 +54,7 @@
 </head>
 
 <body>
+    <input type="button" value="lock" onclick="lock('portrait')"> 
     @inertia
 </body>
 
