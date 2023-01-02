@@ -3,21 +3,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" orientation="portrait" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, orientation: landscape" />
     
     <style>
-        @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
-        html {
-            transform: rotate(-90deg);
-            transform-origin: left top;
-            width: 100vh;
-            height: 100vw;
-            overflow-x: hidden;
-            position: absolute;
-            top: 100%;
-            left: 0;
-        }
-        }
         html {
             overflow-y: auto !important;
             background: #EFEFEF;
