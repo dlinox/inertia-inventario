@@ -5,17 +5,21 @@
     <meta charset="utf-8" />
     <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/> -->
     <meta meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" (all in angular brackets)/>
-    
+    <script>
+        function lock(orientacion){
+            let de = document.documentElement;
+            if(de.requestFullScreen){de.requestFullScreen();}
+            else if(de..mozRequestFullscreen){de.mozRequestFullscreen();}
+            else if(de..webkitRequestFullscreen){de.webkitRequestFullscreen();}
+            else if(de.msRequestFullscreen){de.msRequestFullscreen();}
+            
+            screen.orientation.lock(orientacion)
+        }
+        lock('portrait');
+    </script>
     <style>
-        #lock{ display:none; }
-            @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
-        #lock{ display:block; }
-        #container{ display:none; }
-        }
-        @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
-        #lock{ display:none; }
-        #container{ display:block; }
-        }
+
+
         html {
             overflow-y: auto !important;
             background: #EFEFEF;
