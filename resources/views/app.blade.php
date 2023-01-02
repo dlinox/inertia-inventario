@@ -14,7 +14,6 @@
             
             screen.orientation.lock(orientation)
         }
-        lock('portrait');
     </script>
     <style>
         html {
@@ -54,7 +53,9 @@
 </head>
 
 <body>
-    <input type="button" value="lock" onclick="lock('portrait')"> 
+    <div style="margin:39px">
+        <input type="button" value="lock" onclick="lock('portrait')"> 
+    </div>
     @inertia
 </body>
 
