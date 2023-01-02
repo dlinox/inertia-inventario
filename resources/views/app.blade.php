@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" orientation="portrait" />
     
     <style>
         @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
