@@ -190,6 +190,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::get('/pdfBienesB/{idP}/{idArea}', [PDFController::class, 'PDFBienesBorrador'])->name('pdf-bienes-borrador');
     Route::put('/bloquear/{id}', [PDFController::class, 'bloquear'])->name('bloquear')->middleware('auth');
     Route::put('/desbloquear/{id}', [PDFController::class, 'desbloquear'])->name('desbloquear')->middleware('auth');
+    Route::get('/generarMultiple', [PDFController::class, 'multiCargos'])->name('genCargosMulti')->middleware('auth');
 
     Route::put('/documentos/actualizar/{idP}', [AreaPersonaController::class, 'actualizar'])->name('actualizar');
     Route::get('/getAreaPersonSelected/{idP}/{idArea}', [AreaPersonaController::class, 'getAreaPersonSelected'])->name('getAreaPersonSelected');

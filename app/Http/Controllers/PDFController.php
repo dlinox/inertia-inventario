@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\Snappy\Facades\SnappyPdf;
-
+use Inertia\Inertia;
 use PDF;
 class PDFController extends Controller
 {
@@ -197,7 +197,7 @@ class PDFController extends Controller
             'margin-bottom'=>'4.1cm',
             'margin-left'=>'0.5cm',
             'margin-right'=>'0.5cm',  
-            'margin-top'=>'3.6cm',
+            'margin-top'=>'4.0cm',
             'encoding'=>'UTF-8',
             'orientation'=>'landscape',
             'page-size'=>'a4' 
@@ -372,6 +372,13 @@ class PDFController extends Controller
             'orientation'=>'landscape',
             'page-size'=>'a4'
         ])->inline('report.pdf');
+    }
+
+
+    //MULTI
+
+    public function multiCargos(){
+        return Inertia::render('Admin/Reportes/genMultiple.vue');       
     }
 
 }

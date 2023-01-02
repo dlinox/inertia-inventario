@@ -33,8 +33,8 @@
         <tr>
             <td valgin="top">
                 <div style="width:370px; text-align:left;">
-                    <div><span style="font-size:17pt; stroke:#000000;">Universidad Nacional del Altiplano</span></div>
-                    <span style="font-size:13pt;">Comisión de Inventario Activos Fijos 2022</span>
+                    <div><span style="font-size:15pt; stroke:#000000;">Universidad Nacional del Altiplano</span></div>
+                    <span style="font-size:12pt;">Comisión de Inventario Activos Fijos 2022</span>
                 </div>
             </td>
             <td align="center">
@@ -56,7 +56,7 @@
 </div>
     <table style="width:100%; margin-right:10px;">
         <tr>
-            <td style="width: 320px;">
+            <td style="width: 300px;">
                 <div style="">
                     <span style="text-align:center; font-size:14pt;">Dependencia</span>                        
                 </div>
@@ -73,19 +73,19 @@
         <tr>
             <td>
                 <div style="margin-top: 0px;">
-                    <span style="text-align:center; font-size:14pt;">[DNI]Apellidos y Nombres</span>
+                    <span style="text-align:center; font-size:13pt;">[DNI]Apellidos y Nombres</span>
                 </div>
             </td>
             <td style="width:570px; white-space: nowrap; text-overflow: ellipsis; max-width: 560px;">
                 <div style="text-align: left">
-                    <span style="text-align:center; font-size:14pt; overflow:hidden;">
+                    <span style="text-align:center; font-size:13pt; overflow:hidden;">
                         @foreach ($responsable as $re)<span>: [{{ $re->dni }}] {{ $re->paterno }} {{ $re->materno }} {{$re->nombres}} </span> @endforeach
                     </span>
                 </div>
             </td>
             <td colspan="2" align="right" style="">
                 <div style="">
-                    <span style="margin-right:0.20cm; font-size:13.5pt;">TIPO DE VERIFICACIÓN:</span><span style="font-size:13.5pt; margin-right:0.20cm;" > FÍSICA ( X ) </span> <span style="font-size:13.5pt;" > DIGITAL ( &nbsp; ) </span>                         
+                    <span style="margin-right:0.20cm; font-size:13pt;">TIPO DE VERIFICACIÓN:</span><span style="font-size:13.5pt; margin-right:0.20cm;" > FÍSICA ( X ) </span> <span style="font-size:13.5pt;" > DIGITAL ( &nbsp; ) </span>
                 </div>
             </td>
         </tr>
