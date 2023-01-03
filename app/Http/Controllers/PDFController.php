@@ -39,7 +39,7 @@ class PDFController extends Controller
     }
 
     public function PDFBienes(Request $doc){
-        $registrado = DB::select('SELECT * from area_persona where id_persona = '.$doc->persona.' and id_area = "'.$doc->area.'"  AND estado = 0;');        
+        $registrado = DB::select('SELECT * from area_persona where id_persona = '.$doc->persona.' and id_area = "'.$doc->area.'"  AND estado = 0;');
         if($registrado != null){
             $num_doc = $registrado[0]->num + 1;
 
