@@ -62,7 +62,7 @@ class PDFController extends Controller
 
                 $pdf = SnappyPdf::loadView('cargos.cargo', compact('bienes','oficina','inventaristas','ldate','lhour',));
                 $pdf->setOption('enable-javascript', true);
-                $pdf->setOption('no-stop-slow-scripts', true); 
+                $pdf->setOption('no-stop-slow-scripts', true);
         
                 $pdf->setOptions([
                     'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),

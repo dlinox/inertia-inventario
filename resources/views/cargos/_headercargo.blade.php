@@ -58,15 +58,15 @@
         <tr>
             <td style="width: 300px;">
                 <div style="">
-                    <span style="text-align:center; font-size:14pt;">Dependencia</span>                        
+                    <span style="text-align:center; font-size:13pt;">Dependencia</span>                        
                 </div>
             </td>
             <td colspan="2" width="540px" style=" white-space: nowrap; text-overflow: ellipsis; max-width: 550px;">               
-                <div style="text-align: left; overflow:hidden;">:<span style="font-size:14pt;"> @foreach ($oficina as $o){{ $o->nombre }} - {{ $o->dependencia }}  @endforeach </span> </div>
+                <div style="text-align: left; overflow:hidden;">:<span style="font-size:13pt;"> @foreach ($oficina as $o){{ $o->nombre }} - {{ $o->dependencia }}  @endforeach </span> </div>
             </td>
             <td align="right" width="260px" style="">
                 <div style="">
-                    <span style="text-align:center; font-size:14pt;">ID: @foreach ($oficina as $o){{ $o->iduoper }}@endforeach @foreach ($responsable as $re) {{ $re->dni }}-{{$num_doc}} @endforeach</span>
+                    <span style="text-align:center; font-size:13pt;">ID: @foreach ($oficina as $o){{ $o->iduoper }}@endforeach @foreach ($responsable as $re) {{ $re->dni }}-{{$num_doc}} @endforeach</span>
                 </div>
             </td>
         </tr>
