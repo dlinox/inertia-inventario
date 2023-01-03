@@ -426,7 +426,6 @@ export default {
                 let resto = res.data.count[0].registros % this.pages;
                 if(resto > 0){
                     this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0) );
-
                 }
                 else {
                     this.nregistros = (res.data.count[0].registros / this.pages) - 1;

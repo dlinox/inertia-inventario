@@ -27,6 +27,8 @@ class InventarioController extends Controller
 
     protected $correlativos;
 
+    protected $response = [];
+
     public function __construct()
     {
         $this->bienK = new Bienk;
@@ -409,18 +411,18 @@ class InventarioController extends Controller
     public function createInventario(Request $request)
     {
 
+        $codigo_existe = false;
+
         if ($request->codigo) {
 
             $codigo_existe = Inventario::where('codigo', $request->codigo)->first();
 
-            if ($codigo_existe) {
-                $this->response['estado'] = false;
-                $this->response['mensaje'] = 'El codigo ya existe';
-                return response()->json($this->response, 200);
-            }
+            // if ($codigo_existe) {
+            //     $this->response['estado'] = false;
+            //     $this->response['mensaje'] = 'El codigo ya existe';
+            //     return response()->json($this->response, 200);
+            // }
         }
-
-
 
         $res = Inventario::create([
             'tipo' => $request->tipo,
@@ -472,6 +474,10 @@ class InventarioController extends Controller
             $this->response['corr_num'] = $corr_num;
             $this->response['corr_area'] = $corr_area;
 
+            if ($codigo_existe) {
+                $this->response['mensaje'] = 'Registrado con exito, ¡ Codigo Duplicado !';
+            }
+
             return response()->json($this->response, 200);
         }
 
@@ -507,11 +513,11 @@ class InventarioController extends Controller
                 ->where('id', '!=',  $request->id)
                 ->first();
 
-            if ($codigo_existe) {
-                $this->response['estado'] = false;
-                $this->response['mensaje'] = 'El codigo ya existe';
-                return response()->json($this->response, 200);
-            }
+            // if ($codigo_existe) {
+            //     $this->response['estado'] = false;
+            //     $this->response['mensaje'] = 'El codigo ya existe';
+            //     return response()->json($this->response, 200);
+            // }
         }
 
 
@@ -560,6 +566,12 @@ class InventarioController extends Controller
             $this->response['estado'] = true;
             $this->response['id'] = $request->id;
             $this->response['mensaje'] = 'Editado con exito';
+
+            if ($codigo_existe) {
+                $this->response['mensaje'] = 'Registrado con exito, ¡Codigo Duplicado !';
+            }
+
+
             return response()->json($this->response, 200);
         }
 
@@ -1068,17 +1080,17 @@ class InventarioController extends Controller
         );
     }
 
-    public function getDependenciasTEMP(){
+    public function getDependenciasTEMP()
+    {
         $user = (Auth::user()->equipo);
         $dependencias = DB::select("SELECT distinct substring(grupo.id_oficina,1,2) as id, oficina.dependencia  FROM grupo 
         JOIN users ON grupo.id_usuario = users.id
         JOIN oficina on oficina.iduoper = grupo.id_oficina
         WHERE users.equipo IN ($user)");
-        
+
         $this->response['datos'] = $dependencias;
         return response()->json($this->response, 200);
-
-    } 
+    }
     public function getBienesConciliacion($dependencia, $tipo = "")
     {
 
