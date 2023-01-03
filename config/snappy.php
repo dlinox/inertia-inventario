@@ -41,7 +41,7 @@ return [
             'encoding' => 'UTF-8'
         ],
         'env' => [],
-    ],
+    ], 
 
     'image' => [
         'enabled' => true,
