@@ -263,11 +263,17 @@ class InventarioController extends Controller
     }
 
     public function getBienesUsuarios(Request $request)
-    {
+    { //correlativo
         $res = Inventario::select('inventario.id', 'inventario.codigo', 'inventario.tipo',  'inventario.descripcion',  'oficina.nombre', 'oficina.dependencia', 'inventario.idbienk', 'inventario.corr_area', 'inventario.corr_num')
             ->leftjoin('oficina', 'oficina.iduoper', '=', 'inventario.id_area')
             ->where('inventario.id_usuario', Auth::user()->id)
-            ->paginate(10);
+            ->where('inventario.corr_num',  'LIKE', $request->correlativo . '%')
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('inventario.codigo', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('oficina.nombre', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('inventario.descripcion', 'LIKE', '%' . $request->term . '%');
+            })->paginate(10);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

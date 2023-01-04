@@ -5,7 +5,6 @@
                 Mis Registros <v-icon right>mdi-format-list-checks</v-icon>
             </v-btn>
         </template>
-
         <v-card tile>
             <v-toolbar>
                 <v-app-bar-nav-icon @click="dialog = false">
@@ -15,22 +14,30 @@
                 <v-toolbar-title>Bienes Registrados</v-toolbar-title>
             </v-toolbar>
 
-            <div class="text-center">
-                <small>*Doble toque para seleccionar</small>
+            <div class="text-center text-primary">
+                <small class="primary--text">*Doble toque para seleccionar</small>
             </div>
 
-            <v-card-text style="height: 90vh">
-                <v-row class="mt-3">
-                    <v-col cols="12" class="pb-1 pt-0"> </v-col>
-                </v-row>
 
+            <v-card-text style="height: 90vh;">
                 <v-card tile>
                     <v-overlay absolute :value="loading_table">
-                        <v-progress-circular
-                            indeterminate
-                            size="64"
-                        ></v-progress-circular>
+                        <v-progress-circular indeterminate size="64"></v-progress-circular>
                     </v-overlay>
+
+                    <v-row class="pa-4">
+                        <v-col cols="12" md="10" class="mb-1">
+                            <v-text-field v-model="term" hide-details="auto" dense label="Buscar"
+                                placeholder="Codigo, descripción, oficina " outlined>
+                            </v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="2" class="mb-1">
+                            <v-text-field v-model="correlativo" hide-details="auto" dense label="Correlativo"
+                                placeholder="Correlativo" outlined>
+                            </v-text-field>
+                        </v-col>
+
+                    </v-row>
 
                     <v-divider></v-divider>
 
@@ -46,22 +53,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr
-                                    v-for="(item, index) in bienes_result"
-                                    :key="index"
-                                    @dblclick="onSelectColumDobleClik(item)"
-                                >
+                                <tr v-for="(item, index) in bienes_result" :key="index"
+                                    @dblclick="onSelectColumDobleClik(item)">
                                     <td>
                                         <template v-if="item.idbienk">
                                             {{ item.idbienk }}
                                         </template>
                                         <template v-else>
-                                            <v-chip
-                                                small
-                                                class="ma-2"
-                                                color="green"
-                                                text-color="white"
-                                            >
+                                            <v-chip small class="ma-2" color="green" text-color="white">
                                                 Nuevo
                                             </v-chip>
                                         </template>
@@ -86,12 +85,7 @@
                     </v-simple-table>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-pagination
-                            v-model="page"
-                            class=""
-                            :length="pages"
-                            :total-visible="5"
-                        ></v-pagination>
+                        <v-pagination v-model="page" class="" :length="pages" :total-visible="5"></v-pagination>
                         <v-spacer></v-spacer>
                     </v-card-actions>
                 </v-card>
@@ -101,7 +95,6 @@
 </template>
 <script>
 import axios from "axios";
-
 export default {
     props: {
         areas: Array,
@@ -113,6 +106,10 @@ export default {
         page: 1,
         total_result: 0,
         pages: 1,
+        term: '',
+        correlativo: '',
+        page_temp: 1,
+
     }),
     async created() {
         this.loading_table = true;
@@ -121,10 +118,15 @@ export default {
     },
 
     methods: {
-        async getBienes(page = 1) {
+        async getBienes() {
+
             let res = await axios.post(
-                "/inventario/get-bienes-usuario?page=" + page
+                "/inventario/get-bienes-usuario?page=" + this.page_aux, {
+                term: this.term,
+                correlativo: this.correlativo
+            }
             );
+
             this.page = res.data.datos.current_page;
             this.total_result = res.data.datos.total;
             this.pages = res.data.datos.last_page;
@@ -141,9 +143,28 @@ export default {
     watch: {
         async page(val, old_val) {
             if (val == old_val) return;
-
+            //if (val == old_val) return;
             this.loading_table = true;
-            let res = await this.getBienes(val);
+            this.page_aux = val;
+            let res = await this.getBienes();
+            this.bienes_result = res;
+            this.loading_table = false;
+        },
+
+        async term(val, old_val) {
+            if (val == old_val) return;
+            this.loading_table = true;
+            this.page_aux = 1;
+            let res = await this.getBienes();
+            this.bienes_result = res;
+            this.loading_table = false;
+        },
+
+        async correlativo(val, old_val) {
+            if (val == old_val) return;
+            this.loading_table = true;
+            this.page_aux = 1;
+            let res = await this.getBienes();
             this.bienes_result = res;
             this.loading_table = false;
         },
