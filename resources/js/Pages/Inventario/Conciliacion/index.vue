@@ -73,9 +73,7 @@
                 mdi-microsoft-excel
               </v-icon>
               Excel
-            </v-btn>
-
-            
+            </v-btn>            
             <v-spacer></v-spacer>
             <v-text-field dense outlined v-model="search_nd" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
@@ -91,7 +89,28 @@
         </v-tab-item>
 
         <v-tab-item>
-          sdfasds
+
+        <v-card-title>
+
+            <v-btn tile color="success" class="me-2 mb-2" :disabled="!dependencia_select.id"
+              :href="'/inventario/excel-sobrantes/' + dependencia_select.id" link download>
+              <v-icon left>
+                mdi-microsoft-excel
+              </v-icon>
+              Excel
+            </v-btn>            
+            <v-spacer></v-spacer>
+            <v-text-field dense outlined v-model="search_sobrantes" append-icon="mdi-magnify" label="Buscar" single-line
+              hide-details></v-text-field>
+          </v-card-title>
+
+          <v-data-table item-key="index" :loading="loading_sobrantes" loading-text="Cargando... Espere Por Favor"
+            :headers="headers" :items="bienes_sobrantes" :search="search_sobrantes">
+
+            <template v-slot:item.responsable="{ item }">
+              {{ item.nombre }} {{ item.paterno }} {{ item.materno }}
+            </template>
+          </v-data-table>
         </v-tab-item>
 
       </v-tabs-items>
@@ -121,6 +140,7 @@ export default {
       ],
       search_af: '',
       search_nd: '',
+      search_sobrantes: '',
       headers: [
         {
           text: 'Codigo',
@@ -142,6 +162,7 @@ export default {
 
       loading_af: false,
       loading_nf: false,
+      loading_sobrantes: false,
 
       bienes_af: [],
       bienes_nd: [],
@@ -173,6 +194,10 @@ export default {
       let res_nd = await axios.get('/inventario/get-bienes-conciliacion/' + dependencia.id + '/NO DEPRECIABLE');
       this.bienes_nd = res_nd.data.datos;
       this.loading_nf = false;
+
+      let res_sobrantes = await axios.get('/inventario/get-bienes-sobrantes/' + dependencia.id);
+      this.bienes_sobrantes = res_sobrantes.data.datos;
+      this.loading_sobrantes = false;
       //let res_sobrantes = await axios.get("/inventario/get-bienes-conciliacion/?tipo=NO DEPRECIABLE FIJO&dependencia=" + dependencia);
       //this.bienes_sobrantes = res_sobrantes.data.datos;
     }

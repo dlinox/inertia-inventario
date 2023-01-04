@@ -19,7 +19,7 @@ class BienkExport implements FromView
 
     public function view(): View
     {
-        $data = DB::select("SELECT bienk.*,persona.*,  oficina.nombre AS oficina
+        $data = DB::select("SELECT bienk.*,persona.*,  oficina.dependencia, oficina.nombre AS oficina
         FROM bienk 
         JOIN oficina ON oficina.iduoper = bienk.id_area
         LEFT JOIN persona ON persona.dni = bienk.persona_dni
