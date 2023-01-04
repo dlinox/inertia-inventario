@@ -25,7 +25,6 @@ class SobrantesExport implements FromView
         AND id_area LIKE '{$this->dependencia}%' 
         AND (inventario.codigo IS NULL OR inventario.codigo = '')
         AND (inventario.codigo_anterior is NULL OR inventario.codigo_anterior = '')
-        AND id_usuario = 40
         ;");
 
         return view('exports.conciliacion', ['data' => $data]);

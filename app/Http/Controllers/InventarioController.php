@@ -1111,7 +1111,6 @@ class InventarioController extends Controller
         AND id_area LIKE '$dependencia%' 
         AND (inventario.codigo IS NULL OR inventario.codigo = '')
         AND (inventario.codigo_anterior is NULL OR inventario.codigo_anterior = '')
-        AND id_usuario = 40
         ;");
 
         $this->response['mensaje'] = 'Exito';
