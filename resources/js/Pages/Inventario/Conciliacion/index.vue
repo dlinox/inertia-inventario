@@ -38,8 +38,6 @@
 
       <v-tabs-items v-model="tab">
         <v-tab-item>
-
-
           <v-card-title>
 
             <v-btn tile color="success" class="me-2 mb-2" :disabled="!dependencia_select.id"
@@ -53,8 +51,6 @@
             <v-text-field dense outlined v-model="search_af" append-icon="mdi-magnify" label="Buscar" single-line
               hide-details></v-text-field>
           </v-card-title>
-
-
 
           <v-data-table item-key="index" :loading="loading_af" loading-text="Cargando... Espere Por Favor"
             :headers="headers" :items="bienes_af" :search="search_af">
@@ -95,7 +91,7 @@
         </v-tab-item>
 
         <v-tab-item>
-
+          sdfasds
         </v-tab-item>
 
       </v-tabs-items>
@@ -121,7 +117,7 @@ export default {
     return {
       tab: null,
       items: [
-        'Bienes AF', 'Bienes NP', //'Sobrantes'
+        'Bienes AF', 'Bienes NP', 'Sobrantes'
       ],
       search_af: '',
       search_nd: '',
