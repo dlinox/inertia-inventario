@@ -119,11 +119,11 @@ class PDFController extends Controller
 
             $pdf->setOptions([
                 'header-html'=>view('cargos._headercargo',compact('oficina','responsable','responsable2','num_doc')),
-                'footer-html'=>view('cargos._footercargo'),
+                'footer-html'=>view('cargos._footercargo'),  
                 'margin-bottom'=>'4.1cm',
                 'margin-left'=>'0.5cm',
                 'margin-right'=>'0.5cm',
-                'margin-top'=>'3.6cm',
+                'margin-top'=>'3.8cm',
                 'encoding'=>'UTF-8',
                 'orientation'=>'landscape',
                 'page-size'=>'a4'
