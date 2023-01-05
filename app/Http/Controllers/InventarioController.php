@@ -508,6 +508,9 @@ class InventarioController extends Controller
 
     public function updateInventario(Request $request)
     {
+
+        $codigo_existe  = false;
+        
         if ($request->id_usuario != Auth::user()->id) {
             $this->response['estado'] = false;
             $this->response['mensaje'] = 'No puede editar registros de otro usuario';
