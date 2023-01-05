@@ -49,7 +49,7 @@ class PDFController extends Controller
             }
             else {                
 
-                $bienes = DB::select('SELECT * from inventario WHERE estado = 1 AND id_area = "'.$doc->area.'" AND id_persona = ' . $doc->persona. ';');
+                $bienes = DB::select('SELECT * from inventario WHERE estado = 1 AND id_area = "'.$doc->area.'" AND id_persona = ' . $doc->persona. ' ORDER BY corr_num ASC;');
                 $oficina = DB::select('SELECT * from oficina WHERE iduoper = "'. $doc->area .'";');
                 $responsable = DB::select('SELECT persona.dni, persona.nombres, persona.paterno, persona.materno, persona.idtipoper FROM persona WHERE persona.id =' . $doc->persona);
                 $r2 = DB::select('SELECT * FROM persona WHERE ID IN ( SELECT idpersona_otro from inventario WHERE id_area = "' . $doc->area . '" and id_persona = ' . $doc->persona . ');');
@@ -109,7 +109,7 @@ class PDFController extends Controller
             if($r2 != null){ $responsable2 = $r2[0]; }
             else { $responsable2 = null; }
             $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $doc->area . '" and id_persona = ' . $doc->persona . ');');
-            $bienes = DB::select('SELECT * from inventario WHERE id_area = "'. $doc->area .'" AND id_persona = ' . $doc->persona . ';');
+            $bienes = DB::select('SELECT * from inventario WHERE id_area = "'. $doc->area .'" AND id_persona = ' . $doc->persona . ' ORDER BY corr_num ASC;');
             $ldate = date('Y-m-d');
             $lhour = date('H:i:s');
 
@@ -183,7 +183,7 @@ class PDFController extends Controller
         else { $responsable2 = null; }
 
         $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
-        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ' order by corr_num;');
+        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ' ORDER BY corr_num ASC;');
         $ldate = date('Y-m-d');
         $lhour = date('H:i:s');
 
@@ -245,7 +245,7 @@ class PDFController extends Controller
         $responsable2 = null;
 
         $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona != ' . $idP . ');');
-        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ' AND idpersona_otro IS null'.';');
+        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ' AND idpersona_otro IS null'.' ORDER BY corr_num ASC;');
         $ldate = date('Y-m-d');
         $lhour = date('H:i:s');
 
@@ -295,7 +295,7 @@ class PDFController extends Controller
         else { $responsable2 = null; }
 
         $inventaristas = DB::select('SELECT * FROM users WHERE ID IN ( SELECT ID_USUARIO from inventario WHERE id_area = "' . $idArea . '" and id_persona = ' . $idP . ');');
-        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ' AND idpersona_otro ='.$idP2.';');
+        $bienes = DB::select('SELECT * from inventario WHERE  id_area = "'.$idArea.'" AND id_persona = ' . $idP . ' AND idpersona_otro ='.$idP2.' ORDER BY corr_num ASC;');
         $ldate = date('Y-m-d');
         $lhour = date('H:i:s');
 
