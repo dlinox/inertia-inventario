@@ -6,7 +6,6 @@
                 v-model="drawer"
                 color="grey lighten-5"
             >
-
                 <v-container>
 
                     <div class="mt-5">
@@ -132,15 +131,26 @@
                                     <v-icon dense  style="font-size: 0.8rem">mdi-filter-outline</v-icon>
                                 </v-btn>
 
-                                <div style="width:300px; display:flex;" >
+                                <div style="width:400px; display:flex;" >
+                                    <diV class="mr-2" style="width:100px;">
+                                        <v-text-field
+                                        v-model="dependencia"
+                                        outlined
+                                        dense
+                                        hide-details
+                                        label="Cod dep"
+                                        >
+                                        </v-text-field>
+                                    </diV>
                                     <v-text-field
-                                    v-model="searchdocuments"
+                                    v-model="term"
                                     append-icon="mdi-magnify"
                                     outlined
                                     dense
                                     hide-details
                                     >
                                     </v-text-field>
+ 
                                     <!-- <v-icon  outlined style=" margin-left:10px; font-size: 1.2rem" @click="drawer = !drawer">mdi-filter-outline</v-icon> -->
                                 </div>
                             </div>
@@ -151,10 +161,10 @@
                         <v-data-table
                             :headers="headersdocuments"
                             :items="documentos"
-                            :search="searchdocuments"
                             :itemsPerPage="pages"
                             :mobile-breakpoint="10"
                             :page="page"
+                            dense
                             hide-default-footer
                             >
                         <template v-slot:item.acciones="{ item }" >
@@ -189,6 +199,15 @@
                                             color="primary"
                                         >
 
+                                        <v-list-item @click="verDocumento(item)">
+                                            <v-list-item-icon  style="margin-right: -10px;" >
+                                                <v-icon color="primary" size="1.1rem">mdi-eye</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <span style="margin-left: 10px;" >Ver</span>
+                                            </v-list-item-content>
+                                        </v-list-item>
+
                                         <v-list-item @click="desbloquear(item)">
                                             <v-list-item-icon  style="margin-right: -10px;" >
                                                 <v-icon color="primary" v-if="item.estado === 0" size="1.1rem">mdi-lock</v-icon>
@@ -199,12 +218,12 @@
                                             </v-list-item-content>
                                         </v-list-item>
 
-                                        <v-list-item @click="verDocumento(item)">
+                                        <v-list-item @click="bloquear(item)">
                                             <v-list-item-icon  style="margin-right: -10px;" >
-                                                <v-icon color="primary" size="1.1rem">mdi-eye</v-icon>
+                                                <v-icon color="primary" size="1.1rem">mdi-download</v-icon>
                                             </v-list-item-icon>
                                             <v-list-item-content>
-                                                <span style="margin-left: 10px;" >Ver</span>
+                                                <span style="margin-left: 10px;" >Descargar</span>
                                             </v-list-item-content>
                                         </v-list-item>
 
@@ -217,31 +236,44 @@
                                             </v-list-item-content>
                                         </v-list-item>
 
-                                        <v-list-item @click="descargarExcel(item)">
-                                            <v-list-item-icon  style="margin-right: -10px;" >
-                                                <v-icon color="primary" size="1.1rem">mdi-download</v-icon>
-                                            </v-list-item-icon>
-                                            <v-list-item-content>
-                                                <span style="margin-left: 10px;" >Descargar</span>
-                                            </v-list-item-content>
-                                        </v-list-item>
+
                                         </v-list-item-group>
                                     </v-list>
                                 </v-menu>
                             </div>
                         </template>
                         <template v-slot:item.codigo="{ item }">
-                            <div class="d-flex">
-                                <span class="mdi mdi-clipboard-text mr-3"></span>
-                                <span>{{ item.codigo }}</span>
+                            <div class="d-flex" style="justify-content: flex-start; align-items: center; ">
+                                <div>
+                                    <span class="mdi mdi-clipboard-text mr-3"></span>
+                                </div>
+                                <div>
+                                    <span style="font-size: .8rem;">{{ item.nombres }} {{ item.paterno }} {{ item.materno }}</span>
+                                    <div class="d-flex" style="margin-top: -5px;">
+                                        <div> <span style="font-size: .7rem; font-weight: bold;"> {{ item.dni }}</span></div>
+                                    </div>
+                                </div>
                             </div>
                         </template>
-                        <template v-slot:item.responsable="{ item }" style="min-width:660px;">
-                            <div class="d-flex">
-                                <span>{{ item.dni  }}</span>
+                        <template v-slot:item.oficina="{ item }" style="min-width:660px;">
+                            <div class="">
+                                <div>
+                                    <span upercase style="font-size: .7rem; text-transform: uppercase;">{{ item.oficina }}</span>
+                                    <div class="d-flex" style="margin-top: -5px; ">
+                                        <div> <span style="font-size: .7rem; font-weight: bold;"> {{ item.cod }}</span></div>
+                                    </div>
+                                </div>
                             </div>
                         </template>
 
+                        <template v-slot:item.dependencia="{ item }" style="min-width:660px;">
+                            <div class="">
+                                <div>
+                                    <span upercase style="font-size: .7rem; text-transform: uppercase;">{{ item.dependencia }}</span>
+                                </div>
+                            </div>
+                        </template>
+ 
                         </v-data-table>
                         <div>
                             <v-pagination
@@ -365,6 +397,8 @@ export default {
 
     data: () => ({
 
+        term:"",
+        dependencia:"",
         estados: [
             {'id': 2, 'name': 'Todos'},
             {'id': 1, 'name': 'Activos'},
@@ -392,9 +426,9 @@ export default {
         documentoElegido: null,
         searchdocuments:'',
         headersdocuments: [
-          { text: 'Codigo', align: 'start', filterable: true, value: 'codigo', width:"220px", class:'grey lighten-1' },
-          { text: 'Responsable', align: 'center', filterable: true, width:"130px", value: 'dni', class:'grey lighten-1',  },
-          { text: 'Area', align: 'start', filterable: true, value: 'nombre', width:"300px", minWidth:'250px', class:'grey lighten-1' },
+          { text: 'Responsable', align: 'start', filterable: true, value: 'codigo', width:"320px", class:'grey lighten-1' },
+          { text: 'Oficina', align: 'start', filterable: true, width:"230px", value: 'oficina', class:'grey lighten-1',  },
+          { text: 'Dependencia', align: 'start', value: 'dependencia', width:"250px", minWidth:'180px', class:'grey lighten-1' },
           { text: ' ', align: 'right', value:'acciones', maxWidth:'50px', class:'grey lighten-1'  },
         ],
 
@@ -415,112 +449,19 @@ export default {
 
     }),
     created() {
-        this.getDocuments()
+        this.estado = 1;
+        this.getCargos()
     },
     methods: {
 
-        async getDocuments() {
-            if(this.estado === null && this.date === null && this.datef === null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/2,'1900-01-01','2100-12-31'");
-                this.documentos = res.data.datos;
-                let resto = res.data.count[0].registros % this.pages;
-                if(resto > 0){
-                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0) );
-                }
-                else {
-                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
-                }
-                //this.nregistros = res.registros;
-                return res.data.datos.data;
-            }
-            if(this.estado === null && this.date === null && this.datef !== null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'1900-01-01',"+this.datef);
-                this.documentos = res.data.datos;
-                let resto = res.data.count[0].registros % this.pages;
-                if(resto > 0){
-                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
-                }
-                else {
-                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
-                }
-                //this.nregistros = res.registros;
-                return res.data.datos.data;
-            }
-            if(this.estado !== null && this.date === null && this.datef === null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'1900-01-01','2100-12-31'");
-                this.documentos = res.data.datos;
-                let resto = res.data.count[0].registros % this.pages;
-                if(resto > 0){
-                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
-
-                }
-                else {
-                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
-                }
-                //this.nregistros = res.registros;
-                return res.data.datos.data;
-            }
-
-            if(this.estado === null && this.date !== null && this.datef === null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/2,'"+this.date+"','2100-12-31'");
-                this.documentos = res.data.datos;
-                let resto = res.data.count[0].registros % this.pages;
-                if(resto > 0){
-                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
-
-                }
-                else {
-                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
-                }
-                //this.nregistros = res.registros;
-                return res.data.datos.data;
-            }
-
-            if(this.estado !== null && this.date !== null && this.datef === null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'"+this.date+"','2100-12-31'");
-                this.documentos = res.data.datos;
-                let resto = res.data.count[0].registros % this.pages;
-                if(resto > 0){
-                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
-                }
-                else {
-                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
-                }
-                //this.nregistros = res.registros;
-                return res.data.datos.data;
-            }
-
-            if(this.estado === null && this.date !== null && this.datef !== null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/2,'"+this.date+"','"+this.datef+"'");
-                this.documentos = res.data.datos;
-                let resto = res.data.count[0].registros % this.pages;
-                if(resto > 0){
-                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
-
-                }
-                else {
-                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
-                }
-                //this.nregistros = res.registros;
-                return res.data.datos.data;
-            }
-
-            if(this.estado !== null && this.date !== null && this.datef !== null ) {
-                let res = await axios.get("/admin/reportes/getDocumentsF/"+this.estado+",'"+this.date+"','"+this.datef+"'");
-                this.documentos = res.data.datos;
-                let resto = res.data.count[0].registros % this.pages;
-                if(resto > 0){
-                    this.nregistros = parseInt((res.data.count[0].registros / this.pages).toFixed(0));
-                    // this.nregistros = (res.data.count[0].registros - resto)  + 1;
-                }
-                else {
-                    this.nregistros = (res.data.count[0].registros / this.pages) - 1;
-                }
-                //this.nregistros = res.registros;
-                return res.data.datos.data;
-            }
-
+        async getCargos(term = "", page = 1) {
+            let res = await axios.post(
+                "/admin/reportes/getCargos?page=" + page,
+                { term: this.term, estado:this.estado, dependencia: this.dependencia, usuario: this.user, fecha: this.date }
+            );
+            this.documentos = res.data.datos.data;
         },
+
         verDocumento(item){
             window.open(item.url, '_blank');
         },
@@ -537,7 +478,7 @@ export default {
              .then(response => {
                 this.text = "Documento eliminado"
                 this.snackbar = true
-                this.getDocuments()
+                this.getCargos()
              }, error => {
                 if (error.response.status === 401) {
                     this.dialogError = true;
@@ -558,19 +499,24 @@ export default {
 
         async desbloquear( item ){
             await axios.get(`/admin/documentos/desbloquearBienes/${item.id}`);
-            this.getDocuments()
+            this.getCargos()
             this.text = "Bienes Desbloquedos"
             this.snackbar = true
         },
         Filtrar (){
-            this.getDocuments()
+            this.getCargos()
         }
 
     },
 
-    watch: {
-
-    },
+    watch:{
+        async term(){
+            this.getCargos()
+        },
+        async dependencia(){
+            this.getCargos()
+        },
+    }
 };
 </script>
 

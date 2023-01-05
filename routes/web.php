@@ -158,7 +158,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/preview/{idArea}/{idP}', 'preview')->name('preview');
         Route::get('/getDocumentsF/{e},{i},{f}', 'getDocumentsF')->name('getDocumentsF');
         Route::post('/getDocumentsF', 'getDocumentsF')->name('getDocumentsFP');
-
+        Route::post('/getCargos', 'getCargosExplorador')->name('get-cargos-exp');
         Route::get('/dashboard', 'dashboard')->name('dashboard');
         Route::get('/avanceGlobal', 'avanceGlobal')->name('avanceGlobal');
         Route::get('/ranking', 'ranking')->name('ranking');
@@ -175,6 +175,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
         Route::get('/getCountArea/{id}', 'getCountArea')->name('getCountArea');
         Route::get('/getCountAreaCargos/{id}', 'getCountAreaCargos')->name('getCountAreaCargos');
         Route::get('/getCargrosByArea/{id}', 'getCargrosByArea')->name('getCargrosByArea');
+
     });
 
     Route::controller(DocumentsController::class)->name('documentos.')->prefix('documentos')->group(function () {

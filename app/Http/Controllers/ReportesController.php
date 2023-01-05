@@ -77,6 +77,46 @@ class ReportesController extends Controller
         return response()->json($this->response, 200);
     }
 
+    public function getCargosExplorador(Request $request)
+    {
+        $query_where = [];
+        if ($request->dni) array_push($query_where, [DB::raw('substr(id_area, 1, 2)'), '=', $request->dni]);
+        if ($request->dependencia) array_push($query_where, [DB::raw('substr(id_area, 1, 2)'), '=', $request->dependencia]);
+        if ($request->responsable) array_push($query_where, [DB::raw('id_usuario'), '=', $request->responsable]);
+        if ($request->tipo) array_push($query_where, [DB::raw('area_persona.tipo'), '=', $request->tipo]);
+        if ($request->estado) array_push($query_where, [DB::raw('area_persona.estado'), '!=', $request->estado]);
+        //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
+        $res = AreaPersona::select(
+            'area_persona.*',
+            'oficina.dependencia as dependencia',
+            'oficina.iduoper as cod',
+            'oficina.nombre as oficina',
+            'persona.dni as dni',
+            'persona.nombres as nombres',
+            'persona.paterno as paterno',
+            'persona.materno as materno'
+        )
+            ->join('oficina', 'area_persona.id_area', '=', 'oficina.iduoper')
+            ->join('persona', 'area_persona.id_persona', '=', 'persona.id')
+            ->where($query_where)
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('oficina.nombre', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('oficina.iduoper', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('persona.nombres', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('persona.paterno', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('persona.materno', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('persona.dni', 'LIKE', '%' . $request->term . '%');
+            })->orderBy('area_persona.id', 'DESC')
+            ->paginate(1000);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+
+
 
 
 
