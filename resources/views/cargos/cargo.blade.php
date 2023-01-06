@@ -160,7 +160,7 @@
         </tbody>
         <tr>
             <td  style="border: solid 1px black;" colspan="13">
-            <div style="padding-top: 15px; padding-bottom: 25px;">
+            <div style="padding-top: 10px; padding-bottom: 10px;">
                 <div>
                     <span style="font-size: 10pt;">Inventariador(es):</span>
                 </div>
