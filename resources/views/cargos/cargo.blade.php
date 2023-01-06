@@ -160,7 +160,7 @@
         </tbody>
         <tr>
             <td  style="border: solid 1px black;" colspan="13">
-            <div style="padding-top: 10px; padding-bottom: 10px;">
+            <div style="padding-top: 5px; padding-bottom: 5px;">
                 <div>
                     <span style="font-size: 10pt;">Inventariador(es):</span>
                 </div>
@@ -182,7 +182,7 @@
                     <span style="font-size:10pt;">(1) Uso (U). Desuso (D).</span>
                 </div>
                 <div>
-                    <span style="font-size:10t; ">(2) El estado consignado en base a la siguiente escala: Bueno, Regular, Malo, Chatarra y RAEE. En caso de semovientes utilizar escala de acuerdo a su naturaleza</span>
+                    <span style="font-size:10pt; ">(2) El estado consignado en base a la siguiente escala: Bueno, Regular, Malo, Chatarra y RAEE. En caso de semovientes utilizar escala de acuerdo a su naturaleza</span>
                 </div>
                 <div>
                     <span style="font-size:10pt; ">(3) Activos Fijos (AF). Bienes no depresiables(ND). Bienes auxiliares(AU)</span>
