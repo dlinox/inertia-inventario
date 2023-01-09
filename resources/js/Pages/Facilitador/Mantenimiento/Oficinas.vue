@@ -2,7 +2,7 @@
     <div class="wrapper-page">
         <div class="content-wrapper">
 
-            <div class="content full">
+            <div class="content full"> 
                 <v-container>
                 <v-dialog
                     v-model="dialog"
@@ -102,6 +102,7 @@
                                     <v-text-field
                                         v-model="dep"
                                         outlined
+                                        clearable
                                         label="Cod. Dep"
                                         style="max-width: 80px;"
                                         dense
@@ -158,7 +159,7 @@
             
         </div>
     </div>
-</template>
+</template> 
 <script>
 import Layout from "@/Layouts/FacilitadorLayout";
 import axios from "axios";
@@ -189,7 +190,7 @@ export default {
         drawer: true,
 
         dialog:false,   
-        dep:null,
+        dep:'01',
         page:1,
         oficinas:[],
         buscaroficina:"",
@@ -224,14 +225,15 @@ export default {
                     "/facilitador/oficina",
                     this.form
                 );
-                console.log(res.data);
+                // console.log(res.data);
                 if (res.data.estado) {
                     this.$refs.form_ofic.reset();
+                    this.limpiar()
                 }
             }
-
-            console.log(this.form);
+//            console.log(this.form);
             this.dialog = false;
+            this.getOficinas()
         },
 
         customFilterDEP(item, queryText, itemText) {
@@ -263,11 +265,15 @@ export default {
             this.page++;
             this.getOficinasS()
         },
+        limpiar(){
+            this.form = null;
+        },
 
     },
     watch:{
 
         async dep(){
+            this.page = 1;
             this.bienesAF = [];
             this.getOficinas()
         },

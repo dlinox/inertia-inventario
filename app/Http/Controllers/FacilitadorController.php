@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\InventarioExports;
+
 class FacilitadorController extends Controller
 {
     public function index()
@@ -253,12 +256,33 @@ class FacilitadorController extends Controller
         return $cont;
     }
 
+    public function export()
+    {
+        $date = date('d-m-Y');
+        return Excel::download(new InventarioExports, 'inventario' . $date . '.xlsx');
+    }
+
     public function getBienesAll(){
-        $res = Inventario::select('inventario.id', 'tipo', 'idreg_anterior', 'cod_ubicacion', 'cuenta', 'codigo', 'descripcion', 'modelo', 'marca', 'medidas', 'color', 'observaciones', 'idbienk', 'corr_area', 'corr_num', 'estado_uso', 'num_ambiente', 'persona.dni AS responsable')
-        ->join('persona','inventario.id_persona', '=', 'persona.id')->get();
+        $res = DB::select('SELECT inventario.id, 
+        inventario.tipo, inventario.idreg_anterior, inventario.cod_ubicacion, inventario.cuenta, inventario.codigo, inventario.descripcion, inventario.modelo, 
+        inventario.marca, inventario.medidas, inventario.color, inventario.observaciones, inventario.idbienk, inventario.corr_area AS Areas, inventario.corr_num AS corr, 
+        inventario.estado_uso, inventario.num_ambiente, 
+        persona.dni, CONCAT(persona.nombres," ", persona.paterno," ",persona.materno) ,
+        oficina.dependencia, oficina.nombre AS oficina, 
+        CONCAT(users.nombres," ", users.apellidos) AS inventariador
+        FROM inventario 
+        left join persona ON inventario.id_persona = persona.id
+        left join oficina ON inventario.id_area = oficina.iduoper
+        left join users ON inventario.id_usuario = users.id
+        ORDER BY(inventario.corr_area)');
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
+
+        // $date = date('d-m-Y');
+        
+        // return Excel::download(new InventarioExports, 'inventario' . $date . '.xlsx');
     }
+
 
 
    //Mantenimiento de oficinas y Personas
@@ -306,8 +330,8 @@ class FacilitadorController extends Controller
                     ->orWhere('oficina.iduoper', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('oficina.dependencia', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('oficina.nombre', 'LIKE', '%' . $request->term . '%');
-            })->orderBy('oficina.iduoper', 'ASC')
-            ->paginate(10);
+            })->orderBy('oficina.ide', 'DESC')
+            ->paginate(150);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

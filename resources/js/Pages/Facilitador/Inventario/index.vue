@@ -67,6 +67,13 @@
             <v-col cols="12" sm="12"  md="4" lg="4">
                 <div style=" width:100%;">
                     <!-- <v-btn class="success" block @click="genExcel" >Exportar excel</v-btn> -->
+                    <v-btn tile color="success" class="me-2 mb-2" block
+                        :href="'/facilitador/allbienes/'" link download>
+                        <v-icon left>
+                            mdi-microsoft-excel
+                        </v-icon>
+                        Excel
+                        </v-btn>
                     <v-btn
                         class="success" block 
                         @click="getExportarExcel" 
@@ -336,6 +343,7 @@ export default {
         dialog:false,
         loader: null,
         loading: false,
+        nombre:'inventario',
 
         bienesExport:[],
         
@@ -386,7 +394,7 @@ export default {
          
         descargarExcel() {
             const data = this.bienesExport;
-            const filename = "Inventario"+"12-22";
+            const filename = this.nombre;
             const exportType = exportFromJSON.types.xls;
             exportFromJSON({ data, filename, exportType });
         },

@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\DocDetalle; 
 use App\Models\Inventario;
 use App\Models\AreaPersona;
 use Illuminate\Http\Request;
@@ -92,6 +93,11 @@ class PDFController extends Controller
                 $docs['id_usuario'] = Auth::id();
                 AreaPersona::create($docs);
 
+                $idAP = DB::select("select id from area_persona where codigo = '".$codigo."';");
+                foreach ($bienes as $p) {
+                    $this->saveDetalle($p,$idAP[0]);
+                }
+
                 $this->bloquearBienes( $doc->area, $doc->persona);
                 $this->response['mensaje'] = 'PDF';
                 $this->response['estado'] = true;
@@ -146,6 +152,11 @@ class PDFController extends Controller
             $docs['fecha'] = $ldate;
             $docs['id_usuario'] = Auth::id();
             AreaPersona::create($docs);
+
+            $idAP = DB::select("select id from area_persona where codigo = '".$codigo."';");
+            foreach ($bienes as $p) {
+                $this->saveDetalle($p,$idAP[0]);
+            }
 
             $this->bloquearBienes( $doc->area, $doc->persona);
             $this->response['mensaje'] = 'PDF';
@@ -219,7 +230,12 @@ class PDFController extends Controller
         $doc['fecha'] = $ldate;
         $doc['id_usuario'] = Auth::id();
         AreaPersona::create($doc);
-        
+
+        $idAP = DB::select("select id from area_persona where codigo = '".$codigo."';");
+        foreach ($bienes as $p) {
+            $this->saveDetalle($p,$idAP[0]);
+        }
+
         $this->response['mensaje'] = 'PDF';
         $this->response['estado'] = true;
         $this->response['datos'] = $doc;
@@ -229,9 +245,7 @@ class PDFController extends Controller
     public function pdfCubiculosIMP(Request $response){
         $area = $response->area;
         $persona = $response->persona;
-        $this->PDFcubiculos($persona,$area);
         $this->PDFcubiculosR($response->persona,$response->persona2,$response->area);
-        $this->PDFcubiculos($response->persona2,$area);
     }
 
     private function PDFcubiculos($idP,$idArea){
@@ -281,6 +295,11 @@ class PDFController extends Controller
         $doc['fecha'] = $ldate;
         $doc['id_usuario'] = Auth::id();
         AreaPersona::create($doc);
+
+        $idAP = DB::select("select id from area_persona where codigo = '".$codigo."';");
+        foreach ($bienes as $p) {
+            $this->saveDetalle($p,$idAP[0]);
+        }
         
     }
 
@@ -321,6 +340,11 @@ class PDFController extends Controller
 
         $output = $pdf->output();
         file_put_contents(public_path().'/documents/borradores/'.$codigo.'.pdf', $output);
+
+        $idAP = DB::select("select id from area_persona where codigo = '".$codigo."';");
+        foreach ($bienes as $p) {
+            $this->saveDetalle($p,$idAP[0]);
+        }
 
         $doc['codigo'] = $codigo;
         $doc['id_area'] = $idArea;
@@ -379,6 +403,13 @@ class PDFController extends Controller
 
     public function multiCargos(){
         return Inertia::render('Admin/Reportes/genMultiple.vue');       
+    }
+
+    private function saveDetalle($bien, $idap){
+        $detalle_doc['id_areapersona'] = $idap->id;
+        $detalle_doc['id_bien'] = $bien->id;
+        #var_dump($detalle_doc);
+        DocDetalle::create($detalle_doc);
     }
 
 }
