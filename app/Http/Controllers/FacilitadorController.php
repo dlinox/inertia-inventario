@@ -330,8 +330,8 @@ class FacilitadorController extends Controller
                     ->orWhere('oficina.iduoper', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('oficina.dependencia', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('oficina.nombre', 'LIKE', '%' . $request->term . '%');
-            })->orderBy('oficina.ide', 'DESC')
-            ->paginate(150);
+            })->orderBy('oficina.id', 'DESC')
+            ->paginate(10);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

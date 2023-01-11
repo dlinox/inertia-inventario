@@ -246,14 +246,15 @@ export default {
              );
         },
 
-        async getOficinas(term = "", page = 1) {
+        async getOficinas(term = "") {
             let res = await axios.post(
-                "/facilitador/oficina/get-ofi-all?page=" + page,
+                "/facilitador/oficina/get-ofi-all?page=" + this.page,
                 { term: this.buscaroficina, dependencia: this.dep}
             );
-            this.oficinas = res.data.datos.data;
+            if (this.page > 1){ this.oficinas.push(...res.data.datos.data)}
+            else { this.oficinas = res.data.datos.data; }
         },
-        async getOficinasS( page = 1) {
+        async getOficinasS() {
             let res = await axios.post(
                 "/facilitador/oficina/get-ofi-all?page=" + this.page,
                 { term: this.buscaroficina, dependencia: this.dep}
@@ -263,7 +264,7 @@ export default {
         handleScrolledToBottom(isVisible){
             if(!isVisible){ return}        
             this.page++;
-            this.getOficinasS()
+            this.getOficinas()
         },
         limpiar(){
             this.form = null;
@@ -278,6 +279,7 @@ export default {
             this.getOficinas()
         },
         async buscaroficina(val) {
+            this.page = 1;
             this.bienesAF = [];
             await this.getOficinas(val);            
         },

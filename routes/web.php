@@ -195,6 +195,13 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::put('/documentos/actualizar/{idP}', [AreaPersonaController::class, 'actualizar'])->name('actualizar');
     Route::get('/getAreaPersonSelected/{idP}/{idArea}', [AreaPersonaController::class, 'getAreaPersonSelected'])->name('getAreaPersonSelected');
+
+
+    //REMAKE
+    Route::get('/cargos', [AreaPersonaController::class, 'cargoUpdate']);
+    Route::get('/get-cargos/{d}', [AreaPersonaController::class, 'getCargos']);
+    Route::get('/get-dependencias', [AreaPersonaController::class, 'getDependencias']);
+
 });
 
 Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario')->group(function () {
