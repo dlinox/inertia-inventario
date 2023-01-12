@@ -46,7 +46,7 @@ class AreaPersonaController extends Controller
 
     public function getCargos($depenencia){
 
-        $res = DB::select("SELECT CONCAT(area_persona.id_area,' ',persona.dni,' - ',area_persona.num) as name,area_persona.id,area_persona.tipo, area_persona.num,oficina.iduoper, oficina.nombre, persona.dni, persona.nombres, persona.paterno, persona.materno 
+        $res = DB::select("SELECT area_persona.id_persona, area_persona.id_area, CONCAT(area_persona.id_area,' ',persona.dni,' - ',area_persona.num) as name,area_persona.id,area_persona.tipo, area_persona.num,oficina.iduoper, oficina.nombre, persona.dni, persona.nombres, persona.paterno, persona.materno 
             FROM area_persona
             JOIN persona on persona.id = area_persona.id_persona
             JOIN oficina on oficina.iduoper = area_persona.id_area
@@ -66,6 +66,14 @@ class AreaPersonaController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
 
+    }
+
+
+    public function getBienes($area, $persona){
+        $res = DB::select('SELECT * from inventario WHERE id_area = "'.$area.'" AND id_persona = ' . $persona . ' ORDER BY corr_num ASC;');
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200); 
     }
 
 

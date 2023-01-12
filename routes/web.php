@@ -201,6 +201,8 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
     Route::get('/cargos', [AreaPersonaController::class, 'cargoUpdate']);
     Route::get('/get-cargos/{d}', [AreaPersonaController::class, 'getCargos']);
     Route::get('/get-dependencias', [AreaPersonaController::class, 'getDependencias']);
+    Route::get('/get-bienes-detalle/{area}/{persona}', [AreaPersonaController::class, 'getBienes']);
+    
 
 });
 

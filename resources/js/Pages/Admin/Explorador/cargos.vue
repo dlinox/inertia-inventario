@@ -4,8 +4,6 @@
     <v-card>
     <v-card-title>
       <v-row class="inputs" style="background: white">
- 
-        {{ oficina }}
         <v-col sx="12" sm="12" md="4" lg="4" style=" height: 51px;">
             <v-autocomplete
                 v-model="dep"
@@ -63,7 +61,7 @@
                 </template>
 
                 <template v-slot:item="data">
-                    <v-list-item-content >
+                    <v-list-item-content @click="getBienes(data.item.id_area, data.item.id_persona)" >
                         <v-list-item-subtitle >
                           <div v-if="data.item.tipo === 1" style="color:#252850;">
                             <div><span style="font-weight: bold;">[{{ data.item.nombre }}] {{ data.item.iduoper }} {{ data.item.dni}} - {{ data.item.num }}</span></div>
@@ -83,27 +81,40 @@
             </v-autocomplete>
 
         </v-col>
+
+        <v-col sx="12" sm="12" md="4" lg="4" style=" height: 51px;">
+          <v-btn v-if="oficina === null" class="primary" block disabled> Guardar</v-btn>
+          <v-btn v-else class="primary" block @click="guardar"> Guardar</v-btn>
+
+        </v-col>
         
         <!-- <v-col sx="12" sm="12" md="4" lg="4" style=" height: 51px;">
             <pre>{{ oficinas }}</pre>
         </v-col> -->
       </v-row>
-      <v-row>
-        <v-col >
+    </v-card-title>
+  <v-card-text>
+    <v-row>
+        <v-col sx="12" sm="12" md="12" lg="12">
           <v-data-table
             v-model="selected"
             :headers="headers"
             :items="bienes"
-            item-key="name"
+            item-key="id"
             show-select
+            :single-select="false"
             class="elevation-1"
           >
+          <template v-slot:item.corr_num="{ item }">
+              <div class="d-flex" style="justify-content: flex-start; align-items: center; ">
+                  <div>
+                      <span style="font-size: .8rem;">{{ item.corr_area }} - {{ item.corr_num }}</span>
+                  </div>
+              </div>
+          </template>
           </v-data-table>
         </v-col>
       </v-row>
-    </v-card-title>
-  <v-card-text>
-    
   </v-card-text>
 
     </v-card>
@@ -122,7 +133,7 @@ export default {
     buscarcargos:"",
     term:"",
     oficina:null,
-    dep:'01',
+    dep:null,
     page:1,
 
     search:"",
@@ -134,10 +145,13 @@ export default {
     bienesseleccionados:[],
 
 
+    selected:[],
+
+
     headers: [
+          { text: 'Corr', value: 'corr_num' },
           { text: 'Codigo', value: 'codigo' },
-          { text: 'Corr', value: 'corr' },
-          { text: 'Descripcion', value: 'detalle' },
+          { text: 'Descripcion', value: 'descripcion' },
         ],
 
   }),
@@ -157,17 +171,19 @@ export default {
       return res.data.datos.data;
     },
 
-    async getDependencias(){
-      console.log(sd)
+    async getBienes(area,persona){
+      let res = await axios.get("/admin/get-bienes-detalle/"+area+'/'+persona);
+      this.bienes = res.data.datos;
+      return res.data.datos.data;
     },
 
-
-
-
-
-
-
-
+    async guardar(){
+      let res = await axios.post(
+          "/admin/guardar-detalle/",
+          { areapersona: this.oficina, bienes: this.selected }
+      );
+      this.bienes = res.data.datos.data;
+    },
 
     customFilterDEP(item, queryText, itemText) {
       const dependencia = item.dependencia.toLowerCase();
@@ -202,9 +218,11 @@ export default {
       this.getCargos()
     },
     oficina(){
-      this.getBienes()
-    }
+      if (this.oficina === null){
+        this.bienes = []
+      }
 
+    },
   }
 
 };
