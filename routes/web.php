@@ -236,10 +236,10 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
         ->name('perfil');
 
-    Route::get('/a-lotes', [InventarioController::class, 'viewLotesInventario'])
+    Route::get('/lotes', [InventarioController::class, 'viewLotesInventario'])
         ->name('lotes');
 
-    Route::get('/a-lotes-nuevo', [InventarioController::class, 'viewLotesInventarioNuevo'])
+    Route::get('/lotes-nuevo', [InventarioController::class, 'viewLotesInventarioNuevo'])
         ->name('lotes-nuevo');
 
     Route::post('/update-password', [InventarioController::class, 'updatePassword'])
