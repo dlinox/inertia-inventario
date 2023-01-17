@@ -195,6 +195,15 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
     Route::put('/documentos/actualizar/{idP}', [AreaPersonaController::class, 'actualizar'])->name('actualizar');
     Route::get('/getAreaPersonSelected/{idP}/{idArea}', [AreaPersonaController::class, 'getAreaPersonSelected'])->name('getAreaPersonSelected');
+
+
+    //REMAKE
+    Route::get('/cargos', [AreaPersonaController::class, 'cargoUpdate']);
+    Route::get('/get-cargos/{d}', [AreaPersonaController::class, 'getCargos']);
+    Route::get('/get-dependencias', [AreaPersonaController::class, 'getDependencias']);
+    Route::get('/get-bienes-detalle/{area}/{persona}', [AreaPersonaController::class, 'getBienes']);
+    
+
 });
 
 Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario')->group(function () {
@@ -227,10 +236,10 @@ Route::middleware(['auth', 'onlyInve'])->name('inventario.')->prefix('inventario
     Route::get('/perfil', [InventarioController::class, 'viewPerfilInventario'])
         ->name('perfil');
 
-    Route::get('/a-lotes', [InventarioController::class, 'viewLotesInventario'])
+    Route::get('/lotes', [InventarioController::class, 'viewLotesInventario'])
         ->name('lotes');
 
-    Route::get('/a-lotes-nuevo', [InventarioController::class, 'viewLotesInventarioNuevo'])
+    Route::get('/lotes-nuevo', [InventarioController::class, 'viewLotesInventarioNuevo'])
         ->name('lotes-nuevo');
 
     Route::post('/update-password', [InventarioController::class, 'updatePassword'])

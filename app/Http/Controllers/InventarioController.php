@@ -510,7 +510,7 @@ class InventarioController extends Controller
     {
 
         $codigo_existe  = false;
-        
+
         if ($request->id_usuario != Auth::user()->id) {
             $this->response['estado'] = false;
             $this->response['mensaje'] = 'No puede editar registros de otro usuario';
@@ -916,7 +916,7 @@ class InventarioController extends Controller
             $this->response['correlativos'] = $this->correlativos;
             return response()->json($this->response, 200);
         } catch (\Throwable $th) {
-            $this->response['mensaje'] = 'Ocurrió un error, vuelva a intentarlo';
+            $this->response['mensaje'] = 'Ocurrió un error, vuelva a intentarlo. ' .  $th->getMessage();
             $this->response['estado'] = false;
             return response()->json($this->response, 200);
         }
@@ -1003,15 +1003,18 @@ class InventarioController extends Controller
         }
     }
 
-
-
     //create-inventario-lote
 
     public function getAndCreteInventario($item, $datos)
     {
 
-        $bienk = $this->bienK->getDataByID($item['id']);
+        $existe = Inventario::where('idbienk', $item['id'])->first();
 
+        if ($existe) {
+            abort(400, "Un bien seleccionado ya esta registrado");
+        }
+
+        $bienk = $this->bienK->getDataByID($item['id']);
         $res = Inventario::create([
             'tipo' => $bienk->tipo,
             'idreg_anterior' => $bienk->idreg_anterior,

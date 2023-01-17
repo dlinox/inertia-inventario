@@ -263,7 +263,7 @@
                     <v-divider></v-divider>
 
                     <div class="d-flex justify-center mt-3">
-                        <v-btn color="primary" dense @click="dialog_corr = !dialog_corr">
+                        <v-btn color="primary" dense @click=" $inertia.get('/inventario/lotes')" >
                             Aceptar
                         </v-btn>
                     </div>
@@ -374,6 +374,8 @@ export default {
                 }
 
                 this.setDataAlert(res.data);
+
+                
 
                 this.loadin_form = false;
             }
