@@ -11,6 +11,10 @@ use Maatwebsite\Excel\Concerns\FromView;
 class BienkExport implements FromView
 {
 
+    protected  $tipo;
+    protected  $dependencia;
+
+
     public function __construct($dependencia, $tipo )
     {
         $this->tipo = $tipo;

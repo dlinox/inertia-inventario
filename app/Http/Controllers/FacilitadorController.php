@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FaltantesExport;
 use App\Models\Grupo;
 use App\Models\Inventario;
 use App\Models\Oficina;
@@ -12,9 +13,12 @@ use Inertia\Inertia;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\InventarioExports;
+use App\Models\Bienk;
 
 class FacilitadorController extends Controller
 {
+
+    protected $response = [];
     public function index()
     {
         return Inertia::render('Facilitador/Dashboard');
@@ -24,138 +28,140 @@ class FacilitadorController extends Controller
         return Inertia::render('Facilitador/Reporte/global');
     }
 
-    public function bienesSinCodigo(){
+    public function bienesSinCodigo()
+    {
         return Inertia::render('Facilitador/Inventario/BienesSinCodigo');
     }
 
-    public function Reportex(){
+    public function Reportex()
+    {
         return Inertia::render('Facilitador/Reporte/');
-
     }
 
-    public function Reportedia($fecha){
+    public function Reportedia($fecha)
+    {
         $datos = [];
         $res = DB::select('SELECT users.equipo as equipo, users.nombres, users.apellidos, dependencia, count(inventario.id) as reg
         from inventario
         JOIN oficina ON oficina.iduoper = inventario.id_area 
         JOIN users ON users.id = inventario.id_usuario 
-        WHERE date(inventario.created_at) = "'.$fecha.'"
+        WHERE date(inventario.created_at) = "' . $fecha . '"
         AND inventario.id_usuario 
         IN (SELECT users.id FROM users WHERE equipo IN (SELECT distinct equipo FROM users))
         GROUP BY oficina.dependencia, users.id order by equipo;');
 
-        $deps = [];        
-        $i=0;
+        $deps = [];
+        $i = 0;
         $total = 0;
 
-        foreach ($res as $item) { 
-            
+        foreach ($res as $item) {
+
             $e = $this->existe($item, $datos);
             $data[$i] = $this->existe($item, $datos);
             $total = $total + $item->reg;
 
-            if ( $e == true ){
-                if($i != 0){
-                    $datos[$i-1]['reg'] = $datos[$i-1]['reg'] + $item->reg;                
-                    $datos[$i-1]['usuarios']['dos'] = $item->apellidos." ".$item->nombres;
-                    $datos[$i-1]['usuarios']['dosR'] = $item->reg;
-                    if($this->comparar($item->dependencia, $deps) == false){
-                        array_push($deps,$item->dependencia);
-                        $datos[$i-1]['dependencia'] = $deps;                    
+            if ($e == true) {
+                if ($i != 0) {
+                    $datos[$i - 1]['reg'] = $datos[$i - 1]['reg'] + $item->reg;
+                    $datos[$i - 1]['usuarios']['dos'] = $item->apellidos . " " . $item->nombres;
+                    $datos[$i - 1]['usuarios']['dosR'] = $item->reg;
+                    if ($this->comparar($item->dependencia, $deps) == false) {
+                        array_push($deps, $item->dependencia);
+                        $datos[$i - 1]['dependencia'] = $deps;
                     }
-                 }
-
-            }else{
+                }
+            } else {
                 $deps = [];
                 $tm = 0;
-                $datos[$i]['equipo'] = $item->equipo;            
+                $datos[$i]['equipo'] = $item->equipo;
                 $datos[$i]['reg'] = $item->reg;
-                $datos[$i]['usuarios']['uno'] = $item->nombres." ".$item->apellidos;
+                $datos[$i]['usuarios']['uno'] = $item->nombres . " " . $item->apellidos;
                 $datos[$i]['usuarios']['unoR'] = $item->reg;
-                array_push($deps,$item->dependencia);
+                array_push($deps, $item->dependencia);
                 $datos[$i]['dependencia'] = $deps;
                 $i++;
-            }            
-         } 
+            }
+        }
         $this->response['datos'] = $datos;
         $this->response['total'] = $total;
         return response()->json($this->response, 200);
     }
 
-    public function ReporteGlobaldia($fecha){
+    public function ReporteGlobaldia($fecha)
+    {
         $datos = [];
         $res = DB::select('SELECT users.equipo as equipo, users.id as uid, users.nombres, users.apellidos, dependencia, count(inventario.id) as reg
         from inventario
         LEFT JOIN oficina ON oficina.iduoper = inventario.id_area 
         JOIN users ON users.id = inventario.id_usuario 
-        WHERE date(inventario.created_at) <= "'.$fecha.'" 
+        WHERE date(inventario.created_at) <= "' . $fecha . '" 
         AND inventario.id_usuario 
         IN (SELECT users.id FROM users WHERE equipo IN (SELECT distinct equipo FROM users))
         GROUP BY oficina.dependencia, users.id order by equipo;');
 
-        $deps = [];        
+        $deps = [];
         $usuarios = [];
-        $i=0;
+        $i = 0;
         $total = 0;
         $temp = 0;
 
-        foreach ($res as $item) { 
-            
+        foreach ($res as $item) {
+
             $e = $this->existe($item, $datos);
             $data[$i] = $this->existe($item, $datos);
             $total = $total + $item->reg;
-    
-            if ( $e == true ){
-                if($i != 0){
-                    $temp = $temp + $item->reg; 
-                    $datos[$i-1]['reg'] = $datos[$i-1]['reg'] + $item->reg;                                    
-                    $datos[$i-1]['usuarios']['dos'] = $item->apellidos." ".$item->nombres;
-                    $datos[$i-1]['usuarios']['dosR'] =  $item->reg;
-                    $us['id'] = $item->uid; 
-                    $us['nombre'] = $item->apellidos." ".$item->nombres;
+
+            if ($e == true) {
+                if ($i != 0) {
+                    $temp = $temp + $item->reg;
+                    $datos[$i - 1]['reg'] = $datos[$i - 1]['reg'] + $item->reg;
+                    $datos[$i - 1]['usuarios']['dos'] = $item->apellidos . " " . $item->nombres;
+                    $datos[$i - 1]['usuarios']['dosR'] =  $item->reg;
+                    $us['id'] = $item->uid;
+                    $us['nombre'] = $item->apellidos . " " . $item->nombres;
 
                     $ite = $this->compararU($us, $usuarios);
 
-                    if( $ite != 999999) {    
-                        $usuarios[$ite]['regis'] = $usuarios[$ite]['regis'] + $item->reg;    
-                        $datos[$i-1]['users'] = $usuarios;                   
+                    if ($ite != 999999) {
+                        $usuarios[$ite]['regis'] = $usuarios[$ite]['regis'] + $item->reg;
+                        $datos[$i - 1]['users'] = $usuarios;
                     } else {
                         $us['regis'] = $item->reg;
                         array_push($usuarios, $us);
-                        $datos[$i-1]['users'] = $usuarios;                    
+                        $datos[$i - 1]['users'] = $usuarios;
                     }
-                    
-                    if($this->comparar($item->dependencia, $deps) == false) {
-                        array_push($deps,$item->dependencia);
-                        $datos[$i-1]['dependencia'] = $deps;                    
+
+                    if ($this->comparar($item->dependencia, $deps) == false) {
+                        array_push($deps, $item->dependencia);
+                        $datos[$i - 1]['dependencia'] = $deps;
                     }
                 }
-
-            }else{
+            } else {
                 $temp += $item->reg;
                 $deps = [];
                 $usuarios = [];
-                $datos[$i]['equipo'] = $item->equipo;            
+                $datos[$i]['equipo'] = $item->equipo;
                 $datos[$i]['reg'] = $item->reg;
-                $datos[$i]['usuarios']['uno'] = $item->nombres." ".$item->apellidos;
+                $datos[$i]['usuarios']['uno'] = $item->nombres . " " . $item->apellidos;
                 $datos[$i]['usuarios']['unoR'] = $item->reg;
-                array_push($deps,$item->dependencia);
+                array_push($deps, $item->dependencia);
                 $user['id'] = $item->uid;
-                $user['nombre'] = $item->apellidos." ".$item->nombres;
+                $user['nombre'] = $item->apellidos . " " . $item->nombres;
                 $user['regis'] = $item->reg;
                 array_push($usuarios, $user);
                 $datos[$i]['users'] = $usuarios;
                 $datos[$i]['dependencia'] = $deps;
                 $i++;
-            }            
-         } 
+            }
+        }
         $this->response['datos'] = $datos;
         $this->response['total'] = $total;
         return response()->json($this->response, 200);
     }
-    
+
     //CONCILIACION
-    public function getDependencias(){
+    public function getDependencias()
+    {
         $res = DB::select('SELECT distinct substring(inventario.id_area,1,2) as iduoper,oficina.dependencia 
         FROM inventario
         JOIN oficina ON inventario.id_area = oficina.iduoper;');
@@ -163,39 +169,39 @@ class FacilitadorController extends Controller
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
-
     }
 
-    public function ConciliacionFac(){
-        return Inertia::render('Facilitador/Conciliacion/Conciliacion');   
+    public function ConciliacionFac()
+    {
+        return Inertia::render('Facilitador/Conciliacion/Conciliacion');
     }
 
     public function getBienesAF($page, $dependencia)
     {
         $limit = 30;
-        $ofs = ($page-1)*$limit;
+        $ofs = ($page - 1) * $limit;
         $res = DB::select('SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM bienk 
         JOIN oficina ON oficina.iduoper = bienk.id_area
         LEFT JOIN persona ON persona.dni = bienk.persona_dni
         WHERE bienk.tipo="ACTIVO FIJO"
-        AND cod_ubicacion LIKE "'.$dependencia.'%"
-        AND (bienk.codigo NOT IN (SELECT inventario.codigo FROM inventario WHERE codigo IS not NULL)) LIMIT 30 OFFSET '.$ofs);
+        AND cod_ubicacion LIKE "' . $dependencia . '%"
+        AND (bienk.codigo NOT IN (SELECT inventario.codigo FROM inventario WHERE codigo IS not NULL)) LIMIT 30 OFFSET ' . $ofs);
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 
- 
+
     public function getBienesND($page, $dependencia)
     {
         $limit = 30;
-        $ofs = ($page-1)*$limit;
+        $ofs = ($page - 1) * $limit;
         $res = DB::select('SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM bienk 
         JOIN oficina ON oficina.iduoper = bienk.id_area
         LEFT JOIN persona ON persona.dni = bienk.persona_dni
         WHERE bienk.tipo="NO DEPRECIABLE"
-        AND cod_ubicacion LIKE "'.$dependencia.'%"
-        AND (bienk.codigo NOT IN (SELECT inventario.codigo FROM inventario WHERE codigo IS not NULL)) LIMIT 30 OFFSET '.$ofs);
+        AND cod_ubicacion LIKE "' . $dependencia . '%"
+        AND (bienk.codigo NOT IN (SELECT inventario.codigo FROM inventario WHERE codigo IS not NULL)) LIMIT 30 OFFSET ' . $ofs);
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
@@ -203,52 +209,56 @@ class FacilitadorController extends Controller
     public function getBienesSobrantes($page, $dependencia)
     {
         $limit = 30;
-        $ofs = ($page-1)*$limit;
+        $ofs = ($page - 1) * $limit;
         $res = DB::select('SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM inventario 
         JOIN oficina ON oficina.iduoper = inventario.id_area
         LEFT JOIN persona ON persona.id = inventario.id_persona
         WHERE inventario.codigo is null
         AND inventario.codigo_anterior IS NULL
-        AND SUBSTRING(inventario.corr_area,1,2) = "'.$dependencia.'" 
-        LIMIT 30 OFFSET '.$ofs);
+        AND SUBSTRING(inventario.corr_area,1,2) = "' . $dependencia . '" 
+        LIMIT 30 OFFSET ' . $ofs);
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 
-    private function existe($item, $data){
+    private function existe($item, $data)
+    {
         $existe = false;
         foreach ($data as $it) {
-            if($it['equipo'] == $item->equipo ){
+            if ($it['equipo'] == $item->equipo) {
                 $existe = true;
             }
         }
         return $existe;
     }
 
-    private function comparar($item, $data){
-        $est=false;
+    private function comparar($item, $data)
+    {
+        $est = false;
         $tm = $this->sz($data);
-        for($l=0; $l<=$tm; $l++){
-            if( $data[$l] == $item){
+        for ($l = 0; $l <= $tm; $l++) {
+            if ($data[$l] == $item) {
                 $est = true;
             }
         }
         return $est;
     }
 
-    private function compararU($item, $data){
-        $est=999999;
+    private function compararU($item, $data)
+    {
+        $est = 999999;
         $tm = $this->sz($data);
-        for($l=0; $l<=$tm; $l++){
-            if( $data[$l]['id'] == $item['id']){
+        for ($l = 0; $l <= $tm; $l++) {
+            if ($data[$l]['id'] == $item['id']) {
                 $est = $l;
             }
         }
         return $est;
     }
 
-    private function sz( $array){
+    private function sz($array)
+    {
         $cont = 0;
         foreach ($array as $key => $item) {
             $cont = $key;
@@ -262,7 +272,8 @@ class FacilitadorController extends Controller
         return Excel::download(new InventarioExports, 'inventario' . $date . '.xlsx');
     }
 
-    public function getBienesAll(){
+    public function getBienesAll()
+    {
         $res = DB::select('SELECT inventario.id, 
         inventario.tipo, inventario.idreg_anterior, inventario.cod_ubicacion, inventario.cuenta, inventario.codigo, inventario.descripcion, inventario.modelo, 
         inventario.marca, inventario.medidas, inventario.color, inventario.observaciones, inventario.idbienk, inventario.corr_area AS Areas, inventario.corr_num AS corr, 
@@ -279,18 +290,20 @@ class FacilitadorController extends Controller
         return response()->json($this->response, 200);
 
         // $date = date('d-m-Y');
-        
+
         // return Excel::download(new InventarioExports, 'inventario' . $date . '.xlsx');
     }
 
 
 
-   //Mantenimiento de oficinas y Personas
-    public function viewOficinas(){
-        return Inertia::render('Facilitador/Mantenimiento/Oficinas');   
+    //Mantenimiento de oficinas y Personas
+    public function viewOficinas()
+    {
+        return Inertia::render('Facilitador/Mantenimiento/Oficinas');
     }
 
-    public function guardarOficina(Request $request ){
+    public function guardarOficina(Request $request)
+    {
         $oficina = new Oficina();
         $oficina->iduoper = $request->input('iduoper');
         $oficina->nombre = $request->input('nombre');
@@ -298,22 +311,21 @@ class FacilitadorController extends Controller
         $oficina->save();
         //$this->asignarGrupo($request->input('iduoper'));
 
-        $dep = Str::substr($oficina->iduoper,0,2);
+        $dep = Str::substr($oficina->iduoper, 0, 2);
         $usuarios = DB::select('SELECT DISTINCT id_usuario FROM grupo 
-        WHERE SUBSTRING(id_oficina,1,2) = '.$dep.';');        
-    
-        foreach ($usuarios as $us){
-            $this->asignarGrupo($oficina->iduoper, $us->id_usuario);   
-        }
+        WHERE SUBSTRING(id_oficina,1,2) = ' . $dep . ';');
 
+        foreach ($usuarios as $us) {
+            $this->asignarGrupo($oficina->iduoper, $us->id_usuario);
+        }
     }
 
-    private function asignarGrupo($iduoper, $id_usuario){
+    private function asignarGrupo($iduoper, $id_usuario)
+    {
         $grupo = new Grupo();
         $grupo->id_oficina = $iduoper;
         $grupo->id_usuario = $id_usuario;
         $grupo->save();
-    
     }
 
     public function getOFicinasF(Request $request)
@@ -323,7 +335,7 @@ class FacilitadorController extends Controller
         //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
         $res = Oficina::select(
             'oficina.*',
-         )
+        )
             ->where($query_where)
             ->where(function ($query) use ($request) {
                 return $query
@@ -338,8 +350,55 @@ class FacilitadorController extends Controller
         return response()->json($this->response, 200);
     }
 
-    public function viewPersonas(){
-        return Inertia::render('Facilitador/Mantenimiento/Personas');   
+    public function viewPersonas()
+    {
+        return Inertia::render('Facilitador/Mantenimiento/Personas');
     }
 
+
+    //reportes de faltantes
+    public function ViewFaltantes()
+    {
+        return Inertia::render('Facilitador/Faltantes/');
+    }
+
+    public function getFaltantes(Request $request)
+    {
+
+        // //AND id_area LIKE '{$this->dependencia}%'
+        $res = Bienk::select('id')
+            ->where('id_area', 'LIKE', "$request->dependencia.%")
+            ->where('registrado', 0)
+            ->where(function ($query) use ($request) {
+                $temp = $query
+                    ->orwhere('tipo', 'ACTIVO FIJO');
+
+                if ($request->tipos['no_depreciable']) {
+                    $temp->orwhere('tipo', 'NO DEPRECIABLE');
+                }
+                if ($request->tipos['otros']) {
+                    $temp->orwhere('tipo', '');
+                    $temp->orWhereNull('tipo');
+                    $temp->orwhere('tipo', 'OTROS');
+                }
+                return $temp;
+            })->count();
+
+        $this->response['dependencia'] = $request->dependencia;
+        $this->response['tipos'] = $request->tipos['no_depreciable'];
+        $this->response['data'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function downloadExcelFaltantes( Request $request, $dependencia)
+    {
+
+
+        $activofijo = $request->activofijo;
+        $nodepreciable = $request->nodepreciable;
+        $otro = $request->otro;
+
+
+        return Excel::download(new FaltantesExport($dependencia, $activofijo, $nodepreciable, $otro), "FALTANTES-$dependencia.xlsx");
+    }
 }

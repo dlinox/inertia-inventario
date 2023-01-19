@@ -23,6 +23,7 @@
         "@mdi/font": "^7.0.96",
         "chart.js": "^3.9.1",
         "export-from-json": "^1.7.0",
+        "gsap": "^3.11.4",
         "postcss-import": "^14.1.0",
         "postcss-nesting": "^10.1.10",
         "read-excel-file": "^5.5.3",

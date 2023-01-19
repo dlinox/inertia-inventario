@@ -122,6 +122,13 @@ export default {
                     },
                 ]   
             },
+
+            {
+                title: "Faltantes",
+                icon: "mdi-clipboard-text-search-outline",
+                ruta: "/facilitador/faltantes"
+            },
+
             {
                 title: "Conciliación",
                 icon: "mdi-clipboard-check",
