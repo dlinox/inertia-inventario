@@ -59,7 +59,7 @@ class FaltantesExport implements FromView
             ->leftjoin('persona', 'persona.dni', '=', 'bienk.persona_dni')
             ->where('bienk.id_area', 'LIKE', "$this->dependencia.%")
             ->where('bienk.registrado', 0)
-            ->whereNotIn('codigo', $bajas)
+            ->whereNotIn('bienk.codigo', $bajas)
             ->where(function ($query) {
                 $temp = $query
                     ->orwhere('bienk.tipo', 'ACTIVO FIJO');
