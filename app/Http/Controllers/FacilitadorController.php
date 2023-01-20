@@ -365,10 +365,16 @@ class FacilitadorController extends Controller
     public function getFaltantes(Request $request)
     {
 
+        $bajas_objet = DB::select('SELECT codigo FROM bajas_2022');
+        $bajas = [];
+        foreach ($bajas_objet as $val) {
+            array_push($bajas, $val->codigo );
+        }
         // //AND id_area LIKE '{$this->dependencia}%'
         $res = Bienk::select('id')
             ->where('id_area', 'LIKE', "$request->dependencia.%")
             ->where('registrado', 0)
+            ->whereNotIn('codigo', $bajas)
             ->where(function ($query) use ($request) {
                 $temp = $query
                     ->orwhere('tipo', 'ACTIVO FIJO');
@@ -387,10 +393,11 @@ class FacilitadorController extends Controller
         $this->response['dependencia'] = $request->dependencia;
         $this->response['tipos'] = $request->tipos['no_depreciable'];
         $this->response['data'] = $res;
+
         return response()->json($this->response, 200);
     }
 
-    public function downloadExcelFaltantes( Request $request, $dependencia)
+    public function downloadExcelFaltantes(Request $request, $dependencia)
     {
 
 

@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Bienk;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromView;
 
 
@@ -26,6 +27,13 @@ class FaltantesExport implements FromView
 
     public function view(): View
     {
+
+
+        $bajas_objet = DB::select('SELECT codigo FROM bajas_2022');
+        $bajas = [];
+        foreach ($bajas_objet as $val) {
+            array_push($bajas, $val->codigo );
+        }
 
 
         $data = Bienk::select(
@@ -51,6 +59,7 @@ class FaltantesExport implements FromView
             ->leftjoin('persona', 'persona.dni', '=', 'bienk.persona_dni')
             ->where('bienk.id_area', 'LIKE', "$this->dependencia.%")
             ->where('bienk.registrado', 0)
+            ->whereNotIn('codigo', $bajas)
             ->where(function ($query) {
                 $temp = $query
                     ->orwhere('bienk.tipo', 'ACTIVO FIJO');
