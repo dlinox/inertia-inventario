@@ -45,9 +45,9 @@ return [
 
     'image' => [
         'enabled' => true,
-        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
 #        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
-#        'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmlto.exe"',
+#        'binary' => base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64'),
+        'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmlto.exe"',
         'options' => [
             'encoding' => 'UTF-8' 
         ],
