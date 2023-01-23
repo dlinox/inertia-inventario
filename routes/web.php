@@ -369,6 +369,12 @@ Route::middleware(['auth', 'onlyFacilitador'])->name('facilitador.')->prefix('fa
     Route::controller(GrupoController::class)->name('inventario.')->prefix('inventario')->group(function () {
         Route::get('/get-grupo', 'getGrupoInv')->name('get-grupo-inv');
     });
+
+      //REPORTE DE FALTRANTES
+      Route::get('/faltantes', [FacilitadorController::class, 'ViewFaltantes']);
+      Route::post('/get-faltantes', [FacilitadorController::class, 'getFaltantes']);
+      Route::get('/excel-faltantes/{dependencia}', [FacilitadorController::class, 'downloadExcelFaltantes']);
+
 });
 
 
