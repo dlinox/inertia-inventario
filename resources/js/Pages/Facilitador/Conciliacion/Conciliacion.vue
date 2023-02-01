@@ -167,7 +167,7 @@
               </tbody>
             </template>
           </v-simple-table>
-          <div v-if="bienesND.length" v-observe-visibility="handleScrolledToBottomSO">
+          <div v-if="bienesSO.length" v-observe-visibility="handleScrolledToBottomSO">
           </div>
         </v-tab-item>
       </v-tabs-items>
