@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-0 pt-2">
+    
       <v-card class="my-2 py-3" style="min-height: 80vh;">
-
       <div class="">
         <div class="ma-2" style="height: 38px;">
           <v-autocomplete v-model="dep" clearable dense label="Dependencia" outlined :items="dependencias"
@@ -63,6 +63,8 @@
                 </tr>
               </thead>
               <tbody>
+
+
                 <tr v-for="(item, index) in bienesAF" :key="index">
                   <td>{{ item.codigo }}</td>
                   <td>{{ item.descripcion }}</td>
