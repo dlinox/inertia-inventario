@@ -197,7 +197,7 @@ class FacilitadorController extends Controller
     {
         $limit = 30;
         $ofs = ($page - 1) * $limit;
-        $res = DB::select('SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM bienk 
+        $res = DB::select('SELECT bienk.*,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM bienk 
         JOIN oficina ON oficina.iduoper = bienk.id_area
         LEFT JOIN persona ON persona.dni = bienk.persona_dni
         WHERE bienk.tipo="NO DEPRECIABLE"
@@ -211,7 +211,7 @@ class FacilitadorController extends Controller
     {
         $limit = 30;
         $ofs = ($page - 1) * $limit;
-        $res = DB::select('SELECT *,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM inventario 
+        $res = DB::select('SELECT bienk.*,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM inventario 
         JOIN oficina ON oficina.iduoper = inventario.id_area
         LEFT JOIN persona ON persona.id = inventario.id_persona
         WHERE inventario.codigo is null
