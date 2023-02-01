@@ -167,7 +167,7 @@
               </tbody>
             </template>
           </v-simple-table>
-          <div v-if="bienesND.length" v-observe-visibility="handleScrolledToBottomND">
+          <div v-if="bienesND.length" v-observe-visibility="handleScrolledToBottomSO">
           </div>
         </v-tab-item>
       </v-tabs-items>
@@ -251,6 +251,15 @@ export default {
       this.page++;
       this.getBienesND()
     },
+
+
+    handleScrolledToBottomSO(isVisible) {
+      if (!isVisible) { return }
+      // console.log('abc');
+      this.page++;
+      this.getBienesSO()
+    },
+
 
 
     customFilterDEP(item, queryText, itemText) {

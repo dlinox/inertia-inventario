@@ -369,7 +369,7 @@ class FacilitadorController extends Controller
         $bajas_objet = DB::select('SELECT codigo FROM bajas_2022');
         $bajas = [];
         foreach ($bajas_objet as $val) {
-            array_push($bajas, $val->codigo );
+            array_push($bajas, $val->codigo);
         }
         // //AND id_area LIKE '{$this->dependencia}%'
         $res = Bienk::select('id')
