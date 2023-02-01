@@ -10,7 +10,6 @@
                         <strong> REGISTRO DE INVENTARIOS</strong>
                     </v-col>
 
-
                     <v-col cols="12" sm="4" class="pr-sm-0 pr-sm-2 py-2 py-md-3 d-flex py-2 py-md-3">
                         <RegistrosComponent v-if="!is_new" @setData="data_emit = $event" />
                     </v-col>
