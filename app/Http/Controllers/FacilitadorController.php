@@ -211,10 +211,11 @@ class FacilitadorController extends Controller
     {
         $limit = 30;
         $ofs = ($page - 1) * $limit;
-        $res = DB::select('SELECT inventario.*,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno FROM inventario 
+        $res = DB::select('SELECT inventario.*,oficina.dependencia, oficina.iduoper, persona.nombres, persona.paterno, persona.materno 
+        FROM inventario 
         JOIN oficina ON oficina.iduoper = inventario.id_area
         LEFT JOIN persona ON persona.id = inventario.id_persona
-        WHERE inventario.codigo is null
+        WHERE  (inventario.codigo is NULL OR  inventario.codigo = "" )
         AND inventario.codigo_anterior IS NULL
         AND SUBSTRING(inventario.corr_area,1,2) = "' . $dependencia . '" 
         LIMIT 30 OFFSET ' . $ofs);
@@ -294,8 +295,6 @@ class FacilitadorController extends Controller
 
         // return Excel::download(new InventarioExports, 'inventario' . $date . '.xlsx');
     }
-
-
 
     //Mantenimiento de oficinas y Personas
     public function viewOficinas()

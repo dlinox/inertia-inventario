@@ -186,6 +186,7 @@ export default {
       bienesND: [],
       bienesSO: [],
       page: 1,
+      page_so: 1,
       tab: null,
       dep: null,
       dependencias: [],
@@ -198,6 +199,7 @@ export default {
   mounted() {
     this.getBienesAF()
     this.getDependencias()
+    this.getBienesSO();
   },
 
   // created() {
@@ -234,7 +236,7 @@ export default {
     },
 
     async getBienesSO() {
-      let res = await axios.get("/facilitador/getBienesSobrantes/" + this.page + "/" + this.dep);
+      let res = await axios.get("/facilitador/getBienesSobrantes/" + this.page_so + "/" + this.dep);
       this.bienesSO.push(...res.data.datos);
     },
 
@@ -256,11 +258,9 @@ export default {
     handleScrolledToBottomSO(isVisible) {
       if (!isVisible) { return }
       // console.log('abc');
-      this.page++;
+      this.page_so++;
       this.getBienesSO()
     },
-
-
 
     customFilterDEP(item, queryText, itemText) {
       const dependencia = item.dependencia.toLowerCase();
@@ -271,13 +271,6 @@ export default {
         iduoper.indexOf(searchText) > -1
       );
     },
-
-
-
-
   },
 }
 </script>
-<style scoped>
-
-</style>
