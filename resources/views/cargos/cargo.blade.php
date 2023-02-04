@@ -110,14 +110,7 @@
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->marca }}</span></div></td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->modelo }}</span></div></td>
                     <td style="border: solid 1px black; width:30px;" align="center"><div><span style="font-size: 9pt;">
-                        @if ($bien->tipo === 'ACTIVO FIJO')
-                        AF
-                        @elseif ($bien->tipo === 'NO DEPRECIABLE')
-                        ND
-                        @elseif ($bien->tipo === 'OTROS')
-                        AU
-                        @else
-                        @endif
+                        
                     </span></div></td>
                     <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->color }}</span></div></td>
                     <td style="border: solid 1px black; width:76px;"><div style="width:80px; overflow:hidden;"><span style="font-size: 9pt;">{{ $bien->nro_serie }}</span></div></td>
