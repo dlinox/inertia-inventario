@@ -77,6 +77,7 @@
                 <div>
                     @foreach ($inventaristas as $a)<div style="font-size: 10pt;"> </div> @endforeach
                 </div>
+                <br><br><br><br>
             </div>
             </td>
         </tr>

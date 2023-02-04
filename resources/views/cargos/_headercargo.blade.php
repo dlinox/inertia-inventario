@@ -62,11 +62,11 @@
                 </div>
             </td>
             <td colspan="2" width="540px" style=" white-space: nowrap; text-overflow: ellipsis; max-width: 550px;">               
-                <div style="text-align: left; overflow:hidden;">:<span style="font-size:13pt;"> @foreach ($oficina as $o){{ $o->nombre }} - {{ $o->dependencia }}  @endforeach </span> </div>
+                <div style="text-align: left; overflow:hidden;">:<span style="font-size:13pt;"> </span> </div>
             </td>
             <td align="right" width="260px" style="">
                 <div style="">
-                    <span style="text-align:center; font-size:13pt;">ID: @foreach ($oficina as $o){{ $o->iduoper }}@endforeach @foreach ($responsable as $re) {{ $re->dni }}-{{$num_doc}} @endforeach</span>
+                    <span style="text-align:center; font-size:13pt;">ID: </span>
                 </div>
             </td>
         </tr>
@@ -79,7 +79,7 @@
             <td style="width:570px; white-space: nowrap; text-overflow: ellipsis; max-width: 560px;">
                 <div style="text-align: left">
                     <span style="text-align:center; font-size:13pt; overflow:hidden;">
-                        @foreach ($responsable as $re)<span>: [{{ $re->dni }}] {{ $re->paterno }} {{ $re->materno }} {{$re->nombres}} </span> @endforeach
+                       
                     </span>
                 </div>
             </td>
