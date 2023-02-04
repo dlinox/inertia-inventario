@@ -75,7 +75,7 @@
                     <span style="font-size: 10pt;">Inventariador(es):</span>
                 </div>
                 <div>
-                    @foreach ($inventaristas as $a)<div style="font-size: 10pt;"> </div> 
+                    @foreach ($inventaristas as $a)<div style="font-size: 10pt;"> </div> @endforeach
                 </div>
             </div>
             </td>
