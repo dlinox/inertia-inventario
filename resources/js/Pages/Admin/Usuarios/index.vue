@@ -117,7 +117,7 @@
                                         <th class="text-left">Nombres</th>
                                         <th class="text-left">Apellidos</th>
                                         <th class="text-left">Correo</th>
-                                        <th class="text-left">Areas</th>
+                                        <th class="text-left">Estado</th>
                                         <th class="text-left">Rol</th>
                                         <th class="text-left"></th>
                                     </tr>
@@ -134,12 +134,25 @@
                                         </td>
 
                                         <td>
-                                            {{
-                                                item.areas.length > 0
-                                                    ? item.areas.length +
-                                                      " Areas"
-                                                    : "Sin areas asignadas"
-                                            }}
+                                            <v-switch
+                                                v-model="item.estado"
+                                                @change="
+                                                    cambiarEStado(
+                                                        $event,
+                                                        item.id
+                                                    )
+                                                "
+                                            >
+                                                <template v-slot:label>
+                                                    <small>
+                                                        {{
+                                                            item.estado
+                                                                ? "Activo"
+                                                                : "Inactivo"
+                                                        }}
+                                                    </small>
+                                                </template>
+                                            </v-switch>
                                         </td>
 
                                         <td>
@@ -152,7 +165,11 @@
                                                 text
                                                 color="primary"
                                                 class=""
-                                                @click="getFormularioUsuario(item.id)"
+                                                @click="
+                                                    getFormularioUsuario(
+                                                        item.id
+                                                    )
+                                                "
                                             >
                                                 <v-icon>
                                                     mdi-plus-circle
@@ -173,50 +190,6 @@
                 </v-container>
             </div>
         </div>
-
-        <v-dialog
-            transition="dialog-top-transition"
-            max-width="500"
-            persistent
-            v-model="dialog_asignar"
-        >
-            <v-card>
-                <v-card-title primary-title>
-                    Asignar Area - {{ user_asignar.nombres }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text class="mt-3">
-                    <SelectOficina v-model="oficina_asig"></SelectOficina>
-
-                    <v-autocomplete
-                        v-model="area_asig"
-                        :items="areas_asig"
-                        item-text="nombre"
-                        item-value="id"
-                        label="Seleccione un Area"
-                        outlined
-                        dense
-                        multiple
-                    ></v-autocomplete>
-
-                    <v-btn
-                        class="mr-3"
-                        text
-                        color="red"
-                        @click="dialog_asignar = false"
-                    >
-                        cancelar
-                    </v-btn>
-                    <v-btn
-                        :disabled="!area_asig.length > 0"
-                        color="success"
-                        @click="guardarAsingar"
-                    >
-                        Asignar
-                    </v-btn>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 
@@ -274,6 +247,15 @@ export default {
         },
     },
     methods: {
+        async cambiarEStado(e, item) {
+            let res = await axios.put(
+                "/admin/usuarios/cambiar-estado/" + item,
+                {
+                    estado: e,
+                }
+            );
+            console.log(res);
+        },
         async getUsuarios(
             term = "",
             rol = "",

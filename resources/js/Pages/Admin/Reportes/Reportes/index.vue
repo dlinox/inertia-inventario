@@ -424,8 +424,8 @@ export default {
   created(){
     this.getDocuments()
     this.getGlobal()
-    this.avanceCargos()
-    this.avanceG()
+    //this.avanceCargos()
+    //this.avanceG()
     this.getDataXdias()
 
   },

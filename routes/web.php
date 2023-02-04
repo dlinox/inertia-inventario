@@ -87,6 +87,7 @@ Route::middleware(['auth', 'onlyAdmin'])->name('admin.')->prefix('admin')->group
 
         Route::post('/get-usuarios', 'getUsuarios')->name('get-usuarios');
         Route::post('/asignar-area', 'asignarArea')->name('asignar-area');
+        Route::put('/cambiar-estado/{id}', 'cambiarEstado')->name('cambiar-estado');
     });
 
     Route::controller(InventarioController::class)->name('inventario.')->prefix('inventario')->group(function () {

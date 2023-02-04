@@ -31,27 +31,32 @@ class LoginController extends Controller
     public function UserLogin(Request $request)
     {
 
-        $credentials = $request->only('email', 'password');
-      
-        if (Auth::attempt($credentials)) {
+
+
+        $credentials = [
+            'email' => $request->email, 'password' => $request->password, 'estado' => 1
+        ];
+
+        $attempt = Auth::attempt($credentials);
+
+        if ($attempt) {
             $request->session()->regenerate();
             $this->response['mensaje'] = 'Bienvenido ingresando ...';
+            $this->response['attempt'] = $attempt;
             $this->response['estado'] = true;
             return response()->json($this->response, 200);
         }
-        $this->response['error'] = 'El email o contraseña proporcionados no son válidos.';
+        $this->response['error'] = 'Acceso denegado.';
         $this->response['estado'] = false;
+        $this->response['attempt'] = $attempt;
         return response()->json($this->response, 400);
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
         return Redirect::route('login');
     }
 }

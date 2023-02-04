@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 
 class UsuarioController extends Controller
 {
+    protected $response;
     public function index()
     {
 
@@ -65,8 +66,7 @@ class UsuarioController extends Controller
 
         //DB::raw("CONCAT( hor_inicio , ' - ' , hor_fin) as horario")
         $res = User::select(
-            'users.*',
-            DB::raw('GROUP_CONCAT(oficina.nombre SEPARATOR ",") as oficinas')
+            'users.*'
         )
             ->leftjoin('grupo', 'grupo.id_usuario', '=', 'users.id')
             ->leftjoin('oficina', 'oficina.iduoper', '=', 'grupo.id_oficina')
@@ -95,8 +95,7 @@ class UsuarioController extends Controller
                     'email' => $item->email,
                     'rol' => $item->rol,
                     'rol_name'  => $item->getRoleNames()[0],
-                    'areas' =>  $item->areas != "" ?  array_unique(explode(",", $item->areas)) : [],
-                    'oficinas' =>  $item->oficinas != "" ?  array_unique(explode(",", $item->oficinas)) : []
+                    'estado' => $item->estado == 1 ? true : false,
                 ];
         });
 
@@ -191,6 +190,22 @@ class UsuarioController extends Controller
         $this->response['mensaje'] = 'Exito';
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function cambiarEstado(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->estado = $request->estado;
+
+        if ($user->save()) {
+            $this->response['mensaje'] = 'Exito';
+            $this->response['estado'] = true;
+            return response()->json($this->response, 200);
+        }
+
+        $this->response['mensaje'] = 'Error';
+        $this->response['estado'] = false;
         return response()->json($this->response, 200);
     }
 }

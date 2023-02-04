@@ -121,7 +121,7 @@ export default {
                     this.show_mensaje = true;
                     this.mensaje = res.data.mensaje;
                     this.loading_btn = false;
-                    //console.log(res);
+                    console.log(res);
                     this.$inertia.get("/");
                 } catch (error) {
                     this.type_mensaje = "error";
