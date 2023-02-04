@@ -32,39 +32,129 @@
         </thead>
         <tbody class="salto">
         @foreach ($bienes as $key=>$bien)
-   
+            @if ($bien->tipo === 'ACTIVO FIJO')
+                <tr class="salto">  
+                    <div style="display:block; background:pink; min-weight:36px;">
+                    <td valign="center" style="border: solid 1px black; width:10px; text-align:center;"><span style="font-size: 9pt;  font-weight: bold; ">{{$key+1}}</span></td>
+                    <td style="border: solid 1px black; width:60px; text-align:center;"><div><span style="font-size: 9pt;  font-weight: bold;">{{$bien->codigo}}</span></div></td>
+                    <td style="border: solid 1px black; min-height: 30px; width:220px;">
+                        <div style="max-height: 30px; overflow:hidden; font-size: 9pt;  font-weight: bold; margin-top:-3px;">
+                            {{$bien->descripcion}}
+                        </div>
+                    </td>
+                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->marca }}</span></div></td>
+                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->modelo }}</span></div></td>
+                    <td style="border: solid 1px black; width:30px;" align="center" >
+                        <div>
+                            <span style="font-size: 9pt; font-weight: bold;">
+                                @if ($bien->tipo === 'ACTIVO FIJO')
+                                AF
+                                @elseif ($bien->tipo === 'NO DEPRECIABLE')
+                                ND
+                                @elseif ($bien->tipo === 'OTROS')
+                                AU
+                                @else
+                                @endif
+                            </span>
+                      </div>
+                    </td>
+                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->color }}</span></div></td>
+                    <td style="border: solid 1px black; width:80px;"><div style="width:80px; overflow:hidden;"><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->nro_serie }}</span></div></td>
+                    <td style="border: solid 1px black; width:70px;" align="center"><div><span style="font-size: 9pt;  font-weight: bold;">{{ $bien->medidas }}</span></div></td>
+                    <td style="border: solid 1px black; width:15px;" align="center">
+                        <div>
+                            <span style="font-size: 9pt; font-weight:bold;">
+                                @if ($bien->estado_uso === 'EN USO')
+                                U
+                                @else
+                                D
+                                @endif
+                            </span>
+                        </div>    
+                    </td>
+                    <td style="border: solid 1px black; width:15px; text-align:center;">
+                        <div>
+                            <span style="font-size: 9pt;  font-weight: bold;">
+                                @if ($bien->id_estado === 1)
+                                N
+                                @elseif ($bien->id_estado === 2)
+                                R
+                                @elseif ($bien->id_estado === 3)
+                                B
+                                @elseif ($bien->id_estado === 4)
+                                M
+                                @else
+                                Y
+                                @endif
+                            </span>
+                    </div>
+                </td>
+                    <td style="border: solid 1px black; width:60px;" align="center">
+                        <div>
+                            <span style="font-size: 9pt;  font-weight: bold;">{{$bien->corr_area}} - {{$bien->corr_num}}</span>
+                        </div>    
+                    </td>
+                    <td style="border: solid 1px black; width:200px;">
+                        <div style="max-height: 30px; overflow:hidden; font-size: 9pt; width:198px;  font-weight: bold; margin-top:-5px;">
+                            {{$bien->observaciones}}
+                        </div>
+                    </td>
+                </div>
+            </tr>
+            @else
             <tr>
                 <div style="">
-                    <td valign="center" style="border: solid 1px black; width:10px; text-align:center;"><span style="font-size: 9pt; "></span></td>
-                    <td style="border: solid 1px black; width:60px; text-align:center; "><div><span style="font-size: 9pt;"></span></div></td>
-                    <td style="border: solid 1px black; width:220px;"><div style="max-height: 30px; overflow:hidden; font-size: 9pt; margin-top:8;"></></div></td>
-                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">  </span></div></td>
-                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;"> </span></div></td>
+                    <td valign="center" style="border: solid 1px black; width:10px; text-align:center;"><span style="font-size: 9pt; ">{{$key+1}}</span></td>
+                    <td style="border: solid 1px black; width:60px; text-align:center; "><div><span style="font-size: 9pt;">{{$bien->codigo}}</span></div></td>
+                    <td style="border: solid 1px black; width:220px;"><div style="max-height: 30px; overflow:hidden; font-size: 9pt; margin-top:8;">{{$bien->descripcion}}</></div></td>
+                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->marca }}</span></div></td>
+                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->modelo }}</span></div></td>
                     <td style="border: solid 1px black; width:30px;" align="center"><div><span style="font-size: 9pt;">
-                       
+                        @if ($bien->tipo === 'ACTIVO FIJO')
+                        AF
+                        @elseif ($bien->tipo === 'NO DEPRECIABLE')
+                        ND
+                        @elseif ($bien->tipo === 'OTROS')
+                        AU
+                        @else
+                        @endif
                     </span></div></td>
-                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;"></span></div></td>
-                    <td style="border: solid 1px black; width:76px;"><div style="width:80px; overflow:hidden;"><span style="font-size: 9pt;"></span></div></td>
-                    <td style="border: solid 1px black; width:70px;" align="center"><div><span style="font-size: 9pt;"></span></div></td>
+                    <td style="border: solid 1px black; width:80px;"><div><span style="font-size: 9pt;">{{ $bien->color }}</span></div></td>
+                    <td style="border: solid 1px black; width:76px;"><div style="width:80px; overflow:hidden;"><span style="font-size: 9pt;">{{ $bien->nro_serie }}</span></div></td>
+                    <td style="border: solid 1px black; width:70px;" align="center"><div><span style="font-size: 9pt;">{{ $bien->medidas }}</span></div></td>
                     <td style="border: solid 1px black; width:15px;" align="center"><div><span style="font-size: 9pt;">
-                           
+                            @if ($bien->estado_uso === 'EN USO')
+                            U
+                            @else
+                            D
+                            @endif
                             </span>
                         </div>
                     </td>
                     <td style="border: solid 1px black;  width:15px; text-align:center;">
                         <div>
                             <span style="font-size: 9pt; ">
-                               
+                                @if ($bien->id_estado === 1)
+                                N
+                                @elseif ($bien->id_estado === 2)
+                                R
+                                @elseif ($bien->id_estado === 3)
+                                B
+                                @elseif ($bien->id_estado === 4)
+                                M
+                                @else
+                                Y
+                                @endif
                             </span>
                         </div>
                     </td>
-                    <td style="border: solid 1px black; width:60px;" align="center"><div></div><span style="font-size: 9pt;"></span></div></td>
-                    <td style="border: solid 1px black; width:200px;"><div style="max-height: 30px; overflow:hidden; font-size: 9pt; width:198px; margin-top:-8; "></div></td>
+                    <td style="border: solid 1px black; width:60px;" align="center"><div></div><span style="font-size: 9pt;">{{$bien->corr_area}} - {{$bien->corr_num}}</span></div></td>
+                    <td style="border: solid 1px black; width:200px;"><div style="max-height: 30px; overflow:hidden; font-size: 9pt; width:198px; margin-top:-8; ">{{$bien->observaciones}}</div></td>
                 </div>    
             </tr>
             <tr style="height: 0px;"></tr>
 
-
+        @endif
         @endforeach
 
         </tbody>
@@ -75,16 +165,15 @@
                     <span style="font-size: 10pt;">Inventariador(es):</span>
                 </div>
                 <div>
-                    @foreach ($inventaristas as $a)<div style="font-size: 10pt;"> </div> @endforeach
+                    @foreach ($inventaristas as $a)<div style="font-size: 10pt;">{{ $a->nombres }} {{ $a->apellidos }} </div> @endforeach
                 </div>
-                <br><br><br><br>
             </div>
             </td>
         </tr>
 
         <tr>
             <td colspan="13">
-                <span style="font-size:10pt;">Fecha y Hora:</span><span>  </span>
+                <span style="font-size:10pt;">Fecha y Hora:</span><span> {{ $ldate }} {{$lhour}} </span>
             </td>
         </tr>
         <tr>
