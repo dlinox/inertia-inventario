@@ -64,9 +64,9 @@
             <td colspan="2" width="540px" style=" white-space: nowrap; text-overflow: ellipsis; max-width: 550px;">               
                 <div style="text-align: left; overflow:hidden;">:<span style="font-size:13pt;"> </span> </div>
             </td>
-            <td align="right" width="260px" style="">
+            <td align="left" width="260px" style="">
                 <div style="">
-                    <span style="text-align:center; font-size:13pt;">ID: </span>
+                    <span style="text-align:center; font-size:13pt; ">ID:  </span>
                 </div>
             </td>
         </tr>
