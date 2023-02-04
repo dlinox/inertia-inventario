@@ -32,7 +32,7 @@
         </thead>
         <tbody class="salto">
         @foreach ($bienes as $key=>$bien)
-
+   
             <tr>
                 <div style="">
                     <td valign="center" style="border: solid 1px black; width:10px; text-align:center;"><span style="font-size: 9pt; "></span></td>
@@ -64,7 +64,7 @@
             </tr>
             <tr style="height: 0px;"></tr>
 
-        @endif
+
         @endforeach
 
         </tbody>
@@ -83,7 +83,7 @@
 
         <tr>
             <td colspan="13">
-                <span style="font-size:10pt;">Fecha y Hora:</span><span> {{ $ldate }} {{$lhour}} </span>
+                <span style="font-size:10pt;">Fecha y Hora:</span><span>  </span>
             </td>
         </tr>
         <tr>
