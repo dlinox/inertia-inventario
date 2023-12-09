@@ -3,9 +3,9 @@
         <v-main class="main-login">
             <div class="container-logo">
                 <img
-                    width="200"
+                    width="350"
                     class="mx-auto pa-3"
-                    src="/images/logo_unap_tiny.png"
+                    src="/images/gorepuno.png"
                     alt=""
                 />
             </div>
@@ -13,10 +13,9 @@
                 <v-img
                     gradient="to bottom, rgba(0,0,0,.2), rgba(0,0,0,6)"
                     class="white--text align-end"
-                    height="150px"
-                    src="/images/unap.jpg"
+                    height="100px"
                 >
-                    <v-card-title>Inventario UNA-PUNO 2022</v-card-title>
+                    <v-card-title>Inventario GORE-PUNO 2023</v-card-title>
                     <v-card-subtitle class="">
                         <strong> INGRESAR AL SISTEMA</strong>
                     </v-card-subtitle>

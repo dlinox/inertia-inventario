@@ -2,7 +2,7 @@
     <tr>
       <td></td>
       <td></td>
-      <td colspan="8" valign="center" align="center" style="font-size:14pt; text-algin:center;" ><p>Universidad Nacional del Altiplano de Puno</p></td>
+      <td colspan="8" valign="center" align="center" style="font-size:14pt; text-algin:center;" ><p>GOBIERNO REGIONAL PUNO</p></td>
       <td></td>
     </tr>
 

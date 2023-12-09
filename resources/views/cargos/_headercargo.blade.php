@@ -33,14 +33,14 @@
         <tr>
             <td valgin="top">
                 <div style="width:370px; text-align:left;">
-                    <div><span style="font-size:15pt; stroke:#000000;">Universidad Nacional del Altiplano</span></div>
+                    <div><span style="font-size:15pt; stroke:#000000;">GOBIERNO REGIONAL PUNO</span></div>
                     <span style="font-size:12pt;">Comisión de Inventario Activos Fijos 2022</span>
                 </div>
             </td>
             <td align="center">
                 <div style=" width:690px; margin-top:50px;" style="font-weight:bold;">
                     <div><span style="font-size:17pt;"> FORMATO DE FICHA DE LEVANTAMIENTO DE INFORMACIÓN </span></div>
-                    <span style="text-align:center; font-size:14pt;">INVENTARIO PATRIMONIAL 2022</span>
+                    <span style="text-align:center; font-size:14pt;">INVENTARIO PATRIMONIAL 2023</span>
                 </div>
             </td>
             <td align="right" valgin="top">

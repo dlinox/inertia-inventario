@@ -1,10 +1,7 @@
 <template>
     <v-app>
         <v-navigation-drawer app v-model="drawer" color="#01305A" dark>
-            <div class="wrap-imagen py-4">
-                <img width="80%" src="/images/logomin.png" alt="" />
-            </div>
-
+   
             <v-card flat rounded="0" color="transparent">
                 <v-list two-line class="py-0">
                     <v-list-item>
