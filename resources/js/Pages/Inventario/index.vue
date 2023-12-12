@@ -30,7 +30,7 @@
                         />
                     </v-col>
 
-                    <v-col
+                    <!-- <v-col
                         cols="12"
                         sm="4"
                         class="px-sm-0 px-sm-1 py-2 py-md-3 d-flex py-2 py-md-3"
@@ -39,7 +39,7 @@
                             v-if="!is_new"
                             @setData="data_emit = $event"
                         />
-                    </v-col>
+                    </v-col> -->
 
                     <v-col
                         cols="12"
@@ -302,7 +302,7 @@
                             />
                         </v-col>
 
-                        <!-- <v-col cols="12" class="pb-1 pt-0 d-flex">
+                        <v-col cols="12" class="pb-1 pt-0 d-flex">
                             <v-autocomplete v-model="form_data.id_persona" clearable class="mt-0 pt-0" dense
                                 label="Responsable" outlined :items="personas" :filter="personasFilter" item-value="id"
                                 :search-input.sync="personas_search" :loading="loading_search_persona"
@@ -400,12 +400,12 @@
                                 :disabled="disable_input">
                                 <v-icon dark>mdi-account-minus</v-icon>
                             </v-btn>
-                        </v-col> -->
+                        </v-col>
 
-                        <!-- <v-col cols="12" class="pb-1 pt-0">
+                        <v-col cols="12" class="pb-1 pt-0">
                             <SelectOficina :disabled="disable_input" :user="user.id" v-model="form_data.id_oficina"
                                 :rules="nameRules" />
-                        </v-col> -->
+                        </v-col>
 
                         <v-col cols="6" class="pb-1 pt-0">
                             <v-combobox
@@ -419,7 +419,7 @@
                             ></v-combobox>
                         </v-col>
 
-                        <v-col cols="6" class="pb-1 pt-0">
+                        <!-- <v-col cols="6" class="pb-1 pt-0">
                             <v-text-field
                                 class="mt-0 pt-0"
                                 dense
@@ -428,9 +428,9 @@
                                 v-model="form_data.num_ambiente"
                                 :disabled="disable_input"
                             ></v-text-field>
-                        </v-col>
+                        </v-col> -->
 
-                        <v-col cols="12" class="pb-1 pt-0">
+                        <v-col cols="6" class="pb-1 pt-0">
                             <v-textarea
                                 :disabled="disable_input"
                                 class="mt-0 pt-0"
@@ -445,8 +445,11 @@
 
                         <v-col cols="12" class="pb-1 pt-0">
                             <v-text-field
+                                :disabled="disable_input"
+                                v-model="form_data.correlativo"
                                 class="mt-0 pt-0"
                                 label="Codigo Correlativo"
+                                :rules="nameRules"
                                 dense
                                 outlined
                             ></v-text-field>

@@ -79,12 +79,12 @@ class GrupoController extends Controller
 
         $oficinas =  explode('|#|', $request->ofici[0]);
 
+        // var_dump( $oficinas);
         foreach ($request->usuarios as $item) {
 
             foreach ($oficinas as $oficina) {
 
                 $this->save($oficina, $item);
-                //echo($oficina);
                 //echo($item);
 
             }
@@ -102,9 +102,8 @@ class GrupoController extends Controller
         $registrado = null;
         $registrado = DB::select("SELECT id FROM grupo where id_oficina = '$id_oficina'  AND id_usuario = $id_usuario");
 
+        // var_dump($registrado);
         if ($registrado == null) {
-
-
             $grupo = Grupo::create([
                 'id_oficina' => $id_oficina,
                 'id_usuario' => $id_usuario,

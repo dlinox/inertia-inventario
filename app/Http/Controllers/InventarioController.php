@@ -118,8 +118,8 @@ class InventarioController extends Controller
     {
         $res = Persona::where('nombres', 'LIKE', '%' . $term . '%')
             ->orWhere('dni', 'LIKE', '%' . $term . '%')
-            ->orWhere('paterno', 'LIKE', '%' . $term . '%')
-            ->orWhere('materno', 'LIKE', '%' . $term . '%')
+            // ->orWhere('paterno', 'LIKE', '%' . $term . '%')
+            // ->orWhere('materno', 'LIKE', '%' . $term . '%')
             ->get();
         //text
 
@@ -154,7 +154,7 @@ class InventarioController extends Controller
     public function searchOficinas($term = '')
     {
         $res = Oficina::where('nombre', 'LIKE', '%' . $term . '%')
-            ->orWhere('codigo', 'LIKE', '%' . $term . '%')
+            // ->orWhere('codigo', 'LIKE', '%' . $term . '%')
             ->get();
         //text
 
@@ -293,6 +293,7 @@ class InventarioController extends Controller
             $res->id_area = $request->id_area;
             $res->id_estado = $request->id_estado;
             $res->observaciones = $request->observaciones;
+            
             $res->save();
             $this->response['mensaje'] = 'Exito, Inventario actualizado';
         } else {
@@ -458,18 +459,21 @@ class InventarioController extends Controller
             'id_usuario' => Auth::user()->id,
             'id_estado' => $request->id_estado,
             'estado_uso' => $request->estado_uso,
-            'num_ambiente' => $request->num_ambiente,
+            //'num_ambiente' => $request->num_ambiente,
+
+            'corr_num' => $request->correlativo,
         ]);
 
         if ($res) {
 
-            $corr_area =  explode('.', $res->id_area)[0];
+            // $corr_area =  explode('.', $res->id_area)[0];
 
-            $corr_num = $this->AsignarCorrelativo($res);
+            // $corr_num = $this->AsignarCorrelativo($res);
 
-            $res->corr_area =  $corr_area;
-            $res->corr_num = $corr_num;
-            $res->save();
+            // $res->corr_area =  $corr_area;
+
+            // $res->corr_num = $corr_num;
+            // $res->save();
 
             if ($res->idbienk) {
                 Bienk::select('registrado')->where('id', $res->idbienk)->update(['registrado' => 1]);
@@ -478,8 +482,8 @@ class InventarioController extends Controller
             $this->response['estado'] = true;
             $this->response['mensaje'] = 'Registrado con exito';
             $this->response['id'] = $res->id;
-            $this->response['corr_num'] = $corr_num;
-            $this->response['corr_area'] = $corr_area;
+            // $this->response['corr_num'] = $corr_num;
+            // $this->response['corr_area'] = $corr_area;
 
             if ($codigo_existe) {
                 $this->response['mensaje'] = 'Registrado con exito, ¡ Codigo Duplicado !';
