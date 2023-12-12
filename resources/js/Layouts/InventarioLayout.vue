@@ -1,8 +1,6 @@
 <template>
     <v-app class="app-wrapper">
         <v-app-bar color="white" app>
-
-
             <v-btn text color="primary" @click="irConciliacion">
                 Conciliacion
             </v-btn>
@@ -17,7 +15,7 @@
                         x-small
                         dark
                         @click="bloq"
-                        >
+                    >
                         <v-icon>mdi-screen-rotation-lock</v-icon>
                     </v-btn>
                     <v-btn
@@ -27,7 +25,7 @@
                         x-small
                         dark
                         @click="disbloq"
-                        >
+                    >
                         <v-icon>mdi-screen-rotation</v-icon>
                     </v-btn>
                     <v-btn text color="gray" class="" v-bind="attrs" v-on="on">
@@ -39,15 +37,19 @@
                 <v-list dense>
                     <v-subheader>Opciones</v-subheader>
                     <v-list-item-group v-model="selectedMenu" color="primary">
-                        <v-list-item v-for="(item, i) in items" :key="i" @click="SelectMenu(item.text)">
-
+                        <v-list-item
+                            v-for="(item, i) in items"
+                            :key="i"
+                            @click="SelectMenu(item.text)"
+                        >
                             <v-list-item-icon>
                                 <v-icon v-text="item.icon"></v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title v-text="item.text"></v-list-item-title>
+                                <v-list-item-title
+                                    v-text="item.text"
+                                ></v-list-item-title>
                             </v-list-item-content>
-
                         </v-list-item>
                     </v-list-item-group>
                 </v-list>
@@ -60,19 +62,41 @@
 
         <!-- <ReLogin :user="user"  :dialog="dialog_relogin"  @dialog="dialog_relogin = $event" />-->
 
-        <v-dialog v-model="dialog_change_pass" persistent :overlay="false" max-width="400px">
+        <v-dialog
+            v-model="dialog_change_pass"
+            persistent
+            :overlay="false"
+            max-width="400px"
+        >
             <v-card>
                 <v-card-title class="text-h6">
                     Cambiar contraseña
                 </v-card-title>
 
-                <v-form class="px-5 py-4" ref="form" v-model="valid" lazy-validation>
-                    <v-text-field v-model="password" :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
-                        :rules="[rules.required, rules.min]" :type="show_password ? 'text' : 'password'"
-                        label="Nueva Contraseña" counter @click:append="show_password = !show_password"></v-text-field>
+                <v-form
+                    class="px-5 py-4"
+                    ref="form"
+                    v-model="valid"
+                    lazy-validation
+                >
+                    <v-text-field
+                        v-model="password"
+                        :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[rules.required, rules.min]"
+                        :type="show_password ? 'text' : 'password'"
+                        label="Nueva Contraseña"
+                        counter
+                        @click:append="show_password = !show_password"
+                    ></v-text-field>
 
-                    <v-btn :disabled="!valid" color="primary" class="mt-1" block :loading="loading_btn"
-                        @click="ChangePassword()">
+                    <v-btn
+                        :disabled="!valid"
+                        color="primary"
+                        class="mt-1"
+                        block
+                        :loading="loading_btn"
+                        @click="ChangePassword()"
+                    >
                         Guardar Contraseña
                     </v-btn>
                 </v-form>
@@ -90,10 +114,14 @@ export default {
 
         items: [
             { text: "Perfil", icon: "mdi-account" },
-            { text: "Cargos", icon: "mdi-file-document", to:"url" },
-            { text: "Conciliar", icon: "mdi-file-document", to:"url" },
-            { text: "Registro en lotes", icon: "mdi-file-document", to:"url" },
-            { text: "Registro en lotes nuevos", icon: "mdi-file-document", to:"url" },
+            // { text: "Cargos", icon: "mdi-file-document", to: "url" },
+            // { text: "Conciliar", icon: "mdi-file-document", to: "url" },
+            // { text: "Registro en lotes", icon: "mdi-file-document", to: "url" },
+            // {
+            //     text: "Registro en lotes nuevos",
+            //     icon: "mdi-file-document",
+            //     to: "url",
+            // },
             { text: "Salir", icon: "mdi-power" },
         ],
         selectedMenu: null,
@@ -112,7 +140,7 @@ export default {
             required: (value) => !!value || "Requerido.",
             min: (v) => v.length >= 4 || "Min 4 caracteres",
         },
-        bloquear:false,
+        bloquear: false,
         //cambair contraseña
     }),
     computed: {
@@ -135,7 +163,6 @@ export default {
                     this.dialog_change_pass = false;
                     this.loading_btn = false;
                 } catch (error) {
-
                     this.loading_btn = false;
                 }
             }
@@ -144,30 +171,28 @@ export default {
             if (menu == "Perfil") {
                 this.$inertia.get("/inventario/perfil");
             } else if (menu == "Cargos") {
-                this.$inertia.get("/inventario/cargos")
+                this.$inertia.get("/inventario/cargos");
             } else if (menu == "Conciliar") {
-                this.$inertia.get("/inventario/conciliacion")
+                this.$inertia.get("/inventario/conciliacion");
             } else if (menu == "Salir") {
                 this.$inertia.post("/logout");
-            }else if (menu == "Registro en lotes") {
+            } else if (menu == "Registro en lotes") {
                 this.$inertia.get("/inventario/lotes");
-            }else if (menu == "Registro en lotes nuevos") {
+            } else if (menu == "Registro en lotes nuevos") {
                 this.$inertia.get("/inventario/lotes-nuevo");
             }
-            
         },
         irConciliacion() {
             this.$inertia.get("/inventario/conciliacion");
         },
-        bloq(){
-            lock('portrait');
+        bloq() {
+            lock("portrait");
             this.bloquear = true;
-        }, 
-        disbloq(){
+        },
+        disbloq() {
             unlock();
             this.bloquear = false;
-        } 
-
+        },
     },
 };
 </script>
