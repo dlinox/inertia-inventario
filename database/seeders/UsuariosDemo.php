@@ -24,6 +24,17 @@ class UsuariosDemo extends Seeder
             'password' => Hash::make('demo'),
         ])->assignRole('Administrador');
 
+
+        User::create([
+            'nombres' => 'Aministrador',
+            'apellidos' => 'Puma Ticona',
+            'rol' => 1,
+            'estado' => 1,
+            'email' => 'nearlino20@gmail.com',
+            'password' => Hash::make('demo'),
+        ])->assignRole('Administrador');
+
+
         User::create([
             'nombres' => 'Ariel',
             'apellidos' => 'Luque Cusacani',
